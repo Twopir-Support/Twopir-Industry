@@ -1,0 +1,3635 @@
+<!-- ============================================================
+     SEO / AEO — SALESFORCE FOR LAW FIRMS
+     This file is a WordPress Custom HTML block, so it has no HEAD section of its own.
+     Meta title, description and canonical cannot work from inside a
+     body fragment — paste these into the SEO plugin (Yoast / Rank
+     Math) on the page that hosts this block. The JSON-LD at the
+     bottom of this file is real markup and works as-is.
+
+       Title tag  (57 chars)
+         Salesforce for Law Firms | Twopir Consulting
+
+       Meta description  (157 chars)
+         Salesforce for law firms from Twopir Consulting: intake,
+         matters, billing and trust accounting on one architecture,
+         with reporting partners can act on.
+
+       Slug       /salesforce-for-law-firms/
+       Canonical  https://twopirconsulting.com/salesforce-for-law-firms/
+                  ^ PLACEHOLDER — confirm the final permalink before
+                    publishing, and keep http/https + trailing slash
+                    consistent with the rest of the site.
+
+       Primary keyword    Salesforce for law firms
+       Secondary keywords legal client intake software, law firm CRM,
+                          matter management Salesforce, legal billing
+                          and trust accounting, law firm reporting
+
+       Sitemap    add this URL to sitemap.xml and submit in Google
+                  Search Console + Bing Webmaster Tools.
+     ============================================================ -->
+
+<!-- ============================================================
+     TWOPIR CONSULTING — SALESFORCE FOR LAW FIRMS (Industry Page)
+     WordPress-ready snippet. Paste into a Custom HTML block.
+
+     DESIGN SYSTEM — inherited from the homepage sections
+     (Hero.html, About Us.html, Our Services.html, Industry We
+     Serve.html, FAQ.html, OUR ECOSYSTEM.html):
+
+       Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
+                 #00aff6 accent · #007ec6 accent-dark
+                 rgba(0,175,246,0.28) border · #1a2a35 ink
+                 #5a7080 muted · #1e2447/#12183a/#1a2e4a navy
+                 #35d39a green
+       Type      Bricolage Grotesque (display) · Inter (body)
+                 JetBrains Mono (eyebrows / labels)
+       Radius    22px large · 18px card · 14px small · 100px pill
+       Shadow    0 2px 16px rgba(0,130,200,.10), 0 1px 4px rgba(0,130,200,.08)
+                 hover: 0 8px 32px rgba(0,130,200,.18), 0 2px 8px rgba(0,130,200,.12)
+                 dark panels: 0 8px 40px rgba(18,24,58,.20)
+       Pattern   mono eyebrow → Bricolage title → line/diamond/line
+                 rule → Inter 300 description → content grid
+
+     SCOPING
+       Every selector is prefixed with #twopir-legal, and every
+       class uses the .tlg- prefix. Keyframes use the tlg prefix
+       too. Nothing here can leak into other WordPress pages or
+       into the homepage sections. All sizes are px / clamp() —
+       never rem — so the page is immune to whatever root
+       font-size the active theme sets.
+
+     SCROLL PERFORMANCE (2024-08 patch)
+       - `html { scroll-behavior: auto }` guards against a theme
+         applying global smooth-scrolling that fights the many
+         continuous CSS animations below.
+       - `content-visibility: auto` is applied to page sections
+         (skipping the one section that holds a `position: sticky`
+         element, since layout containment can interfere with
+         sticky) so the browser skips layout/paint work for
+         sections currently off-screen. This is the single biggest
+         lever for scroll jank on long, animation-heavy pages.
+     ============================================================ -->
+
+<!-- ============================================================
+     USING THIS FILE AS THE INDUSTRY-PAGE TEMPLATE
+     ============================================================
+     This page is the reference build for every other industry page
+     (Healthcare, Real Estate, Fintech, …). To spin up a new one,
+     five things change and nothing else needs to:
+
+     1 · IDENTIFIERS   find-and-replace two strings, in this order:
+                         #twopir-legal   →  #twopir-<industry>
+                         tlg-            →  t<xx>-        (3-4 chars)
+                       The keyframe names (tlgPulse, tlgLive, tlgFlow,
+                       tlgSpin, tlgMarquee) carry the same prefix and
+                       are caught by the second replace. Renaming both
+                       is what keeps two industry pages from colliding
+                       if they ever render on the same URL.
+
+     2 · CONTENT       headings, copy, cards, stats, testimonials, FAQ.
+                       Section structure stays; only the words change.
+
+     3 · HERO DIAGRAM  the SVG is a three-layer model —
+                         systems of record → Twopir layer → outcomes.
+                       Swap the node labels for the industry's own
+                       systems and vocabulary. Keep the 560×548 viewBox
+                       and the layer geometry; only the text changes.
+
+     4 · SCHEMA        the three JSON-LD blocks at the bottom: breadcrumb
+                       names, Service name/description, FAQ pairs. The
+                       FAQ block must stay word-for-word identical to the
+                       visible accordion.
+
+     5 · SEO VALUES    the plugin block directly below this comment.
+
+     ── WHAT MUST NOT CHANGE ─────────────────────────────────────
+     · The type scale and the colour tokens. They come from the
+       homepage and they are what makes the pages read as one site.
+     · The single token rule. Every custom property is declared in ONE
+       `#twopir-<industry> { }` block, and every var() carries a literal
+       fallback. Autoptimize merges duplicate selectors and will silently
+       drop a second token block — that is what broke the type scale on
+       the first live deploy.
+     · px / clamp() sizing only, never rem. The live theme sets
+       `html { font-size: 10px }`, so rem values would rescale.
+     · `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns
+       the wrapper into a scroll container and breaks the sticky callout.
+
+     ── HOW IT HANDLES MORE OR LESS CONTENT ──────────────────────
+     The hero is min-height, flex, vertically centred. A page with a
+     short headline and two stats centres in the first screen and reads
+     as composed; a page with a long lede grows past it and scrolls.
+     Nothing is clipped and no font size needs touching either way.
+     The stats row is a wrapping flex list, so three, four or five
+     entries all lay out cleanly.
+
+     PASTE INTO A CUSTOM HTML BLOCK, never the visual editor — the
+     visual editor injects paragraph and line-break tags inside the
+     style element, which breaks the CSS outright.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Scroll performance fix ─────────────────────────────────
+   Forces native (non-smooth) scrolling so this page never fights
+   a theme-level `scroll-behavior: smooth` while heavy decorative
+   animations are running elsewhere on the page. Scoped globally
+   because scroll-behavior only has effect on the actual scrolling
+   element (html/body), which sits outside #twopir-legal. */
+html { scroll-behavior: auto !important; }
+
+/* ── Tokens (scoped) ───────────────────────────────────────── */
+#twopir-legal {
+  --tlg-bg:          #dff1fa;
+  --tlg-bg-alt:      #e8f5fd;
+  --tlg-bg-top:      #ecf8fd;
+  --tlg-card:        #eef8fd;
+  --tlg-surface:     #ffffff;
+
+  --tlg-accent:      #00aff6;   /* fills, borders, icons, dots, large display type */
+  --tlg-accent-dk:   #007ec6;   /* gradients and hover states */
+  /* Text-safe brand blue. The accent itself measures 2.14 against the page
+     background, 2.23 on the alt, 2.30 on a card and 2.48 on white — all far
+     under the 4.5 minimum — and every role that used it as a text colour on
+     those grounds runs 11–16px. This is the same hue darkened until it clears
+     5.1 everywhere (5.14 / 5.37 / 5.53 / 5.96), so eyebrows and labels still
+     read as brand blue but are actually legible. For TEXT on light grounds
+     only: icons, borders, fills, the large gradient display type and anything
+     sitting on a navy panel all keep --tlg-accent. */
+  --tlg-accent-ink:  #00699f;
+  --tlg-border:      rgba(0,175,246,0.28);
+  --tlg-border-soft: rgba(0,175,246,0.22);
+
+  --tlg-text:        #1a2a35;
+  /* nudged from #5a7080, which measured 4.45 against the page background —
+     a hair under the 4.5 minimum for body copy. This clears it on every
+     surface (4.79 / 5.01 / 5.16 / 5.56) and the shift is imperceptible
+     side by side. */
+  --tlg-muted:       #566b79;
+
+  --tlg-navy:        #1e2447;
+  --tlg-navy-deep:   #12183a;
+  --tlg-navy-soft:   #1a2e4a;
+  --tlg-green:       #35d39a;
+  /* the homepage's only warm hue. Used here as the semantic left-border on
+     the "where firms stall" cards; #f0a53c was off-palette. */
+  --tlg-star:        #e0961f;
+
+  --tlg-ff-display:  'Bricolage Grotesque', sans-serif;
+  --tlg-ff-body:     'Inter', sans-serif;
+  --tlg-ff-mono:     'JetBrains Mono', monospace;
+
+  --tlg-radius-lg:   22px;
+  --tlg-radius-card: 18px;
+  --tlg-radius-md:   14px;
+
+  --tlg-shadow:      0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08);
+  --tlg-shadow-hv:   0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12);
+  --tlg-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
+
+  --tlg-ease:        0.28s cubic-bezier(.4,0,.2,1);
+  --tlg-pad-y:       clamp(48px, 6vw, 84px);
+  --tlg-pad-x:       clamp(16px, 4vw, 48px);
+
+  /* TEMPLATE KNOB — height of the site header sitting above this block in
+     normal flow (measured 87px on the live theme). The only value in this
+     file tied to the surrounding site; it lets the hero be exactly "one
+     screen minus the header". Re-measure if the header ever changes. */
+  --tlg-nav:         87px;
+
+  /* ── Type scale ──────────────────────────────────────────────
+     These live in the SAME rule as the colour tokens on purpose.
+     They used to sit in a second, standalone `#twopir-legal { }`
+     block further down the sheet, and Autoptimize's CSS minifier
+     merges duplicate selectors — on the live site it merged the
+     three #twopir-legal rules and silently dropped this one. The
+     result: 62 surviving `var(--tlg-fs-*)` references with zero
+     declarations behind them. An unresolvable var() is invalid at
+     computed-value time, and for font-size that means INHERIT, so
+     the H1 fell back to the wrapper's 16px while every label and
+     button inherited 16px too — a small headline surrounded by
+     oversized body text. One token rule means there is nothing
+     left for the minifier to merge. Every var() below also carries
+     a literal fallback as a second line of defence. */
+  --tlg-fs-display:     clamp(30px, 4vw, 46px);
+  --tlg-fs-h2:          clamp(26px, 3vw, 38px);
+  --tlg-fs-h3:          clamp(17px, 1.5vw, 19px);
+  --tlg-fs-h4:          clamp(15px, 1.25vw, 16px);
+  --tlg-fs-lede:        clamp(15px, 1.2vw, 17px);
+  --tlg-fs-body:        clamp(14px, 1.05vw, 15px);
+  --tlg-fs-sm:          13px;
+  --tlg-fs-xs:          12px;
+  --tlg-fs-label:       11px;
+  --tlg-fs-eyebrow:     clamp(11px, 0.9vw, 12px);
+  --tlg-fs-stat-sm:     clamp(20px, 1.9vw, 24px);
+}
+
+/* ── Local reset (scoped — cannot touch the rest of the site) ─ */
+#twopir-legal,
+#twopir-legal *,
+#twopir-legal *::before,
+#twopir-legal *::after { box-sizing: border-box; }
+
+#twopir-legal p,
+#twopir-legal h1, #twopir-legal h2, #twopir-legal h3,
+#twopir-legal ul, #twopir-legal li,
+#twopir-legal figure, #twopir-legal blockquote { margin: 0; padding: 0; }
+#twopir-legal li { list-style: none; }
+#twopir-legal a  { text-decoration: none; }
+
+
+#twopir-legal img { display: block; max-width: 100%; }
+#twopir-legal button { font-family: inherit; }
+
+#twopir-legal {
+  position: relative;
+  width: 100%;
+  font-family: var(--tlg-ff-body);
+  /* The wrapper is the inheritance root for anything without an explicit
+     size of its own, so it takes the body step rather than a flat 16px.
+     The literal fallback matters most here: if this one failed to resolve
+     the block would inherit the theme's body size instead. */
+  font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px));
+  line-height: 1.65;
+  color: var(--tlg-text);
+  background: var(--tlg-bg);
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
+     other computes from visible to AUTO — so `overflow-x: hidden` silently
+     turned this wrapper into a scroll container around the whole page
+     (measured: overflow resolved to hidden / auto). That makes it the scroll
+     ancestor for `position: sticky`, which is why the sticky "How We Engage"
+     callout in the Why section would stop sticking above 960px, and it also
+     gives a trackpad gesture something to latch onto. `clip` clips exactly
+     the same way but creates no scroll container. The `hidden` line stays
+     first as the fallback for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
+  isolation: isolate;
+  /* FIX: this component previously relied only on JS (tlgFullBleed) to cancel
+     horizontal spacing from the theme/builder wrapper. It never touched
+     *vertical* spacing, so any top/bottom padding/margin the theme's content
+     wrapper added around the widget rendered as plain white gaps — first
+     above the hero, then (once that was fixed) below the CTA section.
+     margin-top/margin-bottom are pulled to 0 here too, and the matching
+     ancestor walk in the script (tlgKillAncestorSpacing) zeroes out top AND
+     bottom padding/margin on every parent between this element and the page
+     body element,
+     since the real offending wrapper class differs per theme/builder. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Elementor / builder wrapper reset ──
+   Page builders wrap the HTML widget in padded containers, which
+   would leave white bars between these full-bleed sections. This
+   only matches wrappers that actually contain #twopir-legal. */
+section.elementor-section:has(#twopir-legal),
+.elementor-column:has(#twopir-legal),
+.elementor-widget-wrap:has(#twopir-legal),
+.elementor-widget:has(#twopir-legal),
+.elementor-container:has(#twopir-legal),
+.wp-block-html:has(#twopir-legal) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The theme wraps page content in `.page-inner { overflow: hidden }`, and on
+   the live site that box overflows horizontally by about 3px. A clipping box
+   with real overflow is still a scroll container, which makes it a latch
+   target for scroll gestures and the scroll ancestor that stops the sticky
+   callout working. `clip` clips identically but is not a scroll container.
+   Scoped with :has() so only pages carrying this block are affected. */
+.page-inner:has(#twopir-legal) { overflow: clip; }
+
+/* FIX: added — the block above only catches Elementor/Gutenberg wrapper
+   classes. Classic-editor / theme "entry-content" wrappers and generic
+   <main>/<article> containers were not covered, and one of those is the
+   most likely source of the top gap. Matching them here too, in addition
+   to the JS ancestor walk, covers both cases without guessing which theme
+   is in use. */
+.entry-content:has(#twopir-legal),
+.post-content:has(#twopir-legal),
+.page-content:has(#twopir-legal),
+main:has(#twopir-legal),
+article:has(#twopir-legal) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Shared layout primitives ──────────────────────────────── */
+#twopir-legal .tlg-section {
+  position: relative;
+  width: 100%;
+  padding: var(--tlg-pad-y) var(--tlg-pad-x);
+  background: var(--tlg-bg);
+}
+#twopir-legal .tlg-section--alt  { background: var(--tlg-bg-alt); }
+#twopir-legal .tlg-section--dark {
+  background:
+    radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
+    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
+  color: #fff;
+}
+
+/* Skip layout/paint work for sections while they are off-screen.
+   Excludes the section that contains the `position: sticky`
+   callout (Why Twopir / #tlg-why-title), since layout containment
+   on an ancestor can interfere with sticky positioning. This is
+   the main scroll-jank fix: it stops the browser from repeatedly
+   re-rendering the marquee, pulses, spin and flow animations in
+   sections that aren't currently visible. */
+#twopir-legal .tlg-section:not(:has(.tlg-callout)) {
+  content-visibility: auto;
+  /* Two declarations on purpose. The first is the placeholder size used by
+     browsers without `auto` support. The second lets the browser remember
+     each section's real rendered height once it has been on screen, so the
+     scrollbar stops jumping as you scroll back up past a section whose true
+     height is nowhere near the 900px estimate. Browsers that cannot parse
+     `auto` drop the second line and keep the first. */
+  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* iOS Safari mis-handles content-visibility during momentum scrolling:
+   sections re-lay-out mid-gesture and the page appears to stop moving. The
+   perf win only matters on large, pointer-driven screens anyway. */
+@media (hover: none), (pointer: coarse) {
+  #twopir-legal .tlg-section:not(:has(.tlg-callout)) {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}
+
+#twopir-legal .tlg-wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+#twopir-legal .tlg-wrap--narrow { max-width: 900px; }
+
+/* ── Section header pattern (matches Our Services / Industries) */
+#twopir-legal .tlg-head {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+#twopir-legal .tlg-eyebrow {
+  display: block;
+  font-family: var(--tlg-ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  margin-bottom: 10px;
+}
+#twopir-legal .tlg-title {
+  font-family: var(--tlg-ff-display);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  color: var(--tlg-text);
+  text-wrap: balance;
+}
+#twopir-legal .tlg-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tlg-accent) 0%, var(--tlg-accent-dk) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tlg-accent);
+}
+#twopir-legal .tlg-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 22px;
+}
+#twopir-legal .tlg-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
+#twopir-legal .tlg-rule-diamond {
+  width: 8px; height: 8px;
+  background: var(--tlg-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-legal .tlg-lede {
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 300;
+  line-height: 1.78;
+  color: var(--tlg-muted);
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+#twopir-legal .tlg-lede strong { color: var(--tlg-text); font-weight: 600; }
+
+/* dark-section variants of the same header pattern */
+#twopir-legal .tlg-section--dark .tlg-title { color: #fff; }
+#twopir-legal .tlg-section--dark .tlg-lede  { color: rgba(220,238,252,0.78); }
+#twopir-legal .tlg-section--dark .tlg-lede strong { color: #fff; }
+#twopir-legal .tlg-section--dark .tlg-rule-line { background: rgba(0,175,246,0.45); }
+
+/* ── Buttons (identical geometry to the homepage hero) ─────── */
+#twopir-legal .tlg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(11px, 1vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  padding: 12px 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  transition: background var(--tlg-ease), color var(--tlg-ease),
+              box-shadow var(--tlg-ease), border-color var(--tlg-ease),
+              transform 0.18s ease;
+}
+#twopir-legal .tlg-btn svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+#twopir-legal .tlg-btn--primary {
+  color: #fff !important;
+  background: var(--tlg-accent);
+  border-color: var(--tlg-accent);
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+}
+#twopir-legal .tlg-btn--primary:hover,
+#twopir-legal .tlg-btn--primary:focus-visible {
+  background: var(--tlg-text);
+  border-color: var(--tlg-text);
+  box-shadow: 0 8px 24px rgba(26,42,53,0.24);
+  transform: translateY(-2px);
+}
+#twopir-legal .tlg-btn--ghost {
+  color: var(--tlg-accent) !important;
+  background: rgba(255,255,255,0.72);
+  border-color: var(--tlg-border);
+  box-shadow: var(--tlg-shadow);
+}
+#twopir-legal .tlg-btn--ghost:hover,
+#twopir-legal .tlg-btn--ghost:focus-visible {
+  background: var(--tlg-accent);
+  color: #fff !important;
+  border-color: var(--tlg-accent);
+  box-shadow: 0 8px 24px rgba(0,175,246,0.32);
+  transform: translateY(-2px);
+}
+#twopir-legal .tlg-section--dark .tlg-btn--ghost {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#twopir-legal .tlg-section--dark .tlg-btn--ghost:hover {
+  background: var(--tlg-accent);
+  border-color: var(--tlg-accent);
+}
+#twopir-legal .tlg-btn:focus-visible { outline: 2px solid var(--tlg-accent); outline-offset: 3px; }
+#twopir-legal .tlg-btn-arrow { transition: transform var(--tlg-ease); }
+#twopir-legal .tlg-btn--primary:hover .tlg-btn-arrow { transform: translateX(3px); }
+
+/* ════════════════════════════════════════════════════════════
+   1 · HERO
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 44px) var(--tlg-pad-x) clamp(20px, 2.4vw, 32px);
+  background:
+    radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
+    linear-gradient(180deg, var(--tlg-bg-top) 0%, #e5f4fc 52%, var(--tlg-bg) 92%, var(--tlg-bg) 100%);
+  overflow: hidden;
+}
+#twopir-legal .tlg-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,175,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,175,246,0.07) 1px, transparent 1px);
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+}
+#twopir-legal .tlg-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  /* the copy column carries the room. Widening it reflows the headline
+     from four lines to three and the lede from six to five, which is where
+     most of the first-screen budget comes from — layout, not type. */
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  align-items: center;
+  gap: clamp(28px, 3.6vw, 58px);
+}
+#twopir-legal .tlg-hero-copy { max-width: 640px; }
+
+#twopir-legal .tlg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tlg-ff-mono);
+  /* the flat 11px label step rather than the eyebrow clamp, plus tighter
+     padding and tracking. The pill reads noticeably smaller without leaving
+     the type scale — which matters, because every industry page reuses it. */
+  font-size: var(--tlg-fs-label, 11px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid #b3d9f2;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  margin-bottom: clamp(11px, 1.4vw, 16px);
+  box-shadow: 0 2px 10px rgba(0,130,200,0.08);
+}
+#twopir-legal .tlg-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--tlg-accent);
+  animation: tlgPulse 2.6s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tlgPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,175,246,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,175,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,175,246,0); }
+}
+
+#twopir-legal .tlg-hero-title {
+  font-family: var(--tlg-ff-display);
+  font-size: clamp(1.85rem, 3.05vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.09;
+  color: var(--tlg-text);
+  text-wrap: balance;
+}
+#twopir-legal .tlg-hero-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tlg-accent) 0%, var(--tlg-accent-dk) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tlg-accent);
+}
+#twopir-legal .tlg-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 1.2vw, 14px) 0 clamp(9px, 1.1vw, 13px);
+}
+#twopir-legal .tlg-hero-rule .tlg-rule-line { width: 54px; }
+#twopir-legal .tlg-hero-rule .tlg-rule-line--sm { width: 26px; }
+
+#twopir-legal .tlg-hero-sub {
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--tlg-muted);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+#twopir-legal .tlg-hero-sub strong { color: var(--tlg-text); font-weight: 600; }
+
+#twopir-legal .tlg-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+#twopir-legal .tlg-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 14px;
+  margin-top: clamp(14px, 1.6vw, 18px);
+}
+#twopir-legal .tlg-hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tlg-muted);
+}
+#twopir-legal .tlg-hero-proof b {
+  font-family: var(--tlg-ff-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tlg-text);
+}
+#twopir-legal .tlg-hero-proof li + li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--tlg-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.75;
+  margin-right: 8px;
+}
+
+/* ── Hero: dark architecture canvas ─────────────────────────── */
+#twopir-legal .tlg-visual { position: relative; display: flex; justify-content: center; }
+#twopir-legal .tlg-canvas {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, calc(58vh + 34px));
+  background:
+    radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
+  border-radius: var(--tlg-radius-lg);
+  padding: clamp(13px, 1.5vw, 17px);
+  box-shadow: var(--tlg-shadow-dark);
+}
+#twopir-legal .tlg-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tlg-radius-lg);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-legal .tlg-canvas-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+#twopir-legal .tlg-canvas-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#twopir-legal .tlg-live {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--tlg-green);
+  animation: tlgLive 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tlgLive {
+  0%   { box-shadow: 0 0 0 0 rgba(53,211,154,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(53,211,154,0); }
+  100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
+}
+#twopir-legal .tlg-tag {
+  font-family: var(--tlg-ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 5px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* The panel is capped in viewport units so it shrinks on short windows
+   instead of forcing the hero to grow. The px ceiling stops it ballooning
+   on very tall monitors, where 58vh would otherwise outrun the copy. */
+#twopir-legal .tlg-map {
+  display: block; width: 100%; height: auto;
+  max-height: 58vh;
+  max-height: min(58vh, 540px);
+}
+#twopir-legal .tlg-map text { font-family: var(--tlg-ff-body); }
+#twopir-legal .tlg-map .m   { font-family: var(--tlg-ff-mono); }
+
+#twopir-legal .tlg-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+#twopir-legal .tlg-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+#twopir-legal .tlg-core     { fill: rgba(0,175,246,0.08);    stroke: rgba(0,175,246,0.42);   stroke-width: 1.2; }
+#twopir-legal .tlg-pillbox  { fill: rgba(255,255,255,0.07);  stroke: rgba(0,175,246,0.34);   stroke-width: 1; }
+#twopir-legal .tlg-out      { fill: rgba(53,211,154,0.05);   stroke: rgba(53,211,154,0.28);  stroke-width: 1; }
+#twopir-legal .tlg-chip-r   { fill: rgba(255,255,255,0.05);  stroke: rgba(255,255,255,0.13); stroke-width: 1; }
+
+#twopir-legal .tlg-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
+#twopir-legal .tlg-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
+#twopir-legal .tlg-s   { fill: rgba(255,255,255,0.5);  font-size: 9.5px;  font-weight: 400; }
+#twopir-legal .tlg-h   { fill: rgba(255,255,255,0.5);  font-size: 9.5px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-legal .tlg-h--acc { fill: rgba(0,175,246,0.95); }
+#twopir-legal .tlg-h--out { fill: rgba(53,211,154,0.9); }
+#twopir-legal .tlg-mark      { fill: var(--tlg-accent); }
+#twopir-legal .tlg-mark--out { fill: var(--tlg-green); }
+
+#twopir-legal .tlg-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
+#twopir-legal .tlg-flow {
+  fill: none;
+  stroke: var(--tlg-accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 14;
+  opacity: 0.9;
+  animation: tlgFlow 2.2s linear infinite;
+}
+#twopir-legal .tlg-flow--out { stroke: var(--tlg-green); }
+#twopir-legal .tlg-flow.d1 { animation-delay: 0s; }
+#twopir-legal .tlg-flow.d2 { animation-delay: 0.28s; }
+#twopir-legal .tlg-flow.d3 { animation-delay: 0.56s; }
+@keyframes tlgFlow { to { stroke-dashoffset: -152; } }
+
+#twopir-legal .tlg-hit rect { transition: fill 0.22s ease, stroke 0.22s ease; }
+#twopir-legal .tlg-hit:hover rect.tlg-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
+#twopir-legal .tlg-hit:hover rect.tlg-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
+
+#twopir-legal .tlg-badge-ring { fill: none; stroke: var(--tlg-accent); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-legal .tlg-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
+#twopir-legal .tlg-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--tlg-ff-display); letter-spacing: -0.01em; }
+#twopir-legal .tlg-spin { transform-origin: 280px 158px; animation: tlgSpin 26s linear infinite; }
+@keyframes tlgSpin { to { transform: rotate(360deg); } }
+
+/* floating delivery card */
+#twopir-legal .tlg-float {
+  position: absolute;
+  left: -20px;
+  bottom: -22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--tlg-surface);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-md);
+  padding: 11px 15px;
+  box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
+}
+#twopir-legal .tlg-float-ico {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--tlg-accent);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,175,246,0.35);
+  flex-shrink: 0;
+}
+#twopir-legal .tlg-float-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-legal .tlg-float-k {
+  display: block;
+  font-family: var(--tlg-ff-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  margin-bottom: 2px;
+}
+#twopir-legal .tlg-float-v {
+  display: block;
+  font-family: var(--tlg-ff-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--tlg-text);
+  white-space: nowrap;
+}
+
+/* stacked map for small screens */
+#twopir-legal .tlg-stack { display: none; }
+#twopir-legal .tlg-layer {
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--tlg-radius-md);
+  padding: 12px 13px 13px;
+}
+#twopir-legal .tlg-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
+#twopir-legal .tlg-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
+#twopir-legal .tlg-layer-h {
+  font-family: var(--tlg-ff-mono);
+  font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+}
+#twopir-legal .tlg-layer--core .tlg-layer-h { color: rgba(0,175,246,0.95); }
+#twopir-legal .tlg-layer--out  .tlg-layer-h { color: rgba(53,211,154,0.9); }
+#twopir-legal .tlg-layer-t {
+  font-family: var(--tlg-ff-display);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+  margin-bottom: 9px;
+}
+#twopir-legal .tlg-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-legal .tlg-chip {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+#twopir-legal .tlg-layer--core .tlg-chip { background: rgba(0,175,246,0.16);  border-color: rgba(0,175,246,0.42);  color: #fff; }
+#twopir-legal .tlg-layer--out  .tlg-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
+#twopir-legal .tlg-connector { height: 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+#twopir-legal .tlg-connector::before {
+  content: ''; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(0,175,246,0.05), rgba(0,175,246,0.7), rgba(0,175,246,0.05));
+}
+#twopir-legal .tlg-connector::after {
+  content: ''; position: absolute;
+  width: 6px; height: 6px;
+  background: var(--tlg-accent);
+  transform: rotate(45deg); border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2 · TRUST STRIP (client logos + credentials)
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-trust { padding: clamp(28px, 3vw, 40px) var(--tlg-pad-x); background: var(--tlg-bg); }
+#twopir-legal .tlg-trust-card {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: var(--tlg-card);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-card);
+  box-shadow: var(--tlg-shadow);
+  padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
+}
+#twopir-legal .tlg-trust-lead {
+  text-align: center;
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 400;
+  color: var(--tlg-muted);
+  margin-bottom: 16px;
+}
+#twopir-legal .tlg-trust-lead strong { color: var(--tlg-accent-dk); font-weight: 700; }
+
+#twopir-legal .tlg-marquee {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#twopir-legal .tlg-marquee::before,
+#twopir-legal .tlg-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; height: 100%; width: 56px;
+  z-index: 2; pointer-events: none;
+}
+#twopir-legal .tlg-marquee::before { left: 0;  background: linear-gradient(to right, var(--tlg-card), rgba(238,248,253,0)); }
+#twopir-legal .tlg-marquee::after  { right: 0; background: linear-gradient(to left,  var(--tlg-card), rgba(238,248,253,0)); }
+#twopir-legal .tlg-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 52px;
+  animation: tlgScroll 26s linear infinite;
+  will-change: transform;
+}
+#twopir-legal .tlg-marquee:hover .tlg-marquee-track { animation-play-state: paused; }
+#twopir-legal .tlg-marquee-item { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#twopir-legal .tlg-marquee-item img {
+  height: 38px; width: auto; max-width: 130px;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity var(--tlg-ease), transform var(--tlg-ease);
+}
+#twopir-legal .tlg-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
+@keyframes tlgScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+#twopir-legal .tlg-badges-label {
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--tlg-border-soft);
+  margin-bottom: 12px;
+}
+#twopir-legal .tlg-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#twopir-legal .tlg-badge {
+  font-family: var(--tlg-ff-body);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--tlg-muted);
+  background: var(--tlg-bg);
+  border: 1px solid rgba(0,175,246,0.25);
+  border-radius: 6px;
+  padding: 4px 11px;
+  transition: background var(--tlg-ease), color var(--tlg-ease), border-color var(--tlg-ease);
+}
+#twopir-legal .tlg-badge:hover { background: var(--tlg-accent); color: #fff; border-color: var(--tlg-accent); }
+
+/* ════════════════════════════════════════════════════════════
+   3 · PAIN GRID
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+#twopir-legal .tlg-pain-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tlg-card);
+  border: 1px solid var(--tlg-border);
+  border-left: 3px solid var(--tlg-star);
+  border-radius: var(--tlg-radius-card);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
+  box-shadow: var(--tlg-shadow);
+  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+}
+#twopir-legal .tlg-pain-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tlg-shadow-hv);
+  background: var(--tlg-surface);
+}
+#twopir-legal .tlg-pain-ico {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(240,165,60,0.12);
+  border: 1px solid rgba(240,165,60,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+}
+#twopir-legal .tlg-pain-item h3 {
+  font-family: var(--tlg-ff-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--tlg-text);
+  margin-bottom: 7px;
+}
+#twopir-legal .tlg-pain-item p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--tlg-muted);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4 · PHILOSOPHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-philosophy {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--tlg-card);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-lg);
+  box-shadow: var(--tlg-shadow);
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#twopir-legal .tlg-philosophy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#twopir-legal .tlg-philosophy > * { position: relative; }
+#twopir-legal .tlg-philosophy p + p { margin-top: 16px; }
+#twopir-legal .tlg-philosophy p {
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--tlg-muted);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+#twopir-legal .tlg-philosophy p strong { color: var(--tlg-text); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   5 · SERVICES
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#twopir-legal .tlg-svc-card {
+  background: var(--tlg-card);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-card);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
+  box-shadow: var(--tlg-shadow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+}
+#twopir-legal .tlg-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tlg-accent), var(--tlg-accent-dk));
+  opacity: 0;
+  transition: opacity var(--tlg-ease);
+}
+#twopir-legal .tlg-svc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--tlg-shadow-hv);
+  background: var(--tlg-surface);
+}
+#twopir-legal .tlg-svc-card:hover::after { opacity: 1; }
+#twopir-legal .tlg-svc-ico {
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  border-radius: 12px;
+  background: var(--tlg-accent);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+#twopir-legal .tlg-svc-ico svg {
+  width: 24px; height: 24px;
+  fill: none; stroke: #fff;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-legal .tlg-svc-card h3 {
+  font-family: var(--tlg-ff-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--tlg-text);
+  margin-bottom: 9px;
+}
+#twopir-legal .tlg-svc-card > p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.72;
+  color: var(--tlg-muted);
+  margin-bottom: 16px;
+}
+#twopir-legal .tlg-svc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--tlg-border-soft);
+  margin-top: auto;
+}
+#twopir-legal .tlg-svc-list li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 0 10px;
+  align-items: start;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--tlg-muted);
+}
+#twopir-legal .tlg-svc-list li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 7px;
+  background: var(--tlg-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · PROCESS
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+#twopir-legal .tlg-step {
+  background: var(--tlg-surface);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-md);
+  padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
+  box-shadow: var(--tlg-shadow);
+  position: relative;
+  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), border-color var(--tlg-ease);
+}
+#twopir-legal .tlg-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tlg-shadow-hv);
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-legal .tlg-step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  margin-bottom: 14px;
+}
+#twopir-legal .tlg-step-num::after {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--tlg-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+#twopir-legal .tlg-step h3 {
+  font-family: var(--tlg-ff-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--tlg-text);
+  margin-bottom: 8px;
+}
+#twopir-legal .tlg-step p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tlg-muted);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 · INTEGRATIONS
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-int-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+#twopir-legal .tlg-int-item {
+  background: var(--tlg-surface);
+  border: 1px solid var(--tlg-border-soft);
+  border-radius: var(--tlg-radius-md);
+  padding: 20px 18px;
+  box-shadow: var(--tlg-shadow);
+  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), border-color var(--tlg-ease);
+}
+#twopir-legal .tlg-int-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tlg-shadow-hv);
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-legal .tlg-int-ico {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--tlg-bg);
+  border: 1px solid var(--tlg-border-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  margin-bottom: 12px;
+}
+#twopir-legal .tlg-int-name {
+  font-family: var(--tlg-ff-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tlg-text);
+  margin-bottom: 5px;
+  line-height: 1.35;
+}
+#twopir-legal .tlg-int-desc {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tlg-muted);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8 · PROOF (dark section)
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-proof-pair {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+#twopir-legal .tlg-proof-pair + .tlg-proof-pair { margin-top: 22px; }
+
+#twopir-legal .tlg-quote-card,
+#twopir-legal .tlg-cs-card {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--tlg-radius-card);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#twopir-legal .tlg-cs-card {
+  background: rgba(0,175,246,0.07);
+  border-color: rgba(0,175,246,0.34);
+}
+#twopir-legal .tlg-cs-card--green { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.32); }
+
+#twopir-legal .tlg-quote-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#twopir-legal .tlg-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tlg-accent), var(--tlg-accent-dk));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tlg-ff-display);
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+#twopir-legal .tlg-avatar--green { background: linear-gradient(135deg, var(--tlg-green), #1a9c73); }
+#twopir-legal .tlg-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
+
+#twopir-legal .tlg-quote-text {
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(224,240,252,0.9);
+  border-left: 2px solid var(--tlg-accent);
+  padding-left: 20px;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+#twopir-legal .tlg-quote-text--green { border-left-color: var(--tlg-green); }
+
+#twopir-legal .tlg-quote-name {
+  display: block;
+  font-family: var(--tlg-ff-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+#twopir-legal .tlg-quote-role {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.5;
+}
+#twopir-legal .tlg-mono-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  border: 1px solid rgba(0,175,246,0.38);
+  background: rgba(0,175,246,0.09);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+#twopir-legal .tlg-mono-tag--green {
+  color: var(--tlg-green);
+  border-color: rgba(53,211,154,0.4);
+  background: rgba(53,211,154,0.09);
+}
+#twopir-legal .tlg-cs-card .tlg-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
+
+#twopir-legal .tlg-cs-company {
+  font-family: var(--tlg-ff-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+#twopir-legal .tlg-cs-title {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(184,214,242,0.8);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+#twopir-legal .tlg-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+#twopir-legal .tlg-cs-metric {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px;
+  padding: 13px 10px;
+  text-align: center;
+}
+#twopir-legal .tlg-cs-val {
+  display: block;
+  font-family: var(--tlg-ff-display);
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--tlg-accent);
+  margin-bottom: 6px;
+}
+#twopir-legal .tlg-cs-val--green { color: var(--tlg-green); }
+#twopir-legal .tlg-cs-lbl {
+  display: block;
+  font-family: var(--tlg-ff-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.45;
+}
+#twopir-legal .tlg-cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--tlg-ff-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--tlg-accent);
+  border-radius: 100px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.32);
+  transition: background var(--tlg-ease), transform 0.18s ease, box-shadow var(--tlg-ease);
+}
+#twopir-legal .tlg-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
+#twopir-legal .tlg-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
+#twopir-legal .tlg-cs-link--green:hover { background: var(--tlg-green); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-legal .tlg-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ════════════════════════════════════════════════════════════
+   9 · WHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+}
+#twopir-legal .tlg-why-list { display: flex; flex-direction: column; gap: 12px; }
+#twopir-legal .tlg-why-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tlg-card);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--tlg-shadow);
+  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+}
+#twopir-legal .tlg-why-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--tlg-shadow-hv);
+  background: var(--tlg-surface);
+}
+#twopir-legal .tlg-why-num {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(0,175,246,0.10);
+  border: 1px solid rgba(0,175,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tlg-ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--tlg-accent);
+}
+#twopir-legal .tlg-why-item h3 {
+  font-family: var(--tlg-ff-display);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--tlg-text);
+  margin-bottom: 5px;
+}
+#twopir-legal .tlg-why-item p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tlg-muted);
+}
+
+#twopir-legal .tlg-callout {
+  position: sticky;
+  top: 28px;
+  background:
+    radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
+  border-radius: var(--tlg-radius-lg);
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: var(--tlg-shadow-dark);
+  position: relative;
+  overflow: hidden;
+}
+#twopir-legal .tlg-callout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tlg-radius-lg);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-legal .tlg-callout-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tlg-accent);
+  margin-bottom: 16px;
+}
+#twopir-legal .tlg-callout-text {
+  font-family: var(--tlg-ff-display);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+#twopir-legal .tlg-callout-author {
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(184,214,242,0.78);
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-legal .tlg-callout-author strong { color: var(--tlg-accent); font-weight: 600; }
+#twopir-legal .tlg-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+}
+#twopir-legal .tlg-engage li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(232,244,253,0.9);
+}
+#twopir-legal .tlg-engage li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--tlg-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-legal .tlg-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-legal .tlg-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--tlg-ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+#twopir-legal .tlg-fact b {
+  font-family: var(--tlg-ff-display);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tlg-accent);
+}
+/* homepage stat hooks — keep inline so injected values don't break layout */
+#twopir-legal .twopir-years,
+#twopir-legal .twopir-clients,
+#twopir-legal .twopir-countries,
+#twopir-legal .twopir-salesforce,
+#twopir-legal .twopir-hubspot,
+#twopir-legal .twopir-ai { display: inline; }
+
+/* ════════════════════════════════════════════════════════════
+   10 · FAQ (accordion — same behaviour as the homepage FAQ)
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-faq-list {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#twopir-legal .tlg-faq-row {
+  background: var(--tlg-surface);
+  border: 1px solid var(--tlg-border);
+  border-radius: var(--tlg-radius-md);
+  overflow: hidden;
+  box-shadow: var(--tlg-shadow);
+  transition: border-color var(--tlg-ease), box-shadow var(--tlg-ease);
+}
+#twopir-legal .tlg-faq-row.is-open {
+  border-color: rgba(0,175,246,0.5);
+  box-shadow: var(--tlg-shadow-hv);
+}
+#twopir-legal .tlg-faq-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: clamp(16px, 2vw, 22px) clamp(16px, 2.2vw, 26px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--tlg-ff-body);
+  font-size: clamp(14px, 1.1vw, 15.5px);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--tlg-text);
+  transition: color var(--tlg-ease);
+}
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-btn { color: var(--tlg-accent); }
+#twopir-legal .tlg-faq-btn:focus-visible { outline: 2px solid var(--tlg-accent); outline-offset: -3px; }
+#twopir-legal .tlg-faq-ico {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--tlg-border);
+  background: var(--tlg-bg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--tlg-accent);
+  transition: transform var(--tlg-ease), background var(--tlg-ease), border-color var(--tlg-ease);
+}
+#twopir-legal .tlg-faq-ico svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
+}
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-ico {
+  transform: rotate(45deg);
+  background: var(--tlg-accent);
+  border-color: var(--tlg-accent);
+  color: #fff;
+}
+#twopir-legal .tlg-faq-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
+}
+#twopir-legal .tlg-faq-panel-inner {
+  padding: 0 clamp(16px, 2.2vw, 26px) clamp(16px, 2vw, 22px);
+}
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-panel-inner { border-top: 1px solid var(--tlg-border-soft); }
+
+/* Inline citation link to an external authority source. Inherits font
+   size, weight and line-height from its parent, so it never changes
+   type scale or layout — only colour + underline mark it as a link. */
+#twopir-legal .tlg-src {
+  color: var(--tlg-accent-dk);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--tlg-ease);
+}
+#twopir-legal .tlg-src:hover,
+#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent); }
+#twopir-legal .tlg-faq-panel-inner p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--tlg-muted);
+  padding-top: 15px;
+  text-wrap: pretty;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11 · CTA (dark close, mirrors the homepage stats strip)
+   ════════════════════════════════════════════════════════════ */
+#twopir-legal .tlg-cta { text-align: center; }
+#twopir-legal .tlg-cta-inner { max-width: 720px; margin: 0 auto; }
+#twopir-legal .tlg-cta .tlg-eyebrow { color: var(--tlg-accent); }
+#twopir-legal .tlg-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+#twopir-legal .tlg-cta-note {
+  font-family: var(--tlg-ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,214,242,0.7);
+  margin-top: 22px;
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────
+   Progressive enhancement (2026-08 SEO/CWV patch).
+
+   Previously every .tlg-fade started at opacity:0 and only became
+   visible once the reveal script added .tlg-in. That meant a crawler
+   which does not execute JavaScript — most AI answer engines and some
+   SEO tools — saw the whole page, H1 included, at opacity:0, and real
+   users waited on script execution before anything painted.
+
+   Now:
+   • Default state is VISIBLE. No JS, no CSS → the page still reads.
+   • The hidden start state applies only under .tlg-js, which the
+     inline flag script sets on #twopir-legal before first paint, so
+     JS users see exactly the same animation as before.
+   • The hero is above the fold, so it uses a CSS keyframe entrance
+     instead of the observer. Its H1 (the LCP element) starts painting
+     on the first frame rather than after the 120KB document has been
+     parsed and the end-of-body script has run.
+   Timing, easing, distance and stagger are unchanged throughout.    */
+#twopir-legal .tlg-fade {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Below-the-fold content: hidden only when JS is there to reveal it */
+#twopir-legal.tlg-js .tlg-fade {
+  opacity: 0;
+  transform: translateY(18px);
+}
+#twopir-legal .tlg-fade.tlg-in,
+#twopir-legal.tlg-js .tlg-fade.tlg-in { opacity: 1; transform: none; }
+
+/* Above-the-fold hero: CSS-only entrance, never gated on JS */
+#twopir-legal .tlg-hero .tlg-fade,
+#twopir-legal.tlg-js .tlg-hero .tlg-fade {
+  opacity: 1;
+  transform: none;
+  /* Longhands, not the animation shorthand: the shorthand resets
+     animation-delay to 0s, and this rule outranks the .tlg-d1..d5
+     stagger classes - which silently flattened the hero stagger. */
+  animation-name: tlgFadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+@keyframes tlgFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Delays drive the transition below the fold and the animation in the
+   hero, so both properties are set on the same stagger classes. */
+#twopir-legal .tlg-d1 { transition-delay: 0.07s; animation-delay: 0.07s; }
+#twopir-legal .tlg-d2 { transition-delay: 0.15s; animation-delay: 0.15s; }
+#twopir-legal .tlg-d3 { transition-delay: 0.23s; animation-delay: 0.23s; }
+#twopir-legal .tlg-d4 { transition-delay: 0.31s; animation-delay: 0.31s; }
+#twopir-legal .tlg-d5 { transition-delay: 0.18s; animation-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #twopir-legal .tlg-fade,
+  #twopir-legal.tlg-js .tlg-fade,
+  #twopir-legal .tlg-hero .tlg-fade,
+  #twopir-legal.tlg-js .tlg-hero .tlg-fade { opacity: 1; transform: none; transition: none; animation: none; }
+  #twopir-legal .tlg-flow { animation: none; stroke-dasharray: none; opacity: 0.5; }
+  #twopir-legal .tlg-dot,
+  #twopir-legal .tlg-live,
+  #twopir-legal .tlg-spin,
+  #twopir-legal .tlg-marquee-track { animation: none; }
+  #twopir-legal .tlg-faq-panel { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  #twopir-legal .tlg-float      { display: none; }
+  #twopir-legal .tlg-process    { grid-template-columns: repeat(3, 1fr); }
+  #twopir-legal .tlg-pain-grid  { grid-template-columns: repeat(2, 1fr); }
+  #twopir-legal .tlg-svc-grid   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-legal .tlg-int-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 960px) {
+  #twopir-legal .tlg-why-grid  { grid-template-columns: 1fr; }
+  #twopir-legal .tlg-callout   { position: static; }
+  #twopir-legal .tlg-proof-pair{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  #twopir-legal .tlg-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(26px, 4vw, 36px);
+  }
+  #twopir-legal .tlg-hero-copy { max-width: 700px; margin: 0 auto; text-align: center; }
+  #twopir-legal .tlg-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
+  #twopir-legal .tlg-hero-rule,
+  #twopir-legal .tlg-hero-cta,
+  #twopir-legal .tlg-hero-proof { justify-content: center; }
+  #twopir-legal .tlg-canvas { max-width: 560px; }
+  #twopir-legal .tlg-map    { max-height: none; }
+}
+
+@media (max-width: 760px) {
+  #twopir-legal .tlg-process   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-legal .tlg-int-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  #twopir-legal .tlg-map   { display: none; }
+  #twopir-legal .tlg-stack { display: block; }
+  #twopir-legal .tlg-canvas { border-radius: var(--tlg-radius-md); }
+  #twopir-legal .tlg-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
+  #twopir-legal .tlg-hero-cta,
+  #twopir-legal .tlg-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  #twopir-legal .tlg-hero-cta .tlg-btn,
+  #twopir-legal .tlg-cta-actions .tlg-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    white-space: normal;
+  }
+  #twopir-legal .tlg-pain-grid,
+  #twopir-legal .tlg-svc-grid,
+  #twopir-legal .tlg-process { grid-template-columns: 1fr; }
+  #twopir-legal .tlg-cs-metrics { gap: 8px; }
+  #twopir-legal .tlg-quote-text { padding-left: 16px; }
+  #twopir-legal .tlg-marquee::before,
+  #twopir-legal .tlg-marquee::after { width: 34px; }
+  #twopir-legal .tlg-marquee-track { gap: 34px; }
+  #twopir-legal .tlg-marquee-item img { height: 30px; max-width: 100px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-legal .tlg-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
+  #twopir-legal .tlg-hero-sub { font-size: 14.5px; line-height: 1.7; }
+  #twopir-legal .tlg-hero-proof { gap: 6px 11px; }
+  #twopir-legal .tlg-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
+  #twopir-legal .tlg-hero-proof li + li::before { margin-right: 5px; }
+  #twopir-legal .tlg-canvas-bar .tlg-tag { display: none; }
+  #twopir-legal .tlg-int-grid  { grid-template-columns: 1fr; }
+  #twopir-legal .tlg-cs-metrics { grid-template-columns: 1fr; }
+  #twopir-legal .tlg-pain-item,
+  #twopir-legal .tlg-why-item { gap: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE SCALE — CONSISTENCY PASS WITH THE HOMEPAGE
+   ════════════════════════════════════════════════════════════
+   Design untouched — every component, colour, layout and section
+   above stays exactly as built. This block only remaps font sizes
+   and line-heights onto the homepage's fluid type scale, loaded
+   last (the same way homepage.html loads its own type pass) so no
+   earlier rule and no theme rule can re-impose a different size.
+
+   The homepage scale, verbatim:
+
+     display  hero headline          clamp(30px, 4vw, 46px)
+     h2       section titles        clamp(26px, 3vw, 38px) / 1.16
+     h3       card / panel titles   clamp(17px, 1.5vw, 19px) / 1.3
+     h4       dense titles, FAQ     clamp(15px, 1.25vw, 16px)
+     lede     section intros        clamp(15px, 1.2vw, 17px) / 1.7
+     body     paragraph copy        clamp(14px, 1.05vw, 15px) / 1.65
+     sm / xs  dense copy, meta      13px / 12px
+     label    mono uppercase        11px  ← the page-wide floor
+     eyebrow  section eyebrows      clamp(11px, 0.9vw, 12px) / 0.2em
+     stat-sm  smaller numbers       clamp(20px, 1.9vw, 24px)
+
+   Two deliberate fixes folded in:
+     · the hero H1 was clamp(1.85rem, 3.05vw, 3rem) — rem against
+       whatever root size the active theme sets. It is now the
+       homepage's px-based display clamp, so it renders identically
+       on any theme.
+     · nothing outside the navy hero panel sits below 11px anymore
+       (9/9.5/10px labels are lifted to the 11px label floor). The
+       10px mono labels INSIDE the hero panel stay at 10px because
+       the homepage hero itself uses 10px for those same roles
+       (canvas label, tag, float card).                          */
+
+
+/* ── display · hero ──────────────────────────────────────────── */
+#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(30px, 4vw, 46px)); line-height: 1.09; }
+/* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
+#twopir-legal .tlg-hero-sub   { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.62; }
+#twopir-legal .tlg-pill       { font-size: var(--tlg-fs-label, 11px); letter-spacing: 0.1em; }
+/* hero stat row — homepage's exact pairing: 11px mono label,
+   13px display number */
+#twopir-legal .tlg-hero-proof li { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-hero-proof b  { font-size: var(--tlg-fs-sm, 13px); }
+
+/* hero navy panel internals — matched to the homepage hero's own
+   values (10px canvas label / tag / float key, 11px float value) */
+#twopir-legal .tlg-tag     { font-size: 10px; }
+#twopir-legal .tlg-layer-h { font-size: 10px; }
+/* the float card sits on white, outside the navy panel, so it takes the
+   11px label floor rather than the panel's 10px */
+#twopir-legal .tlg-float-k { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-float-v { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-chip    { font-size: var(--tlg-fs-label, 11px); }
+
+/* ── h2 · section titles ─────────────────────────────────────── */
+#twopir-legal .tlg-title { font-size: var(--tlg-fs-h2, clamp(26px, 3vw, 38px)); line-height: 1.16; }
+
+/* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
+#twopir-legal .tlg-eyebrow { font-size: var(--tlg-fs-eyebrow, clamp(11px, 0.9vw, 12px)); letter-spacing: 0.2em; }
+
+/* ── lede · section intros and long-form copy ────────────────── */
+#twopir-legal .tlg-lede         { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.7; }
+#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.7; }
+
+/* ── buttons — homepage buttons are 13px ─────────────────────── */
+#twopir-legal .tlg-btn     { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 13px); }
+
+/* ── trust strip ─────────────────────────────────────────────── */
+#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); }
+#twopir-legal .tlg-badge      { font-size: var(--tlg-fs-xs, 12px); }
+
+/* ── card titles · h4 role (dense cards keep their designed
+      family and case — only the size snaps to the scale) ─────── */
+#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
+#twopir-legal .tlg-svc-card h3  { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
+#twopir-legal .tlg-step h3      { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
+#twopir-legal .tlg-int-name     { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
+#twopir-legal .tlg-why-item h3  { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
+#twopir-legal .tlg-cs-company   { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
+#twopir-legal .tlg-avatar       { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); }
+#twopir-legal .tlg-faq-btn      { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
+#twopir-legal .tlg-callout-text { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.6; }
+
+/* ── body · primary card copy ────────────────────────────────── */
+#twopir-legal .tlg-pain-item p       { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
+#twopir-legal .tlg-svc-card > p      { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
+#twopir-legal .tlg-why-item p        { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
+#twopir-legal .tlg-faq-panel-inner p { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
+#twopir-legal .tlg-quote-text        { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.7; }
+
+/* ── sm · dense lists, meta, secondary copy ──────────────────── */
+#twopir-legal .tlg-svc-list li    { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-step p         { font-size: var(--tlg-fs-sm, 13px); line-height: 1.6; }
+#twopir-legal .tlg-int-desc       { font-size: var(--tlg-fs-sm, 13px); line-height: 1.6; }
+#twopir-legal .tlg-engage li      { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-callout-author { font-size: var(--tlg-fs-sm, 13px); line-height: 1.65; }
+#twopir-legal .tlg-quote-name     { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-cs-title       { font-size: var(--tlg-fs-sm, 13px); line-height: 1.55; }
+#twopir-legal .tlg-fact b         { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-stars          { font-size: var(--tlg-fs-sm, 13px); }
+
+/* ── xs ──────────────────────────────────────────────────────── */
+#twopir-legal .tlg-quote-role { font-size: var(--tlg-fs-xs, 12px); }
+
+/* ── label · 11px mono floor (was 9–10px) ────────────────────── */
+#twopir-legal .tlg-step-num  { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-mono-tag  { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-cs-lbl    { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-why-num   { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-callout-k { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-fact      { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-cta-note  { font-size: var(--tlg-fs-label, 11px); }
+
+/* ── stat numbers · case-study metrics ───────────────────────── */
+#twopir-legal .tlg-cs-val { font-size: var(--tlg-fs-stat-sm, clamp(20px, 1.9vw, 24px)); }
+
+/* ── Small screens — same values as the homepage's own
+      small-screen type block. This pass loads after the page's
+      620px/420px blocks, so mobile type is owned here. ────────── */
+@media (max-width: 620px) {
+  #twopir-legal .tlg-hero-title { font-size: 30px; line-height: 1.18; }
+  #twopir-legal .tlg-hero-sub   { font-size: 16px; line-height: 1.65; }
+  #twopir-legal .tlg-title      { font-size: 26px; line-height: 1.2; }
+
+  #twopir-legal .tlg-lede,
+  #twopir-legal .tlg-philosophy p { font-size: 16px; line-height: 1.65; }
+
+  #twopir-legal .tlg-pain-item p,
+  #twopir-legal .tlg-svc-card > p,
+  #twopir-legal .tlg-why-item p,
+  #twopir-legal .tlg-quote-text,
+  #twopir-legal .tlg-faq-panel-inner p { font-size: 15px; }
+
+  #twopir-legal .tlg-faq-btn { font-size: 16px; }
+
+  #twopir-legal .tlg-pain-item h3,
+  #twopir-legal .tlg-svc-card h3,
+  #twopir-legal .tlg-step h3,
+  #twopir-legal .tlg-int-name,
+  #twopir-legal .tlg-why-item h3,
+  #twopir-legal .tlg-cs-company { font-size: 16px; }
+
+  #twopir-legal .tlg-svc-list li,
+  #twopir-legal .tlg-step p,
+  #twopir-legal .tlg-int-desc,
+  #twopir-legal .tlg-engage li,
+  #twopir-legal .tlg-callout-author { font-size: 14px; }
+
+  #twopir-legal .tlg-btn,
+  #twopir-legal .tlg-cs-link { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-legal .tlg-pill { font-size: 11px; letter-spacing: 0.14em; padding: 6px 13px; }
+}
+</style>
+
+
+<div id="twopir-legal">
+<script>document.getElementById('twopir-legal').className += ' tlg-js';</script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1 · HERO
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-hero" aria-labelledby="tlg-hero-title">
+    <div class="tlg-hero-grid" aria-hidden="true"></div>
+
+    <div class="tlg-hero-inner">
+
+      <div class="tlg-hero-copy">
+
+        <span class="tlg-pill tlg-fade">
+          <span class="tlg-dot" aria-hidden="true"></span>
+          Salesforce for Law Firms
+        </span>
+
+        <h1 class="tlg-hero-title tlg-fade tlg-d1" id="tlg-hero-title">
+          When intake breaks, growth slows.
+          <em>We rebuild the systems behind it.</em>
+        </h1>
+
+        <div class="tlg-hero-rule tlg-fade tlg-d1" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line tlg-rule-line--sm"></span>
+        </div>
+
+        <p class="tlg-hero-sub tlg-fade tlg-d2">
+          Most law firms don't have a demand problem — they have a systems problem. Leads sit too long,
+          retainers stall, matters open slowly, billing gets delayed, and leadership lacks clean
+          operating data. Twopir builds the Salesforce-based operating infrastructure that closes those
+          gaps and gives firms a cleaner path to profitable growth.
+          <strong>Intake, matters, billing and reporting on one architecture.</strong>
+        </p>
+
+        <div class="tlg-hero-cta tlg-fade tlg-d3">
+          <a class="tlg-btn tlg-btn--primary"
+             href="https://twopirconsulting.com/#book-a-discovery-call"
+             aria-label="Talk to a legal systems architect at Twopir Consulting">
+            Talk to a Legal Systems Architect
+            <svg class="tlg-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+
+          <a class="tlg-btn tlg-btn--ghost" href="#tlg-proof"
+             aria-label="Review client outcomes from law firm engagements">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
+            </svg>
+            Review Client Outcomes
+          </a>
+        </div>
+
+        <!-- All four original hero metrics, each keeping the qualifier that
+             scopes it. "40% less manual admin" on its own reads as a claim
+             about every law firm; the source claim was scoped to PI firms,
+             and the 50% figure to Accounting Seed engagements. Both cases are
+             evidenced by the case studies further down the page. -->
+        <ul class="tlg-hero-proof tlg-fade tlg-d4">
+          <li><b>40%</b> Less manual admin · PI firms</li>
+          <li><b>50%</b> Efficiency gain · Accounting Seed</li>
+          <li><b>35%</b> Faster lead qualification</li>
+          <li><b>360°</b> Firm visibility</li>
+        </ul>
+
+      </div>
+
+      <!-- Right: legal operating architecture panel -->
+      <div class="tlg-visual tlg-fade tlg-d5">
+        <figure class="tlg-canvas" aria-labelledby="tlg-canvas-label">
+
+          <div class="tlg-canvas-bar">
+            <span class="tlg-canvas-label" id="tlg-canvas-label">
+              <span class="tlg-live" aria-hidden="true"></span>
+              Law Firm Operating Model
+            </span>
+            <span class="tlg-tag" aria-hidden="true">Twopir · 2πr</span>
+          </div>
+
+          <svg class="tlg-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
+               role="img"
+               aria-label="Twopir legal operating model. Systems of record — Salesforce and Mitratech CaseCloud, plus LawPay and trust accounting, Accounting Seed, and iManage with DocuSign — feed the Twopir legal architecture layer, made up of intake and conflicts, matter lifecycle, and billing and trust. That layer produces firm outcomes: faster retainers, matter velocity, and partner visibility.">
+
+            <!-- ── Layer 1: systems of record ── -->
+            <text class="m tlg-h" x="12" y="14">SYSTEMS OF RECORD</text>
+            <line x1="150" y1="10.5" x2="548" y2="10.5" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+            <rect class="tlg-layerbox" x="12" y="22" width="536" height="108" rx="14"/>
+
+            <g class="tlg-hit">
+              <rect class="tlg-node" x="22" y="32" width="248" height="56" rx="11"/>
+              <circle class="tlg-mark" cx="40" cy="60" r="3.5"/>
+              <text class="tlg-t" x="54" y="56">Salesforce</text>
+              <text class="tlg-s" x="54" y="73">Intake · Clients · Matters · Reporting</text>
+            </g>
+            <g class="tlg-hit">
+              <rect class="tlg-node" x="290" y="32" width="248" height="56" rx="11"/>
+              <circle class="tlg-mark" cx="308" cy="60" r="3.5"/>
+              <text class="tlg-t" x="322" y="56">Mitratech CaseCloud</text>
+              <text class="tlg-s" x="322" y="73">Matter depth · Documents · Deadlines</text>
+            </g>
+
+            <rect class="tlg-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
+            <text class="tlg-s" x="104" y="111" text-anchor="middle">LawPay &amp; Trust</text>
+            <rect class="tlg-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
+            <text class="tlg-s" x="280" y="111" text-anchor="middle">Accounting Seed</text>
+            <rect class="tlg-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
+            <text class="tlg-s" x="456" y="111" text-anchor="middle">iManage · DocuSign</text>
+
+            <!-- ── Flows into the architecture layer ── -->
+            <path class="tlg-link" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tlg-link" d="M280,130 L280,137"/>
+            <path class="tlg-link" d="M456,130 C456,146 376,142 298,148"/>
+            <path class="tlg-flow d1" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tlg-flow d2" d="M280,130 L280,137"/>
+            <path class="tlg-flow d3" d="M456,130 C456,146 376,142 298,148"/>
+
+            <!-- ── Layer 2: Twopir legal architecture layer ── -->
+            <rect class="tlg-core" x="12" y="158" width="536" height="196" rx="16"/>
+
+            <text class="m tlg-h tlg-h--acc" x="280" y="200" text-anchor="middle">TWOPIR LEGAL ARCHITECTURE LAYER</text>
+            <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
+
+            <rect class="tlg-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
+            <text class="tlg-t2" x="104" y="248" text-anchor="middle">Intake &amp; Conflicts</text>
+            <text class="tlg-s"  x="104" y="266" text-anchor="middle">Routing · SLA clocks</text>
+            <text class="tlg-s"  x="104" y="279" text-anchor="middle">Conflict checks</text>
+
+            <rect class="tlg-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
+            <text class="tlg-t2" x="280" y="248" text-anchor="middle">Matter Lifecycle</text>
+            <text class="tlg-s"  x="280" y="266" text-anchor="middle">Stages · Deadlines</text>
+            <text class="tlg-s"  x="280" y="279" text-anchor="middle">Task orchestration</text>
+
+            <rect class="tlg-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
+            <text class="tlg-t2" x="456" y="248" text-anchor="middle">Billing &amp; Trust</text>
+            <text class="tlg-s"  x="456" y="266" text-anchor="middle">Invoices · IOLTA</text>
+            <text class="tlg-s"  x="456" y="279" text-anchor="middle">Reconciliation</text>
+
+            <text class="m tlg-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE DATA MODEL · BUILT FOR MULTI-OFFICE SCALE</text>
+
+            <!-- 2πr mark — where every legal system converges -->
+            <g class="tlg-spin" aria-hidden="true">
+              <path class="tlg-badge-ring" d="M280,131 A27,27 0 0 1 306,151"/>
+              <path class="tlg-badge-ring" d="M280,185 A27,27 0 0 1 254,165"/>
+            </g>
+            <circle class="tlg-badge-face" cx="280" cy="158" r="21"/>
+            <text class="tlg-badge-txt" x="280" y="163" text-anchor="middle">2πr</text>
+
+            <!-- ── Flow into outcomes ── -->
+            <path class="tlg-link" d="M280,354 L280,378"/>
+            <path class="tlg-flow tlg-flow--out d1" d="M280,354 L280,378"/>
+            <polyline points="273,372 280,379 287,372" fill="none" stroke="rgba(53,211,154,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- ── Layer 3: firm outcomes ── -->
+            <rect class="tlg-layerbox" x="12" y="384" width="536" height="150" rx="14"/>
+            <text class="m tlg-h tlg-h--out" x="28" y="410">FIRM OUTCOMES</text>
+            <line x1="140" y1="406.5" x2="532" y2="406.5" stroke="rgba(53,211,154,0.22)" stroke-width="1"/>
+
+            <g class="tlg-hit">
+              <rect class="tlg-out" x="22" y="422" width="164" height="76" rx="11"/>
+              <circle class="tlg-mark--out" cx="38" cy="441" r="3.5"/>
+              <text class="tlg-t2" x="50" y="445">Faster Retainers</text>
+              <text class="tlg-s"  x="36" y="463">Signed engagements,</text>
+              <text class="tlg-s"  x="36" y="476">not stalled inquiries</text>
+            </g>
+            <g class="tlg-hit">
+              <rect class="tlg-out" x="198" y="422" width="164" height="76" rx="11"/>
+              <circle class="tlg-mark--out" cx="214" cy="441" r="3.5"/>
+              <text class="tlg-t2" x="226" y="445">Matter Velocity</text>
+              <text class="tlg-s"  x="212" y="463">Clean handoffs and</text>
+              <text class="tlg-s"  x="212" y="476">deadlines that hold</text>
+            </g>
+            <g class="tlg-hit">
+              <rect class="tlg-out" x="374" y="422" width="164" height="76" rx="11"/>
+              <circle class="tlg-mark--out" cx="390" cy="441" r="3.5"/>
+              <text class="tlg-t2" x="402" y="445">Partner Visibility</text>
+              <text class="tlg-s"  x="388" y="463">Live intake, billing</text>
+              <text class="tlg-s"  x="388" y="476">and case-aging data</text>
+            </g>
+
+            <text class="m tlg-h" x="280" y="520" text-anchor="middle" style="font-size:9px">INTAKE · MATTERS · BILLING · REPORTING</text>
+          </svg>
+
+          <!-- Small screens: same model, stacked and fully legible -->
+          <div class="tlg-stack" aria-hidden="true">
+            <div class="tlg-layer">
+              <div class="tlg-layer-h">Layer 01</div>
+              <div class="tlg-layer-t">Systems of Record</div>
+              <div class="tlg-chips">
+                <span class="tlg-chip">Salesforce</span>
+                <span class="tlg-chip">Mitratech CaseCloud</span>
+                <span class="tlg-chip">LawPay &amp; Trust</span>
+                <span class="tlg-chip">Accounting Seed</span>
+                <span class="tlg-chip">iManage · DocuSign</span>
+              </div>
+            </div>
+
+            <div class="tlg-connector"></div>
+
+            <div class="tlg-layer tlg-layer--core">
+              <div class="tlg-layer-h">Layer 02 · 2πr</div>
+              <div class="tlg-layer-t">Twopir Legal Architecture Layer</div>
+              <div class="tlg-chips">
+                <span class="tlg-chip">Intake &amp; Conflicts</span>
+                <span class="tlg-chip">Matter Lifecycle</span>
+                <span class="tlg-chip">Billing &amp; Trust</span>
+                <span class="tlg-chip">Governance</span>
+              </div>
+            </div>
+
+            <div class="tlg-connector"></div>
+
+            <div class="tlg-layer tlg-layer--out">
+              <div class="tlg-layer-h">Layer 03</div>
+              <div class="tlg-layer-t">Firm Outcomes</div>
+              <div class="tlg-chips">
+                <span class="tlg-chip">Faster Retainers</span>
+                <span class="tlg-chip">Matter Velocity</span>
+                <span class="tlg-chip">Partner Visibility</span>
+              </div>
+            </div>
+          </div>
+
+        </figure>
+
+        <div class="tlg-float tlg-fade tlg-d4" aria-hidden="true">
+          <span class="tlg-float-ico">
+            <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/></svg>
+          </span>
+          <span>
+            <span class="tlg-float-k">Delivery Model</span>
+            <span class="tlg-float-v">Audit → Architect → Implement → Operate</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       2 · TRUST STRIP
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-trust" aria-label="Law firms and platforms we work with">
+    <div class="tlg-trust-card tlg-fade">
+
+      <p class="tlg-trust-lead">
+        Trusted by <strong><span class="twopir-clients">500+</span> organizations</strong> — including law firms and legal technology
+        companies building their operations on Salesforce with Twopir Consulting.
+      </p>
+
+      <div class="tlg-marquee">
+        <div class="tlg-marquee-track">
+          <div class="tlg-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/SOCIAL%20JUSTICE%20COLLABORATIVE.png" alt="Social Justice Collaborative" loading="lazy" width="824" height="238" decoding="async"></div>
+          <div class="tlg-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Bernstein%20Liebhard%20LLP.png" alt="Bernstein Liebhard LLP" loading="lazy" width="268" height="81" decoding="async"></div>
+          <div class="tlg-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/legalzoom.png" alt="LegalZoom" loading="lazy" width="768" height="220" decoding="async"></div>
+          <div class="tlg-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sterling%20Law%20Offices%2c%20S.C..png" alt="Sterling Law Offices, S.C." loading="lazy" width="684" height="242" decoding="async"></div>
+
+          <div class="tlg-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/SOCIAL%20JUSTICE%20COLLABORATIVE.png" alt="" loading="lazy" width="824" height="238" decoding="async"></div>
+          <div class="tlg-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Bernstein%20Liebhard%20LLP.png" alt="" loading="lazy" width="268" height="81" decoding="async"></div>
+          <div class="tlg-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/legalzoom.png" alt="" loading="lazy" width="768" height="220" decoding="async"></div>
+          <div class="tlg-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sterling%20Law%20Offices%2c%20S.C..png" alt="" loading="lazy" width="684" height="242" decoding="async"></div>
+        </div>
+      </div>
+
+      <p class="tlg-eyebrow tlg-badges-label">Built for Legal Operations</p>
+      <ul class="tlg-badges">
+        <li class="tlg-badge"><span class="twopir-salesforce">Salesforce Partner</span></li>
+        <li class="tlg-badge">Mitratech CaseCloud</li>
+        <li class="tlg-badge">LawPay Integration</li>
+        <li class="tlg-badge">Accounting Seed</li>
+        <li class="tlg-badge">Personal Injury</li>
+        <li class="tlg-badge">Family Law</li>
+        <li class="tlg-badge">Corporate Law</li>
+        <li class="tlg-badge">Multi-Practice Firms</li>
+      </ul>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       3 · WHERE FIRMS STALL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--alt" aria-labelledby="tlg-pain-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Where Firms Stall</span>
+        <h2 class="tlg-title" id="tlg-pain-title">Where growth breaks <em>inside a law firm</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          Firms that scale cleanly control every handoff — from inquiry to signed engagement, from
+          engagement to matter open, from work completed to invoice paid. <strong>Every delay compounds.</strong>
+        </p>
+      </header>
+
+      <div class="tlg-pain-grid" role="list">
+
+        <article class="tlg-pain-item tlg-fade" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">📥</span>
+          <div>
+            <h3>Intake leaks qualified prospects</h3>
+            <p>Inquiries arrive through forms, calls, referrals and email, then get triaged by hand. Good matters go cold before anyone owns them.</p>
+          </div>
+        </article>
+
+        <article class="tlg-pain-item tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">🗂️</span>
+          <div>
+            <h3>Lead management lives outside the core system</h3>
+            <p>When intake sits in spreadsheets and inboxes instead of the CRM, referral attribution is weak, conversion tracking is guesswork, and pipeline visibility always lags.</p>
+          </div>
+        </article>
+
+        <article class="tlg-pain-item tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">📁</span>
+          <div>
+            <h3>Case onboarding takes too long</h3>
+            <p>Once a client says yes, staff re-key the same data across intake forms, case management and billing. Opening a matter should take minutes, not days.</p>
+          </div>
+        </article>
+
+        <article class="tlg-pain-item tlg-fade" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">💳</span>
+          <div>
+            <h3>Billing and payments stay disconnected</h3>
+            <p>Invoices, retainers, trust balances, accounting entries and matter status live in separate systems — which means slower collections and more reconciliation.</p>
+          </div>
+        </article>
+
+        <article class="tlg-pain-item tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">🕐</span>
+          <div>
+            <h3>Operational drag reduces throughput</h3>
+            <p>Manual re-entry, status chasing, duplicated work and missed reminders slow case velocity — almost always because the systems underneath don't talk to each other.</p>
+          </div>
+        </article>
+
+        <article class="tlg-pain-item tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-pain-ico" aria-hidden="true">📊</span>
+          <div>
+            <h3>Leadership lacks real-time visibility</h3>
+            <p>Managing partners need clean answers on intake, stalled matters and billing trends. Instead they get spreadsheets assembled after the fact — too late to act on.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       4 · PHILOSOPHY
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section" aria-labelledby="tlg-phil-title">
+    <div class="tlg-wrap">
+      <div class="tlg-philosophy tlg-fade">
+
+        <span class="tlg-eyebrow">Our Philosophy</span>
+        <h2 class="tlg-title" id="tlg-phil-title">We build the <em>operating system</em> behind law firm growth</h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+
+        <p>
+          Twopir is not a software deployment shop. We are a revenue and operating infrastructure partner
+          for firms that need cleaner intake, tighter handoffs, stronger billing discipline, and
+          executive-level visibility into what is actually driving growth.
+        </p>
+        <p>
+          We are <strong>Salesforce-first in execution and platform-agnostic in thinking.</strong> Salesforce
+          becomes the core operating platform; around it we connect the legal, accounting, payment, document
+          and reporting workflows your firm already depends on. Where deeper matter management is required,
+          we architect around Mitratech CaseCloud with the same discipline.
+        </p>
+        <p>
+          Our standard is not a successful go-live. Our standard is a system your attorneys and operations
+          team still rely on 18 months from now — one that holds up under more matters, more offices and
+          more complexity.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       5 · WHAT WE BUILD
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--alt" aria-labelledby="tlg-svc-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">What We Build</span>
+        <h2 class="tlg-title" id="tlg-svc-title">Systems designed around <em>how law firms actually operate</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          Every engagement starts with how your firm acquires clients, opens matters, coordinates work,
+          gets paid, and makes decisions. We design the architecture around that reality — never a template.
+        </p>
+      </header>
+
+      <div class="tlg-svc-grid" role="list">
+
+        <article class="tlg-svc-card tlg-fade" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h3>Client Intake &amp; Lead Management</h3>
+          <p>Capture every inquiry, route it correctly, track it through to signed engagement, and build real accountability around follow-up — without manual triage.</p>
+          <ul class="tlg-svc-list">
+            <li>Practice-area intake flows and smart routing</li>
+            <li>Automated follow-up tasks and SLA enforcement</li>
+            <li>Conflict-check triggers on contact creation</li>
+            <li>Referral source and channel attribution</li>
+            <li>Intake-to-retainer conversion reporting</li>
+          </ul>
+        </article>
+
+        <article class="tlg-svc-card tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </span>
+          <h3>Case Onboarding &amp; Matter Operations</h3>
+          <p>Move from signed retainer to matter-ready without duplicated effort, loose handoffs, or attorneys chasing status updates across three systems.</p>
+          <ul class="tlg-svc-list">
+            <li>Structured matter intake and onboarding workflows</li>
+            <li>Task orchestration across attorneys and staff</li>
+            <li>Document, checklist and approval coordination</li>
+            <li>Statute deadline and milestone tracking</li>
+            <li>Integration with legal matter management applications</li>
+          </ul>
+        </article>
+
+        <article class="tlg-svc-card tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          </span>
+          <h3>Billing, Payments &amp; Trust Accounting</h3>
+          <p>Connect operational work to financial outcomes so retainers, invoices, trust balances and firm reporting stay aligned at every stage of a matter.</p>
+          <ul class="tlg-svc-list">
+            <li>Accounting Seed and Salesforce billing automation</li>
+            <li>LawPay-connected, IOLTA-compliant payment workflows</li>
+            <li>Trust accounting and disbursement coordination</li>
+            <li>Multi-entity and multi-currency billing support</li>
+            <li>Faster collections and less monthly reconciliation</li>
+          </ul>
+        </article>
+
+        <article class="tlg-svc-card tlg-fade" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <h3>Leadership Reporting &amp; Firm Visibility</h3>
+          <p>Give managing partners and COOs the operating data they need to run the firm — live, on one screen, instead of two weeks after the fact.</p>
+          <ul class="tlg-svc-list">
+            <li>Intake, conversion and pipeline dashboards</li>
+            <li>Onboarding and cycle-time reporting</li>
+            <li>Billing, WIP and collections visibility</li>
+            <li>Attorney workload and performance tracking</li>
+            <li>Cross-office and practice-area comparisons</li>
+          </ul>
+        </article>
+
+        <article class="tlg-svc-card tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="10" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M10 12.5h4M17 8v8M6 10V8a4 4 0 0 1 4-4h4M6 15v2a4 4 0 0 0 4 4h4"/></svg>
+          </span>
+          <h3>System Integration &amp; Data Architecture</h3>
+          <p>Bring front office, legal operations and finance into one connected operating model — with a data structure that survives growth instead of fighting it.</p>
+          <ul class="tlg-svc-list">
+            <li>Salesforce-centred data model and architecture</li>
+            <li>Migration from Clio, MyCase, Filevine and legacy tools</li>
+            <li>Bi-directional financial and case data sync</li>
+            <li>AI-powered document extraction (AWS Textract)</li>
+            <li>Scalable architecture for multi-office growth</li>
+          </ul>
+        </article>
+
+        <article class="tlg-svc-card tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </span>
+          <h3>Org Rescue &amp; Scale Support</h3>
+          <p>If your firm already has Salesforce but it isn't working, we rebuild the parts that matter and make the platform usable for the people who live in it daily.</p>
+          <ul class="tlg-svc-list">
+            <li>Full Salesforce architecture audit and redesign</li>
+            <li>Automation cleanup and workflow repair</li>
+            <li>Adoption improvement and usability fixes</li>
+            <li>Executive roadmap planning</li>
+            <li>Ongoing retainer support as the firm scales</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       6 · ENGAGEMENT MODEL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section" aria-labelledby="tlg-process-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Our Engagement Model</span>
+        <h2 class="tlg-title" id="tlg-process-title">From operational friction to a <em>running system</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          Five stages, one continuous engagement. We stay accountable from the first diagnostic through
+          the quarters after go-live, when the system has to prove itself under real caseload.
+        </p>
+      </header>
+
+      <div class="tlg-process" role="list">
+
+        <article class="tlg-step tlg-fade" role="listitem">
+          <span class="tlg-step-num">Step 01</span>
+          <h3>Diagnostic Audit</h3>
+          <p>We map your full intake-to-invoice flow, find where revenue and time leak out, and benchmark delays, errors and manual touchpoints.</p>
+        </article>
+
+        <article class="tlg-step tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-step-num">Step 02</span>
+          <h3>Architecture Design</h3>
+          <p>We design the data model, workflow logic, integration boundaries and reporting structure around your practice areas and growth stage.</p>
+        </article>
+
+        <article class="tlg-step tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-step-num">Step 03</span>
+          <h3>Build &amp; Integrate</h3>
+          <p>We configure Salesforce, connect billing and legal tools, build the automations, and test every handoff before a single user touches it.</p>
+        </article>
+
+        <article class="tlg-step tlg-fade tlg-d3" role="listitem">
+          <span class="tlg-step-num">Step 04</span>
+          <h3>Launch &amp; Adoption</h3>
+          <p>A structured rollout with data migration, team onboarding and parallel-run support — no disruption to active matters or deadlines.</p>
+        </article>
+
+        <article class="tlg-step tlg-fade tlg-d4" role="listitem">
+          <span class="tlg-step-num">Step 05</span>
+          <h3>Scale &amp; Optimize</h3>
+          <p>As the firm grows we extend the infrastructure — new practice areas, offices and automations — while keeping the architecture stable.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       7 · CONNECTED INFRASTRUCTURE
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--alt" aria-labelledby="tlg-int-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Connected Infrastructure</span>
+        <h2 class="tlg-title" id="tlg-int-title">A legal operations platform <em>built on Salesforce</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          We connect Salesforce to the legal and financial tools your firm already depends on — so intake,
+          matters, billing and reporting are never managed in silos.
+        </p>
+      </header>
+
+      <div class="tlg-int-grid" role="list">
+
+        <article class="tlg-int-item tlg-fade" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">⚖️</span>
+          <h3 class="tlg-int-name">Salesforce CRM</h3>
+          <p class="tlg-int-desc">Core platform for client acquisition, data architecture, workflow automation and operating reporting.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">📂</span>
+          <h3 class="tlg-int-name">Mitratech CaseCloud</h3>
+          <p class="tlg-int-desc">Legal case and matter management, natively connected to Salesforce client relationship data.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">💳</span>
+          <h3 class="tlg-int-name">LawPay</h3>
+          <p class="tlg-int-desc">IOLTA-compliant client payment processing with Salesforce-triggered billing workflows.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d3" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">📒</span>
+          <h3 class="tlg-int-name">Accounting Seed</h3>
+          <p class="tlg-int-desc">Native Salesforce accounting for mass billing, recurring payments and real-time financial reporting.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">💼</span>
+          <h3 class="tlg-int-name">QuickBooks</h3>
+          <p class="tlg-int-desc">Bi-directional sync for trust accounting, settlement entries, vendor bills and expense management.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d1" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">📄</span>
+          <h3 class="tlg-int-name">iManage &amp; DocuSign</h3>
+          <p class="tlg-int-desc">Automated document management, retainer execution and billing document generation.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d2" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">🤖</span>
+          <h3 class="tlg-int-name">AWS Textract &amp; AI</h3>
+          <p class="tlg-int-desc">OCR-driven extraction of medical records, CPT codes and settlement documents straight into case records.</p>
+        </article>
+
+        <article class="tlg-int-item tlg-fade tlg-d3" role="listitem">
+          <span class="tlg-int-ico" aria-hidden="true">🔄</span>
+          <h3 class="tlg-int-name">Clio · MyCase · Filevine</h3>
+          <p class="tlg-int-desc">Full data migration with record preservation and parallel-run validation through cutover.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       8 · CLIENT OUTCOMES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--dark" id="tlg-proof" aria-labelledby="tlg-proof-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Client Outcomes</span>
+        <h2 class="tlg-title" id="tlg-proof-title">What better operating infrastructure <em>delivers</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          When intake, matter operations, document processing and billing run inside one disciplined
+          system, the gains are measurable — and they compound quarter over quarter.
+        </p>
+      </header>
+
+      <div class="tlg-proof-pair tlg-fade">
+
+        <article class="tlg-quote-card">
+          <div class="tlg-quote-top">
+            <span class="tlg-avatar" aria-hidden="true">OL</span>
+            <span class="tlg-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tlg-quote-text">
+            Twopir provided Salesforce customisation and integration services to help us build a robust,
+            compliant, and scalable legal operations platform — connecting case management, document
+            processing, and financial systems into one unified workflow. The result was transformative
+            for how we run case-to-cash operations.
+          </blockquote>
+          <div>
+            <span class="tlg-quote-name">Operations Lead</span>
+            <span class="tlg-quote-role">Fast-growing personal injury law firm</span>
+            <span class="tlg-mono-tag">Personal Injury</span>
+          </div>
+        </article>
+
+        <article class="tlg-cs-card">
+          <span class="tlg-mono-tag">Case Study</span>
+          <h3 class="tlg-cs-company">Personal Injury Firm — Multi-State</h3>
+          <p class="tlg-cs-title">Streamlining case-to-cash operations with Salesforce, AWS and QuickBooks.</p>
+          <div class="tlg-cs-metrics">
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val">40%+</span>
+              <span class="tlg-cs-lbl">Faster case-to-settlement processing</span>
+            </div>
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val">45%</span>
+              <span class="tlg-cs-lbl">Reduction in reconciliation effort</span>
+            </div>
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val">35%</span>
+              <span class="tlg-cs-lbl">Improvement in data accuracy</span>
+            </div>
+          </div>
+          <a class="tlg-cs-link"
+             href="https://twopirconsulting.com/streamlining-case-to-cash-for-a-personal-injury-law-firm/"
+             target="_blank" rel="noopener noreferrer">
+            Read Full Case Study
+            <svg class="tlg-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="tlg-proof-pair tlg-fade tlg-d1">
+
+        <article class="tlg-quote-card">
+          <div class="tlg-quote-top">
+            <span class="tlg-avatar tlg-avatar--green" aria-hidden="true">PM</span>
+            <span class="tlg-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tlg-quote-text tlg-quote-text--green">
+            Twopir's specialized Salesforce customization enabled efficient integration of third-party
+            systems and streamlined administration and billing, leading to seamless financial operations
+            and enhanced productivity. Automated mass billing and matter management minimized errors
+            across our entire legal workflow.
+          </blockquote>
+          <div>
+            <span class="tlg-quote-name">Practice Manager</span>
+            <span class="tlg-quote-role">Mid-size US family law firm · 150 employees</span>
+            <span class="tlg-mono-tag tlg-mono-tag--green">Family Law</span>
+          </div>
+        </article>
+
+        <article class="tlg-cs-card tlg-cs-card--green">
+          <span class="tlg-mono-tag tlg-mono-tag--green">Case Study</span>
+          <h3 class="tlg-cs-company">Family Law Firm — 150 Employees, US</h3>
+          <p class="tlg-cs-title">A 50% efficiency gain from Accounting Seed and Salesforce integration.</p>
+          <div class="tlg-cs-metrics">
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val tlg-cs-val--green">50%</span>
+              <span class="tlg-cs-lbl">Increase in operational efficiency</span>
+            </div>
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val tlg-cs-val--green">45%</span>
+              <span class="tlg-cs-lbl">Productivity gains from automation</span>
+            </div>
+            <div class="tlg-cs-metric">
+              <span class="tlg-cs-val tlg-cs-val--green">35%</span>
+              <span class="tlg-cs-lbl">Faster lead qualification &amp; conversion</span>
+            </div>
+          </div>
+          <a class="tlg-cs-link tlg-cs-link--green"
+             href="https://twopirconsulting.com/case-study/accounting-seed-and-salesforce-integrations/"
+             target="_blank" rel="noopener noreferrer">
+            Read Integration Story
+            <svg class="tlg-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       9 · WHY TWOPIR
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section" aria-labelledby="tlg-why-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Why Twopir</span>
+        <h2 class="tlg-title" id="tlg-why-title">Not a vendor. <em>An architectural partner.</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+        <p class="tlg-lede">
+          Firms don't struggle because they lack software. They struggle because intake, handoffs, billing
+          and reporting were never designed to work together under real operational pressure.
+        </p>
+      </header>
+
+      <div class="tlg-why-grid">
+
+        <div class="tlg-why-list" role="list">
+
+          <article class="tlg-why-item tlg-fade" role="listitem">
+            <span class="tlg-why-num" aria-hidden="true">01</span>
+            <div>
+              <h3>We start with the operating model, not the software</h3>
+              <p>Before we touch Salesforce we map how your firm acquires clients, opens matters, does the work and gets paid. What we build reflects your operation — not a default template.</p>
+            </div>
+          </article>
+
+          <article class="tlg-why-item tlg-fade tlg-d1" role="listitem">
+            <span class="tlg-why-num" aria-hidden="true">02</span>
+            <div>
+              <h3>We own the outcome</h3>
+              <p>We don't hand over a configuration document. We design, build, integrate, test and launch — and we stay until the system performs the way the firm needs it to.</p>
+            </div>
+          </article>
+
+          <article class="tlg-why-item tlg-fade tlg-d2" role="listitem">
+            <span class="tlg-why-num" aria-hidden="true">03</span>
+            <div>
+              <h3>We think across the full revenue lifecycle</h3>
+              <p>Intake, matter operations, billing, collections and reporting are not separate projects. We architect them as one connected system with one source of truth.</p>
+            </div>
+          </article>
+
+          <article class="tlg-why-item tlg-fade tlg-d3" role="listitem">
+            <span class="tlg-why-num" aria-hidden="true">04</span>
+            <div>
+              <h3>We have direct legal operations experience</h3>
+              <p>We have built Salesforce infrastructure for personal injury, family law and corporate practices. The workflows, edge cases and pitfalls are already known to us.</p>
+            </div>
+          </article>
+
+          <article class="tlg-why-item tlg-fade tlg-d4" role="listitem">
+            <span class="tlg-why-num" aria-hidden="true">05</span>
+            <div>
+              <h3>We build for scale, not just launch</h3>
+              <p>The architecture holds as the firm grows — more matters, more offices, more practice areas. What you launch should be the foundation for the next stage, not a rebuild.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="tlg-callout tlg-fade tlg-d2">
+          <span class="tlg-callout-k">
+            <span class="tlg-live" aria-hidden="true"></span>
+            How We Engage
+          </span>
+
+          <p class="tlg-callout-text">
+            "The problem is rarely that a firm lacks software. The problem is that the systems underneath
+            intake, handoff, billing and reporting were never designed to work together."
+          </p>
+
+          <p class="tlg-callout-author">
+            <strong>Twopir Consulting</strong> — Salesforce, CRM, automation, integrations and growth
+            infrastructure for firms that need their systems to perform at scale.
+          </p>
+
+          <ul class="tlg-engage">
+            <li>Full architecture, build and rollout</li>
+            <li>Salesforce rescue and redesign</li>
+            <li>Integration and workflow modernization</li>
+            <li>Ongoing scale support and optimization</li>
+          </ul>
+
+          <ul class="tlg-facts">
+            <li class="tlg-fact"><b class="twopir-years">12+</b> Years delivery</li>
+            <li class="tlg-fact"><b class="twopir-clients">500+</b> Clients served</li>
+            <li class="tlg-fact"><span class="twopir-salesforce">Salesforce Partner</span></li>
+            <li class="tlg-fact"><span class="twopir-hubspot">HubSpot Partner</span></li>
+            <li class="tlg-fact"><span class="twopir-ai">AI Delivery</span></li>
+            <li class="tlg-fact"><span class="twopir-countries">Serving: US | Canada | UK | UAE | Australia | New Zealand</span></li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · FAQ
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--alt" aria-labelledby="tlg-faq-title">
+    <div class="tlg-wrap">
+
+      <header class="tlg-head tlg-fade">
+        <span class="tlg-eyebrow">Common Questions</span>
+        <h2 class="tlg-title" id="tlg-faq-title">Answers before <em>the first call</em></h2>
+        <div class="tlg-rule" aria-hidden="true">
+          <span class="tlg-rule-line"></span>
+          <span class="tlg-rule-diamond"></span>
+          <span class="tlg-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tlg-faq-list">
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp1" id="tlg-fb1">
+            <span>How does Salesforce improve client acquisition and intake for law firms?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp1" role="region" aria-labelledby="tlg-fb1">
+            <div class="tlg-faq-panel-inner">
+              <p><a class="tlg-src" href="https://www.salesforce.com/" target="_blank" rel="noopener noreferrer">Salesforce</a> lets firms capture every inquiry consistently, route it to the right person, track follow-up activity, and measure conversion by channel and referral source. Instead of inboxes and disconnected spreadsheets, the firm gets one operating view of the intake pipeline — and partners can finally see which sources actually produce signed matters.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp2" id="tlg-fb2">
+            <span>Can Salesforce support case and matter operations for a law firm?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp2" role="region" aria-labelledby="tlg-fb2">
+            <div class="tlg-faq-panel-inner">
+              <p>Yes. With the right architecture — and, where matter depth demands it, supporting applications such as Mitratech CaseCloud — Salesforce supports intake, matter onboarding, task and deadline coordination, document workflows, and firm-wide reporting. The important part is designing the data model around your practice areas before any configuration begins.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp3" id="tlg-fb3">
+            <span>We already have Salesforce, but it is underperforming. Can you help?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp3" role="region" aria-labelledby="tlg-fb3">
+            <div class="tlg-faq-panel-inner">
+              <p>That is where many of our engagements start. An org can be technically live and still operationally weak. We assess workflow design, data structure, automation, integrations, usability and reporting, then rebuild the parts that are holding the firm back — usually without starting over from a blank org.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp4" id="tlg-fb4">
+            <span>Do you handle billing, payments and trust accounting workflows too?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp4" role="region" aria-labelledby="tlg-fb4">
+            <div class="tlg-faq-panel-inner">
+              <p>Yes. We connect operational workflows to billing and payment processes so retained matters, invoices, trust balances, collections and financial reporting stay in one conversation. Typical work includes Accounting Seed billing automation, LawPay-connected IOLTA-compliant payments, and QuickBooks synchronisation for settlement and vendor entries.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp5" id="tlg-fb5">
+            <span>Is this only for one type of law firm?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp5" role="region" aria-labelledby="tlg-fb5">
+            <div class="tlg-faq-panel-inner">
+              <p>No. The operating challenges are shared across firm types even when matter types differ — we work with personal injury, family law, corporate and multi-practice firms. What changes is the architecture: it should reflect your practice structure, staffing model, intake volume and reporting needs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tlg-faq-row tlg-fade">
+          <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp6" id="tlg-fb6">
+            <span>How are you different from an implementation-only partner?</span>
+            <span class="tlg-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tlg-faq-panel" id="tlg-fp6" role="region" aria-labelledby="tlg-fb6">
+            <div class="tlg-faq-panel-inner">
+              <p>Implementation partners optimize for delivering the platform. We optimize for whether the platform improves the firm's operating performance. That means the engagement starts earlier — with architecture and process design — and continues past go-live, through adoption and the first scale milestones.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · CTA
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tlg-section tlg-section--dark tlg-cta" aria-labelledby="tlg-cta-title">
+    <div class="tlg-cta-inner tlg-fade">
+
+      <span class="tlg-eyebrow">Next Step</span>
+      <h2 class="tlg-title" id="tlg-cta-title">If your firm is growing faster than its systems, <em>this is the right conversation</em></h2>
+      <div class="tlg-rule" aria-hidden="true">
+        <span class="tlg-rule-line"></span>
+        <span class="tlg-rule-diamond"></span>
+        <span class="tlg-rule-line"></span>
+      </div>
+
+      <p class="tlg-lede">
+        Twopir helps law firms build operating discipline across intake, onboarding, billing, payments and
+        reporting — with Salesforce as the foundation and an architecture that holds up at scale.
+      </p>
+
+      <div class="tlg-cta-actions">
+        <a class="tlg-btn tlg-btn--primary" href="https://twopirconsulting.com/#book-a-discovery-call">
+          Book a Strategy Call
+          <svg class="tlg-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+          </svg>
+        </a>
+        <a class="tlg-btn tlg-btn--ghost" href="https://twopirconsulting.com/contact-us/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v12H7l-3 3z"/>
+          </svg>
+          Contact the Team
+        </a>
+      </div>
+
+      <p class="tlg-cta-note">Speak with a team that understands systems, architecture &amp; firm growth</p>
+
+    </div>
+  </section>
+
+</div><!-- /#twopir-legal -->
+
+<!-- ============================================================
+     STRUCTURED DATA — SALESFORCE FOR LAW FIRMS
+     BreadcrumbList + Service + FAQPage.
+
+     • Service.provider points at the homepage Organization node
+       (@id …/#organization, emitted once from Hero.html). Keep the
+       two @ids in sync or the provider reference will dangle.
+     • FAQPage is a no-harm addition only: Google removed FAQ rich
+       results for all sites in May 2026, so this produces no SERP
+       snippet. It is kept because the page already has a real FAQ
+       section and the markup still helps machines parse it.
+     • Every FAQ answer below is copied verbatim from the visible
+       accordion on this page. If the visible copy is edited, edit it
+       here too — mismatched schema and on-page text is an AEO risk.
+     • The URLs assume the /salesforce-for-law-firms/ permalink and the
+       /industries-we-serve/ parent. Confirm both before publishing.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://twopirconsulting.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Industries We Serve",
+      "item": "https://twopirconsulting.com/industries-we-serve/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Salesforce for Law Firms",
+      "item": "https://twopirconsulting.com/salesforce-for-law-firms/"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://twopirconsulting.com/salesforce-for-law-firms/#service",
+  "name": "Salesforce for Law Firms",
+  "serviceType": "Salesforce implementation and revenue operations for legal practices",
+  "provider": {
+    "@id": "https://twopirconsulting.com/#organization"
+  },
+  "areaServed": [
+    "US",
+    "CA",
+    "GB",
+    "AE",
+    "AU",
+    "NZ"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Law Firms"
+  },
+  "description": "Twopir Consulting builds the Salesforce-based operating infrastructure behind law firm growth — client intake, matter operations, billing and trust accounting, and firm-wide reporting on one architecture.",
+  "url": "https://twopirconsulting.com/salesforce-for-law-firms/",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Legal operations services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Client Intake & Lead Management"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Case Onboarding & Matter Operations"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Billing, Payments & Trust Accounting"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Leadership Reporting & Firm Visibility"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "System Integration & Data Architecture"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Org Rescue & Scale Support"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Salesforce improve client acquisition and intake for law firms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce lets firms capture every inquiry consistently, route it to the right person, track follow-up activity, and measure conversion by channel and referral source. Instead of inboxes and disconnected spreadsheets, the firm gets one operating view of the intake pipeline — and partners can finally see which sources actually produce signed matters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Salesforce support case and matter operations for a law firm?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With the right architecture — and, where matter depth demands it, supporting applications such as Mitratech CaseCloud — Salesforce supports intake, matter onboarding, task and deadline coordination, document workflows, and firm-wide reporting. The important part is designing the data model around your practice areas before any configuration begins."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "We already have Salesforce, but it is underperforming. Can you help?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That is where many of our engagements start. An org can be technically live and still operationally weak. We assess workflow design, data structure, automation, integrations, usability and reporting, then rebuild the parts that are holding the firm back — usually without starting over from a blank org."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you handle billing, payments and trust accounting workflows too?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We connect operational workflows to billing and payment processes so retained matters, invoices, trust balances, collections and financial reporting stay in one conversation. Typical work includes Accounting Seed billing automation, LawPay-connected IOLTA-compliant payments, and QuickBooks synchronisation for settlement and vendor entries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this only for one type of law firm?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The operating challenges are shared across firm types even when matter types differ — we work with personal injury, family law, corporate and multi-practice firms. What changes is the architecture: it should reflect your practice structure, staffing model, intake volume and reporting needs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are you different from an implementation-only partner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Implementation partners optimize for delivering the platform. We optimize for whether the platform improves the firm's operating performance. That means the engagement starts earlier — with architecture and process design — and continues past go-live, through adoption and the first scale milestones."
+      }
+    }
+  ]
+}
+</script>
+
+
+<script>
+(function () {
+  var root = document.getElementById('twopir-legal');
+  if (!root) return;
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  var items = root.querySelectorAll('.tlg-fade');
+  var reveal = function (el) { el.classList.add('tlg-in'); };
+
+  if (items.length) {
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(items, reveal);
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); }
+        });
+      });
+    }
+  }
+
+  /* ── FAQ accordion ─────────────────────────────────────── */
+  var faqBtns = root.querySelectorAll('.tlg-faq-btn');
+
+  function closeRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'false');
+    row.classList.remove('is-open');
+    if (panel) panel.style.maxHeight = '0px';
+  }
+
+  function openRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'true');
+    row.classList.add('is-open');
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  Array.prototype.forEach.call(faqBtns, function (btn) {
+    btn.addEventListener('click', function () {
+      var wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      Array.prototype.forEach.call(faqBtns, closeRow);
+      if (!wasOpen) openRow(btn);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeRow(btn);
+        btn.focus();
+      }
+    });
+  });
+
+  // keep an open panel correctly sized when the viewport reflows
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(faqBtns, function (btn) {
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── FIX: kill top AND bottom spacing from theme/builder ancestors ──
+     This is the actual fix for the white gaps seen above the hero and
+     below the closing CTA section. The CSS reset above only zeroes
+     padding/margin on a fixed list of known wrapper class names
+     (Elementor, Gutenberg, entry-content, etc). If the live theme uses a
+     different wrapper class we haven't guessed, that CSS won't catch it
+     and a gap stays — first it showed up at the top, now it's the same
+     issue at the bottom, coming from the wrapper's bottom padding/margin.
+     This walks every real ancestor element from #twopir-legal up to
+     (but not including) the page body element, forcing margin/padding on both top
+     AND bottom to 0 on each one — regardless of what class or theme put
+     it there. It mirrors the existing tlgFullBleed() approach just below,
+     which does the same "measure and cancel" trick for horizontal spacing. */
+  function tlgKillAncestorSpacing() {
+    var el = root.parentElement;
+    while (el && el !== document.body && el.nodeType === 1) {
+      el.style.marginTop = '0px';
+      el.style.paddingTop = '0px';
+      el.style.marginBottom = '0px';
+      el.style.paddingBottom = '0px';
+      el = el.parentElement;
+    }
+  }
+
+  /* ── Scrollbar-safe full-viewport-width breakout ─────────
+     Page builders wrap content in a boxed container, which would
+     leave the section backgrounds floating in the middle of the
+     page. A pure-CSS "100vw / -50vw" breakout clips the left edge
+     whenever a vertical scrollbar exists, because 100vw includes
+     the scrollbar track. So we measure the real visible width
+     with documentElement.clientWidth and apply exact pixels.
+     If JS is unavailable the page simply stays contained — safe,
+     never clipped. ── */
+  function tlgFullBleed() {
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+
+    var rect = root.getBoundingClientRect();
+    var visibleWidth = document.documentElement.clientWidth; // excludes scrollbar
+
+    if (!visibleWidth || rect.width === 0) return;
+
+    root.style.width = visibleWidth + 'px';
+    root.style.marginLeft = (-rect.left) + 'px';
+    root.style.marginRight = (rect.left - (visibleWidth - (rect.left + rect.width))) + 'px';
+  }
+
+  var bleedRaf;
+  function applyBleed() {
+    tlgKillAncestorSpacing();
+    tlgFullBleed();
+  }
+  function scheduleBleed() {
+    if (bleedRaf) cancelAnimationFrame(bleedRaf);
+    bleedRaf = requestAnimationFrame(applyBleed);
+  }
+
+  /* CLS fix (2026-08): the first breakout runs synchronously rather
+     than inside requestAnimationFrame, so the final width and margins
+     are in place for the first layout pass instead of being applied
+     one frame after the page has already painted at the wrong width.
+     Resize/orientation changes still go through the rAF-throttled
+     path, where batching matters and a shift is unavoidable anyway. */
+  applyBleed();
+  window.addEventListener('resize', scheduleBleed);
+  window.addEventListener('orientationchange', scheduleBleed);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleBleed);
+  }
+
+  /* Page builders / admin bars can shift layout after first paint, so
+     one late re-check stays. It runs synchronously inside a single
+     task: when the geometry has not moved, the styles are rewritten to
+     the same values within that task and the browser never paints an
+     intermediate state, so no layout shift is recorded. */
+  setTimeout(applyBleed, 500);
+})();
+</script>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE ALIGNMENT PASS  ·  loaded last
+   Typography + a few sizing/consistency fixes carried over from
+   the homepage build. No colour changes, no content changes.
+   !important is used the same way the homepage uses it: the live
+   WordPress theme restyles h2/h3/button/li globally, and without
+   it the theme wins on the published page.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1 · Font families pinned — the theme's own body font must not
+       leak into headings, copy or mono labels. */
+#twopir-legal,
+#twopir-legal p,
+#twopir-legal li,
+#twopir-legal a,
+#twopir-legal span,
+#twopir-legal button { font-family: var(--tlg-ff-body) !important; }
+
+/* Card titles belong to the display face too. Without them listed here the
+   blanket body-font rule above wins by inheritance and every card title on
+   the page renders in Inter — which flattens the hierarchy to two levels
+   where the homepage has three (h1 / section title / card title). */
+#twopir-legal h1,
+#twopir-legal h2,
+#twopir-legal h3,
+#twopir-legal .tlg-hero-title,
+#twopir-legal .tlg-title,
+#twopir-legal .tlg-pain-item h3,
+#twopir-legal .tlg-svc-card h3,
+#twopir-legal .tlg-step h3,
+#twopir-legal .tlg-why-item h3,
+#twopir-legal .tlg-int-name,
+#twopir-legal .tlg-cs-company,
+#twopir-legal .tlg-cs-val,
+#twopir-legal .tlg-layer-t,
+#twopir-legal .tlg-avatar,
+#twopir-legal .tlg-fact b,
+#twopir-legal .tlg-hero-proof b { font-family: var(--tlg-ff-display) !important; }
+
+#twopir-legal .tlg-eyebrow,
+#twopir-legal .tlg-mono-tag,
+#twopir-legal .tlg-cs-lbl,
+#twopir-legal .tlg-step-num,
+#twopir-legal .tlg-why-num,
+#twopir-legal .tlg-callout-k,
+#twopir-legal .tlg-fact,
+#twopir-legal .tlg-cta-note,
+#twopir-legal .tlg-canvas-label,
+#twopir-legal .tlg-pill,
+#twopir-legal .tlg-chip { font-family: var(--tlg-ff-mono) !important; }
+
+/* 2 · The type scale from the pass above, re-asserted with the
+       same protection the homepage uses. */
+#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(30px, 4vw, 46px)) !important; line-height: 1.14 !important; }
+#twopir-legal .tlg-title      { font-size: var(--tlg-fs-h2, clamp(26px, 3vw, 38px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-legal .tlg-title em   { font-weight: 800 !important; font-style: normal !important; }
+#twopir-legal .tlg-hero-sub,
+#twopir-legal .tlg-lede,
+#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)) !important; line-height: 1.7 !important; }
+
+/* Primary card titles take the h3 step (17–19px), the same rung the
+   homepage gives its service and about cards. The denser grids — process
+   steps, the integration tiles, the case-study company line, FAQ rows —
+   stay on h4, matching the homepage's own dense-card treatment. Before
+   this split, --tlg-fs-h3 was defined but never used and every card title
+   sat at 16px, the same size as the FAQ button text. */
+#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h3, clamp(17px, 1.5vw, 19px)) !important; line-height: 1.3 !important; }
+
+#twopir-legal .tlg-step h3,
+#twopir-legal .tlg-int-name,
+#twopir-legal .tlg-cs-company,
+#twopir-legal .tlg-faq-btn,
+#twopir-legal .tlg-layer-h { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)) !important; line-height: 1.4 !important; }
+
+#twopir-legal .tlg-pain-item p,
+#twopir-legal .tlg-svc-card > p,
+#twopir-legal .tlg-why-item p,
+#twopir-legal .tlg-faq-panel-inner p,
+#twopir-legal .tlg-quote-text { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)) !important; line-height: 1.65 !important; }
+
+#twopir-legal .tlg-svc-list li,
+#twopir-legal .tlg-step p,
+#twopir-legal .tlg-int-desc,
+#twopir-legal .tlg-engage li,
+#twopir-legal .tlg-why-list li,
+#twopir-legal .tlg-callout-author,
+#twopir-legal .tlg-quote-name,
+#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-sm, 13px) !important; line-height: 1.6 !important; }
+
+#twopir-legal .tlg-quote-role,
+#twopir-legal .tlg-badge,
+#twopir-legal .tlg-tag,
+#twopir-legal .tlg-src { font-size: var(--tlg-fs-xs, 12px) !important; }
+
+/* 11px mono floor — nothing on the page sits below it */
+#twopir-legal .tlg-eyebrow   { font-size: var(--tlg-fs-eyebrow, clamp(11px, 0.9vw, 12px)) !important; letter-spacing: 0.2em !important; }
+#twopir-legal .tlg-mono-tag,
+#twopir-legal .tlg-cs-lbl,
+#twopir-legal .tlg-step-num,
+#twopir-legal .tlg-why-num,
+#twopir-legal .tlg-callout-k,
+#twopir-legal .tlg-fact,
+#twopir-legal .tlg-cta-note,
+#twopir-legal .tlg-canvas-label,
+#twopir-legal .tlg-layer-t,
+#twopir-legal .tlg-chip { font-size: var(--tlg-fs-label, 11px) !important; letter-spacing: 0.08em; }
+/* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
+#twopir-legal .tlg-pill { font-size: var(--tlg-fs-label, 11px) !important; letter-spacing: 0.1em !important; }
+
+#twopir-legal .tlg-btn,
+#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 13px) !important; }
+#twopir-legal .tlg-cs-val  { font-size: var(--tlg-fs-stat-sm, clamp(20px, 1.9vw, 24px)) !important; line-height: 1.1; }
+
+/* 3 · Caps card titles — the homepage's own uppercase card-title recipe
+       (display face, h4 step, weight 800, 0.055em tracking). Applied to
+       both the "Why" cards and the service cards, which share the
+       treatment. Set in caps they need the h4 step, not h3: uppercase at
+       19px with this much tracking wraps badly in a three-up grid. */
+#twopir-legal .tlg-why-item h3,
+#twopir-legal .tlg-svc-card h3 {
+  text-transform: uppercase !important;
+  font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.35 !important;
+}
+
+/* 3b · CONTRAST — brand blue as TEXT on light grounds
+        #00aff6 measures 2.14 / 2.23 / 2.30 / 2.48 against the page, alt,
+        card and white surfaces. Every role below is 11–16px, so it needs
+        the 4.5 minimum, and --tlg-accent-ink (5.14–5.96) is the same hue
+        darkened to clear it. Loaded here, after every section rule, so
+        there is nothing left to override it. */
+#twopir-legal .tlg-eyebrow,
+#twopir-legal .tlg-pill,
+#twopir-legal .tlg-float-k,
+#twopir-legal .tlg-step-num,
+#twopir-legal .tlg-why-num,
+#twopir-legal .tlg-faq-ico,
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-btn,
+#twopir-legal .tlg-src:hover,
+#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent-ink) !important; }
+
+/* …but on a navy panel the bright accent is the legible one, so the dark
+   sections, the hero canvas and the sticky callout all keep it. The open
+   FAQ icon also keeps white-on-accent, which already passes. */
+#twopir-legal .tlg-section--dark .tlg-eyebrow,
+#twopir-legal .tlg-cta .tlg-eyebrow,
+#twopir-legal .tlg-callout .tlg-callout-k { color: var(--tlg-accent) !important; }
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-ico { color: #fff !important; }
+
+/* 4 · Case-study cards — the theme uppercases and enlarges h3,
+       which blew these headlines up mid-card on the homepage too. */
+#twopir-legal .tlg-cs-title {
+  text-transform: none !important;
+  font-size: var(--tlg-fs-sm, 13px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+#twopir-legal .tlg-cs-company {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+#twopir-legal .tlg-cs-lbl { letter-spacing: 0.14em !important; }
+
+/* 5 · Client logo rail — vendor marks must never be cropped.
+       The <img> tags carry width/height attributes and the theme
+       defaults to object-fit: cover, which slices wide logos. */
+#twopir-legal .tlg-marquee-item img {
+  height: 36px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* 6 · FAQ — kill the stray square the theme injects next to the
+       +/− toggle on hover and click. */
+#twopir-legal .tlg-faq-btn::before,
+#twopir-legal .tlg-faq-btn::after,
+#twopir-legal .tlg-faq-ico::before,
+#twopir-legal .tlg-faq-ico::after,
+#twopir-legal .tlg-faq-row > button::before,
+#twopir-legal .tlg-faq-row > button::after {
+  content: none !important;
+  display: none !important;
+}
+#twopir-legal .tlg-faq-btn,
+#twopir-legal .tlg-faq-btn:hover,
+#twopir-legal .tlg-faq-btn:focus,
+#twopir-legal .tlg-faq-btn:active,
+#twopir-legal .tlg-faq-ico {
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+#twopir-legal .tlg-faq-btn:focus-visible {
+  outline: 2px solid var(--tlg-accent) !important;
+  outline-offset: -3px;
+}
+#twopir-legal .tlg-faq-ico {
+  overflow: hidden;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+#twopir-legal .tlg-faq-ico svg { font-size: initial; }
+
+/* 7 · Small screens — matches the homepage's mobile type block */
+@media (max-width: 620px) {
+  #twopir-legal .tlg-hero-title { font-size: 30px !important; line-height: 1.18 !important; }
+  #twopir-legal .tlg-title      { font-size: 26px !important; line-height: 1.2 !important; }
+  #twopir-legal .tlg-hero-sub,
+  #twopir-legal .tlg-lede,
+  #twopir-legal .tlg-philosophy p { font-size: 16px !important; }
+
+  #twopir-legal .tlg-pain-item h3,
+  #twopir-legal .tlg-svc-card h3,
+  #twopir-legal .tlg-step h3,
+  #twopir-legal .tlg-int-name,
+  #twopir-legal .tlg-cs-company,
+  #twopir-legal .tlg-faq-btn { font-size: 16px !important; }
+  #twopir-legal .tlg-why-item h3 { font-size: 15px !important; }
+
+  #twopir-legal .tlg-pain-item p,
+  #twopir-legal .tlg-svc-card > p,
+  #twopir-legal .tlg-why-item p,
+  #twopir-legal .tlg-quote-text,
+  #twopir-legal .tlg-faq-panel-inner p { font-size: 15px !important; }
+
+  #twopir-legal .tlg-svc-list li,
+  #twopir-legal .tlg-step p,
+  #twopir-legal .tlg-int-desc,
+  #twopir-legal .tlg-engage li,
+  #twopir-legal .tlg-callout-author { font-size: 14px !important; }
+
+  #twopir-legal .tlg-cs-title { font-size: 14px !important; }
+  #twopir-legal .tlg-marquee-item img { height: 30px !important; max-width: 130px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · TEMPLATE BEHAVIOUR
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 6a · Theme pseudo-element guard ─────────────────────────
+   The live theme sets `blockquote::before { font-family: FontAwesome;
+   content: "10d" }` — a decorative quote glyph. FontAwesome is not
+   loaded on this page, so it renders as an empty tofu box at the head
+   of every testimonial. Neutralised rather than restyled: the design
+   already carries its own quote treatment through the accent rule down
+   the left edge.
+
+   Only blockquote and q are cleared. A blanket `::before` reset would
+   destroy the rule diamonds, the list bullets and the separators, all of
+   which are real parts of this design. If another theme decorates a
+   different tag, add that tag here — do not widen the selector. */
+#twopir-legal blockquote::before,
+#twopir-legal blockquote::after,
+#twopir-legal q::before,
+#twopir-legal q::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* ── 6b · First-screen hero ──────────────────────────────────
+   Two gates, both deliberate:
+
+     min-width: 901px   below this the hero stacks to one column, and a
+                        forced screen height would leave a tall empty gap
+     min-height: 720px  only claim the full screen when the window can
+                        actually hold the content. On a shorter window the
+                        section falls back to its natural height and scrolls
+                        normally — which is the right failure, because the
+                        alternative is clipping the headline.
+
+   `min-height`, never `height`, and no overflow clipping. The hero is
+   already `display: flex; flex-direction: column; justify-content: center`,
+   so this is what makes the template forgiving about content length: a page
+   with a two-line headline and three stats centres in the screen and reads
+   as composed, while a page with six lines of lede grows past it and simply
+   scrolls. Neither case needs a font-size change. */
+@media (min-width: 901px) and (min-height: 720px) {
+  #twopir-legal .tlg-hero {
+    min-height: calc(100vh - var(--tlg-nav, 87px));
+    min-height: calc(100svh - var(--tlg-nav, 87px));
+  }
+}
+</style>
