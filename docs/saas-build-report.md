@@ -351,8 +351,9 @@ the literal fallbacks carry the correct values and non-JS crawlers see them eith
 
 ## 5 · Verification
 
-Two suites, both committed so they can be re-run before any future edit:
-`scripts/verify_page.py` (static) and `scripts/verify_browser.js` (Chromium, against a harness that
+Three suites, all committed so they can be re-run before any future edit:
+`scripts/verify_page.py` (static), `scripts/verify_browser.js` and `scripts/verify_degradation.js`
+(both Chromium, against a harness that
 reproduces the live theme — `html { font-size: 10px }`, an 87px header in flow, a boxed padded
 `.entry-content` wrapper, global `h2`/`h3`/`li`/`button`/`th` restyles, and the
 `blockquote::before` FontAwesome glyph).
@@ -398,6 +399,53 @@ reproduces the live theme — `html { font-size: 10px }`, an 87px header in flow
   opacity 1 without any JavaScript, and stat fallback text reads `500+`
 - **Reduced motion + no JS**: H1 instantly opaque, `animation: none`
 
+### Degradation test — both Autoptimize failure modes, in a real browser
+
+`scripts/verify_degradation.js` renders the page twice with the sheet deliberately broken, and
+checks that no heading collapses to the wrapper's inherited size (14.7px at 1400px) — which is
+exactly what happened on the Legal deploy.
+
+| Mode | What is removed | Result |
+|---|---|---|
+| **A** | The entire trailing `<style>` block (the consistency pass) — 389 `var()` references survive it | H1 46 · H2 38 · service/step titles 16 · stat 40 · table header 16 · note H3 19. **Nothing collapses.** Only the pain-card title differs, 16px instead of 19px, because the h3/h4 split lives in that block — graceful, not catastrophic |
+| **B** | **Every custom-property declaration**, with all 424 `var()` references kept | H1 46 · H2 38 · pain title 19 · service/step 16 · stat 40 · table header 16 · note H3 19 — **every size exactly correct**, resolved entirely from the literal fallbacks |
+| both | — | No horizontal overflow at 1400px in either mode |
+
+Mode B is the requested sign-off simulation, run for real rather than reasoned about.
+
+### A real bug the static checks could not have caught
+
+Rendering the page surfaced a genuine CSS defect that no amount of brace-counting would have found.
+
+`.tsa-svc-list li` and `.tsa-note-list li` used `display: grid; grid-template-columns: 14px 1fr`
+with the diamond bullet as the first grid item. **Grid promotes every child of the item to its own
+grid cell — including anonymous text nodes.** That works only while the `<li>` holds a single text
+node, which is true of every item in Legal.html. It is not true here:
+
+- Two service-list items carry an inline link (`<a>MuleSoft</a> and Celigo integration delivery`).
+- All six compliance-callout items are `<strong>Label</strong> — explanation`.
+
+In both cases the trailing text became a third grid item, placed on the next row inside the 14px
+bullet column, and rendered **one word per line**. The compliance callout was unreadable.
+
+Both rules now position the bullet absolutely with `padding-left: 24px` (the old 14px column plus
+its 10px gap), which renders identically for plain-text items and is immune to however many inline
+children an item has. Re-rendered and confirmed.
+
+**This is the one defect that would have shipped had the build stopped at the static suite.** It is
+also latent in `Legal.html` — that page is safe only because none of its list items happen to
+contain an inline element. Adding one link to a service-list bullet there would reproduce it.
+
+### One layout fix found by rendering, not by the checks
+
+The hero proof row originally carried four metrics. Rendered at 1440px it wrapped 3+1, and because
+the separator is an `li + li::before` diamond, the wrapped line opened with a leading diamond — it
+reads as a rendering fault rather than a design. Reduced to three, which fit on one line at every
+desktop width and wrap 2+1 on mobile. The entry removed is `98% client retention`, which now appears
+only in the navy stat grid — the better home for it, since "98%" needs the qualifier "Client
+retention — the measure we hold ourselves to" to be unambiguous, and the stat grid has room for it.
+The brief allows 3–4 metrics in this row.
+
 ### Two test expectations that were wrong, not the page
 
 Both showed up as failures on the first run and were corrected in the suite after checking the
@@ -439,4 +487,4 @@ stagger — one selector, no visual change to anything but the headline.
 | 9 | **`deployments` and `retention` missing from live `TWOPIR_STATS`** | Canonical facts with no key in the homepage object. The merge script and fallbacks handle it safely, but the backend should carry them |
 | 10 | **Class-D platform claims need re-verification at publish** | Platform capabilities move; the publishing skill's own review date is August 2026 |
 | 11 | **`--nav: 87px`** | Inherited from Legal as the measured live header height. Re-measure if the header has changed since |
-| 12 | **Two Legal.html template defects** | The missing keyframe names and the `rem` H1, both detailed in §3. Fixed here; should be back-ported to Legal.html so the next industry page doesn't inherit them |
+| 12 | **Three Legal.html template defects** | The missing keyframe names, the `rem` H1 (§3), and the grid-based list bullet that breaks on any item containing an inline element (§5). All three fixed here; all three should be back-ported to Legal.html so the next industry page doesn't inherit them |

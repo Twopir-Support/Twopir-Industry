@@ -1107,11 +1107,20 @@ article:has(#twopir-saas) {
   border-top: 1px solid var(--tsa-border-soft, rgba(0,175,246,0.22));
   margin-top: auto;
 }
+/* FIX: this was `display: grid; grid-template-columns: 14px 1fr`, with the
+   diamond as the first grid item. That works only while the <li> holds a
+   single text node — grid promotes EVERY child, including an anonymous text
+   node, to its own grid item, so an <li> containing `<a>link</a> and more
+   text` produced three items: diamond, link, and the trailing text wrapped
+   onto the next row inside the 14px column, one word per line. Two items in
+   this list carry an inline link.
+
+   Absolute positioning gives the identical result for plain-text items
+   (14px column + 10px gap = 24px of indent) and is immune to however many
+   inline children the item has. */
 #twopir-saas .tsa-svc-list li {
-  display: grid;
-  grid-template-columns: 14px 1fr;
-  gap: 0 10px;
-  align-items: start;
+  position: relative;
+  padding-left: 24px;
   font-size: 12.5px;
   font-weight: 400;
   line-height: 1.6;
@@ -1119,8 +1128,10 @@ article:has(#twopir-saas) {
 }
 #twopir-saas .tsa-svc-list li::before {
   content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
   width: 6px; height: 6px;
-  margin-top: 7px;
   background: var(--tsa-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
@@ -2180,19 +2191,23 @@ article:has(#twopir-saas) {
   padding-top: 16px;
   border-top: 1px solid var(--tsa-border-soft, rgba(0,175,246,0.22));
 }
+/* Same absolute-positioned bullet as .tsa-svc-list, and for the same reason:
+   every item here is `<strong>Label</strong> — explanation`, which under a
+   grid <li> becomes two grid items and collapses the explanation into the
+   14px bullet column. See the note on .tsa-svc-list above. */
 #twopir-saas .tsa-note-list li {
-  display: grid;
-  grid-template-columns: 14px 1fr;
-  gap: 0 10px;
-  align-items: start;
+  position: relative;
+  padding-left: 24px;
   font-size: var(--tsa-fs-sm, 13px);
   line-height: 1.6;
   color: var(--tsa-muted, #566b79);
 }
 #twopir-saas .tsa-note-list li::before {
   content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
   width: 6px; height: 6px;
-  margin-top: 7px;
   background: var(--tsa-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
@@ -2435,11 +2450,21 @@ article:has(#twopir-saas) {
              backend change to TWOPIR_STATS updates the page without an edit.
              No client-outcome percentages appear here: none are evidenced
              for a SaaS engagement, and an unevidenced number in the hero is
-             the fastest way to lose a page's credibility. -->
+             the fastest way to lose a page's credibility.
+
+             Three entries, not four. The row is a wrapping flex list and the
+             separator is an `li + li::before` diamond, so a fourth entry wraps
+             to a second line on a desktop viewport and that line opens with a
+             leading separator — it reads as a rendering fault. Three fit on one
+             line at every desktop width and wrap 2+1 on mobile.
+
+             The dropped entry is 98% client retention, which lives in the navy
+             stat grid instead. That is the right home for it: "98%" needs the
+             qualifier "Client retention — the measure we hold ourselves to" to
+             be unambiguous, and the stat grid has room for it. -->
         <ul class="tsa-hero-proof tsa-fade tsa-d4">
           <li><b class="twopir-clients">500+</b> Clients served</li>
           <li><b class="twopir-deployments">250+</b> CRM deployments</li>
-          <li><b class="twopir-retention">98%</b> Client retention</li>
           <li><b class="twopir-years">12+</b> Years delivery</li>
         </ul>
 

@@ -15,6 +15,8 @@ scripts/
   generate_schema.py  regenerates a page's FAQPage JSON-LD from its visible accordion
   verify_page.py      static checks: CSS integrity, scoping, schema, claims, a11y
   verify_browser.js   Chromium checks: overflow, accordions, computed type scale
+  verify_degradation.js  renders the page with the sheet deliberately broken, both
+                         Autoptimize failure modes, and checks nothing collapses
 docs/
   saas-build-report.md   build, preservation and SEO/AEO report for SaaS.html
 ```
@@ -66,3 +68,18 @@ Start from `Industry Pages/Legal.html` and change five things:
 - `px` / `clamp()` sizing only, never `rem`. The live theme sets `html { font-size: 10px }`.
 - `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns the wrapper into a scroll
   container and breaks the sticky callout.
+
+### Known defects in Legal.html, fixed in SaaS.html
+
+Back-port these before building the next page from `Legal.html`:
+
+1. **Keyframe rename list is incomplete** — see above. `tlgScroll` and `tlgFadeIn` are missing.
+2. **`rem` in the hero H1** — `.tlg-hero-title` is `clamp(1.85rem, 3.05vw, 3rem)`. The tail pass
+   overrides it, so it renders correctly today, but the theme sets `html { font-size: 10px }` and a
+   dropped tail block would leave the H1 at an 18.5px floor.
+3. **Grid-based list bullets break on inline children** — `.tlg-svc-list li` uses
+   `display: grid; grid-template-columns: 14px 1fr` with the diamond as the first grid item. Grid
+   promotes *every* child, anonymous text nodes included, to its own cell. The moment a list item
+   contains an inline element (`<a>`, `<strong>`), the trailing text lands in the 14px bullet
+   column and renders one word per line. Use an absolutely-positioned `::before` with
+   `padding-left: 24px` instead — identical rendering, no fragility.
