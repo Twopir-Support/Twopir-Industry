@@ -137,10 +137,14 @@ def verify(path):
         "" if vis == sch else f"{sum(1 for a, b in zip(vis, sch) if a != b)} of {len(vis)} mismatched")
 
     print("\n── Claims & entity governance ────────────────────────────")
-    # Claims checks read PAGE COPY, so HTML comments are stripped first.
-    # A build note explaining which fabricated metric was removed is not a
-    # claim the page makes, and nothing extracts it as one.
-    copy = re.sub(r'<!--.*?-->', '', s, flags=re.S)
+    # Claims checks read PAGE COPY — what a reader or a crawler actually
+    # sees. Style and script blocks, and HTML comments, are not that: a
+    # build note explaining which metric was removed, or a CSS comment
+    # quoting a metric to explain a layout choice, is not a claim the page
+    # makes and nothing extracts it as one.
+    copy = re.sub(r'<style.*?</style>', '', s, flags=re.S)
+    copy = re.sub(r'<script(?![^>]*ld\+json).*?</script>', '', copy, flags=re.S)
+    copy = re.sub(r'<!--.*?-->', '', copy, flags=re.S)
     bad = []
     for cls, val in CANON_STATS.items():
         for m in re.findall(rf'class="[^"]*\b{cls}\b[^"]*"[^>]*>([^<]*)<', s):

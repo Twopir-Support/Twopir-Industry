@@ -87,8 +87,8 @@ const WANT = {
   'pain-item p':     [15.4, 'Inter'],
   'svc-list li':     [14, 'Inter'],
   'eyebrow':         [14, 'JetBrains Mono'],
-  'table tbody th':  [19, 'Bricolage Grotesque'],
-  'table td':        [14, 'Inter'],
+  'table tbody th':  [19, 'Bricolage Grotesque'],   // SaaS only
+  'table td':        [14, 'Inter'],                 // SaaS only
   'seg-card h3':     [19, 'Bricolage Grotesque'],
 };
 

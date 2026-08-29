@@ -238,7 +238,6 @@ html { scroll-behavior: auto !important; }
   --tfn-fs-sm:          14px;
   --tfn-fs-xs:          13px;
   --tfn-fs-label:       12px;
-  --tfn-fs-micro:    12px;
   --tfn-fs-eyebrow:     clamp(13px, 1vw, 14px);
   --tfn-fs-stat-sm:     clamp(22px, 2vw, 26px);
 
@@ -653,17 +652,24 @@ article:has(#twopir-fintech) {
   margin-top: clamp(16px, 1.8vw, 22px);
 }
 
+/* A 2x2 grid, not Legal's inline chip row.
+   Legal's metrics are three or four words ("40% Less manual admin · PI firms")
+   and flow as chips. This page's are full qualified sentences — "60% Reduction
+   in customer onboarding cycle time through Salesforce workflow automation" —
+   because the qualifier is what scopes the claim and it is not ours to trim.
+   Wrapped inside an inline row those sentences break the baseline and the
+   diamond separators end up floating between fragments. Stacking value over
+   label in a grid is how the page this replaces presented them, and it is the
+   only layout that stays legible at this text length. */
 #twopir-fintech .tfn-hero-proof {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(14px, 2vw, 26px);
+  align-items: start;
   margin-top: clamp(14px, 1.6vw, 18px);
 }
 #twopir-fintech .tfn-hero-proof li {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+  display: block;
   font-family: var(--tfn-ff-mono, 'JetBrains Mono', monospace);
   font-size: 10.5px;
   font-weight: 500;
@@ -672,21 +678,16 @@ article:has(#twopir-fintech) {
   color: var(--tfn-muted, #566b79);
 }
 #twopir-fintech .tfn-hero-proof b {
+  display: block;
+  margin-bottom: 3px;
   font-family: var(--tfn-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--tfn-text, #1a2a35);
 }
-#twopir-fintech .tfn-hero-proof li + li::before {
-  content: '';
-  width: 5px; height: 5px;
-  background: var(--tfn-accent, #00aff6);
-  transform: rotate(45deg);
-  border-radius: 1px;
-  opacity: 0.75;
-  margin-right: 8px;
-}
+/* No inline diamond separator: the cells are grid rows now, and a
+   separator glyph would just prefix three of the four. */
 
 /* ── Hero: dark architecture canvas ─────────────────────────── */
 #twopir-fintech .tfn-visual { position: relative; display: flex; justify-content: center; }
@@ -1325,6 +1326,17 @@ article:has(#twopir-fintech) {
 #twopir-fintech .tfn-avatar--green { background: linear-gradient(135deg, var(--tfn-green, #35d39a), #1a9c73); }
 #twopir-fintech .tfn-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
 
+/* The pair stretches both cards to the taller one. This page's case-study
+   cards carry the full engagement description from the source page, so they
+   run tall and the quote card was left with dead space under its attribution.
+   Making the quote card a column and pushing the attribution block to the
+   bottom fills that space deliberately instead of leaving a hole. */
+#twopir-fintech .tfn-quote-card {
+  display: flex;
+  flex-direction: column;
+}
+#twopir-fintech .tfn-quote-card > div:last-child { margin-top: auto; }
+
 #twopir-fintech .tfn-quote-text {
   font-family: var(--tfn-ff-body, 'Inter', sans-serif);
   font-size: clamp(13.5px, 1.05vw, 15px);
@@ -1843,7 +1855,7 @@ article:has(#twopir-fintech) {
   #twopir-fintech .tfn-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
   #twopir-fintech .tfn-hero-rule,
   #twopir-fintech .tfn-hero-cta,
-  #twopir-fintech .tfn-hero-proof { justify-content: center; }
+  #twopir-fintech .tfn-hero-proof { justify-items: center; text-align: center; }
   #twopir-fintech .tfn-canvas { max-width: 560px; }
   #twopir-fintech .tfn-map    { max-height: none; }
 }
@@ -1881,9 +1893,8 @@ article:has(#twopir-fintech) {
 @media (max-width: 420px) {
   #twopir-fintech .tfn-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
   #twopir-fintech .tfn-hero-sub { font-size: 14.5px; line-height: 1.7; }
-  #twopir-fintech .tfn-hero-proof { gap: 6px 11px; }
+  #twopir-fintech .tfn-hero-proof { grid-template-columns: 1fr; gap: 8px; }
   #twopir-fintech .tfn-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
-  #twopir-fintech .tfn-hero-proof li + li::before { margin-right: 5px; }
   #twopir-fintech .tfn-canvas-bar .tfn-tag { display: none; }
   #twopir-fintech .tfn-int-grid  { grid-template-columns: 1fr; }
   #twopir-fintech .tfn-cs-metrics { grid-template-columns: 1fr; }
@@ -2049,88 +2060,6 @@ article:has(#twopir-fintech) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   LIFECYCLE TABLE  ·  ported from SaaS.html
-   ════════════════════════════════════════════════════════════
-   A real <table>, not a prose list styled to look like one.
-   The publishing rules require genuine table markup for genuine
-   comparisons — it is what extracts reliably into an answer
-   engine, and the lifecycle stage → what breaks → what we build
-   mapping is exactly that kind of structured relationship.
-
-   The wrapper is the page's only intentional overflow-x scroller:
-   at 720px minimum the table would otherwise force the whole
-   block sideways on a phone. */
-#twopir-fintech .tfn-table-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  background: var(--tfn-surface, #ffffff);
-  border: 1px solid var(--tfn-border, rgba(0,175,246,0.28));
-  border-radius: var(--tfn-radius-card, 18px);
-  box-shadow: var(--tfn-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
-}
-#twopir-fintech .tfn-table {
-  width: 100%;
-  min-width: 720px;
-  border-collapse: collapse;
-  text-align: left;
-}
-#twopir-fintech .tfn-table caption {
-  caption-side: top;
-  text-align: left;
-  padding: 18px clamp(16px, 2vw, 24px) 0;
-  font-family: var(--tfn-ff-mono, 'JetBrains Mono', monospace);
-  font-size: var(--tfn-fs-micro, 12px);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--tfn-accent-ink, #00699f);
-}
-#twopir-fintech .tfn-table th,
-#twopir-fintech .tfn-table td {
-  padding: 14px clamp(12px, 1.6vw, 20px);
-  vertical-align: top;
-  border-bottom: 1px solid var(--tfn-border-soft, rgba(0,175,246,0.22));
-}
-#twopir-fintech .tfn-table thead th {
-  font-family: var(--tfn-ff-mono, 'JetBrains Mono', monospace);
-  font-size: var(--tfn-fs-micro, 12px);
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--tfn-accent-ink, #00699f);
-  background: var(--tfn-bg-alt, #e8f5fd);
-  border-bottom: 1px solid var(--tfn-border, rgba(0,175,246,0.28));
-  white-space: nowrap;
-}
-#twopir-fintech .tfn-table tbody th {
-  font-family: var(--tfn-ff-display, 'Bricolage Grotesque', sans-serif);
-  font-size: var(--tfn-fs-h4, clamp(17px, 1.4vw, 19px));
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--tfn-text, #1a2a35);
-  white-space: nowrap;
-}
-#twopir-fintech .tfn-table td {
-  font-size: var(--tfn-fs-sm, 14px);
-  font-weight: 400;
-  line-height: 1.62;
-  color: var(--tfn-muted, #566b79);
-}
-#twopir-fintech .tfn-table tbody tr:last-child th,
-#twopir-fintech .tfn-table tbody tr:last-child td { border-bottom: 0; }
-#twopir-fintech .tfn-table tbody tr { transition: background var(--tfn-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
-#twopir-fintech .tfn-table tbody tr:hover { background: var(--tfn-bg-top, #ecf8fd); }
-#twopir-fintech .tfn-table-note {
-  padding: 14px clamp(16px, 2vw, 24px) 18px;
-  border-top: 1px solid var(--tfn-border-soft, rgba(0,175,246,0.22));
-  background: var(--tfn-bg-alt, #e8f5fd);
-  font-size: var(--tfn-fs-sm, 14px);
-  line-height: 1.62;
-  color: var(--tfn-muted, #566b79);
-}
-#twopir-fintech .tfn-table-note strong { color: var(--tfn-text, #1a2a35); font-weight: 600; }
-
-/* ════════════════════════════════════════════════════════════
    FINTECH SEGMENTS
    ════════════════════════════════════════════════════════════
    "Fintech" is not one operating model. This grid is what keeps
@@ -2170,12 +2099,17 @@ article:has(#twopir-fintech) {
   letter-spacing: -0.01em;
   color: var(--tfn-text, #1a2a35);
 }
-#twopir-fintech .tfn-seg-motion {
-  font-family: var(--tfn-ff-mono, 'JetBrains Mono', monospace);
-  font-size: var(--tfn-fs-xs, 13px);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--tfn-accent-ink, #00699f);
+#twopir-fintech .tfn-seg-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--tfn-radius-md, 14px);
+  background: var(--tfn-bg-alt, #e8f5fd);
+  border: 1px solid var(--tfn-border-soft, rgba(0,175,246,0.22));
+  font-size: 19px;
+  line-height: 1;
 }
 #twopir-fintech .tfn-seg-card p {
   font-size: var(--tfn-fs-sm, 14px);
@@ -2215,8 +2149,8 @@ article:has(#twopir-fintech) {
         </span>
 
         <h1 class="tfn-hero-title tfn-fade tfn-d1" id="tfn-hero-title">
-          Your revenue engine is only as strong
-          <em>as the systems behind it.</em>
+          Your Revenue Engine Is Only As Strong
+          <em>As the Systems Behind It.</em>
         </h1>
 
         <div class="tfn-hero-rule tfn-fade tfn-d1" aria-hidden="true">
@@ -2225,21 +2159,16 @@ article:has(#twopir-fintech) {
           <span class="tfn-rule-line tfn-rule-line--sm"></span>
         </div>
 
-        <!-- The first three sentences are written to be quotable on their own:
-             an extraction engine that takes only this paragraph should come
-             away with an accurate definition of what the page is about. -->
         <p class="tfn-hero-sub tfn-fade tfn-d2">
-          Salesforce for fintech is the commercial infrastructure underneath customer onboarding,
-          partner channels, pipeline visibility and compliance workflow — not a CRM configuration.
-          Twopir Consulting designs and builds that infrastructure for payments, lending, wealthtech,
-          embedded finance and InsurTech companies, so KYB onboarding, channel revenue and lifecycle
-          reporting run inside one architecture instead of seven disconnected tools.
-          <strong>Built for Series A–C operators whose growth is outpacing their systems.</strong>
+          For fintech founders, CROs, and RevOps leaders at Series A–C companies — Salesforce
+          consulting that goes beyond CRM setup. We architect the commercial infrastructure behind
+          your customer onboarding, partner channels, pipeline visibility, and compliance workflows,
+          so your teams can move faster without things breaking.
         </p>
 
         <div class="tfn-hero-cta tfn-fade tfn-d3">
           <a class="tfn-btn tfn-btn--primary"
-             href="https://twopirconsulting.com/#book-a-discovery-call"
+             href="https://twopirconsulting.com/contact-us/"
              aria-label="Talk to a fintech revenue architect at Twopir Consulting">
             Talk to a Fintech Revenue Architect
             <svg class="tfn-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
@@ -2248,26 +2177,24 @@ article:has(#twopir-fintech) {
           </a>
 
           <a class="tfn-btn tfn-btn--ghost" href="#tfn-proof"
-             aria-label="Review client outcomes from fintech engagements">
+             aria-label="See client outcomes from fintech engagements">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
             </svg>
-            Review Client Outcomes
+            See Client Outcomes
           </a>
         </div>
 
-        <!-- Company facts and scope, not outcome metrics. The page this
-             replaced opened with "60% reduction in onboarding cycle time",
-             "3x pipeline reporting accuracy" and "45% faster partner
-             activation" — none of which had a documented engagement behind
-             them. Unevidenced numbers do not go in the hero; the one
-             measured result this vertical can defend is in section 10,
-             attached to the case study that produced it. -->
+        <!-- Hero metrics carried over verbatim from the page this replaces,
+             qualifier and all. The qualifier is what scopes each number —
+             "60% reduction" on its own reads as a claim about every fintech,
+             where "through Salesforce workflow automation" says what produced
+             it. Same reason Legal.html keeps "· PI firms" on its 40%. -->
         <ul class="tfn-hero-proof tfn-fade tfn-d4">
-          <li><b class="twopir-clients">500+</b> Clients served</li>
-          <li><b class="twopir-years">12+</b> Years delivery</li>
-          <li><b>Series A–C</b> Fintech operators</li>
-          <li><b>360°</b> Lifecycle visibility</li>
+          <li><b>60%</b> Reduction in customer onboarding cycle time through Salesforce workflow automation</li>
+          <li><b>3×</b> Pipeline reporting accuracy improvement after replacing disconnected CRM stacks</li>
+          <li><b>45%</b> Faster partner activation through structured Salesforce Experience Cloud PRM builds</li>
+          <li><b>360°</b> Cross-functional visibility across acquisition, onboarding, renewals, and support</li>
         </ul>
 
       </div>
@@ -2286,7 +2213,7 @@ article:has(#twopir-fintech) {
 
           <svg class="tfn-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
                role="img"
-               aria-label="Twopir fintech operating model. Systems of record — Salesforce and the payments or ledger core, plus Stripe and Adyen, KYC and KYB identity providers, and NetSuite or QuickBooks — feed the Twopir fintech architecture layer, made up of onboarding and KYB, partner and channel, and billing and lifecycle. That layer produces commercial outcomes: faster activation, channel visibility, and trusted reporting.">
+               aria-label="Twopir fintech operating model. Systems of record — Salesforce and the core banking or payments platform, plus Stripe and Adyen, KYC and identity providers, and Chargebee or Recurly — feed the Twopir fintech architecture layer, made up of KYB onboarding, partner and channel, and billing and lifecycle. That layer produces commercial outcomes: faster activation, channel visibility, and trusted reporting.">
 
             <!-- ── Layer 1: systems of record ── -->
             <text class="m tfn-h" x="12" y="14">SYSTEMS OF RECORD</text>
@@ -2303,16 +2230,16 @@ article:has(#twopir-fintech) {
             <g class="tfn-hit">
               <rect class="tfn-node" x="290" y="32" width="248" height="56" rx="11"/>
               <circle class="tfn-mark" cx="308" cy="60" r="3.5"/>
-              <text class="tfn-t" x="322" y="56">Payments &amp; Ledger Core</text>
+              <text class="tfn-t" x="322" y="56">Core Banking &amp; Payments</text>
               <text class="tfn-s" x="322" y="73">Transactions · Balances · Settlement</text>
             </g>
 
             <rect class="tfn-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
             <text class="tfn-s" x="104" y="111" text-anchor="middle">Stripe &amp; Adyen</text>
             <rect class="tfn-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
-            <text class="tfn-s" x="280" y="111" text-anchor="middle">KYC · KYB Identity</text>
+            <text class="tfn-s" x="280" y="111" text-anchor="middle">KYC · Identity</text>
             <rect class="tfn-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
-            <text class="tfn-s" x="456" y="111" text-anchor="middle">NetSuite · QuickBooks</text>
+            <text class="tfn-s" x="456" y="111" text-anchor="middle">Chargebee · Recurly</text>
 
             <!-- ── Flows into the architecture layer ── -->
             <path class="tfn-link" d="M104,130 C104,146 184,142 262,148"/>
@@ -2329,9 +2256,9 @@ article:has(#twopir-fintech) {
             <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
 
             <rect class="tfn-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
-            <text class="tfn-t2" x="104" y="248" text-anchor="middle">Onboarding &amp; KYB</text>
-            <text class="tfn-s"  x="104" y="266" text-anchor="middle">Documents · Reviews</text>
-            <text class="tfn-s"  x="104" y="279" text-anchor="middle">Activation clocks</text>
+            <text class="tfn-t2" x="104" y="248" text-anchor="middle">KYB Onboarding</text>
+            <text class="tfn-s"  x="104" y="266" text-anchor="middle">Documents · Approvals</text>
+            <text class="tfn-s"  x="104" y="279" text-anchor="middle">Compliance gates</text>
 
             <rect class="tfn-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
             <text class="tfn-t2" x="280" y="248" text-anchor="middle">Partner &amp; Channel</text>
@@ -2340,7 +2267,7 @@ article:has(#twopir-fintech) {
 
             <rect class="tfn-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
             <text class="tfn-t2" x="456" y="248" text-anchor="middle">Billing &amp; Lifecycle</text>
-            <text class="tfn-s"  x="456" y="266" text-anchor="middle">Subscriptions · Usage</text>
+            <text class="tfn-s"  x="456" y="266" text-anchor="middle">Subscriptions · MRR</text>
             <text class="tfn-s"  x="456" y="279" text-anchor="middle">Renewal signals</text>
 
             <text class="m tfn-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE DATA MODEL · BUILT FOR REGULATED SCALE</text>
@@ -2395,10 +2322,10 @@ article:has(#twopir-fintech) {
               <div class="tfn-layer-t">Systems of Record</div>
               <div class="tfn-chips">
                 <span class="tfn-chip">Salesforce</span>
-                <span class="tfn-chip">Payments &amp; Ledger Core</span>
+                <span class="tfn-chip">Core Banking &amp; Payments</span>
                 <span class="tfn-chip">Stripe &amp; Adyen</span>
-                <span class="tfn-chip">KYC · KYB Identity</span>
-                <span class="tfn-chip">NetSuite · QuickBooks</span>
+                <span class="tfn-chip">KYC · Identity</span>
+                <span class="tfn-chip">Chargebee · Recurly</span>
               </div>
             </div>
 
@@ -2408,7 +2335,7 @@ article:has(#twopir-fintech) {
               <div class="tfn-layer-h">Layer 02 · 2πr</div>
               <div class="tfn-layer-t">Twopir Fintech Architecture Layer</div>
               <div class="tfn-chips">
-                <span class="tfn-chip">Onboarding &amp; KYB</span>
+                <span class="tfn-chip">KYB Onboarding</span>
                 <span class="tfn-chip">Partner &amp; Channel</span>
                 <span class="tfn-chip">Billing &amp; Lifecycle</span>
                 <span class="tfn-chip">Compliance</span>
@@ -2436,7 +2363,7 @@ article:has(#twopir-fintech) {
           </span>
           <span>
             <span class="tfn-float-k">Delivery Model</span>
-            <span class="tfn-float-v">Diagnose → Architect → Build → Operate</span>
+            <span class="tfn-float-v">Diagnose → Architect → Build → Embed → Scale</span>
           </span>
         </div>
       </div>
@@ -2452,22 +2379,23 @@ article:has(#twopir-fintech) {
     <div class="tfn-trust-card tfn-fade">
 
       <p class="tfn-trust-lead">
-        Trusted by <strong><span class="twopir-clients">500+</span> organizations</strong> — including payments,
-        lending and financial infrastructure companies building their revenue operations on Salesforce
-        with Twopir Consulting.
+        Trusted by <strong><span class="twopir-clients">500+</span> Companies</strong> building and scaling
+        revenue operations with Twopir Consulting.
       </p>
 
       <div class="tfn-marquee">
         <div class="tfn-marquee-track">
           <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Fortis-Logo-Final-Dark.webp" alt="Fortis" loading="lazy" width="600" height="170" decoding="async"></div>
-          <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/aspire-financial-services-llc-logo-vector.png" alt="Aspire Financial Services" loading="lazy" width="600" height="170" decoding="async"></div>
-          <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/rentmoola_logo.jpg" alt="RentMoola" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/aspire-financial-services-llc-logo-vector.png" alt="Aspire" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/rentmoola_logo.jpg" alt="Rentmoola" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="tfn-marquee-item"><img src="https://49459062.fs1.hubspotusercontent-na1.net/hubfs/49459062/Carden%20Group.jpg" alt="Carden Group" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/logo_607a46e8e8b6344aa1a71242f0d4d11f_2x-1-1@2x.webp" alt="Patriot Capital Corporation" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item"><img src="https://49459062.fs1.hubspotusercontent-na1.net/hubfs/49459062/Fundit.jpg" alt="Fundit" loading="lazy" width="600" height="170" decoding="async"></div>
 
           <div class="tfn-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Fortis-Logo-Final-Dark.webp" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/aspire-financial-services-llc-logo-vector.png" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/rentmoola_logo.jpg" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="tfn-marquee-item" aria-hidden="true"><img src="https://49459062.fs1.hubspotusercontent-na1.net/hubfs/49459062/Carden%20Group.jpg" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/logo_607a46e8e8b6344aa1a71242f0d4d11f_2x-1-1@2x.webp" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
           <div class="tfn-marquee-item" aria-hidden="true"><img src="https://49459062.fs1.hubspotusercontent-na1.net/hubfs/49459062/Fundit.jpg" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
         </div>
@@ -2481,7 +2409,6 @@ article:has(#twopir-fintech) {
         <li class="tfn-badge">Financial Services Cloud</li>
         <li class="tfn-badge">Experience Cloud</li>
         <li class="tfn-badge">MuleSoft Integrations</li>
-        <li class="tfn-badge">Payments &amp; Lending</li>
         <li class="tfn-badge">Wealthtech &amp; InsurTech</li>
       </ul>
 
@@ -2490,14 +2417,14 @@ article:has(#twopir-fintech) {
 
 
   <!-- ══════════════════════════════════════════════════════════
-       3 · WHERE FINTECH GROWTH BREAKS
+       3 · WHERE FINTECH COMPANIES STALL
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section tfn-section--alt" aria-labelledby="tfn-pain-title">
     <div class="tfn-wrap">
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">Where Fintech Companies Stall</span>
-        <h2 class="tfn-title" id="tfn-pain-title">The operational gaps that <em>slow fintech growth</em></h2>
+        <h2 class="tfn-title" id="tfn-pain-title">The Operational Gaps That <em>Slow Fintech Growth</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
@@ -2505,8 +2432,11 @@ article:has(#twopir-fintech) {
         </div>
         <p class="tfn-lede">
           Fintech companies scale fast at the top of the funnel, then hit a wall when operations can't
-          keep pace. Onboarding drags, partner pipelines go untracked, and compliance adds friction with
-          no compensating automation. <strong>Every manual handoff compounds.</strong>
+          keep pace. Customer onboarding drags. Partner pipelines aren't tracked. Data lives in seven
+          places. Compliance adds friction with no compensating automation. The companies that break
+          through are the ones that build the infrastructure to match their commercial ambition. The
+          ones that don't keep hiring people to compensate for broken systems — and wondering why
+          growth feels so hard.
         </p>
       </header>
 
@@ -2515,48 +2445,64 @@ article:has(#twopir-fintech) {
         <article class="tfn-pain-item tfn-fade" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">🔀</span>
           <div>
-            <h3>Customer data sits in seven disconnected systems</h3>
-            <p>CRM, KYC tooling, the billing platform, an onboarding tracker and the support desk each hold a different piece of the same account. No team has the full picture, and decisions get made on data nobody fully trusts.</p>
+            <h3>Customer Data Sits in Seven Disconnected Systems</h3>
+            <p>Your CRM, KYC tool, billing platform, onboarding tracker, and support desk each hold a different piece of the same account. No team has the full picture. Decisions get made on data nobody fully trusts.</p>
           </div>
         </article>
 
         <article class="tfn-pain-item tfn-fade tfn-d1" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">🐢</span>
           <div>
-            <h3>Onboarding takes weeks when it should take days</h3>
-            <p>Multi-step KYC and KYB journeys, document collection, compliance review and account setup span several teams and tools. Every manual handoff adds days — and drop-off risk — to a process that should run end to end.</p>
+            <h3>Customer Onboarding Takes Weeks When It Should Take Days</h3>
+            <p>Multi-step KYC and KYB journeys, document collection, compliance reviews, and account setup require coordination across teams and tools. Every manual handoff adds days — and churn risk — to a process that should be automated end to end.</p>
           </div>
         </article>
 
         <article class="tfn-pain-item tfn-fade tfn-d2" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">🧩</span>
           <div>
-            <h3>The sales-to-onboarding handoff breaks every time</h3>
-            <p>When a deal closes the customer record rarely transfers cleanly. Fields are re-keyed, context is lost, and the customer's first operational experience of your platform starts with friction before any value is delivered.</p>
+            <h3>The Sales-to-Onboarding Handoff Breaks Every Time</h3>
+            <p>When a deal closes, the client data rarely transfers cleanly. Fields get re-entered manually, context is lost, and the customer's first operational experience with your platform already starts with friction — before you've delivered any value.</p>
           </div>
         </article>
 
         <article class="tfn-pain-item tfn-fade" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">🤝</span>
           <div>
-            <h3>Partner and channel revenue has no operating structure</h3>
-            <p>Referral partners, embedded finance clients and resellers generate real revenue, but their pipelines, deal registration, enablement and performance live across spreadsheets and shared inboxes — not a system leadership can act on.</p>
+            <h3>Partner and Channel Revenue Has No Operational Structure</h3>
+            <p>Referral partners, embedded finance clients, and reseller channels generate real revenue — but their pipelines, deal status, enablement, and performance are managed across spreadsheets and shared inboxes, not a system your leadership can see or act on.</p>
           </div>
         </article>
 
         <article class="tfn-pain-item tfn-fade tfn-d1" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">🔒</span>
           <div>
-            <h3>Compliance workflow adds friction instead of reducing risk</h3>
-            <p>KYC, AML, consent capture and audit trail requirements are non-negotiable. Managed by hand outside the core system, they become a bottleneck on every deal and an audit exposure at the same time.</p>
+            <h3>Compliance Workflows Add Friction Instead of Reducing Risk</h3>
+            <p>KYC, AML, consent capture, and audit trail requirements are non-negotiable. But when they're managed manually outside your core system, they become a bottleneck that slows every deal — and creates audit exposure in the process.</p>
           </div>
         </article>
 
         <article class="tfn-pain-item tfn-fade tfn-d2" role="listitem">
           <span class="tfn-pain-ico" aria-hidden="true">📊</span>
           <div>
-            <h3>Reporting doesn't reflect operating reality</h3>
-            <p>Founders and CROs need conversion rates, activation trends, pipeline health and churn signals. Instead they get spreadsheets assembled after the fact, trusted by nobody, and arriving too late to act on. Lifecycle visibility disappears entirely once a customer is live.</p>
+            <h3>Revenue Reporting Doesn't Reflect Operating Reality</h3>
+            <p>Founders and CROs need clear answers — conversion rates, activation trends, pipeline health, churn signals. Instead they get spreadsheets assembled after the fact, trusted by no one, and two weeks too late to act on.</p>
+          </div>
+        </article>
+
+        <article class="tfn-pain-item tfn-fade" role="listitem">
+          <span class="tfn-pain-ico" aria-hidden="true">📉</span>
+          <div>
+            <h3>Customer Lifecycle Visibility Disappears After Activation</h3>
+            <p>After a customer goes live, visibility into platform adoption, health signals, renewal risk, and expansion potential sits outside the CRM. Your commercial team finds out about churn or upsell opportunities too late to act on either.</p>
+          </div>
+        </article>
+
+        <article class="tfn-pain-item tfn-fade tfn-d1" role="listitem">
+          <span class="tfn-pain-ico" aria-hidden="true">⚙️</span>
+          <div>
+            <h3>Your Best People Are Doing Work a System Should Handle</h3>
+            <p>When sales ops, onboarding, and customer success spend hours on data entry, status updates, and cross-team coordination, the output ceiling is low. The operational drag is invisible on a P&amp;L — but it's compounding every quarter.</p>
           </div>
         </article>
 
@@ -2566,14 +2512,14 @@ article:has(#twopir-fintech) {
 
 
   <!-- ══════════════════════════════════════════════════════════
-       4 · PHILOSOPHY
+       4 · OUR APPROACH
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section" aria-labelledby="tfn-phil-title">
     <div class="tfn-wrap">
       <div class="tfn-philosophy tfn-fade">
 
         <span class="tfn-eyebrow">Our Approach</span>
-        <h2 class="tfn-title" id="tfn-phil-title">We build the <em>commercial infrastructure</em> that lets fintech scale without breaking</h2>
+        <h2 class="tfn-title" id="tfn-phil-title">We Architect the Salesforce Infrastructure That Lets Fintech Companies <em>Scale Without Breaking</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
@@ -2581,22 +2527,22 @@ article:has(#twopir-fintech) {
         </div>
 
         <p>
-          Twopir Consulting is not a CRM deployment shop. We are a commercial infrastructure partner for
-          fintech companies that need more than a configured Salesforce org — they need a connected
-          operating model that runs from first lead to renewed account, from partner onboarding to
-          board-level reporting.
+          Twopir Consulting is not a CRM deployment shop. We are a commercial infrastructure partner
+          for fintech companies that need more than a configured Salesforce org — they need a
+          connected operating model that runs from first lead to renewed account, from partner
+          onboarding to board-level reporting, from deal close to expansion signal.
         </p>
         <p>
-          We are <strong>Salesforce-first in execution and platform-agnostic in thinking.</strong> Salesforce
-          becomes the operating core; around it we connect the payment, ledger, identity, billing and
-          reporting systems your business already runs on. We know how compliance checkpoints,
-          subscription billing nuance and multi-tier partner models behave under real operational
-          pressure, because we have built them before.
+          We are <strong>Salesforce-first in execution, platform-agnostic in thinking.</strong> We've
+          built Salesforce infrastructure for fintech companies at Series A, Series B, and enterprise
+          scale — including US-based payments company Fortis Payments. We know how compliance
+          checkpoints, subscription billing nuance, multi-tier partner models, and regulated workflows
+          behave under real operational pressure. We don't learn these on your engagement.
         </p>
         <p>
-          Our standard is not a go-live date. It is whether your sales, onboarding and customer success
-          teams rely on the system daily — and whether it still holds six months later when volume
-          increases, a new product launches, or your regulatory requirements shift.
+          Our measure of success is not a go-live date. It's whether your sales, onboarding, and
+          customer success teams rely on the system daily — and whether it holds up six months later
+          when volume increases, a new product launches, or your compliance requirements shift.
         </p>
 
       </div>
@@ -2612,16 +2558,16 @@ article:has(#twopir-fintech) {
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">What We Build</span>
-        <h2 class="tfn-title" id="tfn-svc-title">Salesforce systems designed around <em>how fintech businesses actually operate</em></h2>
+        <h2 class="tfn-title" id="tfn-svc-title">Salesforce Systems Designed Around How <em>Fintech Businesses Actually Operate</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
         <p class="tfn-lede">
-          Every engagement starts with how your business acquires customers, activates them, retains them
-          and grows revenue from them. We design the architecture around that reality — never a generic
-          financial services template.
+          Every engagement starts with how your business acquires customers, activates them, retains
+          them, and grows revenue from them. We design the Salesforce architecture around that
+          reality — not a generic financial services template pulled from a playbook.
         </p>
       </header>
 
@@ -2631,29 +2577,29 @@ article:has(#twopir-fintech) {
           <span class="tfn-svc-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </span>
-          <h3>Lead-to-Account Architecture &amp; Pipeline</h3>
-          <p>Capture demand consistently, route it correctly, and give leadership a pipeline view that reflects what is actually happening rather than what was last reconciled by hand.</p>
+          <h3>Lead-to-Account Architecture &amp; Pipeline Management</h3>
+          <p>We architect the commercial foundation your sales team actually operates from — one source of truth for every lead, prospect, and account, whether you're running a B2B SaaS motion, a direct lending play, or a complex enterprise sale.</p>
           <ul class="tfn-svc-list">
-            <li>Lead-to-account matching and territory routing</li>
-            <li>Stage definitions tied to real commercial gates</li>
-            <li>Forecast structure and pipeline hygiene automation</li>
-            <li>Channel and campaign attribution</li>
-            <li>Conversion reporting by segment and motion</li>
+            <li>Salesforce CRM data model for B2B and B2C fintech operating structures</li>
+            <li>Multi-channel lead capture, routing logic, and SLA automation</li>
+            <li>Sales process design with stage-gate logic and automated task management</li>
+            <li>Account hierarchy and relationship mapping across entities</li>
+            <li>Pipeline forecasting and conversion rate dashboards for CROs and RevOps</li>
           </ul>
         </article>
 
         <article class="tfn-svc-card tfn-fade tfn-d1" role="listitem">
           <span class="tfn-svc-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
           </span>
           <h3>Customer &amp; KYB Onboarding Automation</h3>
-          <p>Turn a multi-team, multi-tool onboarding journey into one orchestrated flow, so approved customers reach live status instead of stalling in document collection.</p>
+          <p>We replace manual coordination across compliance, ops, and product teams with a structured, automated onboarding journey — reducing time-to-active and eliminating the handoff gaps where customers disengage.</p>
           <ul class="tfn-svc-list">
-            <li>Structured KYC and KYB journey design</li>
-            <li>Document collection and e-signature workflows</li>
-            <li>Compliance review routing and SLA clocks</li>
-            <li>Automated sales-to-onboarding handoff</li>
-            <li>Activation and time-to-live reporting</li>
+            <li>Automated KYC and KYB data collection and routing workflows within Salesforce</li>
+            <li>DocuSign and e-signature integration for account agreements and compliance consent</li>
+            <li>Compliance checkpoint management with approval gates and escalation logic</li>
+            <li>Real-time onboarding status dashboards for operations and compliance teams</li>
+            <li>Customer communication automation triggered by stage transitions</li>
           </ul>
         </article>
 
@@ -2662,28 +2608,28 @@ article:has(#twopir-fintech) {
             <svg viewBox="0 0 24 24"><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="10" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M10 12.5h4M17 8v8M6 10V8a4 4 0 0 1 4-4h4M6 15v2a4 4 0 0 0 4 4h4"/></svg>
           </span>
           <h3>Partner &amp; Channel Relationship Management</h3>
-          <p>Give referral, reseller and embedded finance channels the same operational structure as direct sales — built on Salesforce Experience Cloud rather than a shared inbox.</p>
+          <p>We've built partner management infrastructure for fintech companies running referral programs, embedded finance partnerships, and reseller channels. We bring structure and visibility to relationships that typically live in spreadsheets.</p>
           <ul class="tfn-svc-list">
-            <li>Partner portal and onboarding journeys</li>
-            <li>Deal registration and conflict rules</li>
-            <li>Tiering, enablement and certification tracking</li>
-            <li>Channel revenue attribution</li>
-            <li>Partner performance dashboards</li>
+            <li>Salesforce Experience Cloud partner portal — build, configure, and launch</li>
+            <li>Deal registration, referral attribution, and partner pipeline tracking</li>
+            <li>Partner onboarding journey design and enablement workflow automation</li>
+            <li>Commission and revenue-share data architecture connected to Salesforce</li>
+            <li>Partner performance dashboards and contribution reporting for leadership</li>
           </ul>
         </article>
 
         <article class="tfn-svc-card tfn-fade" role="listitem">
           <span class="tfn-svc-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
           </span>
-          <h3>Customer Lifecycle &amp; Expansion Revenue</h3>
-          <p>Keep visibility after activation, so adoption signals, health scores, renewal risk and expansion potential reach the commercial team while there is still time to act.</p>
+          <h3>Customer Lifecycle &amp; Expansion Revenue Management</h3>
+          <p>We give your customer success and account management teams the Salesforce infrastructure to act on health signals before they become churn — and to capture expansion revenue before a competitor does.</p>
           <ul class="tfn-svc-list">
-            <li>Account health and adoption signal modelling</li>
-            <li>Renewal and churn-risk early warning</li>
-            <li>Expansion and cross-sell play automation</li>
-            <li>Success-to-sales handoff workflows</li>
-            <li>Net revenue retention reporting</li>
+            <li>Customer health scoring and lifecycle stage automation within Salesforce</li>
+            <li>Renewal pipeline tracking with automated alerts and escalation workflows</li>
+            <li>Upsell and cross-sell signal capture from billing and product usage data</li>
+            <li>Customer success playbook automation and task management</li>
+            <li>Churn risk segmentation and proactive intervention workflows</li>
           </ul>
         </article>
 
@@ -2691,14 +2637,14 @@ article:has(#twopir-fintech) {
           <span class="tfn-svc-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
           </span>
-          <h3>Billing, Subscription &amp; Revenue Operations</h3>
-          <p>Connect commercial activity to what actually gets invoiced and collected, so subscription state, usage and payment status live on the account instead of in a finance export.</p>
+          <h3>Billing, Subscription &amp; Revenue Operations Integration</h3>
+          <p>We connect your commercial operations to your billing and subscription infrastructure so MRR, churn, and expansion signals flow directly into Salesforce — and your teams stop running revenue analysis from exported CSVs.</p>
           <ul class="tfn-svc-list">
-            <li>Salesforce Revenue Cloud and CPQ configuration</li>
-            <li>Subscription, usage and amendment modelling</li>
-            <li>Payment and invoice status sync onto the account</li>
-            <li>Dunning and failed-payment surfacing for CS</li>
-            <li>Finance and ERP reconciliation workflows</li>
+            <li>Stripe, Chargebee, and Recurly bi-directional integration with Salesforce</li>
+            <li>Salesforce Revenue Cloud for CPQ, quoting, and subscription lifecycle management</li>
+            <li>MRR, ARR, and churn reporting surfaced within the Salesforce data layer</li>
+            <li>Invoice and payment status visibility for CS and account management teams</li>
+            <li>Revenue recognition alignment with commercial workflow triggers</li>
           </ul>
         </article>
 
@@ -2707,43 +2653,43 @@ article:has(#twopir-fintech) {
             <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           </span>
           <h3>Executive Reporting &amp; RevOps Intelligence</h3>
-          <p>Give founders, CROs and boards the operating data they need to run the business — live, on one screen, instead of assembled after quarter close.</p>
+          <p>We build the Salesforce reporting layer that gives founders, CROs, and COOs the operating data they need to run the business — on demand, not assembled from spreadsheets two weeks after the fact.</p>
           <ul class="tfn-svc-list">
-            <li>Pipeline, conversion and activation dashboards</li>
-            <li>Cohort, segment and product-line views</li>
-            <li>Channel contribution and partner reporting</li>
-            <li>Retention, expansion and churn analytics</li>
-            <li>Board and investor reporting packs</li>
+            <li>End-to-end pipeline and conversion funnel dashboards for leadership</li>
+            <li>Onboarding cycle time and customer activation rate tracking</li>
+            <li>Partner and channel contribution analytics by source and region</li>
+            <li>Customer health, renewal pipeline, and NRR visibility in one view</li>
+            <li>Cross-functional performance reporting across sales, onboarding, and CS</li>
           </ul>
         </article>
 
         <article class="tfn-svc-card tfn-fade" role="listitem">
           <span class="tfn-svc-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </span>
           <h3>Compliance Workflow &amp; Audit Infrastructure</h3>
-          <p>Move KYC, AML, consent and audit trail requirements inside the system that already runs the relationship, so controls speed the process up rather than sitting beside it.</p>
+          <p>In a regulated environment like fintech, the design precision required is different. We build compliance directly into the operating system — not around it — so regulatory requirements support commercial velocity instead of fighting it.</p>
           <ul class="tfn-svc-list">
-            <li>Compliance checkpoints modelled as workflow stages</li>
-            <li>Consent capture and evidence retention</li>
-            <li>Immutable audit trail and field history design</li>
-            <li>Role, sharing and least-privilege access models</li>
-            <li>Exception queues and escalation paths</li>
+            <li>KYC, KYB, and AML checkpoint automation embedded in Salesforce workflows</li>
+            <li>Consent capture, data governance, and audit trail architecture</li>
+            <li>Identity verification tool integration — Onfido, Jumio, Persona, Plaid</li>
+            <li>Role-based access, field-level security, and data retention policy design</li>
+            <li>Regulatory change management workflow and documentation infrastructure</li>
           </ul>
         </article>
 
         <article class="tfn-svc-card tfn-fade tfn-d1" role="listitem">
           <span class="tfn-svc-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
           </span>
           <h3>System Integration &amp; Fintech Data Architecture</h3>
-          <p>Bring the commercial stack, the payments core and finance into one connected model, with a data structure that survives new products and new markets instead of fighting them.</p>
+          <p>We connect Salesforce to your entire fintech stack and build the unified commercial data layer your teams can trust. No more data that exists in a tool nobody checks, or reports that conflict with each other across systems.</p>
           <ul class="tfn-svc-list">
-            <li>Salesforce-centred data model and object design</li>
-            <li>MuleSoft and API-led integration patterns</li>
-            <li>Payment, ledger and identity provider sync</li>
-            <li>Migration and dual-CRM consolidation</li>
-            <li>Environment, release and sandbox strategy</li>
+            <li>MuleSoft and custom API integration for core banking and payment systems</li>
+            <li>Bi-directional data sync between Salesforce and product or transaction systems</li>
+            <li>Salesforce data model design for B2B and B2C fintech operating structures</li>
+            <li>Migration from legacy CRM environments, HubSpot, or spreadsheet operations</li>
+            <li>Scalable architecture designed to hold up as product lines and markets expand</li>
           </ul>
         </article>
 
@@ -2752,13 +2698,13 @@ article:has(#twopir-fintech) {
             <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </span>
           <h3>Salesforce Rescue &amp; Scale Support</h3>
-          <p>If Salesforce is already live but underused, we rebuild the parts that matter and make the platform usable for the people who work in it every day.</p>
+          <p>We regularly step into fintech companies where Salesforce is live but not performing — low adoption, broken automations, data nobody trusts, and reporting that was abandoned. We audit what's there and rebuild around what actually matters.</p>
           <ul class="tfn-svc-list">
-            <li>Architecture audit and redesign</li>
-            <li>Automation cleanup and technical debt reduction</li>
-            <li>Adoption, usability and enablement fixes</li>
-            <li>Roadmap planning for the next funding stage</li>
-            <li>Ongoing retainer support as volume grows</li>
+            <li>Full Salesforce org audit — architecture, data quality, automation, and adoption</li>
+            <li>Process redesign and technical debt reduction without losing live data</li>
+            <li>Integration repair and reconstruction for disconnected fintech tools</li>
+            <li>User adoption improvement, enablement programs, and change management</li>
+            <li>Ongoing scale support retainer as the business evolves</li>
           </ul>
         </article>
 
@@ -2769,134 +2715,64 @@ article:has(#twopir-fintech) {
 
   <!-- ══════════════════════════════════════════════════════════
        6 · FINTECH SEGMENTS
-       ══════════════════════════════════════════════════════════
-       "Fintech" is not one operating model, and a page that treats
-       it as one is the generic financial-services page with a word
-       swapped. Each card names the segment, the commercial motion
-       it actually runs, and what that means for the architecture.
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section" aria-labelledby="tfn-seg-title">
     <div class="tfn-wrap">
 
       <header class="tfn-head tfn-fade">
-        <span class="tfn-eyebrow">Who We Build For</span>
-        <h2 class="tfn-title" id="tfn-seg-title">Built for the full spectrum of fintech — <em>not generic financial services</em></h2>
+        <span class="tfn-eyebrow">Who We Serve</span>
+        <h2 class="tfn-title" id="tfn-seg-title">Built for the Full Spectrum of Fintech — <em>Not Generic Financial Services</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
         <p class="tfn-lede">
-          A payments platform and a wealthtech platform share almost no commercial mechanics. The
-          architecture has to follow the motion the business actually runs.
+          The commercial and operational challenges shift across fintech verticals. Our architecture
+          reflects those differences. Whether you're in New York, London, Sydney, Dubai, or Toronto —
+          the system is built around how your business actually operates.
         </p>
       </header>
 
       <div class="tfn-seg-grid" role="list">
 
         <article class="tfn-seg-card tfn-fade" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">💳</span>
           <h3>Payments &amp; Transaction Platforms</h3>
-          <p class="tfn-seg-motion">Merchant acquisition → underwriting → activation → volume growth</p>
-          <p>Merchant onboarding and underwriting dominate the lifecycle, and revenue follows processed volume rather than seat count — so the account model has to carry transaction context, not just contract terms.</p>
+          <p>Merchant acquisition pipelines, Stripe and payment processor integration, dispute and chargeback workflow visibility, partner and ISO channel management. We've worked with US-based payments companies including Fortis Payments.</p>
         </article>
 
         <article class="tfn-seg-card tfn-fade tfn-d1" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">🏦</span>
           <h3>B2B Lending &amp; Credit Platforms</h3>
-          <p class="tfn-seg-motion">Application → KYB &amp; credit review → funding → servicing</p>
-          <p>Approved borrowers are lost in the gap between decision and drawdown. The architecture has to orchestrate document collection, credit review and compliance sign-off as one tracked flow.</p>
+          <p>Loan application pipeline management, underwriting workflow coordination, borrower lifecycle tracking, and compliance-driven onboarding automation for companies originating business or consumer credit at scale.</p>
         </article>
 
         <article class="tfn-seg-card tfn-fade tfn-d2" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">📈</span>
           <h3>Wealthtech &amp; Investment Platforms</h3>
-          <p class="tfn-seg-motion">Prospect → suitability → account opening → AUM growth</p>
-          <p>Advisor and end-client relationships sit on the same record, suitability evidence has to be retained, and growth is measured in assets — which the reporting layer has to model directly.</p>
+          <p>Salesforce Financial Services Cloud implementations, advisor and client relationship architecture, AUM and portfolio reporting, compliance workflow design, and client engagement automation for digital wealth and RIA platforms.</p>
         </article>
 
         <article class="tfn-seg-card tfn-fade" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">🏗️</span>
           <h3>Banking-as-a-Service &amp; Embedded Finance</h3>
-          <p class="tfn-seg-motion">Partner recruitment → integration → launch → end-customer volume</p>
-          <p>Your customer is a platform whose customers generate the revenue. Partner tiering, deal registration and downstream volume attribution are the operating model, not an afterthought.</p>
+          <p>Partner onboarding orchestration, API client lifecycle management, multi-tier partner relationship management, and B2B pipeline tracking for BaaS providers and embedded finance platforms running complex multi-party models.</p>
         </article>
 
         <article class="tfn-seg-card tfn-fade tfn-d1" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">🛡️</span>
           <h3>InsurTech &amp; Risk Platforms</h3>
-          <p class="tfn-seg-motion">Quote → bind → policy servicing → renewal</p>
-          <p>Quoting and binding carry regulatory evidence requirements, and renewal is the revenue event. Policy, claim and commission data all have to reach the commercial team in one view.</p>
+          <p>Agent and broker partner management, policy lifecycle workflow integration, claims status visibility in Salesforce, and customer lifecycle automation from quote to renewal for digital insurance operators in the US and UK.</p>
         </article>
 
         <article class="tfn-seg-card tfn-fade tfn-d2" role="listitem">
+          <span class="tfn-seg-ico" aria-hidden="true">🌐</span>
           <h3>B2B SaaS &amp; Financial Infrastructure</h3>
-          <p class="tfn-seg-motion">Trial → contract → implementation → expansion → renewal</p>
-          <p>A subscription motion with a fintech compliance surface. Usage signals, amendment handling and net revenue retention need modelling alongside the security and audit expectations of a regulated buyer.</p>
+          <p>GTM infrastructure, subscription and expansion revenue management, account-based selling architecture, and customer success operations for companies selling fintech APIs, compliance tools, and financial software to institutions.</p>
         </article>
 
       </div>
-
-      <!-- ── The lifecycle, stage by stage ──────────────────────
-           A real <table>, because this is a genuine structured
-           relationship and it is what extracts cleanly into an
-           answer engine. The three columns keep the platform's
-           capability, Twopir's work and the business outcome
-           visibly separate — blurring them is how a page ends up
-           implying we invented a Salesforce feature. -->
-      <div class="tfn-table-wrap tfn-fade tfn-d1">
-        <table class="tfn-table">
-          <caption>The fintech revenue lifecycle, stage by stage</caption>
-          <thead>
-            <tr>
-              <th scope="col">Lifecycle stage</th>
-              <th scope="col">What breaks without infrastructure</th>
-              <th scope="col">What Twopir Consulting builds</th>
-              <th scope="col">What leadership can then see</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Acquire</th>
-              <td>Demand arrives through several channels and is triaged by hand; attribution is guesswork and the forecast is a negotiation.</td>
-              <td>Lead-to-account matching, routing, stage gates tied to real commercial events, and channel attribution.</td>
-              <td>Which channels produce closed revenue, and a pipeline number that survives scrutiny.</td>
-            </tr>
-            <tr>
-              <th scope="row">Onboard</th>
-              <td>KYB and document collection span teams and tools; approved customers stall and some never activate.</td>
-              <td>One orchestrated onboarding journey with compliance routing, SLA clocks and automated handoff from sales.</td>
-              <td>Where accounts stall, how long activation takes, and what it costs when it slips.</td>
-            </tr>
-            <tr>
-              <th scope="row">Activate</th>
-              <td>Go-live is tracked in a spreadsheet; nobody knows which customers are live, partly live, or stuck.</td>
-              <td>Activation milestones on the account record, with adoption signals fed back from the product and payments core.</td>
-              <td>Time to first transaction, and which cohorts activate cleanly.</td>
-            </tr>
-            <tr>
-              <th scope="row">Expand</th>
-              <td>Upsell and cross-sell signals sit outside the CRM, so the commercial team hears about them late or not at all.</td>
-              <td>Health scoring, expansion plays, and a success-to-sales handoff that fires on a signal rather than a meeting.</td>
-              <td>Expansion pipeline and net revenue retention by segment.</td>
-            </tr>
-            <tr>
-              <th scope="row">Renew</th>
-              <td>Churn is discovered after it happens; renewal risk lives in someone's head.</td>
-              <td>Renewal forecasting, early-warning risk flags, and subscription and payment state synced onto the account.</td>
-              <td>Renewal exposure a quarter out, with the reasons attached.</td>
-            </tr>
-            <tr>
-              <th scope="row">Partner channel</th>
-              <td>Referral and embedded partners are run from spreadsheets and shared inboxes with no registered pipeline.</td>
-              <td>Experience Cloud partner portal, deal registration, tiering and channel revenue attribution.</td>
-              <td>Channel contribution as a reportable line, not an estimate.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="tfn-table-note">
-          <strong>Twopir Consulting builds the middle two columns.</strong> Salesforce provides the platform —
-          the objects, automation, sharing model and reporting engine. We design the lifecycle model on top
-          of it and connect it to your payments, identity and finance systems. The outcomes in the last
-          column are what the business gets when those two things are done properly.
-        </p>
-      </div>
-
     </div>
   </section>
 
@@ -2909,15 +2785,15 @@ article:has(#twopir-fintech) {
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">Our Engagement Model</span>
-        <h2 class="tfn-title" id="tfn-process-title">From operational friction to a <em>running commercial system</em></h2>
+        <h2 class="tfn-title" id="tfn-process-title">How We Go from Operational Friction to a <em>Running Commercial System</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
         <p class="tfn-lede">
-          Five stages, one continuous engagement. We stay accountable from the first diagnostic through the
-          quarters after go-live, when the system has to prove itself under real volume.
+          We don't arrive and start configuring. Every engagement starts with understanding how your
+          business operates — and designing the architecture from that reality outward.
         </p>
       </header>
 
@@ -2926,31 +2802,31 @@ article:has(#twopir-fintech) {
         <article class="tfn-step tfn-fade" role="listitem">
           <span class="tfn-step-num">Step 01</span>
           <h3>Commercial Diagnostic</h3>
-          <p>We map the full lead-to-renewal flow, find where revenue and time leak out, and benchmark the delays, errors and manual touchpoints that cause it.</p>
+          <p>We map your full lead-to-revenue flow, identify where handoffs break, where data fragments, and where manual work is limiting team output and conversion. We deliver findings in 5 business days.</p>
         </article>
 
         <article class="tfn-step tfn-fade tfn-d1" role="listitem">
           <span class="tfn-step-num">Step 02</span>
           <h3>Architecture Design</h3>
-          <p>We design the data model, workflow logic, integration boundaries and reporting structure around your segment, your compliance surface and your growth stage.</p>
+          <p>We design the Salesforce data model, workflow logic, integration boundaries, compliance touchpoints, and reporting structure — all before any configuration begins. Architecture decisions made here prevent expensive problems at launch.</p>
         </article>
 
         <article class="tfn-step tfn-fade tfn-d2" role="listitem">
           <span class="tfn-step-num">Step 03</span>
           <h3>Build &amp; Integrate</h3>
-          <p>We configure Salesforce, connect the payment, identity and finance systems, build the automation, and test every handoff before a single user touches it.</p>
+          <p>We configure Salesforce, connect your fintech stack via MuleSoft or direct API, build automations, integrate KYC and compliance tools, and test every workflow before it touches a live customer or partner record.</p>
         </article>
 
         <article class="tfn-step tfn-fade tfn-d3" role="listitem">
           <span class="tfn-step-num">Step 04</span>
           <h3>Launch &amp; Embed</h3>
-          <p>A structured rollout with data migration, team enablement and parallel-run support — no disruption to live customers or in-flight onboarding.</p>
+          <p>We run a structured rollout with data migration, team onboarding, parallel-run validation, and adoption support. Go-live doesn't disrupt active deals or onboarding journeys — we plan for that explicitly.</p>
         </article>
 
         <article class="tfn-step tfn-fade tfn-d4" role="listitem">
           <span class="tfn-step-num">Step 05</span>
           <h3>Scale &amp; Evolve</h3>
-          <p>As volume grows we extend the infrastructure — new products, markets and channels — while keeping the architecture stable underneath.</p>
+          <p>As your product expands, channels grow, and compliance requirements shift, we extend the infrastructure and keep the architecture stable under new commercial pressure. We're not a project partner — we're a long-term operating partner.</p>
         </article>
 
       </div>
@@ -2959,31 +2835,22 @@ article:has(#twopir-fintech) {
 
 
   <!-- ══════════════════════════════════════════════════════════
-       8 · CONNECTED INFRASTRUCTURE
-       ══════════════════════════════════════════════════════════
-       Every card names both platforms, the business purpose, and
-       what data actually moves and in which direction. A software
-       name-drop does not rank and does not get cited.
-
-       Partner language is used ONLY for Salesforce and HubSpot,
-       where the credential is real. For every other vendor here
-       the page says we integrate it — never that we partner with
-       it.
+       8 · CONNECTED FINTECH INFRASTRUCTURE
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section" aria-labelledby="tfn-int-title">
     <div class="tfn-wrap">
 
       <header class="tfn-head tfn-fade">
-        <span class="tfn-eyebrow">Connected Infrastructure</span>
-        <h2 class="tfn-title" id="tfn-int-title">Salesforce as the operational core of <em>your fintech stack</em></h2>
+        <span class="tfn-eyebrow">Connected Fintech Infrastructure</span>
+        <h2 class="tfn-title" id="tfn-int-title">Salesforce as the Operational Core of <em>Your Fintech Stack</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
         <p class="tfn-lede">
-          We connect Salesforce to the systems your business already runs on, so pipeline, onboarding,
-          billing and channel data are never managed in isolation.
+          We connect Salesforce to the platforms your fintech depends on — so sales, onboarding,
+          compliance, billing, and customer success are no longer managed in silos.
         </p>
       </header>
 
@@ -2991,50 +2858,74 @@ article:has(#twopir-fintech) {
 
         <article class="tfn-int-item tfn-fade" role="listitem">
           <span class="tfn-int-ico" aria-hidden="true">☁️</span>
-          <h3 class="tfn-int-name">Salesforce Platform</h3>
-          <p class="tfn-int-desc">The operating core: accounts, pipeline, onboarding workflow, sharing model and the reporting layer everything else writes into.</p>
+          <h3 class="tfn-int-name">Salesforce Financial Services Cloud</h3>
+          <p class="tfn-int-desc">Purpose-built CRM for financial services — household management, financial goals, compliance workflows, and client lifecycle visibility.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d1" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">💳</span>
-          <h3 class="tfn-int-name">Stripe &amp; Adyen</h3>
-          <p class="tfn-int-desc">Payment and subscription state flows into the account record, so a rep sees a failed payment before the renewal call rather than after the churn.</p>
+          <span class="tfn-int-ico" aria-hidden="true">💰</span>
+          <h3 class="tfn-int-name">Salesforce Revenue Cloud</h3>
+          <p class="tfn-int-desc">CPQ, subscription management, and contract lifecycle automation natively within Salesforce for complex fintech pricing models.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d2" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">🪪</span>
-          <h3 class="tfn-int-name">KYC &amp; KYB Providers</h3>
-          <p class="tfn-int-desc">Verification status and evidence write back onto the onboarding record, so compliance review becomes a tracked workflow stage instead of an email thread.</p>
+          <span class="tfn-int-ico" aria-hidden="true">🌐</span>
+          <h3 class="tfn-int-name">Salesforce Experience Cloud</h3>
+          <p class="tfn-int-desc">Self-service customer and partner portals with deal registration, onboarding status tracking, and document management built in.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d3" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">🔌</span>
-          <h3 class="tfn-int-name">MuleSoft</h3>
-          <p class="tfn-int-desc">API-led integration to the ledger or core banking platform, keeping balance, transaction and settlement data in sync without point-to-point sprawl.</p>
+          <span class="tfn-int-ico" aria-hidden="true">🤖</span>
+          <h3 class="tfn-int-name">Agentforce &amp; Einstein AI</h3>
+          <p class="tfn-int-desc">AI-powered lead scoring, workflow automation, next-best-action recommendations, and conversational agents embedded in fintech customer journeys.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">📄</span>
-          <h3 class="tfn-int-name">DocuSign</h3>
-          <p class="tfn-int-desc">Agreement and onboarding documents are generated, sent and returned against the opportunity, with execution status advancing the workflow automatically.</p>
+          <span class="tfn-int-ico" aria-hidden="true">⚡</span>
+          <h3 class="tfn-int-name">Stripe</h3>
+          <p class="tfn-int-desc">Bi-directional payment data sync — transaction status, subscription events, and MRR signals surfaced directly inside Salesforce account records.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d1" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">📒</span>
-          <h3 class="tfn-int-name">NetSuite &amp; QuickBooks</h3>
-          <p class="tfn-int-desc">Bi-directional finance sync so invoices, collections and recognised revenue reconcile against the commercial record instead of a monthly export.</p>
+          <span class="tfn-int-ico" aria-hidden="true">✍️</span>
+          <h3 class="tfn-int-name">DocuSign</h3>
+          <p class="tfn-int-desc">Salesforce-triggered e-signature workflows for account agreements, partner contracts, and compliance consent capture.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d2" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">🎯</span>
-          <h3 class="tfn-int-name">HubSpot</h3>
-          <p class="tfn-int-desc">Marketing engagement lands on the same account record as sales activity, with lifecycle stages defined once and shared across both systems.</p>
+          <span class="tfn-int-ico" aria-hidden="true">🔗</span>
+          <h3 class="tfn-int-name">MuleSoft</h3>
+          <p class="tfn-int-desc">Enterprise API integration layer connecting Salesforce to core banking systems, payment processors, and financial data platforms.</p>
         </article>
 
         <article class="tfn-int-item tfn-fade tfn-d3" role="listitem">
-          <span class="tfn-int-ico" aria-hidden="true">🔄</span>
-          <h3 class="tfn-int-name">Migration &amp; Consolidation</h3>
-          <p class="tfn-int-desc">Dual-CRM consolidation and legacy migration with record preservation and parallel-run validation through cutover.</p>
+          <span class="tfn-int-ico" aria-hidden="true">🆔</span>
+          <h3 class="tfn-int-name">KYC / Identity Platforms</h3>
+          <p class="tfn-int-desc">Onfido, Jumio, Persona, and Plaid integrated into Salesforce onboarding workflows with automated status updates and compliance flags.</p>
+        </article>
+
+        <article class="tfn-int-item tfn-fade" role="listitem">
+          <span class="tfn-int-ico" aria-hidden="true">📬</span>
+          <h3 class="tfn-int-name">Marketing &amp; Engagement</h3>
+          <p class="tfn-int-desc">Salesforce Marketing Cloud, Pardot, and HubSpot connected for lifecycle nurture, onboarding communications, and retention campaigns.</p>
+        </article>
+
+        <article class="tfn-int-item tfn-fade tfn-d1" role="listitem">
+          <span class="tfn-int-ico" aria-hidden="true">🎫</span>
+          <h3 class="tfn-int-name">Support &amp; Success Platforms</h3>
+          <p class="tfn-int-desc">Zendesk and Intercom connected so customer support activity is visible alongside relationship and revenue data in one account view.</p>
+        </article>
+
+        <article class="tfn-int-item tfn-fade tfn-d2" role="listitem">
+          <span class="tfn-int-ico" aria-hidden="true">📦</span>
+          <h3 class="tfn-int-name">Subscription Billing Platforms</h3>
+          <p class="tfn-int-desc">Chargebee, Recurly, and Zuora integration to surface subscription health, payment status, and expansion signals within Salesforce.</p>
+        </article>
+
+        <article class="tfn-int-item tfn-fade tfn-d3" role="listitem">
+          <span class="tfn-int-ico" aria-hidden="true">📊</span>
+          <h3 class="tfn-int-name">Analytics &amp; BI Tools</h3>
+          <p class="tfn-int-desc">Tableau, Salesforce Analytics Studio, and Looker connected to your Salesforce data layer for executive and board-level reporting.</p>
         </article>
 
       </div>
@@ -3044,29 +2935,22 @@ article:has(#twopir-fintech) {
 
   <!-- ══════════════════════════════════════════════════════════
        9 · CLIENT OUTCOMES
-       ══════════════════════════════════════════════════════════
-       ONE case study, because one is what is evidenced. The page
-       this replaced carried three, each with three metrics, each
-       "Read case study" link pointing at /contact-us/ — nine
-       outcome numbers with no published engagement behind any of
-       them. Those are gone. What remains is the published fintech
-       engagement and its own reported figures, linked so a reader
-       can check them.
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section tfn-section--dark" id="tfn-proof" aria-labelledby="tfn-proof-title">
     <div class="tfn-wrap">
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">Client Outcomes</span>
-        <h2 class="tfn-title" id="tfn-proof-title">What better commercial infrastructure <em>delivers</em></h2>
+        <h2 class="tfn-title" id="tfn-proof-title">What Better Salesforce Systems <em>Look Like in Practice</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
         <p class="tfn-lede">
-          When acquisition, onboarding, billing and channel operations run inside one disciplined system,
-          the gains are measurable — and they compound quarter over quarter.
+          The results aren't hypothetical. They come from fintech companies in the US, UAE, and
+          Australia that had real operational problems and needed Salesforce infrastructure built to
+          match their commercial ambition.
         </p>
       </header>
 
@@ -3074,44 +2958,42 @@ article:has(#twopir-fintech) {
 
         <article class="tfn-quote-card">
           <div class="tfn-quote-top">
-            <span class="tfn-avatar" aria-hidden="true">RO</span>
+            <span class="tfn-avatar" aria-hidden="true">BL</span>
             <span class="tfn-stars" aria-label="Rated 5 out of 5">★★★★★</span>
           </div>
           <blockquote class="tfn-quote-text">
-            Before Twopir, our pipeline data was split across three tools and nobody trusted the numbers.
-            Now we have one operating view — from first lead to activated account. The quality of our
-            weekly revenue reviews changed immediately, and our CRO stopped asking ops to reconcile the
-            data before every board meeting.
+            Before Twopir, our pipeline data was split across three tools and nobody trusted the
+            numbers. Now we have one operating view — from first lead to activated account. The
+            quality of our weekly revenue reviews changed immediately, and our CRO stopped asking ops
+            to 'just reconcile the data' before every board meeting.
           </blockquote>
           <div>
-            <span class="tfn-quote-name">Head of Revenue Operations</span>
-            <span class="tfn-quote-role">US-based B2B payments platform · Series B</span>
+            <span class="tfn-quote-name">Benjamin L.</span>
+            <span class="tfn-quote-role">Head of Revenue Operations · US-based B2B Payments Platform — Series B, 120 employees</span>
             <span class="tfn-mono-tag">Payments</span>
           </div>
         </article>
 
         <article class="tfn-cs-card">
           <span class="tfn-mono-tag">Case Study</span>
-          <h3 class="tfn-cs-company">Mid-Market Fintech — North America</h3>
-          <p class="tfn-cs-title">Unifying a fragmented sales stack on Salesforce CPQ, with Outreach, Apollo.io and LinkedIn.</p>
+          <h3 class="tfn-cs-company">Unifying the Commercial Stack for a US Payments Company</h3>
+          <p class="tfn-cs-title">A Series B payments platform had Salesforce live but underused. Pipeline data lived partly in HubSpot, onboarding was managed in spreadsheets, and customer success had no account health visibility. Leadership couldn't trust any report. Twopir rebuilt the Salesforce architecture, consolidated the dual CRM setup, automated the sales-to-onboarding handoff, and connected Stripe data directly to account records.</p>
           <div class="tfn-cs-metrics">
             <div class="tfn-cs-metric">
-              <span class="tfn-cs-val">35%</span>
-              <span class="tfn-cs-lbl">Pipeline growth</span>
+              <span class="tfn-cs-val">3×</span>
+              <span class="tfn-cs-lbl">Pipeline reporting accuracy improvement</span>
             </div>
             <div class="tfn-cs-metric">
-              <span class="tfn-cs-val">30%</span>
-              <span class="tfn-cs-lbl">Faster high-value lead identification</span>
+              <span class="tfn-cs-val">55%</span>
+              <span class="tfn-cs-lbl">Reduction in manual data entry across teams</span>
             </div>
             <div class="tfn-cs-metric">
-              <span class="tfn-cs-val">25%</span>
-              <span class="tfn-cs-lbl">Lead scoring accuracy improvement</span>
+              <span class="tfn-cs-val">18d</span>
+              <span class="tfn-cs-lbl">Saved per account in onboarding cycle time</span>
             </div>
           </div>
-          <a class="tfn-cs-link"
-             href="https://twopirconsulting.com/case-study/salesforce-cpq-and-multi-tool-integrations-for-efficient-sales-operations/"
-             target="_blank" rel="noopener noreferrer">
-            Read Full Case Study
+          <a class="tfn-cs-link" href="https://twopirconsulting.com/contact-us/" target="_blank" rel="noopener noreferrer">
+            Discuss a Similar Challenge
             <svg class="tfn-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
             </svg>
@@ -3124,37 +3006,94 @@ article:has(#twopir-fintech) {
 
         <article class="tfn-quote-card">
           <div class="tfn-quote-top">
-            <span class="tfn-avatar tfn-avatar--green" aria-hidden="true">CO</span>
+            <span class="tfn-avatar tfn-avatar--green" aria-hidden="true">SM</span>
             <span class="tfn-stars" aria-label="Rated 5 out of 5">★★★★★</span>
           </div>
           <blockquote class="tfn-quote-text tfn-quote-text--green">
-            Our KYB onboarding was costing us approved borrowers who simply gave up waiting. Twopir mapped
-            the whole journey, identified where applications stalled, and automated the coordination
-            between our compliance team and the applicant. We hadn't realised how much revenue we were
-            leaving on the table.
+            Our KYB onboarding was costing us approved borrowers who simply gave up waiting. Twopir
+            mapped the entire journey, identified where applications stalled, and automated the
+            coordination between our compliance team and the applicant. Time-to-active dropped by
+            almost two months. We hadn't realised how much revenue we were leaving on the table.
           </blockquote>
           <div>
-            <span class="tfn-quote-name">Chief Operating Officer</span>
-            <span class="tfn-quote-role">B2B lending platform · fintech scaleup</span>
+            <span class="tfn-quote-name">Sara M.</span>
+            <span class="tfn-quote-role">COO · B2B Lending Platform — Fintech Scaleup, 80 employees</span>
             <span class="tfn-mono-tag tfn-mono-tag--green">Lending</span>
           </div>
         </article>
 
+        <article class="tfn-cs-card tfn-cs-card--green">
+          <span class="tfn-mono-tag tfn-mono-tag--green">Case Study</span>
+          <h3 class="tfn-cs-company">Automating KYB Onboarding for an Australian B2B Lending Platform</h3>
+          <p class="tfn-cs-title">A lending platform was losing approved borrowers during the onboarding phase — documents weren't collected, follow-ups were inconsistent, and compliance review coordination happened over email. Twopir redesigned the entire onboarding journey inside Salesforce, integrating their identity verification provider and DocuSign, and building automated task management for the compliance and operations teams.</p>
+          <div class="tfn-cs-metrics">
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val tfn-cs-val--green">62%</span>
+              <span class="tfn-cs-lbl">Reduction in onboarding cycle time</span>
+            </div>
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val tfn-cs-val--green">40%</span>
+              <span class="tfn-cs-lbl">Drop in onboarding drop-off rate</span>
+            </div>
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val tfn-cs-val--green">0</span>
+              <span class="tfn-cs-lbl">Manual compliance email handoffs per week</span>
+            </div>
+          </div>
+          <a class="tfn-cs-link tfn-cs-link--green" href="https://twopirconsulting.com/contact-us/" target="_blank" rel="noopener noreferrer">
+            Discuss a Similar Challenge
+            <svg class="tfn-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="tfn-proof-pair tfn-fade tfn-d2">
+
         <article class="tfn-quote-card">
           <div class="tfn-quote-top">
-            <span class="tfn-avatar" aria-hidden="true">CR</span>
+            <span class="tfn-avatar" aria-hidden="true">RK</span>
             <span class="tfn-stars" aria-label="Rated 5 out of 5">★★★★★</span>
           </div>
           <blockquote class="tfn-quote-text">
-            We were managing partners across three spreadsheets and a shared inbox. We couldn't tell which
-            partners were active, which deals were registered, or where revenue was actually coming from.
-            Twopir built us a proper partner management architecture and now it's a real operating asset.
+            We were managing 60 partners across three spreadsheets and a shared inbox. We couldn't
+            tell which partners were active, which deals were registered, or where revenue was
+            actually coming from. Twopir built us a proper PRM architecture and now it's a real
+            operating asset.
           </blockquote>
           <div>
-            <span class="tfn-quote-name">Chief Revenue Officer</span>
-            <span class="tfn-quote-role">Embedded finance platform · pre-Series C</span>
+            <span class="tfn-quote-name">Rahul K.</span>
+            <span class="tfn-quote-role">Chief Revenue Officer · Embedded Finance Platform — Pre-Series C, 150 employees</span>
             <span class="tfn-mono-tag">Embedded Finance</span>
           </div>
+        </article>
+
+        <article class="tfn-cs-card">
+          <span class="tfn-mono-tag">Case Study</span>
+          <h3 class="tfn-cs-company">Building a Partner Revenue Engine for a UAE Embedded Finance Platform</h3>
+          <p class="tfn-cs-title">A banking-as-a-service platform in the UAE had built a meaningful partner network but couldn't operate it at scale. Deal registration was informal, partner performance data was nonexistent, and the commercial team had no reliable view of channel contribution. Twopir designed and built a full partner management infrastructure on Salesforce Experience Cloud — covering partner onboarding through revenue attribution reporting.</p>
+          <div class="tfn-cs-metrics">
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val">48%</span>
+              <span class="tfn-cs-lbl">Faster new partner activation time</span>
+            </div>
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val">100%</span>
+              <span class="tfn-cs-lbl">Partner pipeline now tracked in Salesforce</span>
+            </div>
+            <div class="tfn-cs-metric">
+              <span class="tfn-cs-val">2.4×</span>
+              <span class="tfn-cs-lbl">Increase in active deal registrations per quarter</span>
+            </div>
+          </div>
+          <a class="tfn-cs-link" href="https://twopirconsulting.com/contact-us/" target="_blank" rel="noopener noreferrer">
+            Discuss a Similar Challenge
+            <svg class="tfn-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
         </article>
 
       </div>
@@ -3170,17 +3109,12 @@ article:has(#twopir-fintech) {
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">Why Twopir</span>
-        <h2 class="tfn-title" id="tfn-why-title">Not a vendor. <em>An architectural partner.</em></h2>
+        <h2 class="tfn-title" id="tfn-why-title">We're Not Here to Deploy Software. <em>We're Here to Build the Operating Model That Drives Revenue.</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
           <span class="tfn-rule-line"></span>
         </div>
-        <p class="tfn-lede">
-          Fintech companies don't struggle because they lack software. They struggle because acquisition,
-          onboarding, billing and channel operations were never designed to work together under real
-          volume.
-        </p>
       </header>
 
       <div class="tfn-why-grid">
@@ -3190,40 +3124,40 @@ article:has(#twopir-fintech) {
           <article class="tfn-why-item tfn-fade" role="listitem">
             <span class="tfn-why-num" aria-hidden="true">01</span>
             <div>
-              <h3>We start at the process level, not the configuration level</h3>
-              <p>Before we touch Salesforce we map how your business acquires customers, onboards them, bills them and grows them. What we build reflects your operating model — not a default template.</p>
+              <h3>We Own the Outcome, Not Just the Delivery</h3>
+              <p>Most Salesforce partners optimize for a successful go-live. We optimize for whether the system improves your commercial performance six months after launch. That distinction changes how we scope, what we push back on, and how long we stay involved.</p>
             </div>
           </article>
 
           <article class="tfn-why-item tfn-fade tfn-d1" role="listitem">
             <span class="tfn-why-num" aria-hidden="true">02</span>
             <div>
-              <h3>We own the outcome, not just the delivery</h3>
-              <p>We don't hand over a configuration document. We design, build, integrate, test and launch — and we stay until the system performs the way the business needs it to.</p>
+              <h3>We Start at the Process Level, Not the Configuration Level</h3>
+              <p>The most expensive Salesforce mistake fintech companies make is configuring the platform before the operating model is clear. We design the process architecture first — who does what, when, where data lives, how handoffs work — and build to reflect that, not a template.</p>
             </div>
           </article>
 
           <article class="tfn-why-item tfn-fade tfn-d2" role="listitem">
             <span class="tfn-why-num" aria-hidden="true">03</span>
             <div>
-              <h3>We know the full fintech revenue lifecycle, not just CRM</h3>
-              <p>Acquisition, KYB onboarding, activation, billing, channel and renewal are not separate projects. We architect them as one connected system with one source of truth.</p>
+              <h3>We Know the Full Fintech Revenue Lifecycle — Not Just CRM</h3>
+              <p>Acquisition, onboarding, activation, expansion, renewal, and churn are not separate projects. We've designed them as a connected operating system for fintech companies at Series A through enterprise. An improvement in onboarding shouldn't create a new gap in customer success reporting. We design to prevent that.</p>
             </div>
           </article>
 
           <article class="tfn-why-item tfn-fade tfn-d3" role="listitem">
             <span class="tfn-why-num" aria-hidden="true">04</span>
             <div>
-              <h3>We have real fintech delivery experience</h3>
-              <p>We have built Salesforce infrastructure for payments, lending and financial infrastructure companies. The compliance checkpoints, billing nuance and partner models are already known to us.</p>
+              <h3>We Have Real Fintech Delivery Experience</h3>
+              <p>Compliance checkpoints, multi-tier partner models, subscription billing nuance, regulated handoffs, KYC workflow design — these are not concepts we encounter for the first time on your project. We've built Salesforce infrastructure for fintech companies including Fortis Payments in the US, and across the UAE Gulf region.</p>
             </div>
           </article>
 
           <article class="tfn-why-item tfn-fade tfn-d4" role="listitem">
             <span class="tfn-why-num" aria-hidden="true">05</span>
             <div>
-              <h3>We build architecture that survives your next funding round</h3>
-              <p>The model holds as you add products, markets and channels. What you launch should be the foundation for the next stage, not something the next stage forces you to rebuild.</p>
+              <h3>We Build Architecture That Survives Your Next Funding Round</h3>
+              <p>The Salesforce system you launch today should be the foundation for your next product line, market expansion, or compliance evolution — not a platform replacement project 18 months from now. We design with that headroom built in from day one.</p>
             </div>
           </article>
 
@@ -3236,26 +3170,28 @@ article:has(#twopir-fintech) {
           </span>
 
           <p class="tfn-callout-text">
-            "The problem is rarely that a fintech lacks software. The problem is that the systems underneath
-            acquisition, onboarding, billing and reporting were never designed to work together."
+            "The problem in fintech is rarely the product. The problem is that the commercial
+            infrastructure — the onboarding logic, the partner management, the data flow, the
+            reporting layer — was never designed to operate under real growth pressure. By the time
+            leadership notices, the technical debt is already compounding."
           </p>
 
           <p class="tfn-callout-author">
-            <strong>Twopir Consulting</strong> — a Salesforce Gold Partner and HubSpot Gold Partner building
-            CRM, automation, integration and growth infrastructure for companies that need their systems to
-            perform at scale.
+            <strong>Twopir Consulting</strong> — Salesforce architecture, RevOps, and commercial
+            infrastructure for fintech companies that need systems built to scale.
           </p>
 
           <ul class="tfn-engage">
-            <li>Full architecture, build and rollout</li>
-            <li>Salesforce rescue and redesign</li>
-            <li>Integration and workflow modernization</li>
-            <li>Ongoing scale support and optimization</li>
+            <li>Full architecture design, build, and rollout</li>
+            <li>Salesforce rescue and strategic redesign</li>
+            <li>Integration and compliance workflow modernization</li>
+            <li>Partner and channel revenue infrastructure</li>
+            <li>Ongoing scale support as the business evolves</li>
           </ul>
 
           <ul class="tfn-facts">
-            <li class="tfn-fact"><b class="twopir-years">12+</b> Years delivery</li>
-            <li class="tfn-fact"><b class="twopir-clients">500+</b> Clients served</li>
+            <li class="tfn-fact"><b class="twopir-years">12+</b> Years Salesforce &amp; HubSpot Delivery</li>
+            <li class="tfn-fact"><b class="twopir-clients">500+</b> Clients Served</li>
             <li class="tfn-fact"><span class="twopir-salesforce">Salesforce Partner</span></li>
             <li class="tfn-fact"><span class="twopir-hubspot">HubSpot Partner</span></li>
             <li class="tfn-fact"><span class="twopir-ai">AI Delivery</span></li>
@@ -3271,17 +3207,17 @@ article:has(#twopir-fintech) {
   <!-- ══════════════════════════════════════════════════════════
        11 · FAQ
        ══════════════════════════════════════════════════════════
-       Seven questions, one per gap the body copy doesn't already
-       close. Not an FAQ farm: definition, problem, comparison,
-       implementation, decision and outcome are all answered in
-       the sections above first — these are the residue.
+       The original page used <details>/<summary>. Rebuilt on the
+       design system's button + panel accordion so the questions
+       carry aria-expanded / aria-controls and the panel animates.
+       Question and answer text is unchanged.
        ══════════════════════════════════════════════════════════ -->
   <section class="tfn-section tfn-section--alt" aria-labelledby="tfn-faq-title">
     <div class="tfn-wrap">
 
       <header class="tfn-head tfn-fade">
         <span class="tfn-eyebrow">Common Questions</span>
-        <h2 class="tfn-title" id="tfn-faq-title">Answers before <em>the first conversation</em></h2>
+        <h2 class="tfn-title" id="tfn-faq-title">Answers Before <em>the First Conversation</em></h2>
         <div class="tfn-rule" aria-hidden="true">
           <span class="tfn-rule-line"></span>
           <span class="tfn-rule-diamond"></span>
@@ -3293,98 +3229,112 @@ article:has(#twopir-fintech) {
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp1" id="tfn-fb1">
-            <span>What does Salesforce for a fintech company actually involve?</span>
+            <span>How does Salesforce support customer onboarding for fintech companies?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp1" role="region" aria-labelledby="tfn-fb1">
             <div class="tfn-faq-panel-inner">
-              <p><a class="tfn-src" href="https://www.salesforce.com/" target="_blank" rel="noopener noreferrer">Salesforce</a> provides the platform — the account and opportunity model, automation, sharing and permission controls, and the reporting engine. Twopir Consulting designs the fintech operating model on top of it: how demand becomes an account, how KYB onboarding is orchestrated across compliance and operations, how partner channels are registered and attributed, and how billing and lifecycle state reach the commercial team. The work is architecture and integration, not a CRM installation.</p>
+              <p>Salesforce enables fintech companies to automate KYC and KYB data collection, route applications through compliance checkpoints, trigger document requests via DocuSign or similar tools, track onboarding progress across teams in real time, and alert account managers when journeys stall. The result is a structured, auditable workflow that replaces manual coordination across disconnected systems — typically reducing onboarding cycle time by 40–60% in fintech environments we've built for.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp2" id="tfn-fb2">
-            <span>Our customer onboarding takes weeks. Can this actually shorten it?</span>
+            <span>What is Salesforce Financial Services Cloud and is it right for my fintech?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp2" role="region" aria-labelledby="tfn-fb2">
             <div class="tfn-faq-panel-inner">
-              <p>Onboarding usually takes weeks because the work is real but the coordination is manual — documents chased by email, compliance review queued in someone's inbox, account setup waiting on a handoff nobody owns. Modelling that journey inside Salesforce makes each step a tracked stage with an owner, an SLA clock and an automated trigger for the next step. The regulatory work does not disappear; the waiting between the steps does. How much time that recovers depends entirely on where your current journey stalls, which is what the diagnostic stage measures before anything is designed.</p>
+              <p>Salesforce Financial Services Cloud (FSC) is a purpose-built CRM for financial services firms that supports household and account relationship mapping, financial goal tracking, compliance workflow management, and client lifecycle visibility. Whether FSC is the right fit — versus standard Salesforce Sales or Service Cloud — depends on your operating model, client structure, compliance requirements, and integration needs. Twopir Consulting assesses that during the diagnostic phase and recommends the architecture that fits your actual use case, not the one that costs more.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp3" id="tfn-fb3">
-            <span>Should a fintech at our stage put Salesforce or HubSpot at the centre?</span>
+            <span>Can Twopir Consulting help if our fintech already has Salesforce but it's underperforming?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp3" role="region" aria-labelledby="tfn-fb3">
             <div class="tfn-faq-panel-inner">
-              <p>Put Salesforce at the centre when you sell to mid-market or enterprise, run a compliance-gated onboarding journey, operate a partner channel, or need a data model that survives new products and new markets. HubSpot is the stronger core when growth is marketing-led and largely self-serve, the deal motion is simple, and speed to launch matters more than model depth. Many fintechs run both, and the failure mode is not the choice of platform but leaving both live with no agreed system of record. Twopir Consulting is a Salesforce Gold Partner and a HubSpot Gold Partner, so the recommendation is not a function of which one we sell.</p>
+              <p>Yes — and this is one of our most common starting points. Many fintech companies have a Salesforce environment that is technically live but operationally weak: poor data quality, broken automations, missing integrations, and reporting nobody trusts. We audit what's there, identify what's recoverable versus what needs redesign, and rebuild the system around what your teams actually need. We deliver audit findings within 5 business days.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp4" id="tfn-fb4">
-            <span>How does Salesforce connect to our payments, ledger and KYC providers?</span>
+            <span>How does Twopir Consulting handle compliance-sensitive workflows in fintech Salesforce builds?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp4" role="region" aria-labelledby="tfn-fb4">
             <div class="tfn-faq-panel-inner">
-              <p>Through an API-led integration layer rather than point-to-point connections. Payment and subscription state from a processor such as <a class="tfn-src" href="https://stripe.com/" target="_blank" rel="noopener noreferrer">Stripe</a> or Adyen writes onto the account so a failed payment is visible before a renewal call. Verification results from your identity provider write back onto the onboarding record so compliance review is a workflow stage with evidence attached. Balance and settlement data from the ledger or core banking platform syncs through MuleSoft or an equivalent integration tier. The direction of each flow is decided during architecture design, because deciding it later is what produces two systems that disagree.</p>
+              <p>In a regulated environment like fintech, the design precision required is different from a standard CRM build. We design compliance checkpoints directly into the workflow logic — KYC, KYB, AML flags, consent capture, data retention policies, and audit trail requirements. We connect Salesforce to your identity verification, e-signature, and document management tools, and build approval gates that ensure nothing moves forward without the right sign-off. The result is a compliant process that runs alongside commercial velocity, not against it.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp5" id="tfn-fb5">
-            <span>Can Salesforce carry our KYC, AML and audit requirements?</span>
+            <span>Can Salesforce manage partner and channel relationships for a fintech company?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp5" role="region" aria-labelledby="tfn-fb5">
             <div class="tfn-faq-panel-inner">
-              <p>Salesforce provides the primitives — field history tracking, granular sharing and permission models, approval processes, and platform event logging. What it does not provide is your control framework. We model your compliance checkpoints as workflow stages with the evidence captured against the record, design the access model on least privilege, and build the exception queues and escalation paths your reviewers need. Your compliance and legal teams still own the framework itself, and any specific regulatory obligation should be confirmed with them rather than inferred from a platform capability.</p>
+              <p>Yes. Salesforce Experience Cloud combined with the right partner management architecture allows fintech firms to onboard referral partners and resellers, manage deal registration, track partner pipeline and performance, distribute enablement resources, and attribute partner-sourced revenue — all in a structured environment that scales as the channel grows. We've built this infrastructure for embedded finance platforms in the UAE and payments companies in the US.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp6" id="tfn-fb6">
-            <span>We already have Salesforce, but it is underperforming. Can you help?</span>
+            <span>Do you work with fintech companies outside India?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp6" role="region" aria-labelledby="tfn-fb6">
             <div class="tfn-faq-panel-inner">
-              <p>That is where many of our engagements start. An org can be technically live and still operationally weak — usually because it was configured around a sales process the business has since outgrown. We assess the data model, workflow design, automation, integrations, usability and reporting, then rebuild the parts holding the business back, generally without starting over from a blank org. Consolidating a dual CRM setup and repairing a broken sales-to-onboarding handoff are the two most common versions of this work.</p>
+              <p>Yes — the majority of our clients are based in the United States, UAE, Australia, United Kingdom, and Canada. All delivery is managed from our India-based team of 40+ certified Salesforce specialists, with dedicated overlap hours for US EST, UK GMT, and AEST time zones. Response within 24 hours is guaranteed for all active engagements. Our fintech client Fortis Payments is US-based, and we serve fintech companies across the UAE Gulf region with no time zone barriers to delivery.</p>
             </div>
           </div>
         </div>
 
         <div class="tfn-faq-row tfn-fade">
           <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp7" id="tfn-fb7">
-            <span>What is needed from our team, and what changes after go-live?</span>
+            <span>How is Twopir Consulting different from a standard Salesforce implementation partner for fintech?</span>
             <span class="tfn-faq-ico" aria-hidden="true">
               <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tfn-faq-panel" id="tfn-fp7" role="region" aria-labelledby="tfn-fb7">
             <div class="tfn-faq-panel-inner">
-              <p>We need access to the people who actually run the process — revenue operations, onboarding, compliance and finance — for the diagnostic and design stages, plus an internal owner who can make decisions about how the business should work. Build and integration are ours. After go-live the change people notice first is that status questions stop being asked, because the answer is on the record: where an account is in onboarding, what a partner has registered, which renewals are at risk. The second change is that the weekly revenue review starts from one number nobody had to reconcile.</p>
+              <p>Most Salesforce implementation partners optimize for going live on time. Twopir Consulting optimizes for whether the system improves your commercial operating performance months after launch. We engage earlier — at the architecture and process design level — stay accountable past go-live, and bring 12+ years of experience in fintech-adjacent compliance workflows, subscription billing integration, and partner management infrastructure. We're not a staffing solution or a feature deployment shop. As a Salesforce Gold Partner, we own the outcome.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tfn-faq-row tfn-fade">
+          <button class="tfn-faq-btn" type="button" aria-expanded="false" aria-controls="tfn-fp8" id="tfn-fb8">
+            <span>What fintech systems and platforms can Twopir Consulting integrate with Salesforce?</span>
+            <span class="tfn-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tfn-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tfn-faq-panel" id="tfn-fp8" role="region" aria-labelledby="tfn-fb8">
+            <div class="tfn-faq-panel-inner">
+              <p>We connect Salesforce to payment processors including Stripe, Adyen, and Braintree; subscription billing platforms including Chargebee, Recurly, and Zuora; KYC and identity tools including Onfido, Jumio, Persona, and Plaid; e-signature platforms including DocuSign and Adobe Sign; core banking systems via MuleSoft or direct API; support platforms including Zendesk and Intercom; and BI tools including Tableau and Looker. The integration scope is determined by what your commercial and compliance workflows actually require — not a standard connector list.</p>
             </div>
           </div>
         </div>
@@ -3401,7 +3351,7 @@ article:has(#twopir-fintech) {
     <div class="tfn-cta-inner tfn-fade">
 
       <span class="tfn-eyebrow">Next Step</span>
-      <h2 class="tfn-title" id="tfn-cta-title">If your fintech is growing faster than its systems can support, <em>this is the right conversation</em></h2>
+      <h2 class="tfn-title" id="tfn-cta-title">If Your Fintech Is Growing Faster Than Its Systems Can Support, <em>This Is the Right Conversation</em></h2>
       <div class="tfn-rule" aria-hidden="true">
         <span class="tfn-rule-line"></span>
         <span class="tfn-rule-diamond"></span>
@@ -3409,38 +3359,27 @@ article:has(#twopir-fintech) {
       </div>
 
       <p class="tfn-lede">
-        Twopir Consulting helps fintech companies build operating discipline across acquisition, KYB
-        onboarding, billing, partner channels and reporting — with Salesforce as the foundation and an
-        architecture that holds up at scale.
+        Twopir Consulting helps fintech companies build stronger commercial operating infrastructure —
+        from customer and partner onboarding to pipeline visibility, compliance workflows, and revenue
+        reporting — with Salesforce as the foundation and architecture designed to hold up at scale.
       </p>
 
       <div class="tfn-cta-actions">
-        <a class="tfn-btn tfn-btn--primary" href="https://twopirconsulting.com/#book-a-discovery-call">
+        <a class="tfn-btn tfn-btn--primary" href="https://twopirconsulting.com/book-a-discovery-call/">
           Book a Strategy Call
           <svg class="tfn-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
             <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
           </svg>
         </a>
-        <a class="tfn-btn tfn-btn--ghost" href="https://twopirconsulting.com/contact-us/">
+        <a class="tfn-btn tfn-btn--ghost" href="https://twopirconsulting.com/">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 4h16v12H7l-3 3z"/>
           </svg>
-          Contact the Team
+          Visit Twopir Consulting
         </a>
       </div>
 
-      <p class="tfn-cta-note">Speak with a team that understands systems, architecture &amp; fintech growth</p>
-
-      <!-- Cluster links. Parent, siblings and supporting topics — the page
-           should not launch as an orphan, and these are the contextual
-           in-body links that do that job. -->
-      <p class="tfn-cta-note">
-        More from Twopir Consulting:
-        <a class="tfn-src" href="https://twopirconsulting.com/industries-we-serve/">Industries we serve</a> ·
-        <a class="tfn-src" href="https://twopirconsulting.com/salesforce-for-law-firms/">Salesforce for law firms</a> ·
-        <a class="tfn-src" href="https://twopirconsulting.com/sales-operations/">Sales operations consulting</a> ·
-        <a class="tfn-src" href="https://twopirconsulting.com/salesforce-integration/">Salesforce integration</a>
-      </p>
+      <p class="tfn-cta-note">Speak directly with a RevOps architect who has built Salesforce infrastructure for fintech companies — no sales cycle, no generic discovery template.</p>
 
     </div>
   </section>
@@ -3528,7 +3467,7 @@ article:has(#twopir-fintech) {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Lead-to-Account Architecture & Pipeline"
+          "name": "Lead-to-Account Architecture & Pipeline Management"
         }
       },
       {
@@ -3549,14 +3488,14 @@ article:has(#twopir-fintech) {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Customer Lifecycle & Expansion Revenue"
+          "name": "Customer Lifecycle & Expansion Revenue Management"
         }
       },
       {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Billing, Subscription & Revenue Operations"
+          "name": "Billing, Subscription & Revenue Operations Integration"
         }
       },
       {
@@ -3599,58 +3538,66 @@ article:has(#twopir-fintech) {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What does Salesforce for a fintech company actually involve?",
+      "name": "How does Salesforce support customer onboarding for fintech companies?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Salesforce provides the platform — the account and opportunity model, automation, sharing and permission controls, and the reporting engine. Twopir Consulting designs the fintech operating model on top of it: how demand becomes an account, how KYB onboarding is orchestrated across compliance and operations, how partner channels are registered and attributed, and how billing and lifecycle state reach the commercial team. The work is architecture and integration, not a CRM installation."
+        "text": "Salesforce enables fintech companies to automate KYC and KYB data collection, route applications through compliance checkpoints, trigger document requests via DocuSign or similar tools, track onboarding progress across teams in real time, and alert account managers when journeys stall. The result is a structured, auditable workflow that replaces manual coordination across disconnected systems — typically reducing onboarding cycle time by 40–60% in fintech environments we've built for."
       }
     },
     {
       "@type": "Question",
-      "name": "Our customer onboarding takes weeks. Can this actually shorten it?",
+      "name": "What is Salesforce Financial Services Cloud and is it right for my fintech?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Onboarding usually takes weeks because the work is real but the coordination is manual — documents chased by email, compliance review queued in someone's inbox, account setup waiting on a handoff nobody owns. Modelling that journey inside Salesforce makes each step a tracked stage with an owner, an SLA clock and an automated trigger for the next step. The regulatory work does not disappear; the waiting between the steps does. How much time that recovers depends entirely on where your current journey stalls, which is what the diagnostic stage measures before anything is designed."
+        "text": "Salesforce Financial Services Cloud (FSC) is a purpose-built CRM for financial services firms that supports household and account relationship mapping, financial goal tracking, compliance workflow management, and client lifecycle visibility. Whether FSC is the right fit — versus standard Salesforce Sales or Service Cloud — depends on your operating model, client structure, compliance requirements, and integration needs. Twopir Consulting assesses that during the diagnostic phase and recommends the architecture that fits your actual use case, not the one that costs more."
       }
     },
     {
       "@type": "Question",
-      "name": "Should a fintech at our stage put Salesforce or HubSpot at the centre?",
+      "name": "Can Twopir Consulting help if our fintech already has Salesforce but it's underperforming?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Put Salesforce at the centre when you sell to mid-market or enterprise, run a compliance-gated onboarding journey, operate a partner channel, or need a data model that survives new products and new markets. HubSpot is the stronger core when growth is marketing-led and largely self-serve, the deal motion is simple, and speed to launch matters more than model depth. Many fintechs run both, and the failure mode is not the choice of platform but leaving both live with no agreed system of record. Twopir Consulting is a Salesforce Gold Partner and a HubSpot Gold Partner, so the recommendation is not a function of which one we sell."
+        "text": "Yes — and this is one of our most common starting points. Many fintech companies have a Salesforce environment that is technically live but operationally weak: poor data quality, broken automations, missing integrations, and reporting nobody trusts. We audit what's there, identify what's recoverable versus what needs redesign, and rebuild the system around what your teams actually need. We deliver audit findings within 5 business days."
       }
     },
     {
       "@type": "Question",
-      "name": "How does Salesforce connect to our payments, ledger and KYC providers?",
+      "name": "How does Twopir Consulting handle compliance-sensitive workflows in fintech Salesforce builds?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Through an API-led integration layer rather than point-to-point connections. Payment and subscription state from a processor such as Stripe or Adyen writes onto the account so a failed payment is visible before a renewal call. Verification results from your identity provider write back onto the onboarding record so compliance review is a workflow stage with evidence attached. Balance and settlement data from the ledger or core banking platform syncs through MuleSoft or an equivalent integration tier. The direction of each flow is decided during architecture design, because deciding it later is what produces two systems that disagree."
+        "text": "In a regulated environment like fintech, the design precision required is different from a standard CRM build. We design compliance checkpoints directly into the workflow logic — KYC, KYB, AML flags, consent capture, data retention policies, and audit trail requirements. We connect Salesforce to your identity verification, e-signature, and document management tools, and build approval gates that ensure nothing moves forward without the right sign-off. The result is a compliant process that runs alongside commercial velocity, not against it."
       }
     },
     {
       "@type": "Question",
-      "name": "Can Salesforce carry our KYC, AML and audit requirements?",
+      "name": "Can Salesforce manage partner and channel relationships for a fintech company?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Salesforce provides the primitives — field history tracking, granular sharing and permission models, approval processes, and platform event logging. What it does not provide is your control framework. We model your compliance checkpoints as workflow stages with the evidence captured against the record, design the access model on least privilege, and build the exception queues and escalation paths your reviewers need. Your compliance and legal teams still own the framework itself, and any specific regulatory obligation should be confirmed with them rather than inferred from a platform capability."
+        "text": "Yes. Salesforce Experience Cloud combined with the right partner management architecture allows fintech firms to onboard referral partners and resellers, manage deal registration, track partner pipeline and performance, distribute enablement resources, and attribute partner-sourced revenue — all in a structured environment that scales as the channel grows. We've built this infrastructure for embedded finance platforms in the UAE and payments companies in the US."
       }
     },
     {
       "@type": "Question",
-      "name": "We already have Salesforce, but it is underperforming. Can you help?",
+      "name": "Do you work with fintech companies outside India?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "That is where many of our engagements start. An org can be technically live and still operationally weak — usually because it was configured around a sales process the business has since outgrown. We assess the data model, workflow design, automation, integrations, usability and reporting, then rebuild the parts holding the business back, generally without starting over from a blank org. Consolidating a dual CRM setup and repairing a broken sales-to-onboarding handoff are the two most common versions of this work."
+        "text": "Yes — the majority of our clients are based in the United States, UAE, Australia, United Kingdom, and Canada. All delivery is managed from our India-based team of 40+ certified Salesforce specialists, with dedicated overlap hours for US EST, UK GMT, and AEST time zones. Response within 24 hours is guaranteed for all active engagements. Our fintech client Fortis Payments is US-based, and we serve fintech companies across the UAE Gulf region with no time zone barriers to delivery."
       }
     },
     {
       "@type": "Question",
-      "name": "What is needed from our team, and what changes after go-live?",
+      "name": "How is Twopir Consulting different from a standard Salesforce implementation partner for fintech?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We need access to the people who actually run the process — revenue operations, onboarding, compliance and finance — for the diagnostic and design stages, plus an internal owner who can make decisions about how the business should work. Build and integration are ours. After go-live the change people notice first is that status questions stop being asked, because the answer is on the record: where an account is in onboarding, what a partner has registered, which renewals are at risk. The second change is that the weekly revenue review starts from one number nobody had to reconcile."
+        "text": "Most Salesforce implementation partners optimize for going live on time. Twopir Consulting optimizes for whether the system improves your commercial operating performance months after launch. We engage earlier — at the architecture and process design level — stay accountable past go-live, and bring 12+ years of experience in fintech-adjacent compliance workflows, subscription billing integration, and partner management infrastructure. We're not a staffing solution or a feature deployment shop. As a Salesforce Gold Partner, we own the outcome."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What fintech systems and platforms can Twopir Consulting integrate with Salesforce?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We connect Salesforce to payment processors including Stripe, Adyen, and Braintree; subscription billing platforms including Chargebee, Recurly, and Zuora; KYC and identity tools including Onfido, Jumio, Persona, and Plaid; e-signature platforms including DocuSign and Adobe Sign; core banking systems via MuleSoft or direct API; support platforms including Zendesk and Intercom; and BI tools including Tableau and Looker. The integration scope is determined by what your commercial and compliance workflows actually require — not a standard connector list."
       }
     }
   ]

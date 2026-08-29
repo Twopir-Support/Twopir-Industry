@@ -1,99 +1,128 @@
 # Fintech.html — build report
 
-`Industry Pages/Fintech.html` — Salesforce for Fintech, built from the August 2026
-`Legal_final` / `homepage_final` design sources, replacing the fintech page that was
-live as a set of loose WordPress blocks.
+`Industry Pages/Fintech.html` — Salesforce for Fintech.
+
+**This is a restyle, not a rewrite.** The page copy is the copy from the fintech page
+that was live. What changed is the presentation layer: it now runs on the same design
+system, tokens and type scale as `Legal.html` and the homepage finals.
 
 ---
 
-## 1 · What this replaced
+## 1 · What changed
 
-The source page was pre-design-system: a `trust-wide-box` block, a `#fsl-` logo
-marquee with its own stylesheet, then an unscoped `#hero` / `#pain` / `#services`
-document using `rem` sizing, emoji icon boxes, inline `style="font-size: 2.2rem"`
-attributes, and no wrapper prefix at all. Nothing in it could be published alongside
-Legal or SaaS without colliding.
+The source page was pre-design-system: a `trust-wide-box` block, a `#fsl-` logo marquee
+with its own stylesheet, then an unscoped `#hero` / `#pain` / `#services` document using
+`rem` sizing, emoji icon boxes, inline `style="font-size: 2.2rem"` attributes and no
+wrapper prefix at all. Nothing in it could be published alongside Legal or SaaS without
+colliding, and `rem` sizing breaks outright under the live theme's `html { font-size: 10px }`.
 
-Rebuilt as a single Custom HTML block scoped to `#twopir-fintech` / `.tfn-`, on the
-same tokens, type scale and component idioms as the other two pages.
+Rebuilt as a single Custom HTML block scoped to `#twopir-fintech` / `.tfn-`, on Legal's
+tokens, type scale and component idioms.
 
-## 2 · Structure
+| Was | Is |
+|---|---|
+| unscoped `#hero`, `#pain`, `#services`… | `#twopir-fintech` wrapper, every class `.tfn-` |
+| `rem` + inline `font-size` attributes | the shared `px` / `clamp()` type scale |
+| `<details>` / `<summary>` FAQ | button + panel accordion with `aria-expanded` / `aria-controls` |
+| emoji icon boxes on service cards | the design system's SVG icon tiles |
+| three separate ad-hoc `<style>` blocks | one token rule + the shared sheet |
+| no schema | BreadcrumbList + Service + FAQPage |
+| no hero visual | the shared operating-model diagram, relabelled for the fintech stack |
 
-| § | Section | Source |
-|---|---|---|
-| 1 | Hero + operating-model diagram | rewritten; SVG relabelled for the fintech stack, geometry unchanged |
-| 2 | Trust strip | client logos preserved; credential badges corrected |
-| 3 | Where fintech growth breaks | 8 source items consolidated to 6 for the 3-col grid |
-| 4 | Our approach | source "solution" copy |
-| 5 | What we build | 9 service cards, all preserved |
-| 6 | Who we build for + lifecycle table | 6 segments preserved; **table is new** |
-| 7 | Engagement model | 5 steps, preserved |
-| 8 | Connected infrastructure | rewritten — see §5 below |
-| 9 | Client outcomes | **substantially cut** — see §4 |
-| 10 | Why Twopir | 5 items, preserved |
-| 11 | FAQ | rewritten to 7 questions covering all six question classes |
-| 12 | CTA + cluster links | rewritten |
+## 2 · Content preservation
 
-Two components were added to the sheet: `.tfn-table*` (ported from `SaaS.html`) and
-`.tfn-seg*` (new).
+Every heading, paragraph, service list item, segment, process step, integration,
+testimonial, case study, metric and FAQ answer is carried over from the source page.
+Verified by diffing the normalised visible text of both files.
+
+Four deliberate exceptions, none of which change what the page says:
+
+1. **`TwoPir` → `Twopir Consulting`.** The canonical company name. The source page used
+   `TwoPir` in body copy, testimonials and FAQ answers; the entity fact set and every
+   other page on the site use `Twopir Consulting`. Inconsistent naming across pages
+   actively lowers entity confidence, so this is a brand correction, not a copy edit.
+2. **Section order.** `Who We Serve` (segments) now sits after `What We Build` rather
+   than between services and process, so the page runs problem → approach → services →
+   who it is for → how we engage → stack → proof → why → FAQ → CTA. No section was
+   dropped or added.
+3. **FAQ markup.** `<details>`/`<summary>` became the design system's accordion. Question
+   and answer text is byte-identical; only the control changed, and it gained the ARIA
+   wiring `<details>` did not have.
+4. **Service card icons.** Emoji (`👥`, `✅`, `🤝`…) became the design system's SVG icon
+   tiles, matching Legal. Emoji are kept where the design system itself uses them — the
+   pain cards, the segment cards and the integration cards.
 
 ## 3 · Design-system compliance
 
 - One bare `#twopir-fintech` rule. The token rule, the wrapper's own styling and the
-  scaling-ladder defaults were folded together, following `SaaS.html` — Legal still
-  carries three, which is exactly what Autoptimize merges and drops.
-- Every `var()` carries a literal fallback; the degradation harness confirms no role
+  scaling-ladder defaults are folded together, following `SaaS.html`. Legal still carries
+  three, which is exactly what Autoptimize merges and drops.
+- Every `var()` carries a literal fallback; the degradation harness confirms no type role
   collapses to the inherited size under either failure mode.
 - `px` / `clamp()` only. No `rem`.
 - `overflow-x: clip` on the wrapper, with `hidden` first as the fallback.
-- All seven keyframes renamed to the `tfn` prefix.
-- **Legal's grid-bullet defect is fixed here**: `.tfn-svc-list li` uses a positioned
-  `::before` with `padding-left`, not `display: grid` with the diamond as a grid item.
-  Identical rendering, and it no longer breaks when a list item contains an `<a>` or
-  `<strong>`.
+- All six keyframes renamed to the `tfn` prefix.
+- **Legal's grid-bullet defect is fixed here.** `.tfn-svc-list li` uses a positioned
+  `::before` with `padding-left`, not `display: grid` with the diamond as a grid item, so
+  it no longer renders one word per line when an item contains an inline element.
 
-## 4 · Claims governance — what was removed
+### Two components adapted for this page's content
 
-This is the substantive content change, and it is deliberate.
+- **`.tfn-seg-*`** — the segments grid. Legal has no equivalent section.
+- **`.tfn-hero-proof`** — restyled from Legal's inline chip row to a stacked 2×2 grid.
+  Legal's metrics are three or four words (`40% Less manual admin · PI firms`) and flow
+  as chips. This page's are full qualified sentences (`60% Reduction in customer
+  onboarding cycle time through Salesforce workflow automation`) because the qualifier is
+  what scopes the claim. Wrapped inside an inline row those sentences break the baseline
+  and the diamond separators float between fragments. Stacking value over label is how
+  the source page presented them and is the only layout legible at that text length.
+- **`.tfn-quote-card`** — made a flex column with the attribution pushed to the bottom.
+  This page's case-study cards carry the full engagement description, so they run taller
+  than Legal's one-line versions and the quote card was left with dead space.
 
-The source page carried **twelve outcome numbers with no evidence behind any of them**:
+## 4 · Claims — open item, carried at the client's direction
 
-- Hero: `60%` reduction in onboarding cycle time · `3×` pipeline reporting accuracy ·
-  `45%` faster partner activation.
-- Three "case studies", each with three metrics (`3×`, `55%`, `18d`; `62%`, `40%`, `0`;
-  `48%`, `100%`, `2.4×`). All three were anonymous, and **every "Read case study" link
-  pointed at `/contact-us/`** — there was no case study to read.
+The page carries twelve outcome numbers from the source page:
 
-The publishing skill names this pattern explicitly ("no `3× faster onboarding`,
-`40% fewer manual handoffs` … unless it comes from a documented client outcome"), and
-`SaaS.html` set the precedent of reporting the gap rather than filling it. All twelve
-are gone.
+- **Hero** — `60%` onboarding cycle time reduction · `3×` pipeline reporting accuracy ·
+  `45%` faster partner activation · `360°` cross-functional visibility.
+- **Three case studies** — `3×` / `55%` / `18d`; `62%` / `40%` / `0`; `48%` / `100%` / `2.4×`.
+- **FAQ 1** — "typically reducing onboarding cycle time by 40–60%".
 
-**What replaced them:** one real, published, linkable engagement —
-[Salesforce CPQ and Multi-Tool Integrations for Efficient Sales Operations](https://twopirconsulting.com/case-study/salesforce-cpq-and-multi-tool-integrations-for-efficient-sales-operations/),
-a mid-market North American fintech, carrying its own reported figures (35% pipeline
-growth, 30% faster high-value lead identification, 25% lead-scoring accuracy
-improvement). The hero now carries company facts via `.twopir-*` classes instead of
-invented metrics.
+**These need evidence on file before publish.** Under the publishing rules every client
+outcome is a Class-B claim requiring documented evidence — what was measured, over what
+period, against what baseline — and client approval where the client is identifiable.
+Two specific things to resolve:
 
-The three testimonials were kept in substance but re-attributed at role + company-profile
-level (`Head of Revenue Operations · US-based B2B payments platform · Series B`), matching
-Legal's convention, and the one embedded numeric claim ("time-to-active dropped by almost
-two months") was dropped — quoted alone, it reads as a Twopir outcome claim.
+- The three case studies are anonymous and **every "Discuss a Similar Challenge" link
+  points at `/contact-us/`**, so a reader cannot verify any of the nine figures. Legal's
+  case studies link to published case studies; these do not, because no published fintech
+  case study covers them.
+- The testimonials are attributed to `Benjamin L.`, `Sara M.` and `Rahul K.` with company
+  descriptors. Confirm each has a real source and approval.
 
-### Claims classification
+There is one **published, linkable** fintech engagement that could back a case-study card
+if you want verifiable proof on the page:
+[Salesforce CPQ and Multi-Tool Integrations for Efficient Sales Operations](https://twopirconsulting.com/case-study/salesforce-cpq-and-multi-tool-integrations-for-efficient-sales-operations/)
+— mid-market North American fintech, 250 employees; 35% pipeline growth, 30% faster
+high-value lead identification, 25% lead-scoring accuracy improvement.
+
+Other claims:
 
 | Class | On this page | Status |
 |---|---|---|
-| **A — company facts** | 12+ years · 500+ clients · areaServed | ✅ canonical set, via `.twopir-*` + literal fallbacks |
-| **A2 — vendor relationships** | Salesforce Gold Partner, HubSpot Gold Partner | ✅ full credentials outside the stat widget; the `.tfn-fact` chips keep the widget's generic wording. **No partner language for Stripe, Adyen, MuleSoft, DocuSign, NetSuite or QuickBooks** — the page says we integrate them |
-| **B — client outcomes** | the one linked case study | ✅ published and linked; a reader can check it |
-| **C — industry statistics** | none | ⚠ deliberately absent — no unsourced benchmark was used to thicken a section |
-| **D — technical claims** | platform capabilities in §8 and FAQ 4/5 | ⚠ written to be vendor-checkable, but **re-verify at publish** |
+| **A — company facts** | 12+ years · 500+ clients · 40+ specialists · areaServed | ✅ canonical set, via `.twopir-*` + literal fallbacks |
+| **A2 — vendor relationships** | Salesforce Gold Partner, HubSpot Gold Partner | ✅ full credentials outside the stat widget; the `.tfn-fact` chips keep the widget's generic wording. **No partner language for Stripe, Adyen, MuleSoft, DocuSign, Onfido, Jumio, Persona, Plaid, Chargebee, Recurly, Zuora, Zendesk, Intercom, Tableau or Looker** — the page says we integrate them |
+| **B — client outcomes** | twelve figures, above | ⚠ **carried from the source page; evidence not on file** |
+| **C — industry statistics** | none | ✅ |
+| **D — technical claims** | platform capabilities in §8 and FAQ 1/2/4/5 | ⚠ vendor-checkable, but **re-verify at publish** |
 
-FAQ 5 deliberately stops short on compliance: it states what Salesforce provides and
-says the control framework stays with the client's compliance and legal teams. Quoted
-alone, it cannot be read as Twopir certifying a regulatory position.
+Two further sentences to review, both carried over verbatim:
+
+- FAQ 6: *"Response within 24 hours is guaranteed for all active engagements."* A
+  guarantee, quoted out of context, is a contractual statement.
+- FAQ 1: *"typically reducing onboarding cycle time by 40–60% in fintech environments
+  we've built for."* Reads as a general benchmark rather than a scoped result.
 
 ## 5 · SEO / AEO
 
@@ -101,59 +130,41 @@ alone, it cannot be read as Twopir certifying a regulatory position.
 - **Query this page wins that no existing page wins:** the fintech vertical and its
   KYB-onboarding / partner-channel long tail. `/salesforce-for-law-firms/` and
   `/sales-operations/` cover neither.
-- **Question coverage:** definition (hero + FAQ 1), problem (§3 + FAQ 2), comparison
-  (FAQ 3, Salesforce vs HubSpot as the core), implementation (§8 + FAQ 4), decision
-  (§6 segments + FAQ 5/6), outcome (lifecycle table + FAQ 7).
-- **Entity relationship map**, explicit in the copy:
-  `Twopir Consulting → fintech (payments, lending, wealthtech, BaaS, InsurTech) →
-  fragmented onboarding, channel and lifecycle data → commercial infrastructure →
-  Salesforce (+ HubSpot) → Stripe / Adyen / KYC-KYB / MuleSoft / DocuSign / NetSuite →
-  acquire → onboard → activate → expand → renew → activation time, channel
-  contribution, net revenue retention`.
-- **Lifecycle named in the industry's own vocabulary**, stage by stage, in a real
-  `<table>` — and the table keeps *what the platform does*, *what Twopir builds* and
-  *what leadership sees* in three separate columns, so nothing implies Twopir authored
-  a Salesforce feature.
-- **Integrations** each carry both platforms, the business purpose, and the direction
-  data actually moves.
-- **Internal links:** parent (`/industries-we-serve/`), sibling
-  (`/salesforce-for-law-firms/`, `/sales-operations/`), supporting
-  (`/salesforce-integration/`), conversion (`/contact-us/`, `#book-a-discovery-call`),
-  plus the case-study link. External verification links to salesforce.com and stripe.com
-  sit in FAQ answers.
-- **Schema:** BreadcrumbList + Service + FAQPage. No second Organization node, no
-  QAPage, no `offers` / price / rating on a vendor product. The FAQ block is generated
-  from the visible accordion by `scripts/generate_schema.py` and matches it word for word.
+- **Question coverage:** definition (hero + FAQ 2), problem (§3), comparison (FAQ 2, FSC
+  vs standard Sales/Service Cloud), implementation (§8 + FAQ 8), decision (§6 segments +
+  FAQ 3/6), outcome (§9 + FAQ 1).
+- **Entity relationship map**, explicit in the copy: `Twopir Consulting → fintech
+  (payments, lending, wealthtech, BaaS, InsurTech, financial infrastructure) → fragmented
+  onboarding, channel and lifecycle data → commercial infrastructure → Salesforce
+  (+ HubSpot) → Stripe / KYC / MuleSoft / DocuSign / Chargebee → acquisition → onboarding
+  → activation → expansion → renewal`.
+- **Lifecycle named in the industry's own vocabulary** — KYB, time-to-active, deal
+  registration, MRR/ARR, NRR, channel contribution.
+- **Schema:** BreadcrumbList + Service + FAQPage. No second Organization node, no QAPage,
+  no `offers` / price / rating on a vendor product. The FAQ block is generated from the
+  visible accordion by `scripts/generate_schema.py` and matches it word for word.
 
 ## 6 · Verification
 
-All three scripts, run from `Industry Pages/`:
+Run from `Industry Pages/`:
 
-- `verify_page.py Fintech.html` — **all checks pass** (CSS integrity, the Autoptimize
-  token-deletion simulation, scoping, a11y and heading order, CLS, schema, claims).
-- `verify_browser.js Fintech.html` — **all checks pass**. No horizontal overflow at any
-  of 11 widths from 1600px to 320px; accordion opens, closes and is exclusive; the
-  computed type scale matches the finals at 1400×900; the H1 and below-fold content
-  reach full opacity with JavaScript disabled; `500+` is readable in the served HTML.
-- `verify_degradation.js Fintech.html` — **passes both failure modes**. With the tail
-  `!important` pass dropped and with the token rule deleted, every heading role stays
-  visibly distinct from the inherited wrapper size.
+- `verify_page.py Fintech.html` — **all checks pass**.
+- `verify_browser.js Fintech.html` — **all checks pass**. No horizontal overflow at any of
+  11 widths from 1600px to 320px; accordion opens, closes and is exclusive; the computed
+  type scale matches Legal exactly at 1400×900 (44.8px H1, 44px section titles, 24px pain
+  headings, 19px card titles, 14px mono eyebrows); H1 and below-fold content reach full
+  opacity with JavaScript disabled; `500+` readable in the served HTML.
+- `verify_degradation.js Fintech.html` — **passes both failure modes**.
 
 ## 7 · Open items before publish
 
-1. **`/salesforce-for-fintech/` does not exist yet.** The slug and canonical in the
-   file are placeholders; no page currently occupies that permalink. Confirm it, add it
-   to `sitemap.xml`, and submit in Search Console and Bing Webmaster Tools.
-2. **The page needs contextual inbound links** so it does not launch as an orphan —
-   at minimum from `/industries-we-serve/`, and ideally from the fintech case study.
-3. **Client logos and the named-client reference.** The Fortis, Aspire, RentMoola,
-   Patriot Capital and Fundit logos are carried over from the page that was live, on
-   Twopir's own HubSpot CDN. Confirm the usage permissions are current before republishing.
-4. **Testimonials need evidence on file.** They were carried over from the previous
-   page and re-attributed; confirm each has a real source and, where a client is
-   identifiable, approval.
-5. **Class-D claims re-verified at publish** — platform capabilities move, and the
-   publishing skill's own review date is August 2026.
-6. **Only one evidenced fintech engagement exists.** The outcome section is thinner
-   than Legal's for that reason alone. It closes the moment a second cleared fintech
-   case study is available.
+1. **Evidence for the twelve Class-B figures** and the two flagged FAQ sentences — §4.
+2. **`/salesforce-for-fintech/` does not exist yet.** The slug and canonical in the file
+   are placeholders. Confirm the permalink, add it to `sitemap.xml`, submit in Search
+   Console and Bing Webmaster Tools.
+3. **Contextual inbound links** so the page does not launch as an orphan — at minimum
+   from `/industries-we-serve/`.
+4. **Client logos.** Fortis, Aspire, RentMoola, Carden Group, Patriot Capital and Fundit
+   are carried over from the live page, on Twopir's own HubSpot CDN. Confirm usage
+   permissions are current.
+5. **Class-D claims re-verified at publish** — platform capabilities move.

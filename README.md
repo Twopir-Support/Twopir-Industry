@@ -20,8 +20,8 @@ scripts/
                          Autoptimize failure modes, and checks nothing collapses
 docs/
   saas-build-report.md      build, preservation and SEO/AEO report for SaaS.html
-  fintech-build-report.md   the same for Fintech.html, plus what was removed from the
-                            page it replaced and why
+  fintech-build-report.md   the same for Fintech.html — a restyle of the live page
+                            onto the design system, with the copy preserved
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
