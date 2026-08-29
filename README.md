@@ -18,6 +18,8 @@ Industry Pages/
   RealEstate.html     Salesforce for Real Estate
   Events.html         Salesforce for Events & Hospitality
   AIFintech.html      AI for Fintech
+  AILawFirms.html     AI for Law Firms
+  AIAssetManagement.html  AI for Asset Management
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -44,6 +46,11 @@ docs/
                                alt text and the absence of any proof section
   ai-fintech-build-report.md   the same for AIFintech.html; section 6 records the
                                cannibalisation risk against /salesforce-for-fintech/
+  ai-law-firms-build-report.md the same for AILawFirms.html; section 4 records
+                               research citations that name no edition or publisher
+  ai-asset-management-build-report.md  the same for AIAssetManagement.html;
+                               section 6 records a Related Reading cluster that
+                               links nowhere and a three-way page overlap
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -121,6 +128,8 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `RealEstate.html` | current | ✓ | ✓ fixed | pass |
 | `Events.html` | current | ✓ | ✓ fixed | pass |
 | `AIFintech.html` | current | ✓ | ✓ fixed | pass |
+| `AILawFirms.html` | current | ✓ | ✓ fixed | pass |
+| `AIAssetManagement.html` | current | ✓ | ✓ fixed | pass |
 
 One piece of known debt, recorded in the tooling rather than hidden:
 
