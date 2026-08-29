@@ -1,113 +1,77 @@
-import re, json, html, io
+"""Regenerate a page's FAQPage JSON-LD from its visible accordion, in place.
 
-faq = open('body_09_faq_cta.html', encoding='utf-8').read()
+    python3 ../scripts/generate_schema.py Fintech.html   # run from "Industry Pages"
+    python3 ../scripts/generate_schema.py                # every *.html in the cwd
+
+The visible accordion is the source of truth. Mismatched schema and
+on-page text is an AEO risk and verify_page.py fails the build on it, so
+edit the accordion and re-run this rather than hand-editing the JSON.
+
+Only the FAQPage block is touched. BreadcrumbList and Service stay
+hand-authored — they carry page-specific prose, not derived content.
+"""
+import re, json, html, sys, glob, os
+
 
 def text_of(fragment):
     """Visible text of an HTML fragment, exactly as a reader sees it."""
     t = re.sub(r'<[^>]+>', '', fragment)
     t = html.unescape(t)
-    t = re.sub(r'\s+', ' ', t).strip()
-    return t
+    return re.sub(r'\s+', ' ', t).strip()
 
-rows = re.findall(
-    r'<button class="tsa-faq-btn".*?<span>(.*?)</span>.*?'
-    r'<div class="tsa-faq-panel-inner">\s*(.*?)\s*</div>',
-    faq, re.S)
 
-pairs = [(text_of(q), text_of(a)) for q, a in rows]
-assert len(pairs) == 7, f"expected 7 FAQ rows, found {len(pairs)}"
-for q, a in pairs:
-    assert q and a, "empty FAQ field"
+def regenerate(path):
+    s = open(path, encoding='utf-8').read()
 
-PAGE = "https://twopirconsulting.com/salesforce-for-saas/"
+    m = re.search(r'<div id="twopir-[a-z0-9-]+"', s)
+    if not m:
+        print(f"skip  {path}: no twopir wrapper"); return 0
+    wrapper = m.group(0).split('"')[1]
+    pm = re.search(rf'#{wrapper}\s+\.([a-z]{{3}})-', s)
+    if not pm:
+        print(f"skip  {path}: no class prefix"); return 0
+    p = pm.group(1)
 
-breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home",
-     "item": "https://twopirconsulting.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Industries",
-     "item": "https://twopirconsulting.com/industries/"},
-    {"@type": "ListItem", "position": 3, "name": "Salesforce for SaaS & Technology",
-     "item": PAGE}
-  ]
-}
+    rows = re.findall(
+        rf'<button class="{p}-faq-btn".*?<span>(.*?)</span>.*?'
+        rf'<div class="{p}-faq-panel-inner">\s*(.*?)\s*</div>',
+        s, re.S)
+    pairs = [(text_of(q), text_of(a)) for q, a in rows]
+    if not pairs:
+        print(f"skip  {path}: no FAQ accordion"); return 0
+    for q, a in pairs:
+        assert q and a, f"{path}: empty FAQ field"
 
-service = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "@id": PAGE + "#service",
-  "name": "Salesforce for SaaS and Technology Companies",
-  "serviceType": "Salesforce implementation and revenue operations for SaaS and technology companies",
-  "provider": {"@id": "https://twopirconsulting.com/#organization"},
-  "areaServed": ["US", "CA", "GB", "AE", "AU", "NZ"],
-  "audience": {"@type": "Audience", "audienceType": "SaaS and Technology Companies"},
-  "description": ("Twopir Consulting builds the Salesforce-based revenue infrastructure that SaaS and "
-                  "technology companies run on - connecting product signals, subscription billing and CRM "
-                  "into one operating model covering signup, activation, subscription, renewal and expansion."),
-  "url": PAGE,
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "SaaS revenue operations services",
-    "itemListElement": [
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": n}} for n in [
-        "Product-Led Pipeline & Routing",
-        "Subscription, CPQ & Billing Operations",
-        "Retention, Renewals & Expansion",
-        "Revenue Reporting & ARR Visibility",
-        "Integration & Revenue Data Architecture",
-        "Org Rescue & Scale Support",
-      ]
-    ]
-  }
-}
+    faqpage = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a}}
+            for q, a in pairs
+        ],
+    }
+    block = ('<script type="application/ld+json">\n'
+             + json.dumps(faqpage, indent=2, ensure_ascii=False)
+             + '\n</script>')
 
-faqpage = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type": "Question", "name": q,
-     "acceptedAnswer": {"@type": "Answer", "text": a}}
-    for q, a in pairs
-  ]
-}
+    existing = [b for b in re.findall(r'<script type="application/ld\+json">.*?</script>', s, re.S)
+                if '"FAQPage"' in b]
+    if len(existing) != 1:
+        print(f"skip  {path}: expected 1 FAQPage block, found {len(existing)}"); return 0
 
-def block(obj):
-    return ('<script type="application/ld+json">\n'
-            + json.dumps(obj, indent=2, ensure_ascii=False)
-            + '\n</script>\n')
+    if existing[0] == block:
+        print(f"ok    {os.path.basename(path)}: {len(pairs)} FAQ pairs already in sync")
+        return 0
 
-header = '''
-<!-- ============================================================
-     STRUCTURED DATA — SALESFORCE FOR SAAS & TECHNOLOGY
-     BreadcrumbList + Service + FAQPage.
+    open(path, 'w', encoding='utf-8').write(s.replace(existing[0], block))
+    print(f"wrote {os.path.basename(path)}: {len(pairs)} FAQ pairs regenerated")
+    for q, _ in pairs:
+        print("   Q:", q[:76])
+    return 1
 
-     • Service.provider points at the homepage Organization node
-       (@id …/#organization). Organization is emitted ONCE, from the
-       homepage — this page must never emit a second one. Keep the two
-       @ids in sync or the provider reference will dangle.
-     • No `offers`, price, rating or review appears anywhere below.
-       Twopir Consulting sells the service, not Salesforce, Stripe or
-       Zuora, and marking up a vendor's product as something offered
-       here would misrepresent the page's main content.
-     • QAPage is never used. It is only valid where users can submit
-       answers, which is not what this section is.
-     • FAQPage is a no-harm addition only: Google removed FAQ rich
-       results for all sites in May 2026, so this produces no SERP
-       snippet. It is kept because the page has a real FAQ section and
-       the markup still helps machines parse it.
-     • The FAQ block below was GENERATED from the visible accordion by
-       scripts/generate_schema.py, so the two match word for word. If
-       you edit a question or an answer in the accordion, re-run that
-       script rather than editing this block by hand.
-     • The URLs assume the /salesforce-for-saas/ permalink and the
-       /industries/ parent. Confirm both before publishing.
-     ============================================================ -->
-'''
 
-out = header + '\n' + block(breadcrumb) + '\n' + block(service) + '\n' + block(faqpage)
-open('schema.html', 'w', encoding='utf-8').write(out)
-print(f"generated schema for {len(pairs)} FAQ pairs")
-for q, _ in pairs:
-    print("  Q:", q[:78])
+targets = sys.argv[1:] or sorted(f for f in glob.glob('*.html')
+                                 if not os.path.basename(f).startswith('harness'))
+for t in targets:
+    regenerate(t)

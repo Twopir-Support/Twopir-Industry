@@ -40,7 +40,7 @@
        Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
                  #00aff6 accent · #007ec6 accent-dark
                  rgba(0,175,246,0.28) border · #1a2a35 ink
-                 #5a7080 muted · #1e2447/#12183a/#1a2e4a navy
+                 #566b79 muted · #1e2447/#12183a/#1a2e4a navy
                  #35d39a green
        Type      Bricolage Grotesque (display) · Inter (body)
                  JetBrains Mono (eyebrows / labels)
@@ -192,7 +192,14 @@ html { scroll-behavior: auto !important; }
   --tlg-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
 
   --tlg-ease:        0.28s cubic-bezier(.4,0,.2,1);
-  --tlg-pad-y:       clamp(48px, 6vw, 84px);
+  --tlg-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
+
+  /* Fluid terms for the hero. Declared on the wrapper, not inside the rules
+     that use them, because the publish pipeline mangles a rule whose
+     font-size it is rewriting — it dropped these twice when they lived
+     there. Wrapper custom properties come through intact. */
+  --tlg-h1-fluid:    min(3.2vw, 5.45vh);
+  --tlg-sub-fluid:   min(1.2vw, 2.35vh);
   --tlg-pad-x:       clamp(16px, 4vw, 48px);
 
   /* TEMPLATE KNOB — height of the site header sitting above this block in
@@ -215,17 +222,19 @@ html { scroll-behavior: auto !important; }
      oversized body text. One token rule means there is nothing
      left for the minifier to merge. Every var() below also carries
      a literal fallback as a second line of defence. */
-  --tlg-fs-display:     clamp(30px, 4vw, 46px);
-  --tlg-fs-h2:          clamp(26px, 3vw, 38px);
-  --tlg-fs-h3:          clamp(17px, 1.5vw, 19px);
-  --tlg-fs-h4:          clamp(15px, 1.25vw, 16px);
-  --tlg-fs-lede:        clamp(15px, 1.2vw, 17px);
-  --tlg-fs-body:        clamp(14px, 1.05vw, 15px);
-  --tlg-fs-sm:          13px;
-  --tlg-fs-xs:          12px;
-  --tlg-fs-label:       11px;
-  --tlg-fs-eyebrow:     clamp(11px, 0.9vw, 12px);
-  --tlg-fs-stat-sm:     clamp(20px, 1.9vw, 24px);
+  --tlg-fs-display:     clamp(34px, 4.5vw, 56px);
+  --tlg-fs-h2:          clamp(30px, 3.4vw, 44px);
+  --tlg-fs-h3:          clamp(20px, 1.8vw, 24px);
+  --tlg-fs-h4:          clamp(17px, 1.4vw, 19px);
+  --tlg-fs-lede:        clamp(17px, 1.4vw, 19px);
+  --tlg-fs-body:        clamp(15px, 1.1vw, 17px);
+  --tlg-fs-sm:          14px;
+  --tlg-fs-xs:          13px;
+  --tlg-fs-label:       12px;
+  --tlg-fs-micro:    12px;
+  --tlg-fs-stat:     clamp(32px, 3.6vw, 48px);
+  --tlg-fs-eyebrow:     clamp(13px, 1vw, 14px);
+  --tlg-fs-stat-sm:     clamp(22px, 2vw, 26px);
 }
 
 /* ── Local reset (scoped — cannot touch the rest of the site) ─ */
@@ -248,15 +257,15 @@ html { scroll-behavior: auto !important; }
 #twopir-legal {
   position: relative;
   width: 100%;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   /* The wrapper is the inheritance root for anything without an explicit
      size of its own, so it takes the body step rather than a flat 16px.
      The literal fallback matters most here: if this one failed to resolve
      the block would inherit the theme's body size instead. */
-  font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px));
+  font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px));
   line-height: 1.65;
-  color: var(--tlg-text);
-  background: var(--tlg-bg);
+  color: var(--tlg-text, #1a2a35);
+  background: var(--tlg-bg, #dff1fa);
   -webkit-font-smoothing: antialiased;
   /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
      other computes from visible to AUTO — so `overflow-x: hidden` silently
@@ -327,14 +336,14 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-section {
   position: relative;
   width: 100%;
-  padding: var(--tlg-pad-y) var(--tlg-pad-x);
-  background: var(--tlg-bg);
+  padding: var(--tlg-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--tlg-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--tlg-bg, #dff1fa);
 }
-#twopir-legal .tlg-section--alt  { background: var(--tlg-bg-alt); }
+#twopir-legal .tlg-section--alt  { background: var(--tlg-bg-alt, #e8f5fd); }
 #twopir-legal .tlg-section--dark {
   background:
     radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
-    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
+    linear-gradient(158deg, var(--tlg-navy, #1e2447) 0%, var(--tlg-navy-deep, #12183a) 58%, var(--tlg-navy-soft, #1a2e4a) 100%);
   color: #fff;
 }
 
@@ -367,7 +376,12 @@ article:has(#twopir-legal) {
   }
 }
 
-#twopir-legal .tlg-wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-legal .tlg-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
 #twopir-legal .tlg-wrap--narrow { max-width: 900px; }
 
 /* ── Section header pattern (matches Our Services / Industries) */
@@ -377,30 +391,30 @@ article:has(#twopir-legal) {
 }
 #twopir-legal .tlg-eyebrow {
   display: block;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   margin-bottom: 10px;
 }
 #twopir-legal .tlg-title {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(26px, 3.4vw, 40px);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.14;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   text-wrap: balance;
 }
 #twopir-legal .tlg-title em {
   font-style: normal;
-  background: linear-gradient(100deg, var(--tlg-accent) 0%, var(--tlg-accent-dk) 92%);
+  background: linear-gradient(100deg, var(--tlg-accent, #00aff6) 0%, var(--tlg-accent-dk, #007ec6) 92%);
   -webkit-background-clip: text;
           background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
 }
 #twopir-legal .tlg-rule {
   display: flex;
@@ -412,21 +426,21 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
 #twopir-legal .tlg-rule-diamond {
   width: 8px; height: 8px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
 }
 #twopir-legal .tlg-lede {
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: clamp(15px, 1.15vw, 17px);
   font-weight: 300;
   line-height: 1.78;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   max-width: 800px;
   margin: 0 auto;
   text-wrap: pretty;
 }
-#twopir-legal .tlg-lede strong { color: var(--tlg-text); font-weight: 600; }
+#twopir-legal .tlg-lede strong { color: var(--tlg-text, #1a2a35); font-weight: 600; }
 
 /* dark-section variants of the same header pattern */
 #twopir-legal .tlg-section--dark .tlg-title { color: #fff; }
@@ -440,17 +454,17 @@ article:has(#twopir-legal) {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: clamp(11px, 1vw, 12.5px);
   font-weight: 600;
   letter-spacing: 0.01em;
   border-radius: 100px;
-  padding: 12px 24px;
+  padding: 14px 22px;
   cursor: pointer;
   white-space: nowrap;
   border: 1.5px solid transparent;
-  transition: background var(--tlg-ease), color var(--tlg-ease),
-              box-shadow var(--tlg-ease), border-color var(--tlg-ease),
+  transition: background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
               transform 0.18s ease;
 }
 #twopir-legal .tlg-btn svg {
@@ -461,28 +475,28 @@ article:has(#twopir-legal) {
 }
 #twopir-legal .tlg-btn--primary {
   color: #fff !important;
-  background: var(--tlg-accent);
-  border-color: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
+  border-color: var(--tlg-accent, #00aff6);
   box-shadow: 0 4px 14px rgba(0,175,246,0.35);
 }
 #twopir-legal .tlg-btn--primary:hover,
 #twopir-legal .tlg-btn--primary:focus-visible {
-  background: var(--tlg-text);
-  border-color: var(--tlg-text);
+  background: var(--tlg-text, #1a2a35);
+  border-color: var(--tlg-text, #1a2a35);
   box-shadow: 0 8px 24px rgba(26,42,53,0.24);
   transform: translateY(-2px);
 }
 #twopir-legal .tlg-btn--ghost {
-  color: var(--tlg-accent) !important;
+  color: var(--tlg-accent, #00aff6) !important;
   background: rgba(255,255,255,0.72);
-  border-color: var(--tlg-border);
-  box-shadow: var(--tlg-shadow);
+  border-color: var(--tlg-border, rgba(0,175,246,0.28));
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
 #twopir-legal .tlg-btn--ghost:hover,
 #twopir-legal .tlg-btn--ghost:focus-visible {
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   color: #fff !important;
-  border-color: var(--tlg-accent);
+  border-color: var(--tlg-accent, #00aff6);
   box-shadow: 0 8px 24px rgba(0,175,246,0.32);
   transform: translateY(-2px);
 }
@@ -493,11 +507,11 @@ article:has(#twopir-legal) {
   box-shadow: none;
 }
 #twopir-legal .tlg-section--dark .tlg-btn--ghost:hover {
-  background: var(--tlg-accent);
-  border-color: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
+  border-color: var(--tlg-accent, #00aff6);
 }
-#twopir-legal .tlg-btn:focus-visible { outline: 2px solid var(--tlg-accent); outline-offset: 3px; }
-#twopir-legal .tlg-btn-arrow { transition: transform var(--tlg-ease); }
+#twopir-legal .tlg-btn:focus-visible { outline: 2px solid var(--tlg-accent, #00aff6); outline-offset: 3px; }
+#twopir-legal .tlg-btn-arrow { transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
 #twopir-legal .tlg-btn--primary:hover .tlg-btn-arrow { transform: translateX(3px); }
 
 /* ════════════════════════════════════════════════════════════
@@ -508,10 +522,10 @@ article:has(#twopir-legal) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(26px, 3vw, 44px) var(--tlg-pad-x) clamp(20px, 2.4vw, 32px);
+  padding: clamp(26px, 3vw, 44px) var(--tlg-pad-x, clamp(16px, 4vw, 48px)) clamp(20px, 2.4vw, 32px);
   background:
     radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
-    linear-gradient(180deg, var(--tlg-bg-top) 0%, #e5f4fc 52%, var(--tlg-bg) 92%, var(--tlg-bg) 100%);
+    linear-gradient(180deg, var(--tlg-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--tlg-bg, #dff1fa) 92%, var(--tlg-bg, #dff1fa) 100%);
   overflow: hidden;
 }
 #twopir-legal .tlg-hero-grid {
@@ -529,7 +543,12 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-hero-inner {
   position: relative;
   z-index: 1;
-  max-width: 1180px;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
   width: 100%;
   margin: 0 auto;
   display: grid;
@@ -546,15 +565,15 @@ article:has(#twopir-legal) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   /* the flat 11px label step rather than the eyebrow clamp, plus tighter
      padding and tracking. The pill reads noticeably smaller without leaving
      the type scale — which matters, because every industry page reuses it. */
-  font-size: var(--tlg-fs-label, 11px);
+  font-size: var(--tlg-fs-label, 12px);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   background: rgba(255,255,255,0.82);
   border: 1px solid #b3d9f2;
   border-radius: 9999px;
@@ -565,7 +584,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   animation: tlgPulse 2.6s ease-out infinite;
   flex-shrink: 0;
 }
@@ -576,21 +595,21 @@ article:has(#twopir-legal) {
 }
 
 #twopir-legal .tlg-hero-title {
-  font-family: var(--tlg-ff-display);
-  font-size: clamp(1.85rem, 3.05vw, 3rem);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(30px, 3.05vw, 48px);   /* was rem — the theme sets html{font-size:10px} */
   font-weight: 700;
   letter-spacing: -0.028em;
   line-height: 1.09;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   text-wrap: balance;
 }
 #twopir-legal .tlg-hero-title em {
   font-style: normal;
-  background: linear-gradient(100deg, var(--tlg-accent) 0%, var(--tlg-accent-dk) 92%);
+  background: linear-gradient(100deg, var(--tlg-accent, #00aff6) 0%, var(--tlg-accent-dk, #007ec6) 92%);
   -webkit-background-clip: text;
           background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
 }
 #twopir-legal .tlg-hero-rule {
   display: flex;
@@ -602,15 +621,15 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-hero-rule .tlg-rule-line--sm { width: 26px; }
 
 #twopir-legal .tlg-hero-sub {
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: clamp(15px, 1.2vw, 17.5px);
   font-weight: 300;
   line-height: 1.75;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   max-width: 560px;
   text-wrap: pretty;
 }
-#twopir-legal .tlg-hero-sub strong { color: var(--tlg-text); font-weight: 600; }
+#twopir-legal .tlg-hero-sub strong { color: var(--tlg-text, #1a2a35); font-weight: 600; }
 
 #twopir-legal .tlg-hero-cta {
   display: flex;
@@ -631,24 +650,24 @@ article:has(#twopir-legal) {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 #twopir-legal .tlg-hero-proof b {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
 }
 #twopir-legal .tlg-hero-proof li + li::before {
   content: '';
   width: 5px; height: 5px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
   opacity: 0.75;
@@ -663,16 +682,16 @@ article:has(#twopir-legal) {
   max-width: min(100%, calc(58vh + 34px));
   background:
     radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
-    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
-  border-radius: var(--tlg-radius-lg);
+    linear-gradient(158deg, var(--tlg-navy, #1e2447) 0%, var(--tlg-navy-deep, #12183a) 58%, var(--tlg-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tlg-radius-lg, 22px);
   padding: clamp(13px, 1.5vw, 17px);
-  box-shadow: var(--tlg-shadow-dark);
+  box-shadow: var(--tlg-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
 }
 #twopir-legal .tlg-canvas::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--tlg-radius-lg);
+  border-radius: var(--tlg-radius-lg, 22px);
   border: 1px solid rgba(255,255,255,0.08);
   pointer-events: none;
 }
@@ -689,7 +708,7 @@ article:has(#twopir-legal) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.18em;
@@ -702,7 +721,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-live {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--tlg-green);
+  background: var(--tlg-green, #35d39a);
   animation: tlgLive 2.4s ease-out infinite;
   flex-shrink: 0;
 }
@@ -712,7 +731,7 @@ article:has(#twopir-legal) {
   100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
 }
 #twopir-legal .tlg-tag {
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -733,8 +752,8 @@ article:has(#twopir-legal) {
   max-height: 58vh;
   max-height: min(58vh, 540px);
 }
-#twopir-legal .tlg-map text { font-family: var(--tlg-ff-body); }
-#twopir-legal .tlg-map .m   { font-family: var(--tlg-ff-mono); }
+#twopir-legal .tlg-map text { font-family: var(--tlg-ff-body, 'Inter', sans-serif); }
+#twopir-legal .tlg-map .m   { font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace); }
 
 #twopir-legal .tlg-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
 #twopir-legal .tlg-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
@@ -745,24 +764,24 @@ article:has(#twopir-legal) {
 
 #twopir-legal .tlg-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
 #twopir-legal .tlg-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
-#twopir-legal .tlg-s   { fill: rgba(255,255,255,0.5);  font-size: 9.5px;  font-weight: 400; }
-#twopir-legal .tlg-h   { fill: rgba(255,255,255,0.5);  font-size: 9.5px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-legal .tlg-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-legal .tlg-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
 #twopir-legal .tlg-h--acc { fill: rgba(0,175,246,0.95); }
 #twopir-legal .tlg-h--out { fill: rgba(53,211,154,0.9); }
-#twopir-legal .tlg-mark      { fill: var(--tlg-accent); }
-#twopir-legal .tlg-mark--out { fill: var(--tlg-green); }
+#twopir-legal .tlg-mark      { fill: var(--tlg-accent, #00aff6); }
+#twopir-legal .tlg-mark--out { fill: var(--tlg-green, #35d39a); }
 
 #twopir-legal .tlg-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
 #twopir-legal .tlg-flow {
   fill: none;
-  stroke: var(--tlg-accent);
+  stroke: var(--tlg-accent, #00aff6);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-dasharray: 5 14;
   opacity: 0.9;
   animation: tlgFlow 2.2s linear infinite;
 }
-#twopir-legal .tlg-flow--out { stroke: var(--tlg-green); }
+#twopir-legal .tlg-flow--out { stroke: var(--tlg-green, #35d39a); }
 #twopir-legal .tlg-flow.d1 { animation-delay: 0s; }
 #twopir-legal .tlg-flow.d2 { animation-delay: 0.28s; }
 #twopir-legal .tlg-flow.d3 { animation-delay: 0.56s; }
@@ -772,9 +791,9 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-hit:hover rect.tlg-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
 #twopir-legal .tlg-hit:hover rect.tlg-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
 
-#twopir-legal .tlg-badge-ring { fill: none; stroke: var(--tlg-accent); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-legal .tlg-badge-ring { fill: none; stroke: var(--tlg-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
 #twopir-legal .tlg-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
-#twopir-legal .tlg-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--tlg-ff-display); letter-spacing: -0.01em; }
+#twopir-legal .tlg-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
 #twopir-legal .tlg-spin { transform-origin: 280px 158px; animation: tlgSpin 26s linear infinite; }
 @keyframes tlgSpin { to { transform: rotate(360deg); } }
 
@@ -787,16 +806,16 @@ article:has(#twopir-legal) {
   display: flex;
   align-items: center;
   gap: 11px;
-  background: var(--tlg-surface);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-md);
+  background: var(--tlg-surface, #ffffff);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-md, 14px);
   padding: 11px 15px;
   box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
 }
 #twopir-legal .tlg-float-ico {
   width: 32px; height: 32px;
   border-radius: 9px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 12px rgba(0,175,246,0.35);
   flex-shrink: 0;
@@ -807,20 +826,20 @@ article:has(#twopir-legal) {
 }
 #twopir-legal .tlg-float-k {
   display: block;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   margin-bottom: 2px;
 }
 #twopir-legal .tlg-float-v {
   display: block;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   white-space: nowrap;
 }
 
@@ -829,13 +848,13 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-layer {
   border: 1px solid rgba(255,255,255,0.13);
   background: rgba(255,255,255,0.05);
-  border-radius: var(--tlg-radius-md);
+  border-radius: var(--tlg-radius-md, 14px);
   padding: 12px 13px 13px;
 }
 #twopir-legal .tlg-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
 #twopir-legal .tlg-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
 #twopir-legal .tlg-layer-h {
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px; font-weight: 500;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: rgba(255,255,255,0.55);
@@ -844,7 +863,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-layer--core .tlg-layer-h { color: rgba(0,175,246,0.95); }
 #twopir-legal .tlg-layer--out  .tlg-layer-h { color: rgba(53,211,154,0.9); }
 #twopir-legal .tlg-layer-t {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15px; font-weight: 700;
   letter-spacing: -0.01em; color: #fff;
   margin-bottom: 9px;
@@ -868,32 +887,32 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-connector::after {
   content: ''; position: absolute;
   width: 6px; height: 6px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg); border-radius: 1px;
 }
 
 /* ════════════════════════════════════════════════════════════
    2 · TRUST STRIP (client logos + credentials)
    ════════════════════════════════════════════════════════════ */
-#twopir-legal .tlg-trust { padding: clamp(28px, 3vw, 40px) var(--tlg-pad-x); background: var(--tlg-bg); }
+#twopir-legal .tlg-trust { padding: clamp(28px, 3vw, 40px) var(--tlg-pad-x, clamp(16px, 4vw, 48px)); background: var(--tlg-bg, #dff1fa); }
 #twopir-legal .tlg-trust-card {
-  max-width: 1180px;
+  max-width: 1400px;
   margin: 0 auto;
-  background: var(--tlg-card);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-card);
-  box-shadow: var(--tlg-shadow);
+  background: var(--tlg-card, #eef8fd);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-card, 18px);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
 }
 #twopir-legal .tlg-trust-lead {
   text-align: center;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: clamp(13.5px, 1.05vw, 15px);
   font-weight: 400;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   margin-bottom: 16px;
 }
-#twopir-legal .tlg-trust-lead strong { color: var(--tlg-accent-dk); font-weight: 700; }
+#twopir-legal .tlg-trust-lead strong { color: var(--tlg-accent-ink, #00699f); font-weight: 700; }
 
 #twopir-legal .tlg-marquee {
   position: relative;
@@ -908,8 +927,8 @@ article:has(#twopir-legal) {
   top: 0; height: 100%; width: 56px;
   z-index: 2; pointer-events: none;
 }
-#twopir-legal .tlg-marquee::before { left: 0;  background: linear-gradient(to right, var(--tlg-card), rgba(238,248,253,0)); }
-#twopir-legal .tlg-marquee::after  { right: 0; background: linear-gradient(to left,  var(--tlg-card), rgba(238,248,253,0)); }
+#twopir-legal .tlg-marquee::before { left: 0;  background: linear-gradient(to right, var(--tlg-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-legal .tlg-marquee::after  { right: 0; background: linear-gradient(to left,  var(--tlg-card, #eef8fd), rgba(238,248,253,0)); }
 #twopir-legal .tlg-marquee-track {
   display: flex;
   align-items: center;
@@ -924,7 +943,7 @@ article:has(#twopir-legal) {
   height: 38px; width: auto; max-width: 130px;
   object-fit: contain;
   opacity: 0.82;
-  transition: opacity var(--tlg-ease), transform var(--tlg-ease);
+  transition: opacity var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
 @keyframes tlgScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -933,7 +952,7 @@ article:has(#twopir-legal) {
   text-align: center;
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid var(--tlg-border-soft);
+  border-top: 1px solid var(--tlg-border-soft, rgba(0,175,246,0.22));
   margin-bottom: 12px;
 }
 #twopir-legal .tlg-badges {
@@ -943,17 +962,17 @@ article:has(#twopir-legal) {
   gap: 8px;
 }
 #twopir-legal .tlg-badge {
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: 11.5px;
   font-weight: 500;
-  color: var(--tlg-muted);
-  background: var(--tlg-bg);
+  color: var(--tlg-muted, #566b79);
+  background: var(--tlg-bg, #dff1fa);
   border: 1px solid rgba(0,175,246,0.25);
   border-radius: 6px;
   padding: 4px 11px;
-  transition: background var(--tlg-ease), color var(--tlg-ease), border-color var(--tlg-ease);
+  transition: background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
-#twopir-legal .tlg-badge:hover { background: var(--tlg-accent); color: #fff; border-color: var(--tlg-accent); }
+#twopir-legal .tlg-badge:hover { background: var(--tlg-accent, #00aff6); color: #fff; border-color: var(--tlg-accent, #00aff6); }
 
 /* ════════════════════════════════════════════════════════════
    3 · PAIN GRID
@@ -967,18 +986,18 @@ article:has(#twopir-legal) {
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  background: var(--tlg-card);
-  border: 1px solid var(--tlg-border);
-  border-left: 3px solid var(--tlg-star);
-  border-radius: var(--tlg-radius-card);
+  background: var(--tlg-card, #eef8fd);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--tlg-star, #e0961f);
+  border-radius: var(--tlg-radius-card, 18px);
   padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
-  box-shadow: var(--tlg-shadow);
-  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-pain-item:hover {
   transform: translateY(-4px);
-  box-shadow: var(--tlg-shadow-hv);
-  background: var(--tlg-surface);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tlg-surface, #ffffff);
 }
 #twopir-legal .tlg-pain-ico {
   width: 40px; height: 40px;
@@ -990,19 +1009,19 @@ article:has(#twopir-legal) {
   font-size: 18px; line-height: 1;
 }
 #twopir-legal .tlg-pain-item h3 {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1.4;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   margin-bottom: 7px;
 }
 #twopir-legal .tlg-pain-item p {
   font-size: 13.5px;
   font-weight: 400;
   line-height: 1.7;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1011,10 +1030,10 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-philosophy {
   max-width: 900px;
   margin: 0 auto;
-  background: var(--tlg-card);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-lg);
-  box-shadow: var(--tlg-shadow);
+  background: var(--tlg-card, #eef8fd);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-lg, 22px);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
   text-align: center;
   position: relative;
@@ -1033,13 +1052,13 @@ article:has(#twopir-legal) {
   font-size: clamp(14.5px, 1.1vw, 16px);
   font-weight: 300;
   line-height: 1.85;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
   text-wrap: pretty;
 }
-#twopir-legal .tlg-philosophy p strong { color: var(--tlg-text); font-weight: 600; }
+#twopir-legal .tlg-philosophy p strong { color: var(--tlg-text, #1a2a35); font-weight: 600; }
 
 /* ════════════════════════════════════════════════════════════
    5 · SERVICES
@@ -1050,37 +1069,37 @@ article:has(#twopir-legal) {
   gap: 20px;
 }
 #twopir-legal .tlg-svc-card {
-  background: var(--tlg-card);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-card);
+  background: var(--tlg-card, #eef8fd);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-card, 18px);
   padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
-  box-shadow: var(--tlg-shadow);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-svc-card::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--tlg-accent), var(--tlg-accent-dk));
+  background: linear-gradient(90deg, var(--tlg-accent, #00aff6), var(--tlg-accent-dk, #007ec6));
   opacity: 0;
-  transition: opacity var(--tlg-ease);
+  transition: opacity var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-svc-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--tlg-shadow-hv);
-  background: var(--tlg-surface);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tlg-surface, #ffffff);
 }
 #twopir-legal .tlg-svc-card:hover::after { opacity: 1; }
 #twopir-legal .tlg-svc-ico {
   width: clamp(44px, 5vw, 52px);
   height: clamp(44px, 5vw, 52px);
   border-radius: 12px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 14px rgba(0,175,246,0.35);
   margin-bottom: 18px;
@@ -1092,20 +1111,20 @@ article:has(#twopir-legal) {
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
 #twopir-legal .tlg-svc-card h3 {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 13.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1.45;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   margin-bottom: 9px;
 }
 #twopir-legal .tlg-svc-card > p {
   font-size: 13.5px;
   font-weight: 400;
   line-height: 1.72;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   margin-bottom: 16px;
 }
 #twopir-legal .tlg-svc-list {
@@ -1113,7 +1132,7 @@ article:has(#twopir-legal) {
   flex-direction: column;
   gap: 8px;
   padding-top: 15px;
-  border-top: 1px solid var(--tlg-border-soft);
+  border-top: 1px solid var(--tlg-border-soft, rgba(0,175,246,0.22));
   margin-top: auto;
 }
 #twopir-legal .tlg-svc-list li {
@@ -1124,13 +1143,13 @@ article:has(#twopir-legal) {
   font-size: 12.5px;
   font-weight: 400;
   line-height: 1.6;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 #twopir-legal .tlg-svc-list li::before {
   content: '';
   width: 6px; height: 6px;
   margin-top: 7px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
 }
@@ -1144,53 +1163,53 @@ article:has(#twopir-legal) {
   gap: 16px;
 }
 #twopir-legal .tlg-step {
-  background: var(--tlg-surface);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-md);
+  background: var(--tlg-surface, #ffffff);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-md, 14px);
   padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
-  box-shadow: var(--tlg-shadow);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   position: relative;
-  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), border-color var(--tlg-ease);
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-step:hover {
   transform: translateY(-4px);
-  box-shadow: var(--tlg-shadow-hv);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
   border-color: rgba(0,175,246,0.5);
 }
 #twopir-legal .tlg-step-num {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   margin-bottom: 14px;
 }
 #twopir-legal .tlg-step-num::after {
   content: '';
   width: 6px; height: 6px;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
   opacity: 0.7;
 }
 #twopir-legal .tlg-step h3 {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.3;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   margin-bottom: 8px;
 }
 #twopir-legal .tlg-step p {
   font-size: 12.5px;
   font-weight: 400;
   line-height: 1.68;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1202,32 +1221,32 @@ article:has(#twopir-legal) {
   gap: 14px;
 }
 #twopir-legal .tlg-int-item {
-  background: var(--tlg-surface);
-  border: 1px solid var(--tlg-border-soft);
-  border-radius: var(--tlg-radius-md);
+  background: var(--tlg-surface, #ffffff);
+  border: 1px solid var(--tlg-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--tlg-radius-md, 14px);
   padding: 20px 18px;
-  box-shadow: var(--tlg-shadow);
-  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), border-color var(--tlg-ease);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-int-item:hover {
   transform: translateY(-3px);
-  box-shadow: var(--tlg-shadow-hv);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
   border-color: rgba(0,175,246,0.5);
 }
 #twopir-legal .tlg-int-ico {
   width: 34px; height: 34px;
   border-radius: 9px;
-  background: var(--tlg-bg);
-  border: 1px solid var(--tlg-border-soft);
+  background: var(--tlg-bg, #dff1fa);
+  border: 1px solid var(--tlg-border-soft, rgba(0,175,246,0.22));
   display: flex; align-items: center; justify-content: center;
   font-size: 15px; line-height: 1;
   margin-bottom: 12px;
 }
 #twopir-legal .tlg-int-name {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   margin-bottom: 5px;
   line-height: 1.35;
 }
@@ -1235,7 +1254,7 @@ article:has(#twopir-legal) {
   font-size: 12.5px;
   font-weight: 400;
   line-height: 1.62;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1253,7 +1272,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-cs-card {
   background: rgba(255,255,255,0.045);
   border: 1px solid rgba(255,255,255,0.13);
-  border-radius: var(--tlg-radius-card);
+  border-radius: var(--tlg-radius-card, 18px);
   padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
   position: relative;
   overflow: hidden;
@@ -1276,32 +1295,32 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-avatar {
   width: 46px; height: 46px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--tlg-accent), var(--tlg-accent-dk));
+  background: linear-gradient(135deg, var(--tlg-accent, #00aff6), var(--tlg-accent-dk, #007ec6));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 15px; font-weight: 700; color: #fff;
   letter-spacing: 0.02em;
   flex-shrink: 0;
 }
-#twopir-legal .tlg-avatar--green { background: linear-gradient(135deg, var(--tlg-green), #1a9c73); }
+#twopir-legal .tlg-avatar--green { background: linear-gradient(135deg, var(--tlg-green, #35d39a), #1a9c73); }
 #twopir-legal .tlg-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
 
 #twopir-legal .tlg-quote-text {
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: clamp(13.5px, 1.05vw, 15px);
   font-weight: 300;
   line-height: 1.8;
   color: rgba(224,240,252,0.9);
-  border-left: 2px solid var(--tlg-accent);
+  border-left: 2px solid var(--tlg-accent, #00aff6);
   padding-left: 20px;
   margin-bottom: 22px;
   text-wrap: pretty;
 }
-#twopir-legal .tlg-quote-text--green { border-left-color: var(--tlg-green); }
+#twopir-legal .tlg-quote-text--green { border-left-color: var(--tlg-green, #35d39a); }
 
 #twopir-legal .tlg-quote-name {
   display: block;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: 13.5px;
   font-weight: 600;
   color: #fff;
@@ -1317,26 +1336,26 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-mono-tag {
   display: inline-block;
   margin-top: 12px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   border: 1px solid rgba(0,175,246,0.38);
   background: rgba(0,175,246,0.09);
   padding: 4px 10px;
   border-radius: 5px;
 }
 #twopir-legal .tlg-mono-tag--green {
-  color: var(--tlg-green);
+  color: var(--tlg-green, #35d39a);
   border-color: rgba(53,211,154,0.4);
   background: rgba(53,211,154,0.09);
 }
 #twopir-legal .tlg-cs-card .tlg-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
 
 #twopir-legal .tlg-cs-company {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -1366,18 +1385,18 @@ article:has(#twopir-legal) {
 }
 #twopir-legal .tlg-cs-val {
   display: block;
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(19px, 2vw, 24px);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   margin-bottom: 6px;
 }
-#twopir-legal .tlg-cs-val--green { color: var(--tlg-green); }
+#twopir-legal .tlg-cs-val--green { color: var(--tlg-green, #35d39a); }
 #twopir-legal .tlg-cs-lbl {
   display: block;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -1391,19 +1410,19 @@ article:has(#twopir-legal) {
   gap: 8px;
   margin-top: auto;
   align-self: flex-start;
-  font-family: var(--tlg-ff-body);
+  font-family: var(--tlg-ff-body, 'Inter', sans-serif);
   font-size: 12.5px;
   font-weight: 600;
   color: #fff !important;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   border-radius: 100px;
   padding: 10px 20px;
   box-shadow: 0 4px 14px rgba(0,175,246,0.32);
-  transition: background var(--tlg-ease), transform 0.18s ease, box-shadow var(--tlg-ease);
+  transition: background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
 #twopir-legal .tlg-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
-#twopir-legal .tlg-cs-link--green:hover { background: var(--tlg-green); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-legal .tlg-cs-link--green:hover { background: var(--tlg-green, #35d39a); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
 #twopir-legal .tlg-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 /* ════════════════════════════════════════════════════════════
@@ -1420,17 +1439,17 @@ article:has(#twopir-legal) {
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  background: var(--tlg-card);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-md);
+  background: var(--tlg-card, #eef8fd);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-md, 14px);
   padding: 18px 20px;
-  box-shadow: var(--tlg-shadow);
-  transition: transform var(--tlg-ease), box-shadow var(--tlg-ease), background var(--tlg-ease);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-why-item:hover {
   transform: translateX(3px);
-  box-shadow: var(--tlg-shadow-hv);
-  background: var(--tlg-surface);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tlg-surface, #ffffff);
 }
 #twopir-legal .tlg-why-num {
   width: 34px; height: 34px;
@@ -1439,25 +1458,25 @@ article:has(#twopir-legal) {
   background: rgba(0,175,246,0.10);
   border: 1px solid rgba(0,175,246,0.3);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
 }
 #twopir-legal .tlg-why-item h3 {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 14px;
   font-weight: 700;
   line-height: 1.42;
-  color: var(--tlg-text);
+  color: var(--tlg-text, #1a2a35);
   margin-bottom: 5px;
 }
 #twopir-legal .tlg-why-item p {
   font-size: 13px;
   font-weight: 400;
   line-height: 1.68;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
 }
 
 #twopir-legal .tlg-callout {
@@ -1465,10 +1484,10 @@ article:has(#twopir-legal) {
   top: 28px;
   background:
     radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
-    linear-gradient(158deg, var(--tlg-navy) 0%, var(--tlg-navy-deep) 58%, var(--tlg-navy-soft) 100%);
-  border-radius: var(--tlg-radius-lg);
+    linear-gradient(158deg, var(--tlg-navy, #1e2447) 0%, var(--tlg-navy-deep, #12183a) 58%, var(--tlg-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tlg-radius-lg, 22px);
   padding: clamp(24px, 3vw, 34px);
-  box-shadow: var(--tlg-shadow-dark);
+  box-shadow: var(--tlg-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
   position: relative;
   overflow: hidden;
 }
@@ -1476,7 +1495,7 @@ article:has(#twopir-legal) {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--tlg-radius-lg);
+  border-radius: var(--tlg-radius-lg, 22px);
   border: 1px solid rgba(255,255,255,0.08);
   pointer-events: none;
 }
@@ -1484,16 +1503,16 @@ article:has(#twopir-legal) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
   margin-bottom: 16px;
 }
 #twopir-legal .tlg-callout-text {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(15px, 1.35vw, 18px);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1510,7 +1529,7 @@ article:has(#twopir-legal) {
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(255,255,255,0.12);
 }
-#twopir-legal .tlg-callout-author strong { color: var(--tlg-accent); font-weight: 600; }
+#twopir-legal .tlg-callout-author strong { color: var(--tlg-accent, #00aff6); font-weight: 600; }
 #twopir-legal .tlg-engage {
   display: flex;
   flex-direction: column;
@@ -1531,7 +1550,7 @@ article:has(#twopir-legal) {
   width: 6px; height: 6px;
   margin-top: 6px;
   flex-shrink: 0;
-  background: var(--tlg-accent);
+  background: var(--tlg-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
 }
@@ -1547,7 +1566,7 @@ article:has(#twopir-legal) {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1559,11 +1578,11 @@ article:has(#twopir-legal) {
   padding: 5px 10px;
 }
 #twopir-legal .tlg-fact b {
-  font-family: var(--tlg-ff-display);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--tlg-accent);
+  color: var(--tlg-accent, #00aff6);
 }
 /* homepage stat hooks — keep inline so injected values don't break layout */
 #twopir-legal .twopir-years,
@@ -1584,56 +1603,75 @@ article:has(#twopir-legal) {
   gap: 10px;
 }
 #twopir-legal .tlg-faq-row {
-  background: var(--tlg-surface);
-  border: 1px solid var(--tlg-border);
-  border-radius: var(--tlg-radius-md);
+  background: var(--tlg-surface, #ffffff);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  border-radius: var(--tlg-radius-md, 14px);
   overflow: hidden;
-  box-shadow: var(--tlg-shadow);
-  transition: border-color var(--tlg-ease), box-shadow var(--tlg-ease);
+  box-shadow: var(--tlg-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-faq-row.is-open {
   border-color: rgba(0,175,246,0.5);
-  box-shadow: var(--tlg-shadow-hv);
+  box-shadow: var(--tlg-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
 }
 #twopir-legal .tlg-faq-btn {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px;
   width: 100%;
-  padding: clamp(16px, 2vw, 22px) clamp(16px, 2.2vw, 26px);
-  background: none;
-  border: none;
+  box-sizing: border-box;
   cursor: pointer;
+  background: none;
+  border: 0;
   text-align: left;
-  font-family: var(--tlg-ff-body);
-  font-size: clamp(14px, 1.1vw, 15.5px);
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--tlg-text);
-  transition: color var(--tlg-ease);
+  /* Matched to the homepage's .twh-faq-btn. The question is a HEADING, so it
+     takes the display face at 700 — not the body face at 600. The h4 size
+     step was already correct; the family and weight were not, which is why
+     the two FAQ sections looked different despite passing the type check. */
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--tlg-text, #1a2a35);
+  transition: color 150ms ease;
 }
-#twopir-legal .tlg-faq-row.is-open .tlg-faq-btn { color: var(--tlg-accent); }
-#twopir-legal .tlg-faq-btn:focus-visible { outline: 2px solid var(--tlg-accent); outline-offset: -3px; }
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-btn { color: var(--tlg-accent, #00aff6); }
+#twopir-legal .tlg-faq-btn:focus-visible { outline: 2px solid var(--tlg-accent, #00aff6); outline-offset: -3px; }
 #twopir-legal .tlg-faq-ico {
-  width: 26px; height: 26px;
+  width: 22px; height: 22px;
+  min-width: 22px;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 1px solid var(--tlg-border);
-  background: var(--tlg-bg);
+  border: 1px solid var(--tlg-border, rgba(0,175,246,0.28));
+  background: rgba(0,175,246,0.07);
+  color: var(--tlg-accent-ink, #00699f);
   display: flex; align-items: center; justify-content: center;
-  color: var(--tlg-accent);
-  transition: transform var(--tlg-ease), background var(--tlg-ease), border-color var(--tlg-ease);
+  transition: background var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              border-color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-faq-ico svg {
   width: 12px; height: 12px;
   stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
 }
 #twopir-legal .tlg-faq-row.is-open .tlg-faq-ico {
-  transform: rotate(45deg);
-  background: var(--tlg-accent);
-  border-color: var(--tlg-accent);
+  transform: rotate(180deg);
+  background: var(--tlg-accent, #00aff6);
+  border-color: var(--tlg-accent, #00aff6);
   color: #fff;
+}
+/* plus becomes a minus — the homepage's open affordance, rather than
+   rotating the plus into an x */
+#twopir-legal .tlg-faq-ico .tlg-faq-v {
+  transform-origin: center;
+  transition: transform var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              opacity var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-ico .tlg-faq-v {
+  transform: scaleY(0);
+  opacity: 0;
 }
 #twopir-legal .tlg-faq-panel {
   overflow: hidden;
@@ -1641,27 +1679,27 @@ article:has(#twopir-legal) {
   transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
 }
 #twopir-legal .tlg-faq-panel-inner {
-  padding: 0 clamp(16px, 2.2vw, 26px) clamp(16px, 2vw, 22px);
+  padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
 }
-#twopir-legal .tlg-faq-row.is-open .tlg-faq-panel-inner { border-top: 1px solid var(--tlg-border-soft); }
+#twopir-legal .tlg-faq-row.is-open .tlg-faq-panel-inner { border-top: 1px solid var(--tlg-border-soft, rgba(0,175,246,0.22)); }
 
 /* Inline citation link to an external authority source. Inherits font
    size, weight and line-height from its parent, so it never changes
    type scale or layout — only colour + underline mark it as a link. */
 #twopir-legal .tlg-src {
-  color: var(--tlg-accent-dk);
+  color: var(--tlg-accent-ink, #00699f);
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 1px;
-  transition: color var(--tlg-ease);
+  transition: color var(--tlg-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-legal .tlg-src:hover,
-#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent); }
+#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent, #00aff6); }
 #twopir-legal .tlg-faq-panel-inner p {
   font-size: 13.5px;
   font-weight: 400;
   line-height: 1.8;
-  color: var(--tlg-muted);
+  color: var(--tlg-muted, #566b79);
   padding-top: 15px;
   text-wrap: pretty;
 }
@@ -1670,8 +1708,8 @@ article:has(#twopir-legal) {
    11 · CTA (dark close, mirrors the homepage stats strip)
    ════════════════════════════════════════════════════════════ */
 #twopir-legal .tlg-cta { text-align: center; }
-#twopir-legal .tlg-cta-inner { max-width: 720px; margin: 0 auto; }
-#twopir-legal .tlg-cta .tlg-eyebrow { color: var(--tlg-accent); }
+#twopir-legal .tlg-cta-inner { max-width: 1100px; margin: 0 auto; }
+#twopir-legal .tlg-cta .tlg-eyebrow { color: var(--tlg-accent, #00aff6); }
 #twopir-legal .tlg-cta-actions {
   display: flex;
   justify-content: center;
@@ -1680,7 +1718,7 @@ article:has(#twopir-legal) {
   margin-top: 28px;
 }
 #twopir-legal .tlg-cta-note {
-  font-family: var(--tlg-ff-mono);
+  font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -1798,7 +1836,7 @@ article:has(#twopir-legal) {
 @media (max-width: 620px) {
   #twopir-legal .tlg-map   { display: none; }
   #twopir-legal .tlg-stack { display: block; }
-  #twopir-legal .tlg-canvas { border-radius: var(--tlg-radius-md); }
+  #twopir-legal .tlg-canvas { border-radius: var(--tlg-radius-md, 14px); }
   #twopir-legal .tlg-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
   #twopir-legal .tlg-hero-cta,
   #twopir-legal .tlg-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
@@ -1868,14 +1906,14 @@ article:has(#twopir-legal) {
 
 
 /* ── display · hero ──────────────────────────────────────────── */
-#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(30px, 4vw, 46px)); line-height: 1.09; }
+#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(34px, 4.5vw, 56px)); line-height: 1.09; }
 /* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
-#twopir-legal .tlg-hero-sub   { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.62; }
-#twopir-legal .tlg-pill       { font-size: var(--tlg-fs-label, 11px); letter-spacing: 0.1em; }
+#twopir-legal .tlg-hero-sub   { font-size: var(--tlg-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-legal .tlg-pill       { font-size: var(--tlg-fs-label, 12px); letter-spacing: 0.1em; }
 /* hero stat row — homepage's exact pairing: 11px mono label,
    13px display number */
-#twopir-legal .tlg-hero-proof li { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-hero-proof b  { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-hero-proof li { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-hero-proof b  { font-size: var(--tlg-fs-sm, 14px); }
 
 /* hero navy panel internals — matched to the homepage hero's own
    values (10px canvas label / tag / float key, 11px float value) */
@@ -1883,72 +1921,72 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-layer-h { font-size: 10px; }
 /* the float card sits on white, outside the navy panel, so it takes the
    11px label floor rather than the panel's 10px */
-#twopir-legal .tlg-float-k { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-float-v { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-chip    { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-float-k { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-float-v { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-chip    { font-size: var(--tlg-fs-label, 12px); }
 
 /* ── h2 · section titles ─────────────────────────────────────── */
-#twopir-legal .tlg-title { font-size: var(--tlg-fs-h2, clamp(26px, 3vw, 38px)); line-height: 1.16; }
+#twopir-legal .tlg-title { font-size: var(--tlg-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
 
 /* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
-#twopir-legal .tlg-eyebrow { font-size: var(--tlg-fs-eyebrow, clamp(11px, 0.9vw, 12px)); letter-spacing: 0.2em; }
+#twopir-legal .tlg-eyebrow { font-size: var(--tlg-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
 
 /* ── lede · section intros and long-form copy ────────────────── */
-#twopir-legal .tlg-lede         { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.7; }
-#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)); line-height: 1.7; }
+#twopir-legal .tlg-lede         { font-size: var(--tlg-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
 
 /* ── buttons — homepage buttons are 13px ─────────────────────── */
-#twopir-legal .tlg-btn     { font-size: var(--tlg-fs-sm, 13px); }
-#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-btn     { font-size: var(--tlg-fs-sm, 14px); }
+#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 14px); }
 
 /* ── trust strip ─────────────────────────────────────────────── */
-#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); }
-#twopir-legal .tlg-badge      { font-size: var(--tlg-fs-xs, 12px); }
+#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); }
+#twopir-legal .tlg-badge      { font-size: var(--tlg-fs-xs, 13px); }
 
 /* ── card titles · h4 role (dense cards keep their designed
       family and case — only the size snaps to the scale) ─────── */
-#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
-#twopir-legal .tlg-svc-card h3  { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
-#twopir-legal .tlg-step h3      { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
-#twopir-legal .tlg-int-name     { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
-#twopir-legal .tlg-why-item h3  { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
-#twopir-legal .tlg-cs-company   { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.3; }
-#twopir-legal .tlg-avatar       { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); }
-#twopir-legal .tlg-faq-btn      { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.4; }
-#twopir-legal .tlg-callout-text { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)); line-height: 1.6; }
+#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-legal .tlg-svc-card h3  { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-legal .tlg-step h3      { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-legal .tlg-int-name     { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-legal .tlg-why-item h3  { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-legal .tlg-cs-company   { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-legal .tlg-avatar       { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-legal .tlg-faq-btn      { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-legal .tlg-callout-text { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.6; }
 
 /* ── body · primary card copy ────────────────────────────────── */
-#twopir-legal .tlg-pain-item p       { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
-#twopir-legal .tlg-svc-card > p      { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
-#twopir-legal .tlg-why-item p        { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
-#twopir-legal .tlg-faq-panel-inner p { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.65; }
-#twopir-legal .tlg-quote-text        { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)); line-height: 1.7; }
+#twopir-legal .tlg-pain-item p       { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-legal .tlg-svc-card > p      { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-legal .tlg-why-item p        { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-legal .tlg-faq-panel-inner p { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-legal .tlg-quote-text        { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.7; }
 
 /* ── sm · dense lists, meta, secondary copy ──────────────────── */
-#twopir-legal .tlg-svc-list li    { font-size: var(--tlg-fs-sm, 13px); }
-#twopir-legal .tlg-step p         { font-size: var(--tlg-fs-sm, 13px); line-height: 1.6; }
-#twopir-legal .tlg-int-desc       { font-size: var(--tlg-fs-sm, 13px); line-height: 1.6; }
-#twopir-legal .tlg-engage li      { font-size: var(--tlg-fs-sm, 13px); }
-#twopir-legal .tlg-callout-author { font-size: var(--tlg-fs-sm, 13px); line-height: 1.65; }
-#twopir-legal .tlg-quote-name     { font-size: var(--tlg-fs-sm, 13px); }
-#twopir-legal .tlg-cs-title       { font-size: var(--tlg-fs-sm, 13px); line-height: 1.55; }
-#twopir-legal .tlg-fact b         { font-size: var(--tlg-fs-sm, 13px); }
-#twopir-legal .tlg-stars          { font-size: var(--tlg-fs-sm, 13px); }
+#twopir-legal .tlg-svc-list li    { font-size: var(--tlg-fs-sm, 14px); }
+#twopir-legal .tlg-step p         { font-size: var(--tlg-fs-sm, 14px); line-height: 1.6; }
+#twopir-legal .tlg-int-desc       { font-size: var(--tlg-fs-sm, 14px); line-height: 1.6; }
+#twopir-legal .tlg-engage li      { font-size: var(--tlg-fs-sm, 14px); }
+#twopir-legal .tlg-callout-author { font-size: var(--tlg-fs-sm, 14px); line-height: 1.65; }
+#twopir-legal .tlg-quote-name     { font-size: var(--tlg-fs-sm, 14px); }
+#twopir-legal .tlg-cs-title       { font-size: var(--tlg-fs-sm, 14px); line-height: 1.55; }
+#twopir-legal .tlg-fact b         { font-size: var(--tlg-fs-sm, 14px); }
+#twopir-legal .tlg-stars          { font-size: var(--tlg-fs-sm, 14px); }
 
 /* ── xs ──────────────────────────────────────────────────────── */
-#twopir-legal .tlg-quote-role { font-size: var(--tlg-fs-xs, 12px); }
+#twopir-legal .tlg-quote-role { font-size: var(--tlg-fs-xs, 13px); }
 
 /* ── label · 11px mono floor (was 9–10px) ────────────────────── */
-#twopir-legal .tlg-step-num  { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-mono-tag  { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-cs-lbl    { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-why-num   { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-callout-k { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-fact      { font-size: var(--tlg-fs-label, 11px); }
-#twopir-legal .tlg-cta-note  { font-size: var(--tlg-fs-label, 11px); }
+#twopir-legal .tlg-step-num  { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-mono-tag  { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-cs-lbl    { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-why-num   { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-callout-k { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-fact      { font-size: var(--tlg-fs-label, 12px); }
+#twopir-legal .tlg-cta-note  { font-size: var(--tlg-fs-label, 12px); }
 
 /* ── stat numbers · case-study metrics ───────────────────────── */
-#twopir-legal .tlg-cs-val { font-size: var(--tlg-fs-stat-sm, clamp(20px, 1.9vw, 24px)); }
+#twopir-legal .tlg-cs-val { font-size: var(--tlg-fs-stat-sm, clamp(22px, 2vw, 26px)); }
 
 /* ── Small screens — same values as the homepage's own
       small-screen type block. This pass loads after the page's
@@ -2886,7 +2924,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp1" id="tlg-fb1">
             <span>How does Salesforce improve client acquisition and intake for law firms?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp1" role="region" aria-labelledby="tlg-fb1">
@@ -2900,7 +2938,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp2" id="tlg-fb2">
             <span>Can Salesforce support case and matter operations for a law firm?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp2" role="region" aria-labelledby="tlg-fb2">
@@ -2914,7 +2952,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp3" id="tlg-fb3">
             <span>We already have Salesforce, but it is underperforming. Can you help?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp3" role="region" aria-labelledby="tlg-fb3">
@@ -2928,7 +2966,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp4" id="tlg-fb4">
             <span>Do you handle billing, payments and trust accounting workflows too?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp4" role="region" aria-labelledby="tlg-fb4">
@@ -2942,7 +2980,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp5" id="tlg-fb5">
             <span>Is this only for one type of law firm?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp5" role="region" aria-labelledby="tlg-fb5">
@@ -2956,7 +2994,7 @@ article:has(#twopir-legal) {
           <button class="tlg-faq-btn" type="button" aria-expanded="false" aria-controls="tlg-fp6" id="tlg-fb6">
             <span>How are you different from an implementation-only partner?</span>
             <span class="tlg-faq-ico" aria-hidden="true">
-              <svg viewBox="0 0 14 14"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+              <svg viewBox="0 0 14 14"><line class="tlg-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </span>
           </button>
           <div class="tlg-faq-panel" id="tlg-fp6" role="region" aria-labelledby="tlg-fb6">
@@ -3359,7 +3397,7 @@ article:has(#twopir-legal) {
 #twopir-legal li,
 #twopir-legal a,
 #twopir-legal span,
-#twopir-legal button { font-family: var(--tlg-ff-body) !important; }
+#twopir-legal button { font-family: var(--tlg-ff-body, 'Inter', sans-serif) !important; }
 
 /* Card titles belong to the display face too. Without them listed here the
    blanket body-font rule above wins by inheritance and every card title on
@@ -3380,7 +3418,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-layer-t,
 #twopir-legal .tlg-avatar,
 #twopir-legal .tlg-fact b,
-#twopir-legal .tlg-hero-proof b { font-family: var(--tlg-ff-display) !important; }
+#twopir-legal .tlg-hero-proof b { font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif) !important; }
 
 #twopir-legal .tlg-eyebrow,
 #twopir-legal .tlg-mono-tag,
@@ -3392,16 +3430,16 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-cta-note,
 #twopir-legal .tlg-canvas-label,
 #twopir-legal .tlg-pill,
-#twopir-legal .tlg-chip { font-family: var(--tlg-ff-mono) !important; }
+#twopir-legal .tlg-chip { font-family: var(--tlg-ff-mono, 'JetBrains Mono', monospace) !important; }
 
 /* 2 · The type scale from the pass above, re-asserted with the
        same protection the homepage uses. */
-#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(30px, 4vw, 46px)) !important; line-height: 1.14 !important; }
-#twopir-legal .tlg-title      { font-size: var(--tlg-fs-h2, clamp(26px, 3vw, 38px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-legal .tlg-hero-title { font-size: var(--tlg-fs-display, clamp(34px, 4.5vw, 56px)) !important; line-height: 1.14 !important; }
+#twopir-legal .tlg-title      { font-size: var(--tlg-fs-h2, clamp(30px, 3.4vw, 44px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
 #twopir-legal .tlg-title em   { font-weight: 800 !important; font-style: normal !important; }
 #twopir-legal .tlg-hero-sub,
 #twopir-legal .tlg-lede,
-#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(15px, 1.2vw, 17px)) !important; line-height: 1.7 !important; }
+#twopir-legal .tlg-philosophy p { font-size: var(--tlg-fs-lede, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.7 !important; }
 
 /* Primary card titles take the h3 step (17–19px), the same rung the
    homepage gives its service and about cards. The denser grids — process
@@ -3409,19 +3447,19 @@ article:has(#twopir-legal) {
    stay on h4, matching the homepage's own dense-card treatment. Before
    this split, --tlg-fs-h3 was defined but never used and every card title
    sat at 16px, the same size as the FAQ button text. */
-#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h3, clamp(17px, 1.5vw, 19px)) !important; line-height: 1.3 !important; }
+#twopir-legal .tlg-pain-item h3 { font-size: var(--tlg-fs-h3, clamp(20px, 1.8vw, 24px)) !important; line-height: 1.3 !important; }
 
 #twopir-legal .tlg-step h3,
 #twopir-legal .tlg-int-name,
 #twopir-legal .tlg-cs-company,
 #twopir-legal .tlg-faq-btn,
-#twopir-legal .tlg-layer-h { font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)) !important; line-height: 1.4 !important; }
+#twopir-legal .tlg-layer-h { font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.4 !important; }
 
 #twopir-legal .tlg-pain-item p,
 #twopir-legal .tlg-svc-card > p,
 #twopir-legal .tlg-why-item p,
 #twopir-legal .tlg-faq-panel-inner p,
-#twopir-legal .tlg-quote-text { font-size: var(--tlg-fs-body, clamp(14px, 1.05vw, 15px)) !important; line-height: 1.65 !important; }
+#twopir-legal .tlg-quote-text { font-size: var(--tlg-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65 !important; }
 
 #twopir-legal .tlg-svc-list li,
 #twopir-legal .tlg-step p,
@@ -3430,15 +3468,15 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-why-list li,
 #twopir-legal .tlg-callout-author,
 #twopir-legal .tlg-quote-name,
-#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-sm, 13px) !important; line-height: 1.6 !important; }
+#twopir-legal .tlg-trust-lead { font-size: var(--tlg-fs-sm, 14px) !important; line-height: 1.6 !important; }
 
 #twopir-legal .tlg-quote-role,
 #twopir-legal .tlg-badge,
 #twopir-legal .tlg-tag,
-#twopir-legal .tlg-src { font-size: var(--tlg-fs-xs, 12px) !important; }
+#twopir-legal .tlg-src { font-size: var(--tlg-fs-xs, 13px) !important; }
 
 /* 11px mono floor — nothing on the page sits below it */
-#twopir-legal .tlg-eyebrow   { font-size: var(--tlg-fs-eyebrow, clamp(11px, 0.9vw, 12px)) !important; letter-spacing: 0.2em !important; }
+#twopir-legal .tlg-eyebrow   { font-size: var(--tlg-fs-eyebrow, clamp(13px, 1vw, 14px)) !important; letter-spacing: 0.2em !important; }
 #twopir-legal .tlg-mono-tag,
 #twopir-legal .tlg-cs-lbl,
 #twopir-legal .tlg-step-num,
@@ -3448,13 +3486,13 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-cta-note,
 #twopir-legal .tlg-canvas-label,
 #twopir-legal .tlg-layer-t,
-#twopir-legal .tlg-chip { font-size: var(--tlg-fs-label, 11px) !important; letter-spacing: 0.08em; }
+#twopir-legal .tlg-chip { font-size: var(--tlg-fs-label, 12px) !important; letter-spacing: 0.08em; }
 /* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
-#twopir-legal .tlg-pill { font-size: var(--tlg-fs-label, 11px) !important; letter-spacing: 0.1em !important; }
+#twopir-legal .tlg-pill { font-size: var(--tlg-fs-label, 12px) !important; letter-spacing: 0.1em !important; }
 
 #twopir-legal .tlg-btn,
-#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 13px) !important; }
-#twopir-legal .tlg-cs-val  { font-size: var(--tlg-fs-stat-sm, clamp(20px, 1.9vw, 24px)) !important; line-height: 1.1; }
+#twopir-legal .tlg-cs-link { font-size: var(--tlg-fs-sm, 14px) !important; }
+#twopir-legal .tlg-cs-val  { font-size: var(--tlg-fs-stat-sm, clamp(22px, 2vw, 26px)) !important; line-height: 1.1; }
 
 /* 3 · Caps card titles — the homepage's own uppercase card-title recipe
        (display face, h4 step, weight 800, 0.055em tracking). Applied to
@@ -3464,7 +3502,7 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-why-item h3,
 #twopir-legal .tlg-svc-card h3 {
   text-transform: uppercase !important;
-  font-size: var(--tlg-fs-h4, clamp(15px, 1.25vw, 16px)) !important;
+  font-size: var(--tlg-fs-h4, clamp(17px, 1.4vw, 19px)) !important;
   font-weight: 800 !important;
   letter-spacing: 0.055em !important;
   line-height: 1.35 !important;
@@ -3484,21 +3522,21 @@ article:has(#twopir-legal) {
 #twopir-legal .tlg-faq-ico,
 #twopir-legal .tlg-faq-row.is-open .tlg-faq-btn,
 #twopir-legal .tlg-src:hover,
-#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent-ink) !important; }
+#twopir-legal .tlg-src:focus-visible { color: var(--tlg-accent-ink, #00699f) !important; }
 
 /* …but on a navy panel the bright accent is the legible one, so the dark
    sections, the hero canvas and the sticky callout all keep it. The open
    FAQ icon also keeps white-on-accent, which already passes. */
 #twopir-legal .tlg-section--dark .tlg-eyebrow,
 #twopir-legal .tlg-cta .tlg-eyebrow,
-#twopir-legal .tlg-callout .tlg-callout-k { color: var(--tlg-accent) !important; }
+#twopir-legal .tlg-callout .tlg-callout-k { color: var(--tlg-accent, #00aff6) !important; }
 #twopir-legal .tlg-faq-row.is-open .tlg-faq-ico { color: #fff !important; }
 
 /* 4 · Case-study cards — the theme uppercases and enlarges h3,
        which blew these headlines up mid-card on the homepage too. */
 #twopir-legal .tlg-cs-title {
   text-transform: none !important;
-  font-size: var(--tlg-fs-sm, 13px) !important;
+  font-size: var(--tlg-fs-sm, 14px) !important;
   font-weight: 600 !important;
   line-height: 1.55 !important;
   letter-spacing: 0 !important;
@@ -3543,7 +3581,7 @@ article:has(#twopir-legal) {
   -webkit-tap-highlight-color: transparent;
 }
 #twopir-legal .tlg-faq-btn:focus-visible {
-  outline: 2px solid var(--tlg-accent) !important;
+  outline: 2px solid var(--tlg-accent, #00aff6) !important;
   outline-offset: -3px;
 }
 #twopir-legal .tlg-faq-ico {
@@ -3609,27 +3647,212 @@ article:has(#twopir-legal) {
   display: none !important;
 }
 
-/* ── 6b · First-screen hero ──────────────────────────────────
-   Two gates, both deliberate:
 
-     min-width: 901px   below this the hero stacks to one column, and a
-                        forced screen height would leave a tall empty gap
-     min-height: 720px  only claim the full screen when the window can
-                        actually hold the content. On a shorter window the
-                        section falls back to its natural height and scrolls
-                        normally — which is the right failure, because the
-                        alternative is clipping the headline.
-
-   `min-height`, never `height`, and no overflow clipping. The hero is
-   already `display: flex; flex-direction: column; justify-content: center`,
-   so this is what makes the template forgiving about content length: a page
-   with a two-line headline and three stats centres in the screen and reads
-   as composed, while a page with six lines of lede grows past it and simply
-   scrolls. Neither case needs a font-size change. */
-@media (min-width: 901px) and (min-height: 720px) {
+/* ════════════════════════════════════════════════════════════
+   FIRST-SCREEN HERO — height-responsive
+   ════════════════════════════════════════════════════════════
+   Ported from the homepage. Replaces the earlier
+   `(min-width: 901px) and (min-height: 720px)` gate: instead of giving
+   up below 720px tall and letting the hero scroll, the hero now SCALES
+   to whatever height it has. Everything below is clamped with px floors
+   and ceilings, so nothing scales without bound, and it is desktop-only
+   so mobile viewport-unit quirks cannot apply. */
+@media (min-width: 901px) {
   #twopir-legal .tlg-hero {
-    min-height: calc(100vh - var(--tlg-nav, 87px));
+    min-height: calc(100vh  - var(--tlg-nav, 87px));
     min-height: calc(100svh - var(--tlg-nav, 87px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
   }
+  #twopir-legal .tlg-hero-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-legal .tlg-pill {
+    margin-bottom: clamp(10px, 1.9vh, 18px);
+    padding: clamp(5px, 0.8vh, 7px) 12px;
+  }
+  /* min(vw, vh): the headline yields to whichever dimension binds first */
+  #twopir-legal .tlg-hero-title {
+    font-size: clamp(32px, var(--tlg-h1-fluid, 3.2vw), 46px) !important;
+    line-height: 1.08 !important;
+  }
+  #twopir-legal .tlg-hero-rule {
+    margin: clamp(12px, 1.9vh, 16px) 0 clamp(10px, 1.6vh, 15px);
+  }
+  #twopir-legal .tlg-hero-sub {
+    font-size: clamp(15px, var(--tlg-sub-fluid, 1.2vw), 17px) !important;
+    line-height: 1.55 !important;
+  }
+  #twopir-legal .tlg-hero-cta {
+    margin-top: clamp(18px, 2.9vh, 26px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-legal .tlg-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(19px, 1.6vw, 24px);
+  }
+  #twopir-legal .tlg-hero-proof {
+    margin-top: clamp(15px, 2.5vh, 22px);
+    gap: clamp(7px, 1.2vh, 9px) 15px;
+  }
+  #twopir-legal .tlg-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-legal .tlg-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-legal .tlg-map { max-height: min(53vh, 486px); }
+}
+
+/* Short windows — a laptop with a bookmarks bar, or a scaled display.
+   The panel gives up more room so the copy column never has to. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-legal .tlg-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-legal .tlg-map { max-height: 50vh; }
+  #twopir-legal .tlg-float { transform: scale(0.92); transform-origin: left bottom; }
+}
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PAGE SCALING — the ladder, ported from the homepage
+   ════════════════════════════════════════════════════════════
+   Sections scale so a short laptop window sees the page at
+   85-100% instead of scrolling more. The floor is 0.85: the
+   bottom three rungs are deliberately equal, because 0.79 and
+   0.82 are what made the site read as squeezed.
+
+   The hero is NOT in the ladder — it does its own min(vw, vh)
+   scaling already, which is the whole reason the ladder exists. */
+#twopir-legal { --tlg-scale-h: 1; --tlg-scale-w: 1; }
+
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-legal { --tlg-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height:  940px) { #twopir-legal { --tlg-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height:  880px) { #twopir-legal { --tlg-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height:  820px) { #twopir-legal { --tlg-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height:  760px) { #twopir-legal { --tlg-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  700px) { #twopir-legal { --tlg-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  640px) { #twopir-legal { --tlg-scale-h: 0.85; } }
+
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-legal { --tlg-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-legal { --tlg-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-legal { --tlg-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-legal { --tlg-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-legal { --tlg-scale-w: 0.88; } }
+
+@media (min-width: 901px) {
+  #twopir-legal > section.tlg-section,
+  #twopir-legal > section.tlg-trust {
+    zoom: min(var(--tlg-scale-h, 1), var(--tlg-scale-w, 1));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   The ladder MULTIPLIES every declared size: at 0.85 a 9px label
+   renders at 7.6px. A 1366x768 laptop has roughly a 650px
+   viewport once browser chrome is off, so a typical machine
+   lands on the bottom rungs, not the 0.88 one its width suggests.
+
+   Every role below was declared between 9 and 12.5px. Collected
+   here so the small end uses ONE size per tier instead of
+   drifting across 9, 9.5, 10, 10.5, 11, 11.5, 12 and 12.5.
+
+     13px -> 11.05px at 0.85   micro labels
+     14px -> 11.90px at 0.85   secondary meta and supporting copy
+
+   The hero sits OUTSIDE the ladder, so declared == rendered and
+   its labels sit one step lower at the same physical size.      */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-legal .tlg-cs-lbl,
+#twopir-legal .tlg-mono-tag,
+#twopir-legal .tlg-callout-k,
+#twopir-legal .tlg-fact,
+#twopir-legal .tlg-step-num,
+#twopir-legal .tlg-cta-note,
+#twopir-legal .tlg-why-num,
+#twopir-legal .tlg-badge {
+  font-size: 13px !important;
+}
+/* .tlg-eyebrow is deliberately NOT pinned here: its token is
+   clamp(13px, 1vw, 14px), whose own floor is already 13px, so it cannot
+   fall under the readable floor. Pinning it held the eyebrow at 13px
+   while the homepage rendered 14px. */
+
+/* secondary meta and supporting copy */
+#twopir-legal .tlg-svc-list,
+#twopir-legal .tlg-step,
+#twopir-legal .tlg-int-desc,
+#twopir-legal .tlg-quote-role,
+#twopir-legal .tlg-cs-title,
+#twopir-legal .tlg-cs-link,
+#twopir-legal .tlg-callout-author,
+#twopir-legal .tlg-engage {
+  font-size: 14px !important;
+}
+
+/* hero — never zoomed, so one step lower reads the same size */
+#twopir-legal .tlg-float-k,
+#twopir-legal .tlg-tag,
+#twopir-legal .tlg-layer-h,
+#twopir-legal .tlg-canvas-label,
+#twopir-legal .tlg-hero-proof li {
+  font-size: 11.5px !important;
+}
+#twopir-legal .tlg-chip,
+#twopir-legal .tlg-float-v,
+#twopir-legal .tlg-s,
+#twopir-legal .tlg-h,
+#twopir-legal .tlg-t2 {
+  font-size: 12px !important;
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase, and wide tracking
+   compounds it. These two sat at 0.14em and 0.08em inside narrow
+   boxes: the case-study label ran to FOUR lines under a 24px
+   number and read louder than the number it was labelling.
+
+   The homepage stats strip already shows the right setting — its
+   label is the same 13px but tracked at 0.03em, and reads as the
+   quiet caption it is. Size comes down a step as well.
+
+   These sit below the 11px effective floor on purpose. That floor
+   is for reading matter; a tracked caps label is scanned, not
+   read, and its caps give it a larger apparent size. */
+#twopir-legal .tlg-cs-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-legal .tlg-fact {
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   the FAQ question, which is this page's only <button> element.
+   Two pixels of tracking on a 17.5px uppercase line is enough to
+   make the whole section read as oversized. Tracking is declared
+   here so the theme cannot decide it. */
+#twopir-legal .tlg-faq-btn {
+  letter-spacing: 0.01em !important;
+}
+
+/* ── The FAQ question is a heading, not a control ─────────────
+   The blanket body-font pass includes `#twopir-legal button`, with
+   !important, so it beat the .tlg-faq-btn display-face rule and the
+   questions rendered in Inter while the homepage's render in
+   Bricolage Grotesque. Same failure that rule's own comment warns
+   about for card titles — a <button> that is semantically a heading
+   has to be listed as an exception.
+
+   Case is left to the theme deliberately: the caps are wanted. */
+#twopir-legal .tlg-faq-btn {
+  font-family: var(--tlg-ff-display, 'Bricolage Grotesque', sans-serif) !important;
 }
 </style>

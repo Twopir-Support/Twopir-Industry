@@ -9,6 +9,20 @@ single Custom HTML block body fragments.
 Industry Pages/
   Legal.html          reference build — the template every other industry page starts from
   SaaS.html           Salesforce for SaaS & Technology
+  Fintech.html        Salesforce for Fintech
+  Healthcare.html     Salesforce for Healthcare
+  Nonprofit.html      Salesforce for Nonprofits
+  Manufacturing.html  Salesforce for Manufacturing & Industrial
+  ProfessionalServices.html  Salesforce for Professional Services
+  Telecom.html        Salesforce for Telecom & Infrastructure
+  RealEstate.html     Salesforce for Real Estate
+  Events.html         Salesforce for Events & Hospitality
+  AIFintech.html      AI for Fintech
+  AILawFirms.html     AI for Law Firms
+  AIAssetManagement.html  AI for Asset Management
+  AIManufacturing.html  AI for Manufacturing
+  AISaaS.html         AI for SaaS & Technology
+  AIRealEstate.html   AI for Real Estate
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -18,8 +32,40 @@ scripts/
   verify_degradation.js  renders the page with the sheet deliberately broken, both
                          Autoptimize failure modes, and checks nothing collapses
 docs/
-  saas-build-report.md   build, preservation and SEO/AEO report for SaaS.html
+  saas-build-report.md         build, preservation and SEO/AEO report for SaaS.html
+  fintech-build-report.md      the same for Fintech.html — a restyle of the live page
+                               onto the design system, with the copy preserved
+  healthcare-build-report.md   the same for Healthcare.html; section 4 records a
+                               blocking content defect carried over from the source
+  nonprofit-build-report.md    the same for Nonprofit.html; section 4 records three
+  manufacturing-build-report.md          the same for Manufacturing.html
+  professional-services-build-report.md  the same for ProfessionalServices.html;
+                               section 4 records a duplicate live page
+  telecom-build-report.md      the same for Telecom.html; section 6 records law-firm
+                               logo alt text carried over from the source
+  real-estate-build-report.md  the same for RealEstate.html; the only source in the
+                               batch whose logo alt text is correct
+  events-build-report.md       the same for Events.html; section 6 records law-firm
+                               alt text and the absence of any proof section
+  ai-fintech-build-report.md   the same for AIFintech.html; section 6 records the
+                               cannibalisation risk against /salesforce-for-fintech/
+  ai-law-firms-build-report.md the same for AILawFirms.html; section 4 records
+                               research citations that name no edition or publisher
+  ai-asset-management-build-report.md  the same for AIAssetManagement.html;
+                               section 6 records a Related Reading cluster that
+                               links nowhere and a three-way page overlap
+  ai-manufacturing-build-report.md  the same for AIManufacturing.html; section 4
+                               records citations to our own unpublished research
+  ai-saas-build-report.md      the same for AISaaS.html; section 3 records a
+                               content change the parity check caught and reverted
+  ai-real-estate-build-report.md  the same for AIRealEstate.html; section 3
+                               records a wrong stat class that would have shown
+                               "12+" where "500+" belongs
 ```
+
+All four scripts take a page filename, or default to every page in the directory.
+They read the wrapper id and class prefix out of the file itself, so nothing needs
+editing per page.
 
 ## Publishing a page
 
@@ -33,9 +79,17 @@ page are in the comment block at the top of its file.
 
 ```sh
 cd "Industry Pages"
-python3 ../scripts/verify_page.py            # run from the directory holding the page
-node ../scripts/verify_browser.js            # needs harness.html; see the script header
+python3 ../scripts/verify_page.py             # every page; or name one, e.g. Fintech.html
+node ../scripts/verify_browser.js
+node ../scripts/verify_degradation.js
 ```
+
+`verify_browser.js` and `verify_degradation.js` build their own `harness.html` — the
+page is a body fragment, so it only renders meaningfully inside a document that
+reproduces what the live theme does to it (`html { font-size: 10px }`). The harness
+files are gitignored and rewritten on every run. Both scripts run **offline**: every
+external request is aborted at the route level, so a sandbox without egress does not
+hang on the webfonts or the HubSpot-hosted client logos.
 
 `verify_page.py` runs the Autoptimize token-deletion simulation, confirms the FAQ JSON-LD matches
 the visible accordion word for word, and checks every `.twopir-*` stat fallback against the
@@ -69,7 +123,37 @@ Start from `Industry Pages/Legal.html` and change five things:
 - `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns the wrapper into a scroll
   container and breaks the sticky callout.
 
-### Known defects in Legal.html, fixed in SaaS.html
+### Current state of the pages
+
+| | Type scale | One-token rule | Grid-bullet defect | Static checks |
+|---|---|---|---|---|
+| `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 2 failing |
+| `SaaS.html`  | current | ✓ | ✓ fixed | pass |
+| `Fintech.html` | current | ✓ | ✓ fixed | pass |
+| `Healthcare.html` | current | ✓ | ✓ fixed | pass |
+| `Nonprofit.html` | current | ✓ | ✓ fixed | pass |
+| `Manufacturing.html` | current | ✓ | ✓ fixed | pass |
+| `ProfessionalServices.html` | current | ✓ | ✓ fixed | pass |
+| `Telecom.html` | current | ✓ | ✓ fixed | pass |
+| `RealEstate.html` | current | ✓ | ✓ fixed | pass |
+| `Events.html` | current | ✓ | ✓ fixed | pass |
+| `AIFintech.html` | current | ✓ | ✓ fixed | pass |
+| `AILawFirms.html` | current | ✓ | ✓ fixed | pass |
+| `AIAssetManagement.html` | current | ✓ | ✓ fixed | pass |
+| `AIManufacturing.html` | current | ✓ | ✓ fixed | pass |
+| `AISaaS.html` | current | ✓ | ✓ fixed | pass |
+| `AIRealEstate.html` | current | ✓ | ✓ fixed | pass |
+
+One piece of known debt, recorded in the tooling rather than hidden:
+
+- **`Legal.html` fails two static checks** (three bare `#twopir-legal` rules, and two
+  orphan tokens — `--tlg-fs-micro` and `--tlg-fs-stat`). It is the uploaded design
+  source, so it is carried as-is rather than edited here.
+
+`LEGACY_SCALE` in `verify_browser.js` is now empty — every page asserts against the same
+type-scale table.
+
+### Known defects in Legal.html, fixed in every page built since
 
 Back-port these before building the next page from `Legal.html`:
 
@@ -77,7 +161,8 @@ Back-port these before building the next page from `Legal.html`:
 2. **`rem` in the hero H1** — `.tlg-hero-title` is `clamp(1.85rem, 3.05vw, 3rem)`. The tail pass
    overrides it, so it renders correctly today, but the theme sets `html { font-size: 10px }` and a
    dropped tail block would leave the H1 at an 18.5px floor.
-3. **Grid-based list bullets break on inline children** — `.tlg-svc-list li` uses
+3. **Grid-based list bullets break on inline children** — still present in the
+   current `Legal.html`. `.tlg-svc-list li` uses
    `display: grid; grid-template-columns: 14px 1fr` with the diamond as the first grid item. Grid
    promotes *every* child, anonymous text nodes included, to its own cell. The moment a list item
    contains an inline element (`<a>`, `<strong>`), the trailing text lands in the 14px bullet

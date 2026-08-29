@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <!-- ============================================================
      TWOPIR CONSULTING — HOMEPAGE (all sections, one file)
      ============================================================
@@ -198,24 +199,24 @@ html { scroll-behavior: auto !important; }
   --twh-shadow-navy: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
 
   --twh-ease:        0.28s cubic-bezier(.4,0,.2,1);
-  --twh-pad-y:       clamp(48px, 6vw, 84px);
+  --twh-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
   --twh-pad-x:       clamp(16px, 4vw, 48px);
 
   /* spacing scale carried over from the original About Us / Client
      Reviews files so their vertical rhythm is unchanged */
-  --twh-sp-xs:  clamp(0.5rem, 1vw, 0.75rem);
-  --twh-sp-sm:  clamp(0.75rem, 1.5vw, 1.125rem);
-  --twh-sp-md:  clamp(1.25rem, 3vw, 2rem);
-  --twh-sp-lg:  clamp(2rem, 5vw, 3.5rem);
-  --twh-sp-xl:  clamp(3rem, 7vw, 5.5rem);
+  --twh-sp-xs:  clamp(5px, 1vw, 7.5px);
+  --twh-sp-sm:  clamp(7.5px, 1.5vw, 11.25px);
+  --twh-sp-md:  clamp(12.5px, 3vw, 20px);
+  --twh-sp-lg:  clamp(20px, 5vw, 35px);
+  --twh-sp-xl:  clamp(30px, 7vw, 55px);
 
   position: relative;
   width: 100%;
   display: block;
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   line-height: 1.65;
-  color: var(--twh-text);
-  background: var(--twh-bg);
+  color: var(--twh-text, #1a2a35);
+  background: var(--twh-bg, #dff1fa);
   -webkit-font-smoothing: antialiased;
   /* `clip`, not `hidden`. CSS says that when one axis is not visible,
      the other computes from visible to AUTO — so `overflow-x: hidden`
@@ -303,10 +304,10 @@ article:has(#twopir-home) {
 #twopir-home .twh-section {
   position: relative;
   width: 100%;
-  padding: var(--twh-pad-y) var(--twh-pad-x);
-  background: var(--twh-bg);
+  padding: var(--twh-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--twh-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--twh-bg, #dff1fa);
 }
-#twopir-home .twh-section--alt { background: var(--twh-bg-alt); }
+#twopir-home .twh-section--alt { background: var(--twh-bg-alt, #e8f5fd); }
 
 /* Skip layout and paint for off-screen sections. On a page this long,
    with this many continuous animations, this is the single biggest
@@ -352,11 +353,16 @@ article:has(#twopir-home) {
   #twopir-home .twh-book { content-visibility: visible; contain-intrinsic-size: none; }
 }
 
-#twopir-home .twh-wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-home .twh-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
 #twopir-home .twh-wrap--narrow { max-width: 900px; }
 
 /* ── Shared section-header pattern ────────────────────────── */
-#twopir-home .twh-head { text-align: center; margin-bottom: clamp(32px, 4vw, 52px); }
+#twopir-home .twh-head { text-align: center; margin-bottom: clamp(26px, min(3.2vw, 4vh), 44px); }
 
 #twopir-home .twh-rule {
   display: flex;
@@ -365,11 +371,11 @@ article:has(#twopir-home) {
   gap: 8px;
   margin: 14px auto 22px;
 }
-#twopir-home .twh-rule-line { width: 60px; height: 1px; background: var(--twh-divider); }
+#twopir-home .twh-rule-line { width: 60px; height: 1px; background: var(--twh-divider, rgba(0,175,246,0.35)); }
 #twopir-home .twh-rule-line--sm { width: 26px; }
 #twopir-home .twh-rule-diamond {
   width: 8px; height: 8px;
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
 }
@@ -377,11 +383,11 @@ article:has(#twopir-home) {
 /* gradient accent used on em and accent spans inside section titles */
 #twopir-home .twh-em {
   font-style: normal;
-  background: linear-gradient(100deg, var(--twh-accent) 0%, var(--twh-accent-dk) 92%);
+  background: linear-gradient(100deg, var(--twh-accent, #00aff6) 0%, var(--twh-accent-dk, #007ec6) 92%);
   -webkit-background-clip: text;
           background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
 }
 
 /* ── Shared scroll-reveal ─────────────────────────────────────
@@ -422,14 +428,25 @@ article:has(#twopir-home) {
 #twopir-hero {
   --twpr-nav:         92px;      /* height of your sticky header  */
 
+  /* Fluid terms for the hero, declared here rather than inside the rules
+     that use them. The pipeline that processes the Legal page rewrites
+     font-size values and mangles the rule it is rewriting — it dropped the
+     nested min(), then dropped the custom property when that was moved into
+     the same rule. Wrapper-level custom properties come through intact. */
+  --twpr-h1-fluid:    min(3.2vw, 5.45vh);
+  --twpr-sub-fluid:   min(1.2vw, 2.35vh);
+
   --twpr-bg:          #dff1fa;   /* = About Us / Services background */
   --twpr-bg-top:      #ecf8fd;
   --twpr-surface:     #ffffff;
   --twpr-accent:      #00aff6;
   --twpr-accent-dk:   #007ec6;
+      --twpr-accent-ink:  #00699f;
   --twpr-border:      rgba(0,175,246,0.28);
   --twpr-text:        #1a2a35;
-  --twpr-muted:       #5a7080;
+  /* was #5a7080, which measures 4.45 against the hero's resolved background —
+     under the 4.5 floor for body copy. Same nudge the page tokens already took. */
+  --twpr-muted:       #566b79;
   --twpr-navy:        #1e2447;
   --twpr-navy-deep:   #12183a;
   --twpr-navy-soft:   #1a2e4a;
@@ -440,7 +457,7 @@ article:has(#twopir-home) {
   --twpr-ff-mono:     'JetBrains Mono', monospace;
 
   /* one-line tweak if your theme scales body copy differently */
-  --twpr-fs-sub:      clamp(0.97rem, 1.05vw, 1.1rem);
+  --twpr-fs-sub:      clamp(9.7px, 1.05vw, 11px);
 
   --twpr-radius-lg:   22px;
   --twpr-radius-md:   14px;
@@ -472,13 +489,13 @@ article:has(#twopir-home) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: var(--twh-ff-body);
-  color: var(--twpr-text);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  color: var(--twpr-text, #1a2a35);
   -webkit-font-smoothing: antialiased;
   /* resolves to the exact About Us background at the bottom edge */
   background:
     radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
-    linear-gradient(180deg, var(--twpr-bg-top) 0%, #e5f4fc 52%, var(--twpr-bg) 92%, var(--twpr-bg) 100%);
+    linear-gradient(180deg, var(--twpr-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--twpr-bg, #dff1fa) 92%, var(--twpr-bg, #dff1fa) 100%);
   padding: clamp(26px, 3vw, 46px) clamp(16px, 4vw, 48px) 0;
   isolation: isolate;
 }
@@ -500,7 +517,12 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-inner {
   position: relative;
   z-index: 1;
-  max-width: 1180px;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
   width: 100%;
   margin: 0 auto;
   display: grid;
@@ -515,24 +537,24 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  gap: 8px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--twpr-accent);
+  color: var(--twpr-accent, #00aff6);
   background: rgba(255,255,255,0.82);
   border: 1px solid #b3d9f2;
   border-radius: 9999px;
-  padding: 7px 17px;
+  padding: 8px 16px;
   margin-bottom: clamp(14px, 1.8vw, 20px);
   box-shadow: 0 2px 10px rgba(0,130,200,0.08);
 }
 #twopir-hero .twpr-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   animation: twprPulse 2.6s ease-out infinite;
   flex-shrink: 0;
 }
@@ -543,20 +565,20 @@ article:has(#twopir-home) {
 }
 
 #twopir-hero .twpr-title {
-  font-family: var(--twh-ff-display);
-  font-size: clamp(28px, 3.05vw, 48px);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(28px, 3vw, 46px);
   font-weight: 700;
   letter-spacing: -0.028em;
   line-height: 1.09;
-  color: var(--twpr-text);
+  color: var(--twpr-text, #1a2a35);
   text-wrap: balance;
 }
 #twopir-hero .twpr-accent {
-  background: linear-gradient(100deg, var(--twpr-accent) 0%, var(--twpr-accent-dk) 92%);
+  background: linear-gradient(100deg, var(--twpr-accent, #00aff6) 0%, var(--twpr-accent-dk, #007ec6) 92%);
   -webkit-background-clip: text;
           background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: var(--twpr-accent);
+  color: var(--twpr-accent, #00aff6);
 }
 
 #twopir-hero .twpr-rule {
@@ -566,20 +588,20 @@ article:has(#twopir-home) {
   margin: clamp(14px, 1.7vw, 20px) 0 clamp(12px, 1.5vw, 17px);
 }
 #twopir-hero .twpr-rule-line   { width: 54px; height: 1px; background: rgba(0,175,246,0.35); }
-#twopir-hero .twpr-rule-diamond{ width: 8px; height: 8px; background: var(--twpr-accent); transform: rotate(45deg); border-radius: 1px; }
+#twopir-hero .twpr-rule-diamond{ width: 8px; height: 8px; background: var(--twpr-accent, #00aff6); transform: rotate(45deg); border-radius: 1px; }
 #twopir-hero .twpr-rule-line--sm { width: 26px; }
 
 /* ── Subheading paragraph ── */
 #twopir-hero .twpr-sub {
-  font-family: var(--twh-ff-body);
-  font-size: 20px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 300;
   line-height: 1.7;
-  color: var(--twpr-muted);
+  color: var(--twpr-muted, #566b79);
   max-width: 545px;
   text-wrap: pretty;
 }
-#twopir-hero .twpr-sub strong { color: var(--twpr-text); font-weight: 600; }
+#twopir-hero .twpr-sub strong { color: var(--twpr-text, #1a2a35); font-weight: 600; }
 
 /* ── CTAs ──────────────────────────────────────────────────── */
 #twopir-hero .twpr-cta {
@@ -592,17 +614,17 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  font-family: var(--twh-ff-body);
+  gap: 8px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-size: clamp(13px, 1vw, 14px);
   font-weight: 600;
   letter-spacing: 0.01em;
   border-radius: 100px;
-  padding: 13px 26px;
+  padding: 12px 24px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background var(--twpr-ease), color var(--twpr-ease),
-              box-shadow var(--twpr-ease), transform 0.18s ease, border-color var(--twpr-ease);
+  transition: background var(--twpr-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--twpr-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--twpr-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, border-color var(--twpr-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-hero .twpr-btn svg {
   width: 16px; height: 16px;
@@ -612,66 +634,66 @@ article:has(#twopir-home) {
 }
 #twopir-hero .twpr-btn--primary {
   color: #ffffff !important;
-  background: var(--twpr-accent);
-  border: 1.5px solid var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
+  border: 1.5px solid var(--twpr-accent, #00aff6);
   box-shadow: 0 4px 14px rgba(0,175,246,0.35);
 }
 #twopir-hero .twpr-btn--primary:hover,
 #twopir-hero .twpr-btn--primary:focus-visible {
-  background: var(--twpr-text);
-  border-color: var(--twpr-text);
+  background: var(--twpr-text, #1a2a35);
+  border-color: var(--twpr-text, #1a2a35);
   box-shadow: 0 8px 24px rgba(26,42,53,0.24);
   transform: translateY(-2px);
 }
-#twopir-hero .twpr-arrow { transition: transform var(--twpr-ease); }
+#twopir-hero .twpr-arrow { transition: transform var(--twpr-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
 #twopir-hero .twpr-btn--primary:hover .twpr-arrow { transform: translateX(3px); }
 
 #twopir-hero .twpr-btn--ghost {
-  color: var(--twpr-accent) !important;
+  color: var(--twpr-accent, #00aff6) !important;
   background: rgba(255,255,255,0.72);
-  border: 1.5px solid var(--twpr-border);
-  box-shadow: var(--twpr-shadow);
+  border: 1.5px solid var(--twpr-border, rgba(0,175,246,0.28));
+  box-shadow: var(--twpr-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
 #twopir-hero .twpr-btn--ghost:hover,
 #twopir-hero .twpr-btn--ghost:focus-visible {
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   color: #ffffff !important;
-  border-color: var(--twpr-accent);
+  border-color: var(--twpr-accent, #00aff6);
   box-shadow: 0 8px 24px rgba(0,175,246,0.32);
   transform: translateY(-2px);
 }
-#twopir-hero .twpr-btn:focus-visible { outline: 2px solid var(--twpr-accent); outline-offset: 3px; }
+#twopir-hero .twpr-btn:focus-visible { outline: 2px solid var(--twpr-accent, #00aff6); outline-offset: 3px; }
 
 /* ── Proof row ─────────────────────────────────────────────── */
 #twopir-hero .twpr-proof {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 15px;
+  gap: 8px 16px;
   margin-top: clamp(18px, 2.2vw, 26px);
 }
 #twopir-hero .twpr-proof li {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  gap: 8px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--twpr-muted);
+  color: var(--twpr-muted, #566b79);
 }
 #twopir-hero .twpr-proof b {
-  font-family: var(--twh-ff-display);
-  font-size: 14px;
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-sm, 14px);
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--twpr-text);
+  color: var(--twpr-text, #1a2a35);
 }
 #twopir-hero .twpr-proof li + li::before {
   content: '';
   width: 5px; height: 5px;
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
   opacity: 0.75;
@@ -692,8 +714,8 @@ article:has(#twopir-home) {
   max-width: min(100%, calc(56vh + 34px));
   background:
     radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
-    linear-gradient(158deg, var(--twpr-navy) 0%, var(--twpr-navy-deep) 58%, var(--twpr-navy-soft) 100%);
-  border-radius: var(--twpr-radius-lg);
+    linear-gradient(158deg, var(--twpr-navy, #1e2447) 0%, var(--twpr-navy-deep, #12183a) 58%, var(--twpr-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--twpr-radius-lg, 22px);
   padding: clamp(13px, 1.5vw, 17px);
   box-shadow: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
 }
@@ -701,7 +723,7 @@ article:has(#twopir-home) {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--twpr-radius-lg);
+  border-radius: var(--twpr-radius-lg, 22px);
   border: 1px solid rgba(255,255,255,0.08);
   pointer-events: none;
 }
@@ -710,17 +732,17 @@ article:has(#twopir-home) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding-bottom: 11px;
-  margin-bottom: 11px;
+  gap: 8px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 #twopir-hero .twpr-canvas-label {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -732,7 +754,7 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-live {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--twpr-green);
+  background: var(--twpr-green, #35d39a);
   animation: twprLive 2.4s ease-out infinite;
   flex-shrink: 0;
 }
@@ -742,8 +764,8 @@ article:has(#twopir-home) {
   100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
 }
 #twopir-hero .twpr-tag {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -751,14 +773,14 @@ article:has(#twopir-home) {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 5px;
-  padding: 4px 9px;
+  padding: 4px 8px;
   white-space: nowrap;
 }
 
 /* ── SVG map ───────────────────────────────────────────────── */
 #twopir-hero .twpr-map { display: block; width: 100%; height: auto; max-height: 56vh; }
-#twopir-hero .twpr-map text { font-family: var(--twh-ff-body); }
-#twopir-hero .twpr-map .m   { font-family: var(--twh-ff-mono); }
+#twopir-hero .twpr-map text { font-family: var(--twh-ff-body, 'Inter', sans-serif); }
+#twopir-hero .twpr-map .m   { font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace); }
 
 #twopir-hero .twpr-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
 #twopir-hero .twpr-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
@@ -774,24 +796,24 @@ article:has(#twopir-home) {
    the page, this section included, is on the rem scale. */
 #twopir-hero .twpr-t   { fill: rgba(255,255,255,0.95); font-size: 14px; font-weight: 600; }
 #twopir-hero .twpr-t2  { fill: rgba(255,255,255,0.95); font-size: 12px; font-weight: 600; }
-#twopir-hero .twpr-s   { fill: rgba(255,255,255,0.5);  font-size: 10px;  font-weight: 400; }
-#twopir-hero .twpr-h   { fill: rgba(255,255,255,0.5);  font-size: 10px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-hero .twpr-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-hero .twpr-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
 #twopir-hero .twpr-h--acc { fill: rgba(0,175,246,0.95); }
 #twopir-hero .twpr-h--out { fill: rgba(53,211,154,0.9); }
-#twopir-hero .twpr-mark      { fill: var(--twpr-accent); }
-#twopir-hero .twpr-mark--out { fill: var(--twpr-green); }
+#twopir-hero .twpr-mark      { fill: var(--twpr-accent, #00aff6); }
+#twopir-hero .twpr-mark--out { fill: var(--twpr-green, #35d39a); }
 
 #twopir-hero .twpr-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
 #twopir-hero .twpr-flow {
   fill: none;
-  stroke: var(--twpr-accent);
+  stroke: var(--twpr-accent, #00aff6);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-dasharray: 5 14;
   opacity: 0.9;
   animation: twprFlow 2.2s linear infinite;
 }
-#twopir-hero .twpr-flow--out { stroke: var(--twpr-green); }
+#twopir-hero .twpr-flow--out { stroke: var(--twpr-green, #35d39a); }
 #twopir-hero .twpr-flow.d1 { animation-delay: 0s; }
 #twopir-hero .twpr-flow.d2 { animation-delay: 0.28s; }
 #twopir-hero .twpr-flow.d3 { animation-delay: 0.56s; }
@@ -802,9 +824,9 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-hit:hover rect.twpr-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
 
 /* the 2πr mark where every system converges */
-#twopir-hero .twpr-badge-ring { fill: none; stroke: var(--twpr-accent); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-hero .twpr-badge-ring { fill: none; stroke: var(--twpr-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
 #twopir-hero .twpr-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
-#twopir-hero .twpr-badge-txt  { fill: #ffffff; font-size: 13px; font-weight: 700; font-family: var(--twh-ff-display); letter-spacing: -0.01em; }
+#twopir-hero .twpr-badge-txt  { fill: #ffffff; font-size: 13px; font-weight: 700; font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
 #twopir-hero .twpr-spin { transform-origin: 280px 158px; animation: twprSpin 26s linear infinite; }
 @keyframes twprSpin { to { transform: rotate(360deg); } }
 
@@ -816,17 +838,17 @@ article:has(#twopir-home) {
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 11px;
-  background: var(--twpr-surface);
-  border: 1px solid var(--twpr-border);
-  border-radius: var(--twpr-radius-md);
-  padding: 11px 15px;
+  gap: 12px;
+  background: var(--twpr-surface, #ffffff);
+  border: 1px solid var(--twpr-border, rgba(0,175,246,0.28));
+  border-radius: var(--twpr-radius-md, 14px);
+  padding: 12px 16px;
   box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
 }
 #twopir-hero .twpr-float-ico {
   width: 32px; height: 32px;
   border-radius: 9px;
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 12px rgba(0,175,246,0.35);
   flex-shrink: 0;
@@ -837,20 +859,20 @@ article:has(#twopir-home) {
 }
 #twopir-hero .twpr-float-k {
   display: block;
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--twpr-accent);
+  color: var(--twpr-accent-ink, #00699f);
   margin-bottom: 2px;
 }
 #twopir-hero .twpr-float-v {
   display: block;
-  font-family: var(--twh-ff-body);
-  font-size: 11px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 600;
-  color: var(--twpr-text);
+  color: var(--twpr-text, #1a2a35);
   white-space: nowrap;
 }
 
@@ -859,14 +881,14 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-layer {
   border: 1px solid rgba(255,255,255,0.13);
   background: rgba(255,255,255,0.05);
-  border-radius: var(--twpr-radius-md);
-  padding: 12px 13px 13px;
+  border-radius: var(--twpr-radius-md, 14px);
+  padding: 12px 12px 12px;
 }
 #twopir-hero .twpr-layer--core { background: rgba(0,175,246,0.10); border-color: rgba(0,175,246,0.42); }
 #twopir-hero .twpr-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
 #twopir-hero .twpr-layer-h {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px; font-weight: 500;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px); font-weight: 500;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: rgba(255,255,255,0.55);
   margin-bottom: 3px;
@@ -874,19 +896,19 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-layer--core .twpr-layer-h { color: rgba(0,175,246,0.95); }
 #twopir-hero .twpr-layer--out  .twpr-layer-h { color: rgba(53,211,154,0.9); }
 #twopir-hero .twpr-layer-t {
-  font-family: var(--twh-ff-display);
-  font-size: 14px; font-weight: 700;
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-sm, 14px); font-weight: 700;
   letter-spacing: -0.01em; color: #fff;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
-#twopir-hero .twpr-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-hero .twpr-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 #twopir-hero .twpr-chip {
-  font-size: 11px; font-weight: 500;
+  font-size: var(--twh-fs-micro, 12px); font-weight: 500;
   color: rgba(255,255,255,0.82);
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 6px;
-  padding: 4px 9px;
+  padding: 4px 8px;
 }
 #twopir-hero .twpr-layer--core .twpr-chip { background: rgba(0,175,246,0.16); border-color: rgba(0,175,246,0.42); color: #fff; }
 #twopir-hero .twpr-layer--out  .twpr-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
@@ -898,7 +920,7 @@ article:has(#twopir-home) {
 #twopir-hero .twpr-connector::after {
   content: ''; position: absolute;
   width: 6px; height: 6px;
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   transform: rotate(45deg); border-radius: 1px;
 }
 
@@ -918,10 +940,10 @@ article:has(#twopir-home) {
 }
 #twopir-hero .twpr-handoff-diamond {
   width: 8px; height: 8px;
-  background: var(--twpr-accent);
+  background: var(--twpr-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
-  margin-top: 6px;
+  margin-top: 4px;
   box-shadow: 0 0 0 6px rgba(0,175,246,0.10);
 }
 
@@ -956,7 +978,7 @@ article:has(#twopir-home) {
 
 /* true first-screen behaviour on desktop / large tablet */
 @media (min-width: 901px) {
-  #twopir-hero { min-height: calc(100svh - var(--twpr-nav)); }
+  #twopir-hero { min-height: calc(100svh - var(--twpr-nav, 92px)); }
 }
 
 @media (max-width: 1100px) {
@@ -982,16 +1004,16 @@ article:has(#twopir-home) {
   #twopir-hero .twpr-map   { display: none; }
   #twopir-hero .twpr-stack { display: block; }
   #twopir-hero .twpr-title { letter-spacing: -0.02em; line-height: 1.13; }
-  #twopir-hero .twpr-cta   { flex-direction: column; align-items: stretch; gap: 10px; }
-  #twopir-hero .twpr-btn   { width: 100%; justify-content: center; padding: 14px 22px; }
-  #twopir-hero .twpr-canvas{ border-radius: var(--twpr-radius-md); }
+  #twopir-hero .twpr-cta   { flex-direction: column; align-items: stretch; gap: 8px; }
+  #twopir-hero .twpr-btn   { width: 100%; justify-content: center; padding: 12px 20px; }
+  #twopir-hero .twpr-canvas{ border-radius: var(--twpr-radius-md, 14px); }
 }
 
 @media (max-width: 420px) {
-  #twopir-hero .twpr-eyebrow { font-size: 10px; letter-spacing: 0.14em; padding: 6px 13px; }
-  #twopir-hero .twpr-sub     { font-size: 16px; line-height: 1.65; }
-  #twopir-hero .twpr-proof   { gap: 6px 11px; }
-  #twopir-hero .twpr-proof li{ font-size: 10px; letter-spacing: 0.08em; }
+  #twopir-hero .twpr-eyebrow { font-size: var(--twh-fs-micro, 12px); letter-spacing: 0.14em; padding: 4px 12px; }
+  #twopir-hero .twpr-sub     { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+  #twopir-hero .twpr-proof   { gap: 4px 12px; }
+  #twopir-hero .twpr-proof li{ font-size: var(--twh-fs-micro, 12px); letter-spacing: 0.08em; }
   #twopir-hero .twpr-proof li + li::before { margin-right: 5px; }
   #twopir-hero .twpr-canvas-bar .twpr-tag { display: none; }
 }
@@ -1007,16 +1029,16 @@ article:has(#twopir-home) {
 
    ════════════════════════════════════════════════════════════ */
 #twopir-home .twh-stats {
-  padding: clamp(28px, 3.4vw, 52px) var(--twh-pad-x) clamp(34px, 4vw, 62px);
-  background: var(--twh-bg);
+  padding: clamp(28px, 3.4vw, 52px) var(--twh-pad-x, clamp(16px, 4vw, 48px)) clamp(34px, 4vw, 62px);
+  background: var(--twh-bg, #dff1fa);
 }
 
 #twopir-home .twh-stats-strip {
   width: 100%;
-  max-width: 1060px;
+  max-width: 1230px;   /* was 1040 against a 1180 wrap; same ratio of 1400 */
   margin: 0 auto;
-  border-radius: var(--twh-radius-lg);
-  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.5rem);
+  border-radius: 18px;
+  padding: clamp(13.75px, 2vw, 17.5px) clamp(7.5px, 1.2vw, 10px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: start;
@@ -1024,25 +1046,25 @@ article:has(#twopir-home) {
   overflow: hidden;
   background:
     radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
-    linear-gradient(158deg, var(--twh-navy) 0%, var(--twh-navy-deep) 58%, var(--twh-navy-soft) 100%);
-  box-shadow: var(--twh-shadow-navy);
+    linear-gradient(158deg, var(--twh-navy, #1e2447) 0%, var(--twh-navy-deep, #12183a) 58%, var(--twh-navy-soft, #1a2e4a) 100%);
+  box-shadow: 0 3px 18px rgba(18,24,58,0.14), 0 1px 3px rgba(18,24,58,0.10);
 }
 #twopir-home .twh-stats-strip::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--twh-radius-lg);
+  border-radius: var(--twh-radius-lg, 22px);
   border: 1px solid rgba(255,255,255,0.08);
   pointer-events: none;
 }
 
 #twopir-home .twh-stat-item {
-  padding: clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 2.5vw, 2rem);
+  padding: 7px clamp(6.25px, 0.9vw, 8px);
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 4.5px;
   position: relative;
-  border-radius: var(--twh-radius-md);
+  border-radius: var(--twh-radius-md, 14px);
   transition: background 0.22s ease, transform 0.22s ease;
   cursor: default;
 }
@@ -1051,7 +1073,7 @@ article:has(#twopir-home) {
   transform: translateY(-2px);
 }
 #twopir-home .twh-stat-item:focus-visible {
-  outline: 2px solid var(--twh-accent);
+  outline: 2px solid var(--twh-accent, #00aff6);
   outline-offset: 3px;
 }
 
@@ -1059,16 +1081,20 @@ article:has(#twopir-home) {
 #twopir-home .twh-stat-item + .twh-stat-item::before {
   content: '';
   position: absolute;
-  left: 0; top: 15%; bottom: 15%;
+  left: 0; top: 18%; bottom: 18%;
   width: 1px;
-  background: rgba(255,255,255,0.13);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.16) 30%,
+    rgba(255,255,255,0.16) 70%,
+    rgba(255,255,255,0) 100%);
 }
 
 #twopir-home .twh-stat-number {
-  font-family: var(--twh-ff-display);
-  font-size: clamp(32px, 4vw, 48px);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(26px, 2.5vw, 32px);
   font-weight: 700;
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
   line-height: 1.05;
   letter-spacing: -0.02em;
   display: flex;
@@ -1080,8 +1106,8 @@ article:has(#twopir-home) {
 }
 
 #twopir-home .twh-stat-label {
-  font-family: var(--twh-ff-body);
-  font-size: 16px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px));
   font-weight: 400;
   color: rgba(255,255,255,0.85);
   line-height: 1.5;
@@ -1105,17 +1131,17 @@ article:has(#twopir-home) {
   #twopir-home .twh-stat-item:nth-child(3),
   #twopir-home .twh-stat-item:nth-child(4) {
     border-top: 1px solid rgba(255,255,255,0.10);
-    margin-top: 0.25rem;
-    padding-top: 0.25rem;
+    margin-top: 2.5px;
+    padding-top: 2.5px;
   }
 }
 @media (max-width: 700px) {
-  #twopir-home .twh-stats-strip { border-radius: var(--twh-radius-md); padding: 1.5rem 1rem; }
-  #twopir-home .twh-stat-item   { padding: 0.9rem 1rem; }
+  #twopir-home .twh-stats-strip { border-radius: var(--twh-radius-md, 14px); padding: 15px 10px; }
+  #twopir-home .twh-stat-item   { padding: 9px 10px; }
 }
 @media (max-width: 480px) {
   #twopir-home .twh-stat-number { font-size: clamp(28px, 7.5vw, 32px); }
-  #twopir-home .twh-stat-label  { font-size: 14px; }
+  #twopir-home .twh-stat-label  { font-size: var(--twh-fs-sm, 14px); }
 }
 
 
@@ -1130,9 +1156,9 @@ article:has(#twopir-home) {
    re-tokenised onto the hero palette.
 
    ════════════════════════════════════════════════════════════ */
-#twopir-home .twh-about { font-size: 16px; }
+#twopir-home .twh-about { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
 
-#twopir-home .twh-ab-hero { text-align: center; padding-bottom: var(--twh-sp-lg); }
+#twopir-home .twh-ab-hero { text-align: center; padding-bottom: 0; }
 
 /* ── "Our Philosophy" panel ───────────────────────────────────
    Pattern lifted from redesign/Industry Pages/Legal.html §4
@@ -1162,11 +1188,11 @@ article:has(#twopir-home) {
      is the prominent white surface, the Four Ways cards below sit back on
      --card, and they rise to white on hover.
      To match Legal literally instead, change this one line to
-     `background: var(--twh-card);`. */
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-lg);
-  box-shadow: var(--twh-shadow);
+     `background: var(--twh-card, #eef8fd);`. */
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-lg, 22px);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
   text-align: center;
   position: relative;
@@ -1184,43 +1210,43 @@ article:has(#twopir-home) {
 
 #twopir-home .twh-ab-eyebrow,
 #twopir-home .twh-ab-sec-eyebrow {
-  font-family: var(--twh-ff-mono);
-  font-size: 16px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px));
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
-  margin-bottom: var(--twh-sp-sm);
+  color: var(--twh-accent-ink, #00699f);
+  margin-bottom: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
   display: block;
 }
 
 #twopir-home .twh-ab-title {
-  font-family: var(--twh-ff-display);
-  font-size: clamp(32px, 5vw, 56px);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(32px, 5vw, 46px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.12;
-  margin-bottom: var(--twh-sp-xs);
+  margin-bottom: var(--twh-sp-xs, clamp(5px, 1vw, 7.5px));
   text-wrap: balance;
 }
 
 #twopir-home .twh-ab-subheading {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(18px, 2.4vw, 24px);
   font-weight: 600;
-  color: var(--twh-accent-dk);
-  margin-bottom: var(--twh-sp-sm);
+  color: var(--twh-accent-ink, #00699f);
+  margin-bottom: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
 }
 
 #twopir-home .twh-ab-desc-group { max-width: 68ch; margin: 0 auto; }
 
 #twopir-home .twh-ab-desc {
-  font-family: var(--twh-ff-body);
-  font-size: 24px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 400;
   line-height: 1.7;
-  color: var(--twh-muted-2);
+  color: var(--twh-muted-2, #4a6070);
   /* 720px measure, matching .tlg-philosophy in Legal.html — inside a
      900px card an 820px cap never engaged, so the lines ran the full
      width of the panel. This is line length only; the size is untouched. */
@@ -1229,7 +1255,7 @@ article:has(#twopir-home) {
   text-wrap: pretty;
 }
 #twopir-home .twh-ab-desc + .twh-ab-desc { margin-top: 0.65em; }
-#twopir-home .twh-ab-desc strong { color: var(--twh-text); font-weight: 600; }
+#twopir-home .twh-ab-desc strong { color: var(--twh-text, #1a2a35); font-weight: 600; }
 
 /* Emphasis inside body copy. Every paragraph that now carries bold needs its own
    rule: `strong` on its own only bumps weight, so without these the bolded phrase
@@ -1242,68 +1268,71 @@ article:has(#twopir-home) {
 #twopir-home .twh-ind-desc strong,
 #twopir-home .twh-eco-sub strong,
 #twopir-home .twh-ss-intro strong {
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   font-weight: 600;
 }
 
 /* ── Sub-section headers (Four Ways We Work / Why Clients Choose) */
-#twopir-home .twh-ab-sec-head {
+#twopir-home .twh-head {
   text-align: center;
-  max-width: 780px;
-  margin: 0 auto var(--twh-sp-lg);
+  /* 980, not 780. The theme uppercases headings on the live site, and caps
+     run ~15% wider — at 780 (663 after the zoom ladder) the industries
+     heading, the longest on the page, broke to three lines. The shorter
+     headings are unaffected; they simply have more room before wrapping. */
+  max-width: 980px;
+  margin: 0 auto var(--twh-sp-lg, clamp(20px, 5vw, 35px));
 }
 #twopir-home .twh-ab-sec-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(24px, 3.4vw, 40px);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--twh-text);
-  margin-bottom: var(--twh-sp-xs);
+  letter-spacing: -0.02em;
+  color: var(--twh-text, #1a2a35);
+  margin-bottom: var(--twh-sp-xs, clamp(5px, 1vw, 7.5px));
   text-wrap: balance;
 }
 #twopir-home .twh-ab-sec-intro {
-  font-family: var(--twh-ff-body);
-  font-size: 24px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 400;
   line-height: 1.7;
-  color: var(--twh-muted-2);
+  color: var(--twh-muted-2, #4a6070);
   max-width: 58ch;
-  margin: var(--twh-sp-sm) auto 0;
+  margin: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px)) auto 0;
   text-wrap: pretty;
 }
 
-#twopir-home .twh-ab-block { margin-top: var(--twh-sp-md); }
 
 /* ── Four Ways We Work — 4-up card grid ── */
 #twopir-home .twh-ab-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--twh-sp-md);
+  gap: clamp(8.75px, 1.4vw, 12.5px);
   width: 100%;
-  margin-top: var(--twh-sp-lg);
+  margin-top: var(--twh-sp-lg, clamp(20px, 5vw, 35px));
   align-items: stretch;
 }
 @media (max-width: 960px) {
-  #twopir-home .twh-ab-grid { grid-template-columns: repeat(2, 1fr); gap: var(--twh-sp-sm); }
+  #twopir-home .twh-ab-grid { grid-template-columns: repeat(2, 1fr); gap: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px)); }
 }
 @media (max-width: 700px) {
-  #twopir-home .twh-ab-grid { grid-template-columns: 1fr; gap: var(--twh-sp-sm); }
+  #twopir-home .twh-ab-grid { grid-template-columns: 1fr; gap: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px)); }
 }
 
 #twopir-home .twh-ab-card {
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-lg);
-  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.875rem);
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
+  padding: clamp(12.5px, 2vw, 17.5px) clamp(10px, 1.5vw, 12.5px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
   height: 100%;
-  box-shadow: var(--twh-shadow);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   position: relative;
   overflow: hidden;
-  transition: transform var(--twh-ease), box-shadow var(--twh-ease), background var(--twh-ease);
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   contain: layout style paint;
 }
 #twopir-home .twh-ab-card::before {
@@ -1312,13 +1341,13 @@ article:has(#twopir-home) {
   inset: 0;
   background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity var(--twh-ease);
+  transition: opacity var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   pointer-events: none;
 }
 #twopir-home .twh-ab-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--twh-shadow-hv);
-  background: var(--twh-surface);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--twh-surface, #ffffff);
 }
 #twopir-home .twh-ab-card:hover::before { opacity: 1; }
 /* promote to its own layer only while being interacted with */
@@ -1327,21 +1356,21 @@ article:has(#twopir-home) {
 
 #twopir-home .twh-ab-icon-wrap {
   width: 100%;
-  height: clamp(72px, 10vw, 96px);
+  height: clamp(52px, 4.6vw, 64px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--twh-sp-md);
+  margin-bottom: clamp(7.5px, 1.2vw, 10px);
   position: relative;
   align-self: center;
 }
 #twopir-home .twh-ab-diamond {
   position: absolute;
-  border: 2px solid var(--twh-accent);
+  border: 2px solid var(--twh-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 6px;
   background: rgba(0,175,246,0.06);
-  transition: background var(--twh-ease), transform var(--twh-ease);
+  transition: background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   pointer-events: none;
   margin: auto;
   width: clamp(72px, 10vw, 96px);
@@ -1354,19 +1383,19 @@ article:has(#twopir-home) {
 #twopir-home .twh-ab-icon {
   position: relative;
   z-index: 1;
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
   width: clamp(26px, 3.5vw, 34px);
   height: clamp(26px, 3.5vw, 34px);
 }
 
 #twopir-home .twh-ab-card-title {
-  font-family: var(--twh-ff-display);
-  font-size: 32px;
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--twh-text);
-  margin-bottom: var(--twh-sp-xs);
+  color: var(--twh-text, #1a2a35);
+  margin-bottom: var(--twh-sp-xs, clamp(5px, 1vw, 7.5px));
   text-align: center;
   width: 100%;
   line-height: 1.25;
@@ -1374,17 +1403,17 @@ article:has(#twopir-home) {
 #twopir-home .twh-ab-card-divider {
   width: 36px;
   height: 2px;
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   border-radius: 2px;
-  margin: var(--twh-sp-xs) 0 var(--twh-sp-sm);
+  margin: var(--twh-sp-xs, clamp(5px, 1vw, 7.5px)) 0 var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
   align-self: center;
 }
 #twopir-home .twh-ab-card-body {
-  font-family: var(--twh-ff-body);
-  font-size: 24px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 400;
   line-height: 1.72;
-  color: var(--twh-muted-2);
+  color: var(--twh-muted-2, #4a6070);
   flex: 1;
   text-align: left;
   width: 100%;
@@ -1395,97 +1424,97 @@ article:has(#twopir-home) {
 #twopir-home .twh-ab-why-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--twh-sp-md);
+  gap: var(--twh-sp-md, clamp(12.5px, 3vw, 20px));
   width: 100%;
-  margin-top: var(--twh-sp-lg);
+  margin-top: var(--twh-sp-lg, clamp(20px, 5vw, 35px));
   align-items: stretch;
 }
 @media (max-width: 960px) {
-  #twopir-home .twh-ab-why-grid { grid-template-columns: repeat(2, 1fr); gap: var(--twh-sp-sm); }
+  #twopir-home .twh-ab-why-grid { grid-template-columns: repeat(2, 1fr); gap: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px)); }
 }
 @media (max-width: 700px) {
-  #twopir-home .twh-ab-why-grid { grid-template-columns: 1fr; gap: var(--twh-sp-sm); }
+  #twopir-home .twh-ab-why-grid { grid-template-columns: 1fr; gap: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px)); }
 }
 
 #twopir-home .twh-ab-why-card {
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-md);
-  padding: var(--twh-sp-md);
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-md, 14px);
+  padding: clamp(10px, 1.7vw, 15px);
   display: flex;
-  gap: var(--twh-sp-sm);
+  gap: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
   align-items: flex-start;
   text-align: left;
-  box-shadow: var(--twh-shadow);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   height: 100%;
-  transition: transform var(--twh-ease), box-shadow var(--twh-ease), background var(--twh-ease);
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   contain: layout style paint;
 }
 #twopir-home .twh-ab-why-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--twh-shadow-hv);
-  background: var(--twh-surface);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--twh-surface, #ffffff);
 }
 #twopir-home .twh-ab-why-icon {
   flex-shrink: 0;
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: rgba(0,175,246,0.12);
-  border: 1px solid var(--twh-border-soft);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
 }
-#twopir-home .twh-ab-why-icon svg { width: 1.3rem; height: 1.3rem; }
+#twopir-home .twh-ab-why-icon svg { width: 13px; height: 13px; }
 
 #twopir-home .twh-ab-why-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-weight: 700;
-  font-size: 24px;
-  color: var(--twh-text);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
+  color: var(--twh-text, #1a2a35);
   margin-bottom: 0.35em;
   line-height: 1.3;
 }
 #twopir-home .twh-ab-why-desc {
-  font-family: var(--twh-ff-body);
-  font-size: 20px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   line-height: 1.6;
-  color: var(--twh-muted-2);
+  color: var(--twh-muted-2, #4a6070);
   text-wrap: pretty;
 }
 
 /* ── Closing CTA ── */
-#twopir-home .twh-ab-cta-wrap { text-align: center; margin-top: var(--twh-sp-lg); }
+#twopir-home .twh-ab-cta-wrap { text-align: center; margin-top: var(--twh-sp-lg, clamp(20px, 5vw, 35px)); }
 
 #twopir-home .twh-ab-btn {
   display: inline-block;
   padding: 0.55em 1.5em;
-  border: 1.5px solid var(--twh-accent);
-  border-radius: var(--twh-radius-pill);
-  font-family: var(--twh-ff-body);
-  font-size: clamp(12px, 1.1vw, 13px);
+  border: 1.5px solid var(--twh-accent, #00aff6);
+  border-radius: var(--twh-radius-pill, 9999px);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1.1vw, 13px);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   background: rgba(255,255,255,0.72);
-  box-shadow: var(--twh-shadow);
-  transition: background var(--twh-ease), color var(--twh-ease),
-              box-shadow var(--twh-ease), transform 0.18s ease;
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease;
   position: relative;
   z-index: 2;
 }
 #twopir-home .twh-ab-btn:hover,
 #twopir-home .twh-ab-btn:focus-visible {
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   color: #fff;
   box-shadow: 0 8px 24px rgba(0,175,246,0.32);
   transform: translateY(-2px);
   outline: none;
 }
-#twopir-home .twh-ab-btn:focus-visible { outline: 2px solid var(--twh-accent); outline-offset: 3px; }
+#twopir-home .twh-ab-btn:focus-visible { outline: 2px solid var(--twh-accent, #00aff6); outline-offset: 3px; }
 
 #twopir-home .twh-ab-cta-wrap .twh-ab-btn {
   padding: 1.05em 2.75em;
@@ -1495,8 +1524,8 @@ article:has(#twopir-home) {
 @media (max-width: 600px) {
 }
 @media (max-width: 600px) {
-  #twopir-home .twh-ab-desc      { font-size: 16px; }
-  #twopir-home .twh-ab-sec-intro { font-size: 16px; }
+  #twopir-home .twh-ab-desc      { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
+  #twopir-home .twh-ab-sec-intro { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
 }
 @media (max-width: 480px) {
   #twopir-home .twh-ab-title { letter-spacing: -0.01em; }
@@ -1514,35 +1543,35 @@ article:has(#twopir-home) {
 
    ════════════════════════════════════════════════════════════ */
 #twopir-home .twh-svc-eyebrow {
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 #twopir-home .twh-svc-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--twh-text);
-  margin: 0 0 14px 0;
+  color: var(--twh-text, #1a2a35);
+  margin: 0 0 12px 0;
   line-height: 1.12;
   text-wrap: balance;
 }
 #twopir-home .twh-svc-desc {
-  font-family: var(--twh-ff-body);
-  font-size: 32px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 300;
   line-height: 1.75;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   /* 720px, the same measure as the About panel. At the live root size this
      copy renders around 22px, where an 800px line ran long enough to hurt
      the rag on a centred paragraph. Line length only — size is untouched. */
-  max-width: 62ch;
+  max-width: 74ch;
   margin: 0 auto;
   text-wrap: pretty;
 }
@@ -1557,9 +1586,9 @@ article:has(#twopir-home) {
 
 #twopir-home .twh-svc-cell {
   position: relative;
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-card);
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
   padding: clamp(22px, 3vw, 34px) clamp(20px, 2.5vw, 30px);
   /* Icon above the copy rather than beside it. With the icon in the same
      row, the title had roughly 22 characters per line, so headings like
@@ -1573,10 +1602,10 @@ article:has(#twopir-home) {
   flex-direction: column-reverse;
   justify-content: flex-end;
   align-items: flex-start;
-  gap: 18px;
+  gap: 16px;
   overflow: hidden;
-  box-shadow: var(--twh-shadow);
-  transition: transform var(--twh-ease), box-shadow var(--twh-ease), background var(--twh-ease);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   contain: layout style paint;
 }
 /* accent sweep that fills in from the left on hover — same gradient
@@ -1586,52 +1615,52 @@ article:has(#twopir-home) {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: linear-gradient(180deg, var(--twh-accent), var(--twh-accent-dk));
+  background: linear-gradient(180deg, var(--twh-accent, #00aff6), var(--twh-accent-dk, #007ec6));
   transform: scaleY(0);
   transform-origin: top;
-  transition: transform var(--twh-ease);
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-home .twh-svc-cell:hover {
   transform: translateY(-4px);
-  box-shadow: var(--twh-shadow-hv);
-  background: var(--twh-surface);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--twh-surface, #ffffff);
 }
 #twopir-home .twh-svc-cell:hover::after { transform: scaleY(1); }
 
 #twopir-home .twh-svc-text { flex: 1; min-width: 0; }
 
 #twopir-home .twh-svc-cell-title {
-  font-family: var(--twh-ff-body);
-  font-size: 32px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--twh-text);
-  margin: 0 0 10px 0;
+  color: var(--twh-text, #1a2a35);
+  margin: 0 0 8px 0;
   line-height: 1.35;
 }
 #twopir-home .twh-svc-body {
-  font-family: var(--twh-ff-body);
-  font-size: 24px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 400;
   line-height: 1.72;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   margin: 0;
   text-wrap: pretty;
 }
-#twopir-home .twh-svc-body strong { color: var(--twh-text); font-weight: 600; }
+#twopir-home .twh-svc-body strong { color: var(--twh-text, #1a2a35); font-weight: 600; }
 
 #twopir-home .twh-svc-icon {
   flex-shrink: 0;
   width: clamp(44px, 6vw, 54px);
   height: clamp(44px, 6vw, 54px);
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 14px rgba(0,175,246,0.35);
-  transition: transform var(--twh-ease), box-shadow var(--twh-ease);
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-home .twh-svc-cell:hover .twh-svc-icon {
   transform: translateY(-2px) scale(1.04);
@@ -1674,39 +1703,39 @@ article:has(#twopir-home) {
 
    ════════════════════════════════════════════════════════════ */
 #twopir-home .twh-ind-eyebrow {
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 #twopir-home .twh-ind-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(24px, 3vw, 32px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--twh-text);
-  margin: 0 0 14px 0;
+  color: var(--twh-text, #1a2a35);
+  margin: 0 0 12px 0;
   line-height: 1.12;
   text-wrap: balance;
 }
 #twopir-home .twh-ind-desc {
-  font-family: var(--twh-ff-body);
-  font-size: 32px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 300;
   line-height: 1.75;
-  color: var(--twh-muted);
-  max-width: 62ch;                         /* matches the other section ledes */
+  color: var(--twh-muted, #566b79);
+  max-width: 74ch;                         /* matches the other section ledes */
   margin: 0 auto;
   text-wrap: pretty;
 }
 
 #twopir-home .twh-ind-layout {
   display: grid;
-  grid-template-columns: 272px 1fr;
+  grid-template-columns: 312px 1fr;
   gap: clamp(16px, 2.5vw, 28px);
   align-items: start;
   width: 100%;
@@ -1714,29 +1743,29 @@ article:has(#twopir-home) {
 
 /* ── Sidebar / tablist ── */
 #twopir-home .twh-ind-sidebar {
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-card);
-  padding: 10px;
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
+  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   position: sticky;
   top: 28px;
-  box-shadow: var(--twh-shadow);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
 
 #twopir-home .twh-ind-tab {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 10px 12px;
+  gap: 12px;
+  padding: 8px 12px;
   border-radius: 12px;
   background: transparent;
   border: 1px solid transparent;
   text-align: left;
   width: 100%;
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   transition: background 0.22s cubic-bezier(.4,0,.2,1), border-color 0.22s, transform 0.18s;
 }
 #twopir-home .twh-ind-tab:hover {
@@ -1745,17 +1774,17 @@ article:has(#twopir-home) {
   transform: translateX(2px);
 }
 #twopir-home .twh-ind-tab[aria-selected="true"] {
-  background: var(--twh-surface);
+  background: var(--twh-surface, #ffffff);
   border-color: rgba(0,175,246,0.40);
   box-shadow: 0 2px 12px rgba(0,130,200,0.13);
 }
-#twopir-home .twh-ind-tab:focus-visible { outline: 2px solid var(--twh-accent); outline-offset: 2px; }
+#twopir-home .twh-ind-tab:focus-visible { outline: 2px solid var(--twh-accent, #00aff6); outline-offset: 2px; }
 
 #twopir-home .twh-ind-tab-icon {
   width: 36px; height: 36px;
   border-radius: 10px;
-  background: var(--twh-bg);
-  border: 1px solid var(--twh-border-soft);
+  background: var(--twh-bg, #dff1fa);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   font-size: 16px;
@@ -1763,28 +1792,28 @@ article:has(#twopir-home) {
   transition: background 0.18s, border-color 0.18s;
 }
 #twopir-home .twh-ind-tab[aria-selected="true"] .twh-ind-tab-icon {
-  background: var(--twh-accent);
-  border-color: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
+  border-color: var(--twh-accent, #00aff6);
 }
 
 #twopir-home .twh-ind-tab-text { flex: 1; min-width: 0; }
 
 #twopir-home .twh-ind-tab-title {
-  font-family: var(--twh-ff-body);
-  font-size: 12px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 600;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.25;
   display: block;
   transition: color 0.18s;
 }
-#twopir-home .twh-ind-tab[aria-selected="true"] .twh-ind-tab-title { color: var(--twh-accent-ink); }
+#twopir-home .twh-ind-tab[aria-selected="true"] .twh-ind-tab-title { color: var(--twh-accent-ink, #00699f); }
 
 #twopir-home .twh-ind-tab-sub {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 400;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   margin-top: 2px;
   line-height: 1.4;
   display: block;
@@ -1793,7 +1822,7 @@ article:has(#twopir-home) {
 
 #twopir-home .twh-ind-arrow {
   font-size: 11px;
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
   opacity: 0;
   transition: opacity 0.18s, transform 0.18s;
   flex-shrink: 0;
@@ -1803,10 +1832,10 @@ article:has(#twopir-home) {
 
 /* ── Panels ── */
 #twopir-home .twh-ind-panel-wrap {
-  background: var(--twh-card);
-  border-radius: var(--twh-radius-card);
-  border: 1px solid var(--twh-border);
-  box-shadow: var(--twh-shadow);
+  background: var(--twh-card, #eef8fd);
+  border-radius: var(--twh-radius-card, 18px);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   overflow: hidden;
   overflow: clip;
   min-width: 0;
@@ -1829,12 +1858,12 @@ article:has(#twopir-home) {
 #twopir-home .twh-ind-live {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   background: rgba(0,175,246,0.10);
   border: 1px solid rgba(0,175,246,0.30);
-  color: var(--twh-accent-ink);
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  color: var(--twh-accent-ink, #00699f);
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1844,7 +1873,7 @@ article:has(#twopir-home) {
 }
 #twopir-home .twh-ind-live-dot {
   width: 6px; height: 6px;
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   border-radius: 50%;
   animation: twhPulse 2s infinite;
   display: inline-block;
@@ -1858,23 +1887,23 @@ article:has(#twopir-home) {
 }
 
 #twopir-home .twh-ind-headline {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(16px, 2.2vw, 20px);
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.22;
-  color: var(--twh-text);
-  margin-bottom: 10px;
+  color: var(--twh-text, #1a2a35);
+  margin-bottom: 8px;
   text-wrap: balance;
 }
 
 #twopir-home .twh-ind-panel-desc {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   /* no font-size: the original declaration here was unitless and therefore
      invalid, so this paragraph has always inherited from the page body.
      Omitting it reproduces that exactly. */
   font-weight: 400;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   line-height: 1.75;
   margin-bottom: 24px;
   max-width: 560px;
@@ -1892,11 +1921,11 @@ article:has(#twopir-home) {
 #twopir-home .twh-ind-feature {
   display: flex;
   align-items: flex-start;
-  gap: 11px;
-  padding: 14px 13px;
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border-soft);
-  border-radius: var(--twh-radius-md);
+  gap: 12px;
+  padding: 12px 12px;
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--twh-radius-md, 14px);
   transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
 }
 #twopir-home .twh-ind-feature:hover {
@@ -1907,40 +1936,40 @@ article:has(#twopir-home) {
 #twopir-home .twh-ind-feature-icon {
   width: 32px; height: 32px;
   border-radius: 8px;
-  background: var(--twh-bg);
-  border: 1px solid var(--twh-border-soft);
+  background: var(--twh-bg, #dff1fa);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
   display: flex; align-items: center; justify-content: center;
   font-size: 14px;
   flex-shrink: 0;
   line-height: 1;
 }
 #twopir-home .twh-ind-feature-title {
-  font-family: var(--twh-ff-body);
-  font-size: 13px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   letter-spacing: 0.02em;
   margin-bottom: 3px;
   display: block;
 }
 #twopir-home .twh-ind-feature-desc {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   /* no font-size — same reason as .twh-ind-panel-desc above. */
   font-weight: 400;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   line-height: 1.55;
   display: block;
   text-wrap: pretty;
 }
 
 /* ── Stat cards ── */
-#twopir-home .twh-ind-stats-col { display: flex; flex-direction: column; gap: 10px; }
+#twopir-home .twh-ind-stats-col { display: flex; flex-direction: column; gap: 8px; }
 #twopir-home .twh-ind-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 #twopir-home .twh-ind-stat-card {
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border-soft);
-  border-radius: var(--twh-radius-md);
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--twh-radius-md, 14px);
   padding: 16px 12px;
   text-align: center;
   transition: box-shadow 0.22s, transform 0.22s, border-color 0.22s;
@@ -1951,21 +1980,21 @@ article:has(#twopir-home) {
   border-color: rgba(0,175,246,0.45);
 }
 #twopir-home .twh-ind-stat-val {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(20px, 2.2vw, 24px);
   font-weight: 700;
   line-height: 1;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   display: block;
   letter-spacing: -0.01em;
 }
-#twopir-home .twh-ind-stat-val.pos { color: var(--twh-pos); }
-#twopir-home .twh-ind-stat-val.neg { color: var(--twh-neg); }
+#twopir-home .twh-ind-stat-val.pos { color: var(--twh-pos, #16916a); }
+#twopir-home .twh-ind-stat-val.neg { color: var(--twh-neg, #c2453d); }
 #twopir-home .twh-ind-stat-label {
-  font-family: var(--twh-ff-mono);
-  font-size: 16px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px));
   font-weight: 500;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   display: block;
@@ -1973,83 +2002,95 @@ article:has(#twopir-home) {
 
 /* ── Stack / clients blocks ── */
 #twopir-home .twh-ind-block {
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border-soft);
-  border-radius: var(--twh-radius-md);
-  padding: 14px;
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--twh-radius-md, 14px);
+  padding: 12px;
 }
 #twopir-home .twh-ind-block-label {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
-  margin-bottom: 10px;
+  color: var(--twh-accent-ink, #00699f);
+  margin-bottom: 8px;
   display: block;
 }
-#twopir-home .twh-ind-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#twopir-home .twh-ind-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 #twopir-home .twh-ind-chip {
-  font-family: var(--twh-ff-body);
-  font-size: 11px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
-  color: var(--twh-muted);
-  background: var(--twh-bg);
+  color: var(--twh-muted, #566b79);
+  background: var(--twh-bg, #dff1fa);
   border: 1px solid rgba(0,175,246,0.25);
   border-radius: 6px;
-  padding: 3px 9px;
+  padding: 3px 8px;
   display: inline-block;
   transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
 #twopir-home .twh-ind-chip:hover {
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   color: #ffffff;
-  border-color: var(--twh-accent);
+  border-color: var(--twh-accent, #00aff6);
 }
 #twopir-home .twh-ind-clients-list {
-  font-family: var(--twh-ff-body);
-  font-size: 13px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 300;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   line-height: 1.6;
 }
-#twopir-home .twh-ind-clients-list strong { color: var(--twh-text); font-weight: 600; }
+#twopir-home .twh-ind-clients-list strong { color: var(--twh-text, #1a2a35); font-weight: 600; }
 
 /* ── Panel CTA ── */
 #twopir-home .twh-ind-cta-row {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--twh-border-soft);
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--twh-border-soft, rgba(0,175,246,0.22));
 }
 #twopir-home .twh-ind-cta-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-family: var(--twh-ff-body);
-  font-size: 13px;
+  gap: 8px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 600;
   color: #ffffff;
-  background: var(--twh-accent);
-  border: 1.5px solid var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
+  border: 1.5px solid var(--twh-accent, #00aff6);
   border-radius: 100px;
-  padding: 10px 22px;
+  padding: 8px 20px;
   letter-spacing: 0.01em;
   box-shadow: 0 4px 14px rgba(0,175,246,0.35);
-  transition: background var(--twh-ease), border-color var(--twh-ease),
-              box-shadow var(--twh-ease), transform 0.18s ease;
+  transition: background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease;
 }
 #twopir-home .twh-ind-cta-btn:hover,
 #twopir-home .twh-ind-cta-btn:focus-visible {
-  background: var(--twh-text);
-  border-color: var(--twh-text);
+  background: var(--twh-text, #1a2a35);
+  border-color: var(--twh-text, #1a2a35);
   box-shadow: 0 8px 24px rgba(26,42,53,0.24);
   transform: translateY(-2px);
 }
-#twopir-home .twh-ind-cta-btn:focus-visible { outline: 2px solid var(--twh-accent); outline-offset: 3px; }
+#twopir-home .twh-ind-cta-btn:focus-visible { outline: 2px solid var(--twh-accent, #00aff6); outline-offset: 3px; }
 
 /* ── Industries responsive ── */
 @media (max-width: 900px) {
-  #twopir-home .twh-ind-layout { grid-template-columns: 220px 1fr; }
+  /* Between the tab strip (<=680px) and full desktop the sidebar is at its
+     narrowest while still vertical. At 220px the monospace subtitle wrapped
+     to four lines and ran the column 360px past the panel beside it. A
+     slightly wider column plus a smaller, two-line-capped subtitle keeps
+     the two columns in step. The zoom ladder starts at 901px, so these are
+     rendered sizes. */
+  #twopir-home .twh-ind-layout { grid-template-columns: 240px 1fr; }
+  #twopir-home .twh-ind-tab-sub {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 680px) {
@@ -2064,8 +2105,8 @@ article:has(#twopir-home) {
     position: static;
     flex-direction: row;
     overflow-x: auto;
-    padding: 10px 12px;
-    gap: 6px;
+    padding: 8px 12px;
+    gap: 4px;
     scrollbar-width: none;
     -ms-overflow-style: none;
     width: 100%;
@@ -2081,7 +2122,7 @@ article:has(#twopir-home) {
     text-align: center;
     min-width: 68px;
     max-width: 80px;
-    padding: 8px 6px;
+    padding: 8px 4px;
     flex-shrink: 0;
     border-radius: 10px;
     height: 82px;
@@ -2092,7 +2133,7 @@ article:has(#twopir-home) {
 
   /* clamp to 2 lines instead of wrapping one character per line */
   #twopir-home .twh-ind-tab-title {
-  font-size: 10px;
+  font-size: var(--twh-fs-micro, 12px);
     white-space: normal;
     word-break: break-word;
     line-height: 1.3;
@@ -2115,13 +2156,13 @@ article:has(#twopir-home) {
     width: 100%;
   }
   #twopir-home .twh-ind-panel      { padding: 20px 16px; }
-  #twopir-home .twh-ind-grid       { grid-template-columns: 1fr; gap: 10px; }
-  #twopir-home .twh-ind-headline   { font-size: 18px; }
-  #twopir-home .twh-ind-panel-desc { font-size: 13px; max-width: 100%; }
+  #twopir-home .twh-ind-grid       { grid-template-columns: 1fr; gap: 8px; }
+  #twopir-home .twh-ind-headline   { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)); }
+  #twopir-home .twh-ind-panel-desc { font-size: var(--twh-fs-xs, 13px); max-width: 100%; }
   #twopir-home .twh-ind-stats-grid { grid-template-columns: 1fr 1fr; }
-  #twopir-home .twh-ind-stat-val   { font-size: 20px; }
-  #twopir-home .twh-ind-cta-btn    { font-size: 13px; width: 100%; justify-content: center; }
-  #twopir-home .twh-ind-desc       { font-size: 14px; }
+  #twopir-home .twh-ind-stat-val   { font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px)); }
+  #twopir-home .twh-ind-cta-btn    { font-size: var(--twh-fs-xs, 13px); width: 100%; justify-content: center; }
+  #twopir-home .twh-ind-desc       { font-size: var(--twh-fs-sm, 14px); }
 }
 
 
@@ -2142,24 +2183,24 @@ article:has(#twopir-home) {
 #twopir-home .twh-eco-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  gap: 8px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   border: 1px solid #b3d9f2;
   background: rgba(255,255,255,0.82);
   border-radius: 9999px;
-  padding: 6px 16px;
+  padding: 4px 16px;
   margin-bottom: 24px;
   box-shadow: 0 2px 10px rgba(0,130,200,0.08);
 }
 #twopir-home .twh-eco-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   animation: twhEcoPulse 2.6s ease-out infinite;
   flex-shrink: 0;
 }
@@ -2175,89 +2216,89 @@ article:has(#twopir-home) {
 #twopir-home .twh-eco-header { margin-bottom: 48px; }
 
 #twopir-home .twh-eco-title {
-  font-family: var(--twh-ff-display);
-  font-size: clamp(32px, 5vw, 56px);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(32px, 5vw, 46px);
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.18;
   margin: 0 0 16px;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 #twopir-home .twh-eco-sub {
-  font-family: var(--twh-ff-body);
-  font-size: 32px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 300;
   line-height: 1.75;
-  color: var(--twh-muted);
-  max-width: 56ch;
+  color: var(--twh-muted, #566b79);
+  max-width: 68ch;
   margin: 0 auto;
   text-wrap: pretty;
 }
 
 /* ── Primary partnerships line ── */
 #twopir-home .twh-eco-primary {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-weight: 600;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   line-height: 1.35;
   margin: 0 0 8px;
   text-wrap: balance;
 }
 #twopir-home .twh-eco-primary .twh-eco-sep {
-  color: var(--twh-accent);
+  color: var(--twh-accent, #00aff6);
   font-weight: 700;
   margin: 0 8px;
 }
 
 /* ── Supporting mono line ── */
 #twopir-home .twh-eco-support {
-  font-family: var(--twh-ff-mono);
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: var(--twh-accent-ink);
-  margin: 0 0 20px;
+  color: var(--twh-accent-ink, #00699f);
+  margin: 0 0 12px;
 }
 
 /* ── Differentiator callout ── */
 #twopir-home .twh-eco-callout {
   max-width: 820px;
-  margin: 32px auto 0;
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-left: 4px solid var(--twh-accent);
-  border-radius: var(--twh-radius-card);
-  padding: 22px 26px;
+  margin: 24px auto 0;
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-left: 4px solid var(--twh-accent, #00aff6);
+  border-radius: var(--twh-radius-card, 18px);
+  padding: 20px 24px;
   text-align: left;
-  box-shadow: var(--twh-shadow);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   transition: transform 0.28s cubic-bezier(.4,0,.2,1), box-shadow 0.28s cubic-bezier(.4,0,.2,1);
 }
 #twopir-home .twh-eco-callout:hover {
   transform: translateY(-4px);
-  box-shadow: var(--twh-shadow-hv);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
 }
 #twopir-home .twh-eco-callout p {
   margin: 0;
-  font-family: var(--twh-ff-body);
-  color: var(--twh-text);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.65;
 }
 #twopir-home .twh-eco-callout strong {
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   font-weight: 700;
 }
 
 @media (max-width: 600px) {
-  #twopir-home .twh-eco-callout { padding: 18px 18px; margin-top: 24px; }
+  #twopir-home .twh-eco-callout { padding: 16px 16px; margin-top: 24px; }
 }
 
 /* ── Logo rail ── */
 #twopir-home .twh-eco-rail {
   position: relative;
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-card);
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
   /* was 18px: at 36px logo height the rail read as a thin strip against this
      section's generous padding. A little more room lets it hold the page. */
   padding: 26px 0;
@@ -2265,7 +2306,7 @@ article:has(#twopir-home) {
   max-width: 1050px;
   overflow: hidden;
   overflow: clip;
-  box-shadow: var(--twh-shadow);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
 /* soft edges so logos enter and leave instead of being sliced */
 #twopir-home .twh-eco-rail::before,
@@ -2279,11 +2320,11 @@ article:has(#twopir-home) {
 }
 #twopir-home .twh-eco-rail::before {
   left: 0;
-  background: linear-gradient(90deg, var(--twh-card) 0%, rgba(238,248,253,0) 100%);
+  background: linear-gradient(90deg, var(--twh-card, #eef8fd) 0%, rgba(238,248,253,0) 100%);
 }
 #twopir-home .twh-eco-rail::after {
   right: 0;
-  background: linear-gradient(270deg, var(--twh-card) 0%, rgba(238,248,253,0) 100%);
+  background: linear-gradient(270deg, var(--twh-card, #eef8fd) 0%, rgba(238,248,253,0) 100%);
 }
 
 /* the loop copy is a plain wrapper; display:contents lets its images stay
@@ -2375,11 +2416,11 @@ article:has(#twopir-home) {
 }
 
 @media (max-width: 768px) {
-  #twopir-home .twh-eco-eyebrow { font-size: 10px; padding: 5px 14px; margin-bottom: 18px; }
+  #twopir-home .twh-eco-eyebrow { font-size: var(--twh-fs-micro, 12px); padding: 4px 12px; margin-bottom: 16px; }
   #twopir-home .twh-eco-title   { font-size: clamp(24px, 6vw, 32px); margin-bottom: 12px; }
-  #twopir-home .twh-eco-sub     { font-size: 16px; line-height: 1.68; padding: 0 8px; }
-  #twopir-home .twh-eco-rail    { padding: 14px 0; border-radius: 12px; }
-  #twopir-home .twh-eco-track img { height: 26px !important; width: auto !important; max-width: 180px !important; margin: 0 18px; }
+  #twopir-home .twh-eco-sub     { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.68; padding: 0 8px; }
+  #twopir-home .twh-eco-rail    { padding: 12px 0; border-radius: 12px; }
+  #twopir-home .twh-eco-track img { height: 26px !important; width: auto !important; max-width: 180px !important; margin: 0 16px; }
   #twopir-home .twh-eco-track .twh-eco-logo--sf { height: 34px !important; width: auto !important; max-width: none !important; margin: 0 20px; }
   /* same ~42px per second as desktop, on a shorter track — 140s made the
      rail look frozen on a phone. */
@@ -2404,12 +2445,12 @@ article:has(#twopir-home) {
 #twopir-home .twh-clients { text-align: center; }
 
 #twopir-home .twh-cl-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(24px, 3.4vw, 40px);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.14;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   text-wrap: balance;
 }
 
@@ -2422,10 +2463,10 @@ article:has(#twopir-home) {
      reads as no panel at all. Multi-card grids can carry --card on alt
      because their borders, shadows and hover states do the separating —
      one big block cannot. */
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-card);
-  box-shadow: var(--twh-shadow);
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
   padding: clamp(18px, 3vw, 34px);
 }
 #twopir-home .twh-cl-frame img {
@@ -2453,24 +2494,53 @@ article:has(#twopir-home) {
 #twopir-home .twh-ss-head { text-align: center; }
 
 #twopir-home .twh-ss-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(20px, 4vw, 28px);
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   margin-bottom: 8px;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 #twopir-home .twh-ss-intro {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-size: clamp(14px, 2vw, 18px);
   font-weight: 300;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   max-width: 58ch;
   margin: 0 auto 32px;
   line-height: 1.6;
   text-wrap: pretty;
 }
+
+/* Full-width carousel band — mirrors .twh-rv-band so the case studies and
+   the client reviews span the same width. No tinted background here: the
+   reviews band carries one, and two stacked tinted bands in a row would be
+   heavy. This one inherits the section's own surface. */
+#twopir-home .twh-ss-band {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  overflow: clip;
+  /* same headroom as the viewport inside it — this band has no background
+     of its own, so growing its box is invisible. */
+  padding: 30px 0 24px;
+  margin: -28px 0 -24px;
+}
+/* inner padding so the cards do not touch the section edge — the same
+   clamp the reviews viewport uses */
+/* Hover headroom. Both carousel viewports clip (`overflow: clip`) and the
+   cards sit flush against the top of that clip box, so `translateY(-5px)`
+   on :hover — and the upper half of the card's drop shadow — were being
+   sliced off at the card's own top edge. The 10px of bottom room was not
+   enough for a 44px-blur shadow either. Padding grows the clip box in both
+   directions; the matching negative margin cancels the layout effect, so
+   nothing on the page moves. */
+#twopir-home .twh-ss-band .twh-ss-viewport {
+  padding: 30px clamp(32px, 5vw, 80px) 40px;
+  margin: -28px 0 -28px;
+}
+#twopir-home .twh-ss-band .twh-ss-dots     { padding: 0 clamp(32px, 5vw, 80px); }
 
 #twopir-home .twh-ss-viewport {
   width: 100%;
@@ -2492,9 +2562,10 @@ article:has(#twopir-home) {
 }
 
 #twopir-home .twh-ss-card {
-  flex: 0 0 calc((100% - 40px) / 3);
+  flex: 0 0 auto;
+  width: clamp(320px, calc(50vw - 40px), 480px);
   min-height: 480px;
-  border-radius: var(--twh-radius-card);
+  border-radius: var(--twh-radius-card, 18px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -2502,15 +2573,15 @@ article:has(#twopir-home) {
   position: relative;
   background:
     radial-gradient(520px 220px at 50% -14%, rgba(0,175,246,0.20) 0%, rgba(0,175,246,0) 68%),
-    linear-gradient(158deg, var(--twh-navy) 0%, var(--twh-navy-deep) 58%, var(--twh-navy-soft) 100%);
-  box-shadow: var(--twh-shadow-navy);
+    linear-gradient(158deg, var(--twh-navy, #1e2447) 0%, var(--twh-navy-deep, #12183a) 58%, var(--twh-navy-soft, #1a2e4a) 100%);
+  box-shadow: var(--twh-shadow-navy, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 #twopir-home .twh-ss-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--twh-radius-card);
+  border-radius: var(--twh-radius-card, 18px);
   border: 1px solid rgba(255,255,255,0.08);
   pointer-events: none;
   z-index: 2;
@@ -2519,15 +2590,15 @@ article:has(#twopir-home) {
   transform: translateY(-5px);
   box-shadow: 0 16px 44px rgba(18,24,58,0.34), 0 2px 10px rgba(18,24,58,0.14);
 }
-#twopir-home .twh-ss-card:focus-visible { outline: 2px solid var(--twh-accent); outline-offset: 3px; }
+#twopir-home .twh-ss-card:focus-visible { outline: 2px solid var(--twh-accent, #00aff6); outline-offset: 3px; }
 
 #twopir-home .twh-ss-brandbar {
-  background: linear-gradient(120deg, var(--twh-accent) 0%, var(--twh-accent-dk) 100%);
-  padding: 18px 22px;
+  background: linear-gradient(120deg, var(--twh-accent, #00aff6) 0%, var(--twh-accent-dk, #007ec6) 100%);
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   height: 120px;
   min-height: 120px;
   max-height: 120px;
@@ -2538,8 +2609,8 @@ article:has(#twopir-home) {
   align-items: center;
   padding: 4px 12px;
   border-radius: 20px;
-  font-family: var(--twh-ff-mono);
-  font-size: 12px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 600;
   letter-spacing: 0.3px;
   width: fit-content;
@@ -2547,7 +2618,7 @@ article:has(#twopir-home) {
   color: #ffffff;
 }
 #twopir-home .twh-ss-client {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(14px, 2.5vw, 18px);
   font-weight: 800;
   color: #ffffff;
@@ -2560,24 +2631,24 @@ article:has(#twopir-home) {
 }
 
 #twopir-home .twh-ss-body {
-  padding: 20px 22px 0;
+  padding: 20px 20px 0;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-#twopir-home .twh-ss-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+#twopir-home .twh-ss-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
 #twopir-home .twh-ss-tags span {
   background: rgba(255,255,255,0.12);
   color: rgba(255,255,255,0.75);
-  font-family: var(--twh-ff-body);
-  font-size: 11px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.18);
 }
 #twopir-home .twh-ss-card-title {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-size: clamp(13px, 1.8vw, 14px);
   font-weight: 600;
   color: #ffffff;
@@ -2592,23 +2663,23 @@ article:has(#twopir-home) {
   max-height: 105px;
   background: rgba(0,175,246,0.16);
   border-top: 1px solid rgba(255,255,255,0.12);
-  padding: 14px 22px;
+  padding: 12px 20px;
   flex-shrink: 0;
   overflow: hidden;
 }
 #twopir-home .twh-ss-outcome-label {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--twh-accent);
-  margin-bottom: 6px;
+  color: var(--twh-accent, #00aff6);
+  margin-bottom: 4px;
   white-space: nowrap;
 }
 #twopir-home .twh-ss-outcome-text {
-  font-family: var(--twh-ff-body);
-  font-size: clamp(12px, 1.5vw, 13px);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1.5vw, 13px);
   font-weight: 700;
   color: #ffffff;
   line-height: 1.45;
@@ -2621,7 +2692,7 @@ article:has(#twopir-home) {
 #twopir-home .twh-ss-footer {
   display: flex;
   justify-content: center;
-  padding: 14px 22px 20px;
+  padding: 12px 20px 20px;
   flex-shrink: 0;
 }
 #twopir-home .twh-ss-arrow {
@@ -2639,8 +2710,8 @@ article:has(#twopir-home) {
   stroke-linecap: round; stroke-linejoin: round;
 }
 #twopir-home .twh-ss-card:hover .twh-ss-arrow {
-  background: var(--twh-accent);
-  border-color: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
+  border-color: var(--twh-accent, #00aff6);
   transform: translateX(2px);
 }
 
@@ -2675,7 +2746,7 @@ article:has(#twopir-home) {
   box-sizing: content-box !important;
 }
 #twopir-home .twh-ss-dots button.twh-ss-dot.is-active {
-  background: var(--twh-accent) !important;
+  background: var(--twh-accent, #00aff6) !important;
   transform: scale(1.45) !important;
 }
 #twopir-home .twh-ss-dots button.twh-ss-dot.is-edge {
@@ -2684,15 +2755,14 @@ article:has(#twopir-home) {
 }
 #twopir-home .twh-ss-dots button.twh-ss-dot.is-hidden { display: none !important; }
 #twopir-home .twh-ss-dots button.twh-ss-dot:focus-visible {
-  outline: 2px solid var(--twh-accent) !important;
+  outline: 2px solid var(--twh-accent, #00aff6) !important;
   outline-offset: 4px !important;
 }
 
 @media (max-width: 900px) {
-  #twopir-home .twh-ss-card { flex: 0 0 calc((100% - 20px) / 2); }
 }
 @media (max-width: 600px) {
-  #twopir-home .twh-ss-card { flex: 0 0 calc(100% - 32px); min-height: 420px; }
+  #twopir-home .twh-ss-card { width: clamp(260px, 85vw, 360px); min-height: 420px; }
 }
 
 
@@ -2708,64 +2778,64 @@ article:has(#twopir-home) {
    ════════════════════════════════════════════════════════════ */
 #twopir-home .twh-reviews { padding-bottom: 0; }
 
-#twopir-home .twh-rv-hero { text-align: center; padding-bottom: var(--twh-sp-lg); }
+#twopir-home .twh-rv-hero { text-align: center; padding-bottom: var(--twh-sp-lg, clamp(20px, 5vw, 35px)); }
 
 #twopir-home .twh-rv-eyebrow {
-  font-family: var(--twh-ff-mono);
-  font-size: 16px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px));
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
-  margin-bottom: var(--twh-sp-sm);
+  color: var(--twh-accent-ink, #00699f);
+  margin-bottom: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
   display: block;
 }
 #twopir-home .twh-rv-title {
-  font-family: var(--twh-ff-display);
-  font-size: clamp(32px, 5vw, 56px);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(32px, 5vw, 46px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.12;
-  margin-bottom: var(--twh-sp-sm);
+  margin-bottom: var(--twh-sp-sm, clamp(7.5px, 1.5vw, 11.25px));
   text-wrap: balance;
 }
 #twopir-home .twh-rv-desc {
-  font-family: var(--twh-ff-body);
-  font-size: 40px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px));
   font-weight: 300;
   line-height: 1.75;
-  color: var(--twh-muted-2);
+  color: var(--twh-muted-2, #4a6070);
   max-width: 820px;
-  margin: 0 auto var(--twh-sp-md);
+  margin: 0 auto var(--twh-sp-md, clamp(12.5px, 3vw, 20px));
   text-wrap: pretty;
 }
-#twopir-home .twh-rv-desc strong { color: var(--twh-text); font-weight: 600; }
+#twopir-home .twh-rv-desc strong { color: var(--twh-text, #1a2a35); font-weight: 600; }
 
 #twopir-home .twh-rv-rating {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
   background: rgba(255,255,255,0.72);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-pill);
-  padding: 8px 18px;
-  box-shadow: var(--twh-shadow);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-pill, 9999px);
+  padding: 8px 16px;
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
-#twopir-home .twh-rv-stars { color: var(--twh-star); font-size: 20px; letter-spacing: 2px; }
+#twopir-home .twh-rv-stars { color: var(--twh-star, #e0961f); font-size: 20px; letter-spacing: 2px; }
 #twopir-home .twh-rv-rate-label {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-weight: 700;
-  font-size: 14px;
-  color: var(--twh-text);
+  font-size: var(--twh-fs-sm, 14px);
+  color: var(--twh-text, #1a2a35);
 }
 #twopir-home .twh-rv-rate-note {
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   letter-spacing: 0.04em;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
 }
 
 /* ── Marquee band ── */
@@ -2781,10 +2851,10 @@ article:has(#twopir-home) {
   background:
     radial-gradient(900px 300px at 50% 0%, rgba(0,175,246,0.14) 0%, rgba(0,175,246,0) 70%),
     linear-gradient(180deg, #d9edf9 0%, #cbe6f6 100%);
-  border-top: 1px solid var(--twh-border);
-  border-bottom: 1px solid var(--twh-border);
-  padding: var(--twh-sp-md) 0;
-  margin-top: var(--twh-sp-md);
+  border-top: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-bottom: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  padding: var(--twh-sp-md, clamp(12.5px, 3vw, 20px)) 0;
+  margin-top: var(--twh-sp-md, clamp(12.5px, 3vw, 20px));
 }
 #twopir-home .twh-rv-viewport {
   width: 100%;
@@ -2801,28 +2871,33 @@ article:has(#twopir-home) {
      browser it may always keep vertical panning for the page itself, so
      a touch scroll can never be captured by the drag. */
   touch-action: pan-y;
-  padding: 0 clamp(32px, 5vw, 80px) 10px;
+  /* see "Hover headroom" above — same clipped-lift bug as the case studies.
+     20px, not 30px: this band (unlike the case-studies one) has its own
+     background and borders, so its box cannot grow. Keeping the headroom
+     inside the band's existing padding means the band never clips it back. */
+  padding: 20px clamp(32px, 5vw, 80px) 34px;
+  margin: -20px 0 -24px;
   cursor: grab;
 }
 #twopir-home .twh-rv-viewport.is-grabbing { cursor: grabbing; }
 #twopir-home .twh-rv-track {
   display: flex;
-  gap: var(--twh-sp-md);
+  gap: var(--twh-sp-md, clamp(12.5px, 3vw, 20px));
   width: max-content;
   will-change: transform;
   transform: translateX(0);
 }
 
 #twopir-home .twh-rv-card {
-  background: var(--twh-card);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-lg);
+  background: var(--twh-card, #eef8fd);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-card, 18px);
   padding: clamp(18px, 2.4vw, 28px);
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  box-shadow: var(--twh-shadow);
-  transition: transform var(--twh-ease), box-shadow var(--twh-ease), background var(--twh-ease);
+  gap: 12px;
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
@@ -2835,45 +2910,45 @@ article:has(#twopir-home) {
   inset: 0;
   background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity var(--twh-ease);
+  transition: opacity var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
   pointer-events: none;
 }
 #twopir-home .twh-rv-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--twh-shadow-hv);
-  background: var(--twh-surface);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--twh-surface, #ffffff);
 }
 #twopir-home .twh-rv-card:hover::before { opacity: 1; }
-#twopir-home .twh-rv-card:focus-visible { outline: 2px solid var(--twh-accent); outline-offset: 3px; }
+#twopir-home .twh-rv-card:focus-visible { outline: 2px solid var(--twh-accent, #00aff6); outline-offset: 3px; }
 
 #twopir-home .twh-rv-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   position: relative;
   z-index: 1;
 }
-#twopir-home .twh-rv-card-stars { color: var(--twh-star); font-size: 13px; letter-spacing: 1px; white-space: nowrap; }
+#twopir-home .twh-rv-card-stars { color: var(--twh-star, #e0961f); font-size: 14px; letter-spacing: 1px; white-space: nowrap; }
 
 #twopir-home .twh-rv-badge {
-  font-family: var(--twh-ff-body);
-  font-size: 10px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 4px 12px;
-  border-radius: var(--twh-radius-pill);
+  border-radius: var(--twh-radius-pill, 9999px);
   background: transparent;
-  color: var(--twh-accent-ink);
-  border: 1.5px solid var(--twh-border);
+  color: var(--twh-accent-ink, #00699f);
+  border: 1.5px solid var(--twh-border, rgba(0,175,246,0.28));
   white-space: nowrap;
 }
 
 #twopir-home .twh-rv-quote {
   flex: 1;
   position: relative;
-  padding-left: 14px;
+  padding-left: 12px;
   z-index: 1;
 }
 #twopir-home .twh-rv-quote::before {
@@ -2881,15 +2956,15 @@ article:has(#twopir-home) {
   position: absolute;
   left: 0; top: -6px;
   font-size: 28px;
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-weight: 800;
   color: rgba(0,175,246,0.18);
   line-height: 1;
 }
 #twopir-home .twh-rv-quote p {
-  font-family: var(--twh-ff-body);
-  font-size: clamp(12px, 1.1vw, 14px);
-  color: var(--twh-muted-2);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1.1vw, 14px);
+  color: var(--twh-muted-2, #4a6070);
   line-height: 1.75;
   font-style: italic;
   margin: 0;
@@ -2901,27 +2976,27 @@ article:has(#twopir-home) {
      label to a 1.76 contrast ratio at 8.5px — the least legible text on the
      page. Lighter tint, darker label: now comfortably over 4.5. */
   background: rgba(0,175,246,0.09);
-  border: 1px solid var(--twh-border);
-  border-left: 3px solid var(--twh-accent);
-  border-radius: var(--twh-radius-sm);
-  padding: 10px 14px;
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--twh-accent, #00aff6);
+  border-radius: var(--twh-radius-sm, 6px);
+  padding: 8px 12px;
   position: relative;
   z-index: 1;
 }
 #twopir-home .twh-rv-outcome-label {
-  font-family: var(--twh-ff-mono);
-  font-size: 10px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   margin-bottom: 3px;
 }
 #twopir-home .twh-rv-outcome-value {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-size: clamp(11px, 1vw, 13px);
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.4;
 }
 
@@ -2935,11 +3010,14 @@ article:has(#twopir-home) {
      one word per line. With a minimum width on the right-hand block it
      drops to its own full-width row instead, where the name and role sit
      on one or two natural lines. */
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   row-gap: 12px;
   gap: 12px;
-  padding-top: 14px;
-  border-top: 1px solid var(--twh-border);
+  /* one row on every card, and a locked height so a long name can never
+     shift the outcome block or the date above it */
+  min-height: 66px;
+  padding-top: 12px;
+  border-top: 1px solid var(--twh-border, rgba(0,175,246,0.28));
   margin-top: auto;
   position: relative;
   z-index: 1;
@@ -2947,33 +3025,33 @@ article:has(#twopir-home) {
 #twopir-home .twh-rv-footer-left {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
 }
 #twopir-home .twh-rv-date {
-  color: var(--twh-text);
-  font-size: 12px;
+  color: var(--twh-text, #1a2a35);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 600;
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
 }
 #twopir-home .twh-rv-verified {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   /* was #e0f2fe / #1d4ed8 — an indigo from a different blue family that
      clashed with the brand cyan sitting right beside it. */
   background: rgba(0,175,246,0.10);
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   padding: 3px 8px;
-  border-radius: var(--twh-radius-pill);
-  font-size: 11px;
+  border-radius: var(--twh-radius-pill, 9999px);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 600;
   white-space: nowrap;
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
 }
 #twopir-home .twh-rv-check {
   width: 14px; height: 14px;
-  background: var(--twh-pos);
+  background: var(--twh-pos, #16916a);
   color: #fff;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -2984,33 +3062,34 @@ article:has(#twopir-home) {
 #twopir-home .twh-rv-footer-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   min-width: 0;
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-sm);
-  padding: 8px 10px;
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-sm, 6px);
+  padding: 8px 4px;
   /* was flex-shrink: 0, which pinned this block at its content width and
      pushed it past the card edge — the card clips, so longer roles lost
      their tail ("Business Development Manag"). Allowing it to shrink is
      what lets the name and role actually wrap. The logo keeps its own
      flex-shrink: 0 below so only the text gives way. */
   flex-shrink: 1;
-  min-width: 190px;
   flex-grow: 1;
+  flex-basis: 0;        /* not auto — auto is what triggered the wrap */
+  min-width: 190px;
   justify-content: flex-end;
 }
 #twopir-home .twh-rv-logo-box {
-  width: 80px; height: 36px;
+  width: 64px; height: 34px;
   background: #f8fafc;
-  border-radius: var(--twh-radius-sm);
-  border: 1px solid var(--twh-border);
+  border-radius: var(--twh-radius-sm, 6px);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: 20px;
   font-weight: 700;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
 }
 #twopir-home .twh-rv-logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; }
 /* `white-space: nowrap` plus the card's clipping meant longer roles were
@@ -3018,19 +3097,23 @@ article:has(#twopir-home) {
    wrap now, and the footer column is allowed to shrink so the wrap actually
    happens instead of pushing the logo out of the card. */
 #twopir-home .twh-rv-client { min-width: 0; }
-#twopir-home .twh-rv-client h4 {
-  font-family: var(--twh-ff-display);
-  font-size: 12px;
+#twopir-home .twh-rv-client h3 {
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.3;
 }
 #twopir-home .twh-rv-client p {
   margin: 2px 0 0 0;
-  font-family: var(--twh-ff-body);
-  font-size: 10px;
-  color: var(--twh-muted-2);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
+  color: var(--twh-muted-2, #4a6070);
   line-height: 1.35;
+  /* Allowed to wrap. Forcing one line with an ellipsis kept the footer a
+     fixed height, but between roughly 900 and 1150px the card is narrow
+     enough that it truncated real job titles — a worse defect than the one
+     it fixed. The footer reserves the two-line height instead. */
 }
 
 /* ── Lightbox ── */
@@ -3057,26 +3140,26 @@ article:has(#twopir-home) {
 #twopir-home .twh-lb[hidden] { display: none; }
 #twopir-home .twh-lb-top {
   display: flex; align-items: center; gap: 12px;
-  padding: 18px 24px;
+  padding: 16px 24px;
 }
 #twopir-home .twh-lb-brand {
-  font-family: var(--twh-ff-display);
-  font-size: 13px;
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-xs, 13px);
   font-weight: 700;
   color: rgba(255,255,255,0.78);
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
 #twopir-home .twh-lb-counter {
-  font-family: var(--twh-ff-mono);
-  font-size: 12px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-xs, 13px);
   color: rgba(255,255,255,0.4);
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
 #twopir-home .twh-lb-hint {
-  font-family: var(--twh-ff-mono);
-  font-size: 11px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-micro, 12px);
   color: rgba(255,255,255,0.25);
   letter-spacing: 0.05em;
   margin-left: auto;
@@ -3097,11 +3180,11 @@ article:has(#twopir-home) {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,0.10);
   border: 1px solid rgba(255,255,255,0.22);
-  border-radius: var(--twh-radius-pill);
-  padding: 7px 14px;
+  border-radius: var(--twh-radius-pill, 9999px);
+  padding: 8px 12px;
   color: #fff;
-  font-family: var(--twh-ff-body);
-  font-size: 11px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-micro, 12px);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -3119,8 +3202,8 @@ article:has(#twopir-home) {
 }
 #twopir-home .twh-lb-caption {
   margin-top: 12px;
-  font-family: var(--twh-ff-mono);
-  font-size: 12px;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-xs, 13px);
   color: rgba(255,255,255,0.4);
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -3140,7 +3223,7 @@ article:has(#twopir-home) {
   transition: background 0.15s, border-color 0.15s;
   z-index: 5;
 }
-#twopir-home .twh-lb-arrow:hover { background: rgba(0,175,246,0.22); border-color: var(--twh-accent); }
+#twopir-home .twh-lb-arrow:hover { background: rgba(0,175,246,0.22); border-color: var(--twh-accent, #00aff6); }
 #twopir-home .twh-lb-prev { left: 16px; }
 #twopir-home .twh-lb-next { right: 16px; }
 /* the quote panel rendered inside the lightbox */
@@ -3150,8 +3233,8 @@ article:has(#twopir-home) {
   border-radius: 16px;
   padding: 40px;
   color: rgba(255,255,255,0.92);
-  font-family: var(--twh-ff-body);
-  font-size: 16px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px));
   line-height: 1.8;
   font-style: italic;
   text-align: center;
@@ -3167,7 +3250,7 @@ article:has(#twopir-home) {
 }
 @media (max-width: 600px) {
   #twopir-home .twh-rv-card { width: clamp(260px, 85vw, 360px); }
-  #twopir-home .twh-rv-desc { font-size: 20px; }
+  #twopir-home .twh-rv-desc { font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px)); }
   #twopir-home .twh-lb-quote { padding: 24px; }
 }
 
@@ -3183,47 +3266,47 @@ article:has(#twopir-home) {
    animation and answer copy are unchanged.
 
    ════════════════════════════════════════════════════════════ */
-#twopir-home .twh-faq-col { max-width: 820px; margin: 0 auto; }
+#twopir-home .twh-faq-col { max-width: 970px; margin: 0 auto; }
 
 #twopir-home .twh-faq-head { text-align: center; margin-bottom: clamp(36px, 5vw, 56px); }
 
 #twopir-home .twh-faq-eyebrow {
   display: block;
-  font-family: var(--twh-ff-mono);
-  font-size: 12px;
-  font-weight: 700;
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--twh-fs-xs, 13px);
+  font-weight: 500;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--twh-accent-ink);
-  margin-bottom: 10px;
+  color: var(--twh-accent-ink, #00699f);
+  margin-bottom: 8px;
 }
 #twopir-home .twh-faq-heading {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(20px, 2.8vw, 28px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.3;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   margin: 0 auto 14px;
   max-width: 640px;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-#twopir-home .twh-faq-list { display: flex; flex-direction: column; gap: 10px; }
+#twopir-home .twh-faq-list { display: flex; flex-direction: column; gap: 8px; }
 
 #twopir-home .twh-faq-row {
-  background: var(--twh-surface);
-  border: 1px solid var(--twh-border);
-  border-radius: var(--twh-radius-md);
+  background: var(--twh-surface, #ffffff);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  border-radius: var(--twh-radius-md, 14px);
   overflow: hidden;
   position: relative;
-  box-shadow: var(--twh-shadow);
-  transition: border-color var(--twh-ease), box-shadow var(--twh-ease);
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-home .twh-faq-row:hover { border-color: rgba(0,175,246,0.48); }
 #twopir-home .twh-faq-row.is-open {
   border-color: rgba(0,175,246,0.55);
-  box-shadow: var(--twh-shadow-hv);
+  box-shadow: var(--twh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
 }
 
 #twopir-home .twh-faq-btn {
@@ -3236,19 +3319,19 @@ article:has(#twopir-home) {
   box-sizing: border-box;
   cursor: pointer;
   padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
-  font-family: var(--twh-ff-display);
-  font-size: 20px;
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px));
   font-weight: 700;
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   line-height: 1.45;
   text-align: left;
   transition: color 150ms ease;
 }
-#twopir-home .twh-faq-row.is-open .twh-faq-btn { color: var(--twh-accent-ink); }
+#twopir-home .twh-faq-row.is-open .twh-faq-btn { color: var(--twh-accent-ink, #00699f); }
 #twopir-home .twh-faq-btn:focus-visible {
-  outline: 2px solid var(--twh-accent);
+  outline: 2px solid var(--twh-accent, #00aff6);
   outline-offset: -3px;
-  border-radius: var(--twh-radius-md);
+  border-radius: var(--twh-radius-md, 14px);
 }
 #twopir-home .twh-faq-btn-text { flex: 1; min-width: 0; }
 
@@ -3257,18 +3340,18 @@ article:has(#twopir-home) {
   width: 30px; height: 30px;
   min-width: 30px;
   border-radius: 50%;
-  border: 1px solid var(--twh-border);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--twh-accent-ink);
+  color: var(--twh-accent-ink, #00699f);
   background: rgba(0,175,246,0.07);
   position: relative;
-  transition: background var(--twh-ease), border-color var(--twh-ease), transform var(--twh-ease);
+  transition: background var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-home .twh-faq-row.is-open .twh-faq-btn-icon {
-  background: var(--twh-accent);
-  border-color: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
+  border-color: var(--twh-accent, #00aff6);
   color: #fff;
   transform: rotate(180deg);
 }
@@ -3283,7 +3366,7 @@ article:has(#twopir-home) {
 /* the vertical stroke retracts, turning + into − */
 #twopir-home .twh-faq-btn-icon .twh-faq-v {
   transform-origin: center;
-  transition: transform var(--twh-ease), opacity var(--twh-ease);
+  transition: transform var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1)), opacity var(--twh-ease, 0.28s cubic-bezier(.4,0,.2,1));
 }
 #twopir-home .twh-faq-row.is-open .twh-faq-btn-icon .twh-faq-v {
   transform: scaleY(0);
@@ -3299,21 +3382,21 @@ article:has(#twopir-home) {
   padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
 }
 #twopir-home .twh-faq-row.is-open .twh-faq-panel-inner {
-  border-top: 1px solid var(--twh-border);
+  border-top: 1px solid var(--twh-border, rgba(0,175,246,0.28));
 }
 #twopir-home .twh-faq-panel-inner p {
-  font-family: var(--twh-ff-body);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-size: clamp(14px, 1.4vw, 18px);
   font-weight: 400;
-  color: var(--twh-muted);
+  color: var(--twh-muted, #566b79);
   line-height: 1.85;
   padding-top: clamp(12px, 1.8vw, 18px);
   text-wrap: pretty;
 }
 
-@media (max-width: 700px) { #twopir-home .twh-faq-panel-inner { padding-right: 18px; } }
+@media (max-width: 700px) { #twopir-home .twh-faq-panel-inner { padding-right: 16px; } }
 @media (max-width: 480px) {
-  #twopir-home .twh-faq-btn      { font-size: 13px; gap: 10px; }
+  #twopir-home .twh-faq-btn      { font-size: var(--twh-fs-xs, 13px); gap: 8px; }
   #twopir-home .twh-faq-btn-icon { width: 22px; height: 22px; min-width: 22px; }
 }
 
@@ -3340,9 +3423,9 @@ article:has(#twopir-home) {
 #twopir-home .twh-bk-left { flex: 1 1 320px; min-width: 0; max-width: 580px; }
 
 #twopir-home .twh-bk-title {
-  font-family: var(--twh-ff-display);
+  font-family: var(--twh-ff-display, 'Bricolage Grotesque', sans-serif);
   font-size: clamp(28px, 3.2vw, 40px);
-  color: var(--twh-text);
+  color: var(--twh-text, #1a2a35);
   margin-bottom: 20px;
   font-weight: 700;
   line-height: 1.15;
@@ -3359,20 +3442,20 @@ article:has(#twopir-home) {
 #twopir-home .twh-bk-rule .twh-rule-line { width: 54px; }
 
 #twopir-home .twh-bk-subtitle {
-  color: var(--twh-text);
-  font-family: var(--twh-ff-mono);
+  color: var(--twh-text, #1a2a35);
+  font-family: var(--twh-ff-mono, 'JetBrains Mono', monospace);
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--twh-fs-sm, 14px);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 #twopir-home .twh-bk-lede {
-  color: var(--twh-muted);
-  font-family: var(--twh-ff-body);
+  color: var(--twh-muted, #566b79);
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
   font-weight: 300;
-  margin-bottom: 14px;
-  font-size: 18px;
+  margin-bottom: 12px;
+  font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px));
   display: block;
   line-height: 1.7;
   text-wrap: pretty;
@@ -3382,15 +3465,15 @@ article:has(#twopir-home) {
   padding-left: 0;
   margin-bottom: 24px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 #twopir-home .twh-bk-list li {
   position: relative;
-  padding-left: 22px;
-  color: var(--twh-muted);
+  padding-left: 20px;
+  color: var(--twh-muted, #566b79);
   line-height: 1.65;
-  font-family: var(--twh-ff-body);
-  font-size: 14px;
+  font-family: var(--twh-ff-body, 'Inter', sans-serif);
+  font-size: var(--twh-fs-sm, 14px);
   font-weight: 300;
   list-style: none;
 }
@@ -3401,7 +3484,7 @@ article:has(#twopir-home) {
   left: 2px;
   top: 0.62em;
   width: 7px; height: 7px;
-  background: var(--twh-accent);
+  background: var(--twh-accent, #00aff6);
   transform: rotate(45deg);
   border-radius: 1px;
 }
@@ -3410,18 +3493,18 @@ article:has(#twopir-home) {
   flex: 1 1 320px;
   min-width: 0;
   max-width: 640px;
-  background: var(--twh-surface);
+  background: var(--twh-surface, #ffffff);
   padding: 20px;
-  border-radius: var(--twh-radius-lg);
-  border: 1px solid var(--twh-border);
-  box-shadow: var(--twh-shadow);
+  border-radius: var(--twh-radius-lg, 22px);
+  border: 1px solid var(--twh-border, rgba(0,175,246,0.28));
+  box-shadow: var(--twh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
 }
 #twopir-home .twh-bk-embed {
   width: 100%;
   height: 680px;
   border-radius: 12px;
   overflow: hidden;
-  background: var(--twh-surface);
+  background: var(--twh-surface, #ffffff);
   position: relative;
 }
 #twopir-home .twh-bk-embed iframe {
@@ -3449,7 +3532,7 @@ article:has(#twopir-home) {
     overflow: hidden !important;
     overflow: clip !important;
     border-radius: 12px;
-    background: var(--twh-surface);
+    background: var(--twh-surface, #ffffff);
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     position: relative;
   }
@@ -3488,7 +3571,7 @@ article:has(#twopir-home) {
   top: 0; left: 0;
   height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, var(--twh-accent), var(--twh-accent-dk));
+  background: linear-gradient(90deg, var(--twh-accent, #00aff6), var(--twh-accent-dk, #007ec6));
   z-index: 9999;
   transform: scaleX(0);
   transform-origin: left center;
@@ -3625,32 +3708,101 @@ article:has(#twopir-home) {
 
 #twopir-home,
 #twopir-hero {
-  --twh-fs-display: clamp(30px, 4vw, 46px);
-  --twh-fs-h2:      clamp(26px, 3vw, 38px);
-  --twh-fs-h3:      clamp(17px, 1.5vw, 19px);
-  --twh-fs-h4:      clamp(15px, 1.25vw, 16px);
-  --twh-fs-lede:    clamp(15px, 1.2vw, 17px);
-  --twh-fs-body:    clamp(14px, 1.05vw, 15px);
-  --twh-fs-sm:      13px;
-  --twh-fs-xs:      12px;
-  --twh-fs-label:   11px;
-  --twh-fs-eyebrow: clamp(11px, 0.9vw, 12px);
-  --twh-fs-stat:    clamp(28px, 3.1vw, 40px);
-  --twh-fs-stat-sm: clamp(20px, 1.9vw, 24px);
+  --twh-fs-display: clamp(34px, 4.5vw, 56px);
+  --twh-fs-h2:      clamp(30px, 3.4vw, 44px);
+  --twh-fs-h3:      clamp(20px, 1.8vw, 24px);
+  --twh-fs-h4:      clamp(17px, 1.4vw, 19px);
+  --twh-fs-lede:    clamp(17px, 1.4vw, 19px);
+  --twh-fs-body:    clamp(15px, 1.1vw, 17px);
+  --twh-fs-sm:      14px;
+  --twh-fs-xs:      13px;
+  --twh-fs-label:   12px;
+  --twh-fs-micro:   12px;
+  --twh-fs-eyebrow: clamp(13px, 1vw, 14px);
+  --twh-fs-stat:    clamp(32px, 3.6vw, 48px);
+  --twh-fs-stat-sm: clamp(22px, 2vw, 26px);
 }
 
 /* ── Hero ────────────────────────────────────────────────────── */
-#twopir-hero .twpr-title   { font-size: var(--twh-fs-display); }
-#twopir-hero .twpr-sub     { font-size: var(--twh-fs-lede); line-height: 1.62; }
-#twopir-hero .twpr-eyebrow { font-size: var(--twh-fs-eyebrow); }
-#twopir-hero .twpr-btn     { font-size: var(--twh-fs-sm); }
-#twopir-hero .twpr-proof li { font-size: var(--twh-fs-label); }
-#twopir-hero .twpr-proof b  { font-size: var(--twh-fs-sm); }
+#twopir-hero .twpr-title   { font-size: var(--twh-fs-display, clamp(34px, 4.5vw, 56px)); }
+#twopir-hero .twpr-sub     { font-size: var(--twh-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-hero .twpr-eyebrow { font-size: var(--twh-fs-eyebrow, clamp(13px, 1vw, 14px)); }
+#twopir-hero .twpr-btn     { font-size: var(--twh-fs-sm, 14px); }
+#twopir-hero .twpr-proof li { font-size: var(--twh-fs-label, 12px); }
+#twopir-hero .twpr-proof b  { font-size: var(--twh-fs-sm, 14px); }
+
+/* ── Hero viewport-fit ────────────────────────────────────────
+   Makes the hero size itself against the *height* of the screen as
+   well as its width, so the eyebrow, H1, sub-copy, CTAs, the proof
+   stats row and the architecture panel all stay inside the first
+   screen on short laptops (768px / 800px / 900px tall) without
+   changing anything on tall monitors. Every value below is a clamp
+   whose middle term is a vh unit, so it scales continuously instead
+   of snapping at breakpoints. */
+@media (min-width: 901px) {
+  #twopir-hero {
+    min-height: calc(100svh - var(--twpr-nav, 92px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
+  }
+  #twopir-hero .twpr-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-hero .twpr-eyebrow {
+    margin-bottom: clamp(11px, 1.9vh, 22px);
+    padding: clamp(6px, 0.95vh, 8px) 17px;
+  }
+  #twopir-hero .twpr-title {
+    font-size: clamp(32px, var(--twpr-h1-fluid, 3.2vw), 46px);
+    line-height: 1.08;
+  }
+  #twopir-hero .twpr-rule {
+    margin: clamp(12px, 1.9vh, 22px) 0 clamp(10px, 1.6vh, 19px);
+  }
+  #twopir-hero .twpr-sub {
+    font-size: clamp(15px, var(--twpr-sub-fluid, 1.2vw), 17px);
+    line-height: 1.55;
+  }
+  #twopir-hero .twpr-cta {
+    margin-top: clamp(18px, 2.9vh, 32px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-hero .twpr-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(20px, 1.6vw, 26px);
+  }
+  #twopir-hero .twpr-proof {
+    margin-top: clamp(15px, 2.5vh, 28px);
+    gap: clamp(7px, 1.2vh, 10px) 16px;
+  }
+  #twopir-hero .twpr-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-hero .twpr-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-hero .twpr-map { max-height: min(53vh, 486px); }
+  #twopir-hero .twpr-handoff {
+    padding: clamp(6px, 0.9vh, 14px) 0 clamp(4px, 0.7vh, 10px);
+  }
+  #twopir-hero .twpr-handoff-line { height: clamp(8px, 1vh, 16px); }
+}
+
+/* very short laptops (e.g. 1366x768 with browser chrome): tighten
+   the panel a little further so the proof stats never get pushed
+   below the fold. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-hero .twpr-float { transform: scale(0.92); transform-origin: left bottom; }
+  #twopir-hero .twpr-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-hero .twpr-map { max-height: 50vh; }
+}
 
 /* ── Stats strip ─────────────────────────────────────────────── */
-#twopir-home .twh-stat-number { font-size: var(--twh-fs-stat); line-height: 1.05; }
+#twopir-home .twh-stat-number { font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px)); line-height: 1.05; }
 #twopir-home .twh-stat-label  {
-  font-size: var(--twh-fs-xs);
+  font-size: var(--twh-fs-xs, 13px);
   line-height: 1.45;
   letter-spacing: 0.08em;
   max-width: 20ch;
@@ -3666,7 +3818,7 @@ article:has(#twopir-home) {
 #twopir-home .twh-ss-title,
 #twopir-home .twh-rv-title,
 #twopir-home .twh-faq-heading,
-#twopir-home .twh-bk-title { font-size: var(--twh-fs-h2); line-height: 1.16; }
+#twopir-home .twh-bk-title { font-size: var(--twh-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
 
 #twopir-home .twh-ab-eyebrow,
 #twopir-home .twh-ab-sec-eyebrow,
@@ -3674,7 +3826,7 @@ article:has(#twopir-home) {
 #twopir-home .twh-eco-eyebrow,
 #twopir-home .twh-ind-eyebrow,
 #twopir-home .twh-rv-eyebrow,
-#twopir-home .twh-faq-eyebrow { font-size: var(--twh-fs-eyebrow); letter-spacing: 0.2em; }
+#twopir-home .twh-faq-eyebrow { font-size: var(--twh-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
 
 #twopir-home .twh-ab-subheading,
 #twopir-home .twh-bk-subtitle,
@@ -3687,7 +3839,7 @@ article:has(#twopir-home) {
 #twopir-home .twh-bk-lede,
 #twopir-home .twh-ab-desc,
 #twopir-home .twh-ind-desc,
-#twopir-home .twh-rv-desc { font-size: var(--twh-fs-lede); line-height: 1.7; }
+#twopir-home .twh-rv-desc { font-size: var(--twh-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
 
 /* ── Card titles and card copy ───────────────────────────────── */
 #twopir-home .twh-ab-card-title,
@@ -3696,11 +3848,11 @@ article:has(#twopir-home) {
 #twopir-home .twh-ss-card-title,
 #twopir-home .twh-ind-headline,
 #twopir-home .twh-ind-feature-title,
-#twopir-home .twh-eco-primary { font-size: var(--twh-fs-h3); line-height: 1.3; }
-#twopir-home .twh-eco-support { font-size: var(--twh-fs-xs); }
+#twopir-home .twh-eco-primary { font-size: var(--twh-fs-h3, clamp(20px, 1.8vw, 24px)); line-height: 1.3; }
+#twopir-home .twh-eco-support { font-size: var(--twh-fs-xs, 13px); }
 
 #twopir-home .twh-faq-btn,
-#twopir-home .twh-faq-btn-text { font-size: var(--twh-fs-h4); line-height: 1.4; }
+#twopir-home .twh-faq-btn-text { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
 
 #twopir-home .twh-ab-card-body,
 #twopir-home .twh-svc-body,
@@ -3710,46 +3862,46 @@ article:has(#twopir-home) {
 #twopir-home .twh-ss-body,
 #twopir-home .twh-bk-list li,
 #twopir-home .twh-faq-panel-inner,
-#twopir-home .twh-faq-panel-inner p { font-size: var(--twh-fs-body); line-height: 1.65; }
+#twopir-home .twh-faq-panel-inner p { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
 
 /* ── Industries: the densest grid on the page, so it gets the
       small end of the same scale rather than sizes of its own ── */
-#twopir-home .twh-ind-tab-title    { font-size: var(--twh-fs-sm); line-height: 1.3; }
-#twopir-home .twh-ind-tab-sub      { font-size: 10px; letter-spacing: 0.04em; }
-#twopir-home .twh-ind-tab-icon     { font-size: var(--twh-fs-h4); }
-#twopir-home .twh-ind-live         { font-size: 10px; }
-#twopir-home .twh-ind-stat-val     { font-size: var(--twh-fs-stat-sm); }
-#twopir-home .twh-ind-stat-label   { font-size: 10px; line-height: 1.35; letter-spacing: 0.1em; }
-#twopir-home .twh-ind-block-label  { font-size: 10px; letter-spacing: 0.14em; }
+#twopir-home .twh-ind-tab-title    { font-size: var(--twh-fs-sm, 14px); line-height: 1.3; }
+#twopir-home .twh-ind-tab-sub      { font-size: var(--twh-fs-micro, 12px); letter-spacing: 0.04em; }
+#twopir-home .twh-ind-tab-icon     { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-home .twh-ind-live         { font-size: var(--twh-fs-micro, 12px); }
+#twopir-home .twh-ind-stat-val     { font-size: var(--twh-fs-stat-sm, clamp(22px, 2vw, 26px)); }
+#twopir-home .twh-ind-stat-label   { font-size: var(--twh-fs-micro, 12px); line-height: 1.35; letter-spacing: 0.1em; }
+#twopir-home .twh-ind-block-label  { font-size: var(--twh-fs-micro, 12px); letter-spacing: 0.14em; }
 #twopir-home .twh-ind-chip,
-#twopir-home .twh-ind-clients-list { font-size: var(--twh-fs-xs); }
-#twopir-home .twh-ind-cta-btn      { font-size: var(--twh-fs-sm); }
-#twopir-home .twh-ind-feature-icon { font-size: var(--twh-fs-sm); }
+#twopir-home .twh-ind-clients-list { font-size: var(--twh-fs-xs, 13px); }
+#twopir-home .twh-ind-cta-btn      { font-size: var(--twh-fs-sm, 14px); }
+#twopir-home .twh-ind-feature-icon { font-size: var(--twh-fs-sm, 14px); }
 
 /* ── Success stories / reviews cards ─────────────────────────── */
 #twopir-home .twh-ss-category,
-#twopir-home .twh-ss-tags span     { font-size: var(--twh-fs-label); }
-#twopir-home .twh-ss-client        { font-size: var(--twh-fs-h4); }
+#twopir-home .twh-ss-tags span     { font-size: var(--twh-fs-xs, 13px); }
+#twopir-home .twh-ss-client        { font-size: clamp(16px, 1.4vw, 18px); }
 #twopir-home .twh-ss-outcome-label,
-#twopir-home .twh-rv-outcome-label { font-size: 10px; }
+#twopir-home .twh-rv-outcome-label { font-size: var(--twh-fs-xs, 13px); }
 #twopir-home .twh-ss-outcome-text,
-#twopir-home .twh-rv-outcome-value { font-size: var(--twh-fs-xs); }
-#twopir-home .twh-rv-quote p       { font-size: var(--twh-fs-sm); line-height: 1.65; }
-#twopir-home .twh-rv-client h4     { font-size: var(--twh-fs-xs); }
-#twopir-home .twh-rv-client p,
-#twopir-home .twh-rv-badge         { font-size: 10px; }
+#twopir-home .twh-rv-outcome-value { font-size: var(--twh-fs-sm, 14px); }
+#twopir-home .twh-rv-quote p       { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-home .twh-rv-client h3     { font-size: var(--twh-fs-xs, 13px); }
+#twopir-home .twh-rv-badge         { font-size: var(--twh-fs-xs, 13px); }
+#twopir-home .twh-rv-client p      { font-size: var(--twh-fs-micro, 12px); }
 #twopir-home .twh-rv-date,
-#twopir-home .twh-rv-verified      { font-size: var(--twh-fs-label); }
-#twopir-home .twh-rv-rate-label    { font-size: var(--twh-fs-sm); }
-#twopir-home .twh-rv-rate-note     { font-size: var(--twh-fs-label); }
-#twopir-home .twh-lb-quote         { font-size: var(--twh-fs-lede); }
+#twopir-home .twh-rv-verified      { font-size: var(--twh-fs-xs, 13px); }
+#twopir-home .twh-rv-rate-label    { font-size: var(--twh-fs-sm, 14px); }
+#twopir-home .twh-rv-rate-note     { font-size: var(--twh-fs-label, 12px); }
+#twopir-home .twh-lb-quote         { font-size: var(--twh-fs-lede, clamp(17px, 1.4vw, 19px)); }
 #twopir-home .twh-lb-caption,
 #twopir-home .twh-lb-counter,
-#twopir-home .twh-lb-brand         { font-size: var(--twh-fs-xs); }
+#twopir-home .twh-lb-brand         { font-size: var(--twh-fs-xs, 13px); }
 
 /* ── Buttons ─────────────────────────────────────────────────── */
 #twopir-home .twh-ab-btn,
-#twopir-home .twh-ab-cta-wrap .twh-ab-btn { font-size: var(--twh-fs-sm); }
+#twopir-home .twh-ab-cta-wrap .twh-ab-btn { font-size: var(--twh-fs-sm, 14px); }
 
 /* ── Small screens: only what the clamps cannot express ──────── */
 @media (max-width: 600px) {
@@ -3762,13 +3914,13 @@ article:has(#twopir-home) {
   #twopir-home .twh-ss-title,
   #twopir-home .twh-rv-title,
   #twopir-home .twh-faq-heading,
-  #twopir-home .twh-bk-title { font-size: 26px; line-height: 1.2; }
+  #twopir-home .twh-bk-title { font-size: var(--twh-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.2; }
 
-  #twopir-hero .twpr-title   { font-size: 30px; line-height: 1.18; }
-  #twopir-hero .twpr-sub     { font-size: 16px; }
+  #twopir-hero .twpr-title   { font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px)); line-height: 1.18; }
+  #twopir-hero .twpr-sub     { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
 
-  #twopir-home .twh-stat-number { font-size: 30px; }
-  #twopir-home .twh-stat-label  { font-size: 11px; max-width: none; }
+  #twopir-home .twh-stat-number { font-size: var(--twh-fs-stat, clamp(32px, 3.6vw, 48px)); }
+  #twopir-home .twh-stat-label  { font-size: var(--twh-fs-micro, 12px); max-width: none; }
 
   #twopir-home .twh-ab-subheading,
   #twopir-home .twh-bk-subtitle,
@@ -3781,14 +3933,14 @@ article:has(#twopir-home) {
   #twopir-home .twh-bk-lede,
   #twopir-home .twh-ab-desc,
   #twopir-home .twh-ind-desc,
-  #twopir-home .twh-rv-desc { font-size: 16px; line-height: 1.65; }
+  #twopir-home .twh-rv-desc { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
 
   #twopir-home .twh-ab-card-title,
   #twopir-home .twh-svc-cell-title,
   #twopir-home .twh-ab-why-title,
   #twopir-home .twh-ss-card-title,
   #twopir-home .twh-ind-headline,
-  #twopir-home .twh-ind-feature-title { font-size: 17px; }
+  #twopir-home .twh-ind-feature-title { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)); }
 
   #twopir-home .twh-ab-card-body,
   #twopir-home .twh-svc-body,
@@ -3797,20 +3949,22 @@ article:has(#twopir-home) {
   #twopir-home .twh-ind-panel-desc,
   #twopir-home .twh-ss-body,
   #twopir-home .twh-faq-panel-inner,
-  #twopir-home .twh-faq-panel-inner p { font-size: 15px; }
+  #twopir-home .twh-faq-panel-inner p { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
 
   #twopir-home .twh-faq-btn,
-  #twopir-home .twh-faq-btn-text { font-size: 16px; }
+  #twopir-home .twh-faq-btn-text { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)); }
 
-  #twopir-home .twh-ind-tab-title { font-size: 13px; }
-  #twopir-home .twh-ind-cta-btn   { font-size: 14px; width: 100%; justify-content: center; }
+  #twopir-home .twh-ind-tab-title { font-size: var(--twh-fs-xs, 13px); }
+  #twopir-home .twh-ind-cta-btn   { font-size: var(--twh-fs-sm, 14px); width: 100%; justify-content: center; }
 }
 
-/* ── Four-ways diamond: diagonal must fit its own box ────────── */
-#twopir-home .twh-ab-icon-wrap { height: clamp(96px, 9vw, 112px); }
+/* ── Four-ways diamond: diagonal must fit its own box ──────────
+   54px square rotated 45deg spans 54*sqrt2 = 76.4px, so 80px is the
+   smallest box that still clears it. */
+#twopir-home .twh-ab-icon-wrap { height: clamp(66px, 5.4vw, 80px); }
 #twopir-home .twh-ab-diamond {
-  width: clamp(64px, 6vw, 76px);
-  height: clamp(64px, 6vw, 76px);
+  width: clamp(46px, 3.6vw, 54px);
+  height: clamp(46px, 3.6vw, 54px);
 }
 #twopir-home .twh-ab-icon { width: 26px; height: 26px; }
 
@@ -3823,7 +3977,7 @@ article:has(#twopir-home) {
 /* 1 · Why Twopir — card titles set in caps, one size for all six */
 #twopir-home .twh-ab-why-title {
   text-transform: uppercase !important;
-  font-size: var(--twh-fs-h4) !important;
+  font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) ;
   font-weight: 800;
   letter-spacing: 0.055em;
   line-height: 1.35;
@@ -3838,7 +3992,7 @@ article:has(#twopir-home) {
   box-shadow: none;
   padding: 0;
   font-weight: 500;
-  font-size: var(--twh-fs-eyebrow) !important;
+  font-size: var(--twh-fs-eyebrow, clamp(13px, 1vw, 14px)) ;
   letter-spacing: 0.2em !important;
   margin-bottom: 12px;
 }
@@ -3847,23 +4001,22 @@ article:has(#twopir-home) {
 /* 3 · Industries — header now carries the same accent emphasis and
        the same h2 size as every other section title */
 #twopir-home .twh-ind-title {
-  font-size: var(--twh-fs-h2) !important;
-  font-weight: 800;
+  font-size: var(--twh-fs-h2, clamp(30px, 3.4vw, 44px)) ;
+  font-weight: 700;
   line-height: 1.16;
 }
-#twopir-home .twh-ind-title .twh-em { font-weight: 800; }
 
 /* 4 · Industries panel — feature descriptions drop to the dense
        card size so they sit clearly below their titles */
 #twopir-home .twh-ind-feature-desc {
-  font-size: var(--twh-fs-sm) !important;
+  font-size: var(--twh-fs-sm, 14px) ;
   line-height: 1.55;
 }
 #twopir-home .twh-ind-feature-title {
-  font-size: var(--twh-fs-h4) !important;
+  font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) ;
   line-height: 1.3;
 }
-#twopir-home .twh-ind-panel-desc { font-size: var(--twh-fs-body) !important; }
+#twopir-home .twh-ind-panel-desc { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) ; }
 
 /* 5 · Case study cards — one tidy hierarchy:
        client 16 › headline 14 › outcome 13 › meta 11.
@@ -3871,39 +4024,39 @@ article:has(#twopir-home) {
        h3 globally, which was blowing the headline up mid-card. */
 #twopir-home .twh-ss-card-title {
   text-transform: none !important;
-  font-size: var(--twh-fs-sm) !important;
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important;
   font-weight: 600 !important;
   line-height: 1.55 !important;
   letter-spacing: 0 !important;
 }
 #twopir-home .twh-ss-client {
   text-transform: none !important;
-  font-size: var(--twh-fs-h4) !important;
+  font-size: clamp(16px, 1.4vw, 18px) !important;
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.01em;
 }
 #twopir-home .twh-ss-category,
-#twopir-home .twh-ss-tags span { font-size: var(--twh-fs-label) !important; }
-#twopir-home .twh-ss-outcome-label { font-size: 10px !important; letter-spacing: 0.14em; }
+#twopir-home .twh-ss-tags span { font-size: var(--twh-fs-xs, 13px) !important; }
+#twopir-home .twh-ss-outcome-label { font-size: var(--twh-fs-xs, 13px) !important; letter-spacing: 0.14em; }
 #twopir-home .twh-ss-outcome-text {
-  font-size: var(--twh-fs-xs) !important;
+  font-size: var(--twh-fs-sm, 14px) !important;
   font-weight: 600 !important;
   line-height: 1.5;
 }
 
 /* 6 · Same pass on the review cards so the two carousels read alike */
-#twopir-home .twh-rv-quote p { font-size: var(--twh-fs-sm) !important; line-height: 1.65; }
-#twopir-home .twh-rv-client h4 { text-transform: none !important; font-size: var(--twh-fs-xs) !important; }
+#twopir-home .twh-rv-quote p { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65; }
+#twopir-home .twh-rv-client h3 { text-transform: none !important; font-size: var(--twh-fs-sm, 14px) !important; }
 
 @media (max-width: 600px) {
-  #twopir-home .twh-ab-why-title      { font-size: 15px !important; }
-  #twopir-home .twh-ind-title         { font-size: 26px !important; }
-  #twopir-home .twh-ind-feature-title { font-size: 16px !important; }
-  #twopir-home .twh-ind-feature-desc  { font-size: 14px !important; }
-  #twopir-home .twh-ss-card-title     { font-size: 14px !important; }
-  #twopir-home .twh-ss-client         { font-size: 16px !important; }
-  #twopir-home .twh-ss-outcome-text   { font-size: 13px !important; }
+  #twopir-home .twh-ab-why-title      { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important; }
+  #twopir-home .twh-ind-title         { font-size: var(--twh-fs-h2, clamp(30px, 3.4vw, 44px)) !important; }
+  #twopir-home .twh-ind-feature-title { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important; }
+  #twopir-home .twh-ind-feature-desc  { font-size: var(--twh-fs-sm, 14px) !important; }
+  #twopir-home .twh-ss-card-title     { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important; }
+  #twopir-home .twh-ss-client         { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) !important; }
+  #twopir-home .twh-ss-outcome-text   { font-size: var(--twh-fs-sm, 14px) !important; }
 }
 </style>
 
@@ -3918,31 +4071,31 @@ article:has(#twopir-home) {
    the card titles to give each industry its own clear title.
    */
 #twopir-home .twh-ind-tab-title {
-  font-size: 12px !important;
+  font-size: var(--twh-fs-xs, 13px) !important;
   line-height: 1.28;
   font-weight: 600;
 }
 #twopir-home .twh-ind-tab-sub {
-  font-size: 9px !important;
+  font-size: var(--twh-fs-micro, 12px) !important;
   line-height: 1.35;
   letter-spacing: 0.04em;
 }
 #twopir-home .twh-ind-headline {
-  font-size: clamp(19px, 1.85vw, 23px) !important;
+  font-size: clamp(19px, 1.9vw, 22px) !important;
   line-height: 1.22;
   font-weight: 700;
 }
 #twopir-home .twh-ind-feature-title {
-  font-size: var(--twh-fs-h4) !important;
+  font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) ;
   font-weight: 700;
 }
-#twopir-home .twh-ind-feature-desc { font-size: 12px !important; line-height: 1.55; }
+#twopir-home .twh-ind-feature-desc { font-size: var(--twh-fs-xs, 13px) !important; line-height: 1.55; }
 
 @media (max-width: 600px) {
-  #twopir-home .twh-ind-headline   { font-size: 18px !important; }
-  #twopir-home .twh-ind-tab-title  { font-size: 11px !important; }
-  #twopir-home .twh-ind-tab-sub     { font-size: 8px !important; }
-  #twopir-home .twh-ind-feature-desc{ font-size: 12px !important; }
+  #twopir-home .twh-ind-headline   { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) !important; }
+  #twopir-home .twh-ind-tab-title  { font-size: var(--twh-fs-micro, 12px) !important; }
+  #twopir-home .twh-ind-tab-sub     { font-size: var(--twh-fs-micro, 12px) !important; }
+  #twopir-home .twh-ind-feature-desc{ font-size: var(--twh-fs-xs, 13px) !important; }
 }
 </style>
 
@@ -4097,7 +4250,7 @@ article:has(#twopir-home) {
           <text class="twpr-s"  x="456" y="266" text-anchor="middle">Agents · Scoring</text>
           <text class="twpr-s"  x="456" y="279" text-anchor="middle">Next-best action</text>
 
-          <text class="m twpr-h" x="280" y="332" text-anchor="middle" style="font-size: 10px">PLATFORM-AGNOSTIC · BUILT TO SCALE</text>
+          <text class="m twpr-h" x="280" y="332" text-anchor="middle" style="font-size: 12px">PLATFORM-AGNOSTIC · BUILT TO SCALE</text>
 
           <!-- 2πr mark — where every system converges -->
           <g class="twpr-spin" aria-hidden="true">
@@ -4139,7 +4292,7 @@ article:has(#twopir-home) {
             <text class="twpr-s"  x="388" y="476">and reporting at scale</text>
           </g>
 
-          <text class="m twpr-h" x="280" y="520" text-anchor="middle" style="font-size: 10px">SALES · MARKETING · SERVICE · OPERATIONS</text>
+          <text class="m twpr-h" x="280" y="520" text-anchor="middle" style="font-size: 12px">SALES · MARKETING · SERVICE · OPERATIONS</text>
         </svg>
 
         <!-- Small screens: same model, stacked and fully legible -->
@@ -4243,8 +4396,7 @@ article:has(#twopir-home) {
      ══════════════════════════════════════════════════════════ -->
 <section class="twh-section twh-section--alt twh-about" aria-labelledby="twh-about-title">
   <div class="twh-wrap">
-    <!-- ABOUT US -->
-        <div class="twh-ab-hero" aria-labelledby="twh-about-title">
+    <div class="twh-ab-hero" aria-labelledby="twh-about-title">
           <div class="twh-ab-philosophy twh-fade">
           <span class="twh-ab-eyebrow">Twopir Consulting</span>
 
@@ -4274,169 +4426,175 @@ article:has(#twopir-home) {
           </div>
           </div>
         </div>
+  </div>
+</section>
 
-        <!-- FOUR WAYS WE WORK -->
-        <section class="twh-ab-block" aria-labelledby="fww-title">
-          <div class="twh-ab-sec-head twh-fade">
-            <span class="twh-ab-sec-eyebrow">How We Work</span>
-            <h3 class="twh-ab-sec-title" id="fww-title">Where Engagements Begin</h3>
-            <div class="twh-rule" aria-hidden="true">
-              <span class="twh-rule-line"></span>
-              <span class="twh-rule-diamond"></span>
-              <span class="twh-rule-line"></span>
+<section class="twh-section twh-work" aria-labelledby="fww-title">
+  <div class="twh-wrap">
+
+            <div class="twh-head twh-fade">
+              <span class="twh-ab-sec-eyebrow">How We Work</span>
+              <h2 class="twh-ab-sec-title" id="fww-title">Where Engagements Begin</h2>
+              <div class="twh-rule" aria-hidden="true">
+                <span class="twh-rule-line"></span>
+                <span class="twh-rule-diamond"></span>
+                <span class="twh-rule-line"></span>
+              </div>
+              <p class="twh-ab-sec-intro">Organizations come to us at different points — starting a transformation, recovering from one, or running systems that work but no longer scale.</p>
             </div>
-            <p class="twh-ab-sec-intro">Organizations come to us at different points — starting a transformation, recovering from one, or running systems that work but no longer scale.</p>
-          </div>
 
-          <div class="twh-ab-grid" role="list">
+            <div class="twh-ab-grid" role="list">
 
-            <!-- IMPLEMENT -->
-            <article class="twh-ab-card twh-fade twh-d1" role="listitem">
-              <div class="twh-ab-icon-wrap" aria-hidden="true">
-                <span class="twh-ab-diamond"></span>
-                <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 3l9 5-9 5-9-5 9-5z"/>
-                  <path d="M3 13l9 5 9-5"/>
-                </svg>
-              </div>
-              <h4 class="twh-ab-card-title">Implement</h4>
-              <div class="twh-ab-card-divider" aria-hidden="true"></div>
-              <p class="twh-ab-card-body">
-                <strong>Build the right foundation from the start.</strong> We design and implement Salesforce, HubSpot, AI, integrations and data architecture around your future-state operating model — not around a feature checklist or a copy of the process you already have.
-              </p>
-            </article>
+              <!-- IMPLEMENT -->
+              <article class="twh-ab-card twh-fade twh-d1" role="listitem">
+                <div class="twh-ab-icon-wrap" aria-hidden="true">
+                  <span class="twh-ab-diamond"></span>
+                  <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3l9 5-9 5-9-5 9-5z"/>
+                    <path d="M3 13l9 5 9-5"/>
+                  </svg>
+                </div>
+                <h3 class="twh-ab-card-title">Implement</h3>
+                <div class="twh-ab-card-divider" aria-hidden="true"></div>
+                <p class="twh-ab-card-body">
+                  <strong>Build the right foundation from the start.</strong> We design and implement Salesforce, HubSpot, AI, integrations and data architecture around your future-state operating model — not around a feature checklist or a copy of the process you already have.
+                </p>
+              </article>
 
-            <!-- RESCUE -->
-            <article class="twh-ab-card twh-fade twh-d2" role="listitem">
-              <div class="twh-ab-icon-wrap" aria-hidden="true">
-                <span class="twh-ab-diamond"></span>
-                <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M14.7 6.3a4 4 0 10-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.8 2.8-2-2 2.8-2.8z"/>
-                </svg>
-              </div>
-              <h4 class="twh-ab-card-title">Rescue</h4>
-              <div class="twh-ab-card-divider" aria-hidden="true"></div>
-              <p class="twh-ab-card-body">
-                <strong>Fix what isn't working.</strong> Stalled implementations are expensive, and the cause is usually poor architecture, conflicting automation, unreliable data or unclear ownership. We find what is actually creating the problem and redesign it — keeping what works, rebuilding only&nbsp;where&nbsp;necessary.
-              </p>
-            </article>
+              <!-- RESCUE -->
+              <article class="twh-ab-card twh-fade twh-d2" role="listitem">
+                <div class="twh-ab-icon-wrap" aria-hidden="true">
+                  <span class="twh-ab-diamond"></span>
+                  <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14.7 6.3a4 4 0 10-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.8 2.8-2-2 2.8-2.8z"/>
+                  </svg>
+                </div>
+                <h3 class="twh-ab-card-title">Rescue</h3>
+                <div class="twh-ab-card-divider" aria-hidden="true"></div>
+                <p class="twh-ab-card-body">
+                  <strong>Fix what isn't working.</strong> Stalled implementations are expensive, and the cause is usually poor architecture, conflicting automation, unreliable data or unclear ownership. We find what is actually creating the problem and redesign it — keeping what works, rebuilding only&nbsp;where&nbsp;necessary.
+                </p>
+              </article>
 
-            <!-- OPTIMIZE -->
-            <article class="twh-ab-card twh-fade twh-d3" role="listitem">
-              <div class="twh-ab-icon-wrap" aria-hidden="true">
-                <span class="twh-ab-diamond"></span>
-                <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/>
-                  <path d="M12 12l4.2-3.2"/>
-                  <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
-                </svg>
-              </div>
-              <h4 class="twh-ab-card-title">Optimize</h4>
-              <div class="twh-ab-card-divider" aria-hidden="true"></div>
-              <p class="twh-ab-card-body">
-                <strong>Make the system work better as the business changes.</strong> We optimize architecture, automation, data, integrations, security, reporting and governance — and examine the investment itself: which licenses you actually need, and where&nbsp;you're&nbsp;overspending.
-              </p>
-            </article>
+              <!-- OPTIMIZE -->
+              <article class="twh-ab-card twh-fade twh-d3" role="listitem">
+                <div class="twh-ab-icon-wrap" aria-hidden="true">
+                  <span class="twh-ab-diamond"></span>
+                  <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/>
+                    <path d="M12 12l4.2-3.2"/>
+                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
+                  </svg>
+                </div>
+                <h3 class="twh-ab-card-title">Optimize</h3>
+                <div class="twh-ab-card-divider" aria-hidden="true"></div>
+                <p class="twh-ab-card-body">
+                  <strong>Make the system work better as the business changes.</strong> We optimize architecture, automation, data, integrations, security, reporting and governance — and examine the investment itself: which licenses you actually need, and where&nbsp;you're&nbsp;overspending.
+                </p>
+              </article>
 
-            <!-- INTEGRATE -->
-            <article class="twh-ab-card twh-fade twh-d4" role="listitem">
-              <div class="twh-ab-icon-wrap" aria-hidden="true">
-                <span class="twh-ab-diamond"></span>
-                <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M10 5.5L11.5 4A3.5 3.5 0 1116.5 9L15 10.5"/>
-                  <path d="M14 18.5L12.5 20A3.5 3.5 0 117.5 15l1.5-1.5"/>
-                  <path d="M9 15l6-6"/>
-                </svg>
-              </div>
-              <h4 class="twh-ab-card-title">Integrate</h4>
-              <div class="twh-ab-card-divider" aria-hidden="true"></div>
-              <p class="twh-ab-card-body">
-                <strong>Connect the systems around your revenue operation.</strong> We connect Salesforce and HubSpot with finance, billing, ERP, CPQ, eCommerce and service systems — defining which system owns the data, when it moves, what triggers action, and who owns the process.
-              </p>
-            </article>
+              <!-- INTEGRATE -->
+              <article class="twh-ab-card twh-fade twh-d4" role="listitem">
+                <div class="twh-ab-icon-wrap" aria-hidden="true">
+                  <span class="twh-ab-diamond"></span>
+                  <svg class="twh-ab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10 5.5L11.5 4A3.5 3.5 0 1116.5 9L15 10.5"/>
+                    <path d="M14 18.5L12.5 20A3.5 3.5 0 117.5 15l1.5-1.5"/>
+                    <path d="M9 15l6-6"/>
+                  </svg>
+                </div>
+                <h3 class="twh-ab-card-title">Integrate</h3>
+                <div class="twh-ab-card-divider" aria-hidden="true"></div>
+                <p class="twh-ab-card-body">
+                  <strong>Connect the systems around your revenue operation.</strong> We connect Salesforce and HubSpot with finance, billing, ERP, CPQ, eCommerce and service systems — defining which system owns the data, when it moves, what triggers action, and who owns the process.
+                </p>
+              </article>
 
-          </div>
-        </section>
-
-        <!-- WHY CLIENTS CHOOSE TWOPIR -->
-        <section class="twh-ab-block" aria-labelledby="twh-ab-why-title">
-          <div class="twh-ab-sec-head twh-fade">
-            <span class="twh-ab-sec-eyebrow">Why Twopir</span>
-            <h3 class="twh-ab-sec-title" id="twh-ab-why-title">Why Clients Choose Twopir</h3>
-            <div class="twh-rule" aria-hidden="true">
-              <span class="twh-rule-line"></span>
-              <span class="twh-rule-diamond"></span>
-              <span class="twh-rule-line"></span>
             </div>
-          </div>
+        
+  </div>
+</section>
 
-          <div class="twh-ab-why-grid" role="list">
+<section class="twh-section twh-section--alt twh-why" aria-labelledby="twh-ab-why-title">
+  <div class="twh-wrap">
 
-            <article class="twh-ab-why-card twh-fade twh-d1" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">Architecture before implementation</h4>
-                <p class="twh-ab-why-desc">The decisions that matter are made before configuration begins.</p>
+            <div class="twh-head twh-fade">
+              <span class="twh-ab-sec-eyebrow">Why Twopir</span>
+              <h2 class="twh-ab-sec-title" id="twh-ab-why-title">Why Clients Choose Twopir</h2>
+              <div class="twh-rule" aria-hidden="true">
+                <span class="twh-rule-line"></span>
+                <span class="twh-rule-diamond"></span>
+                <span class="twh-rule-line"></span>
               </div>
-            </article>
+            </div>
 
-            <article class="twh-ab-why-card twh-fade twh-d2" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">The right build, not a template</h4>
-                <p class="twh-ab-why-desc">We reuse proven patterns where they fit and design specifically where they don't.</p>
-              </div>
-            </article>
+            <div class="twh-ab-why-grid" role="list">
 
-            <article class="twh-ab-why-card twh-fade twh-d3" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">Salesforce + HubSpot + AI + Integration under one roof</h4>
-                <p class="twh-ab-why-desc">As a Salesforce Partner, HubSpot Partner and AI implementation partner, one team owns the architecture end&nbsp;to&nbsp;end.</p>
-              </div>
-            </article>
+              <article class="twh-ab-why-card twh-fade twh-d1" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">Architecture before implementation</h3>
+                  <p class="twh-ab-why-desc">The decisions that matter are made before configuration begins.</p>
+                </div>
+              </article>
 
-            <article class="twh-ab-why-card twh-fade twh-d4" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">Rescue and recovery capability</h4>
-                <p class="twh-ab-why-desc">We work confidently inside existing environments carrying technical debt, poor adoption, or a&nbsp;stalled&nbsp;implementation.</p>
-              </div>
-            </article>
+              <article class="twh-ab-why-card twh-fade twh-d2" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">The right build, not a template</h3>
+                  <p class="twh-ab-why-desc">We reuse proven patterns where they fit and design specifically where they don't.</p>
+                </div>
+              </article>
 
-            <article class="twh-ab-why-card twh-fade twh-d1" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">Business and technology together</h4>
-                <p class="twh-ab-why-desc">Process, data, technology, automation, integration and AI as one engagement, not six projects.</p>
-              </div>
-            </article>
+              <article class="twh-ab-why-card twh-fade twh-d3" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">Salesforce + HubSpot + AI + Integration under one roof</h3>
+                  <p class="twh-ab-why-desc">As a Salesforce Partner, HubSpot Partner and AI implementation partner, one team owns the architecture end&nbsp;to&nbsp;end.</p>
+                </div>
+              </article>
 
-            <article class="twh-ab-why-card twh-fade twh-d2" role="listitem">
-              <span class="twh-ab-why-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
-              </span>
-              <div>
-                <h4 class="twh-ab-why-title">Built for the long term</h4>
-                <p class="twh-ab-why-desc">Systems that can be governed, maintained and extended after&nbsp;go-live.</p>
-              </div>
-            </article>
+              <article class="twh-ab-why-card twh-fade twh-d4" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">Rescue and recovery capability</h3>
+                  <p class="twh-ab-why-desc">We work confidently inside existing environments carrying technical debt, poor adoption, or a&nbsp;stalled&nbsp;implementation.</p>
+                </div>
+              </article>
 
-          </div>
-        </section>
+              <article class="twh-ab-why-card twh-fade twh-d1" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">Business and technology together</h3>
+                  <p class="twh-ab-why-desc">Process, data, technology, automation, integration and AI as one engagement, not six projects.</p>
+                </div>
+              </article>
 
-        <!-- CTA -->
-        <div class="twh-ab-cta-wrap twh-fade">
+              <article class="twh-ab-why-card twh-fade twh-d2" role="listitem">
+                <span class="twh-ab-why-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7"/></svg>
+                </span>
+                <div>
+                  <h3 class="twh-ab-why-title">Built for the long term</h3>
+                  <p class="twh-ab-why-desc">Systems that can be governed, maintained and extended after&nbsp;go-live.</p>
+                </div>
+              </article>
+
+            </div>
+        
+
+    <!-- CTA -->
+    <div class="twh-ab-cta-wrap twh-fade">
           <a
             href="https://twopirconsulting.com/#book-a-discovery-call"
             class="twh-ab-btn"
@@ -4472,7 +4630,7 @@ article:has(#twopir-home) {
         <span class="twh-rule-line twh-rule-line--sm"></span>
       </div>
       <p class="twh-eco-primary">
-        Salesforce Partner <span class="twh-eco-sep" aria-hidden="true">·</span> HubSpot Partner <span class="twh-eco-sep" aria-hidden="true">·</span> AI Implementation Partner
+        Salesforce Partner <span class="twh-eco-sep" aria-hidden="true">·</span> HubSpot Partner
       </p>
 
       <p class="twh-eco-support">
@@ -4480,7 +4638,7 @@ article:has(#twopir-home) {
       </p>
 
       <p class="twh-eco-sub">
-        <strong>Our primary partnerships sit across Salesforce, HubSpot and AI.</strong> Around them we maintain certified partnerships spanning the wider ecosystem — CPQ and quoting, data quality and enrichment, scheduling and routing, integration and automation platforms, document and contract systems, and industry-specific applications.
+        <strong>Our primary partnerships sit across Salesforce and HubSpot.</strong> Around them we maintain certified partnerships spanning the wider ecosystem — CPQ and quoting, data quality and enrichment, scheduling and routing, integration and automation platforms, document and contract systems, and industry-specific applications.
       </p>
 
       <div class="twh-eco-callout">
@@ -4494,30 +4652,34 @@ article:has(#twopir-home) {
       <div class="twh-eco-track">
 
         <!-- First set -->
-          <img class="twh-eco-logo--sf" src="https://nucleusanalytics.com/wp-content/uploads/2019/12/salesforce-partner-logo.png" alt="Salesforce Partner" loading="lazy" decoding="async">
+          <img class="twh-eco-logo--sf" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/salesforce-partner-logo.png" alt="Salesforce Partner" loading="lazy" decoding="async">
           <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/HubSpot%20Partner.png" alt="HubSpot Partner" loading="lazy" decoding="async">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Nintex_logo.svg" alt="Nintex" loading="lazy" decoding="async">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/ActiveCampaign_logo.svg" alt="ActiveCampaign" loading="lazy" decoding="async">
-          <img src="https://twopirconsulting.com/wp-content/uploads/2021/03/Formstack.png" alt="Formstack" loading="lazy" decoding="async">
-          <img src="https://twopirconsulting.com/wp-content/uploads/2020/11/Cirrus-Insight.png" alt="Cirrus Insight" loading="lazy" decoding="async">
-          <img src="https://twopirconsulting.com/wp-content/uploads/2021/05/Sms-Magic-Image.png" alt="SMS Magic" loading="lazy" decoding="async">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/PandaDoc_Logo_PNG.png" alt="PandaDoc" loading="lazy" decoding="async">
-          <img src="https://www.sdriveapp.com/wp-content/uploads/2022/04/sDriveLogo.webp" alt="sDrive" loading="lazy" decoding="async">
-          <img src="https://czsfjrcdignecnemjvfh.supabase.co/storage/v1/object/public/revamp-growth/Homepage/partnership%20logo/congo.webp" alt="Conga" loading="lazy" decoding="async">
-          <img src="https://czsfjrcdignecnemjvfh.supabase.co/storage/v1/object/public/revamp-growth/Homepage/partnership%20logo/Group.webp" alt="Data Cloud Partner" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Celigo.png" alt="Celigo" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Conga_.png" alt="Conga" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Nintex.png" alt="Nintex" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/PandaDoc.png" alt="Pandadoc" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Formstack.png" alt="Formstack" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Intellistack.png" alt="Intellistack" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/FormAssembly.png" alt="FormAssembly" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Chili%20Piper.png" alt="Chili Piper" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sms-Magic.png" alt="Sms-Magic" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Breadwinner-1.png" alt="Breadwinner" loading="lazy" decoding="async">
+          <img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Zapier.png" alt="Zapier" loading="lazy" decoding="async">
 
         <!-- Duplicate for seamless scroll -->
-          <img aria-hidden="true" class="twh-eco-logo--sf" src="https://nucleusanalytics.com/wp-content/uploads/2019/12/salesforce-partner-logo.png" alt="Salesforce Partner" loading="lazy" decoding="async">
+          <img aria-hidden="true" class="twh-eco-logo--sf" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/salesforce-partner-logo.png" alt="Salesforce Partner" loading="lazy" decoding="async">
           <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/HubSpot%20Partner.png" alt="HubSpot Partner" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Nintex_logo.svg" alt="Nintex" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://upload.wikimedia.org/wikipedia/commons/0/01/ActiveCampaign_logo.svg" alt="ActiveCampaign" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://twopirconsulting.com/wp-content/uploads/2021/03/Formstack.png" alt="Formstack" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://twopirconsulting.com/wp-content/uploads/2020/11/Cirrus-Insight.png" alt="Cirrus Insight" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://twopirconsulting.com/wp-content/uploads/2021/05/Sms-Magic-Image.png" alt="SMS Magic" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://upload.wikimedia.org/wikipedia/commons/8/83/PandaDoc_Logo_PNG.png" alt="PandaDoc" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://www.sdriveapp.com/wp-content/uploads/2022/04/sDriveLogo.webp" alt="sDrive" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://czsfjrcdignecnemjvfh.supabase.co/storage/v1/object/public/revamp-growth/Homepage/partnership%20logo/congo.webp" alt="Conga" loading="lazy" decoding="async">
-          <img aria-hidden="true" src="https://czsfjrcdignecnemjvfh.supabase.co/storage/v1/object/public/revamp-growth/Homepage/partnership%20logo/Group.webp" alt="Data Cloud Partner" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Celigo.png" alt="Celigo" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Conga_.png" alt="Conga" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Nintex.png" alt="Nintex" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/PandaDoc.png" alt="Pandadoc" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Formstack.png" alt="Formstack" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Intellistack.png" alt="Intellistack" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/FormAssembly.png" alt="FormAssembly" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Chili%20Piper.png" alt="Chili Piper" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sms-Magic.png" alt="Sms-Magic" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Breadwinner-1.png" alt="Breadwinner" loading="lazy" decoding="async">
+          <img aria-hidden="true" src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Zapier.png" alt="Zapier" loading="lazy" decoding="async">
 
       </div>
     </div>
@@ -5067,7 +5229,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://storage.pardot.com/1122773/1775742782bfab2i5W/Sotheby_s_logo.png" alt="Sotheby's" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Marcel Francis</h4><p>Director, CX</p></div>
+              <div class="twh-rv-client"><h3>Marcel Francis</h3><p>Director, CX</p></div>
             </div>
           </div>
         </article>
@@ -5092,7 +5254,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Ultra%20Consultant.png" alt="Ultra's" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Kelly Hale</h4><p>Managing Director</p></div>
+              <div class="twh-rv-client"><h3>Kelly Hale</h3><p>Managing Director</p></div>
             </div>
           </div>
         </article>
@@ -5117,7 +5279,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Mitratech-logo-lightblue.webp" alt="Mitratech" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Holly Huynh</h4><p>V.P. of Marketing</p></div>
+              <div class="twh-rv-client"><h3>Holly Huynh</h3><p>V.P. of Marketing</p></div>
             </div>
           </div>
         </article>
@@ -5142,7 +5304,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/logo-kacific.png" alt="Kacific" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Paula Nicka Gonzales</h4><p>Sales Operations Specialist</p></div>
+              <div class="twh-rv-client"><h3>Paula Nicka Gonzales</h3><p>Sales Operations Specialist</p></div>
             </div>
           </div>
         </article>
@@ -5167,7 +5329,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://storage.pardot.com/1122773/1775733338ZIt8gWYz/CitroTech_Logo.png" alt="CitroTech" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Andrew Hotsko</h4><p>C.O.O.</p></div>
+              <div class="twh-rv-client"><h3>Andrew Hotsko</h3><p>C.O.O.</p></div>
             </div>
           </div>
         </article>
@@ -5192,7 +5354,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/logo.png" alt="Client" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>John Ogilvie</h4><p>Business Development Manager</p></div>
+              <div class="twh-rv-client"><h3>John Ogilvie</h3><p>Business Development Manager</p></div>
             </div>
           </div>
         </article>
@@ -5217,7 +5379,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/zarraffas-site-logo.webp" alt="Client" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Andrew Stewart</h4><p>Consultant</p></div>
+              <div class="twh-rv-client"><h3>Andrew Stewart</h3><p>Consultant</p></div>
             </div>
           </div>
         </article>
@@ -5242,7 +5404,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/spinify-logo-alt.svg" alt="Client" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Matt Bullock</h4><p>C.E.O.</p></div>
+              <div class="twh-rv-client"><h3>Matt Bullock</h3><p>C.E.O.</p></div>
             </div>
           </div>
         </article>
@@ -5267,7 +5429,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Amberscript_logo.svg" alt="Client A" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Jeroen Niessen</h4><p>Head of Sales</p></div>
+              <div class="twh-rv-client"><h3>Jeroen Niessen</h3><p>Head of Sales</p></div>
             </div>
           </div>
         </article>
@@ -5292,7 +5454,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/RChilli_Brand_Logo.webp" alt="Client R" width="80" height="36" loading="lazy" decoding="async"></div>
-              <div class="twh-rv-client"><h4>Arijeet Das</h4><p>Sr. Manager</p></div>
+              <div class="twh-rv-client"><h3>Arijeet Das</h3><p>Sr. Manager</p></div>
             </div>
           </div>
         </article>
@@ -5317,7 +5479,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box">RJ</div>
-              <div class="twh-rv-client"><h4>Rubesh J.</h4><p>Consultant</p></div>
+              <div class="twh-rv-client"><h3>Rubesh J.</h3><p>Consultant</p></div>
             </div>
           </div>
         </article>
@@ -5342,7 +5504,7 @@ article:has(#twopir-home) {
             </div>
             <div class="twh-rv-footer-right">
               <div class="twh-rv-logo-box">MB</div>
-              <div class="twh-rv-client"><h4>Mathias Bensimon</h4><p>Director</p></div>
+              <div class="twh-rv-client"><h3>Mathias Bensimon</h3><p>Director</p></div>
             </div>
           </div>
         </article>
@@ -5512,6 +5674,12 @@ article:has(#twopir-home) {
       </div>
       <p class="twh-ss-intro">From small businesses to large enterprises, clients worldwide trust Twopir Consulting to <strong>optimize their CRM ecosystem and scale GTM execution</strong>. Read their stories below.</p>
     </div>
+  </div>
+
+  <!-- Full-width carousel band. Deliberately a SIBLING of .twh-wrap, not a
+       child of it — the wrap caps at 1180px, and the Client Reviews band
+       escapes it the same way. Only the heading above stays inside the wrap. -->
+  <div class="twh-ss-band">
 
     <div class="twh-ss-viewport twh-fade twh-d1">
       <div class="twh-ss-track" id="twh-ss-track">
@@ -5818,43 +5986,10 @@ article:has(#twopir-home) {
      values below. Update both together, and remember the
      Organization JSON-LD further down does NOT read this object.
      ============================================================ -->
-<script>
-window.TWOPIR_STATS = {
-  years:         "12+",
-  clients:       "500+",
-  teamSize:      "40+",
-  partnerships:  "15+",
-  countries:     "Serving: US | Canada | UK | UAE | Australia | New Zealand",
-  salesforce:    "Salesforce Partner",
-  hubspot:       "HubSpot Partner",
-  ai:            "AI Delivery"
-};
-(function () {
-  var map = {
-    'twopir-years':        'years',
-    'twopir-clients':      'clients',
-    'twopir-team':         'teamSize',
-    'twopir-partnerships': 'partnerships',
-    'twopir-countries':    'countries',
-    'twopir-salesforce':   'salesforce',
-    'twopir-hubspot':      'hubspot',
-    'twopir-ai':           'ai'
-  };
-  function apply() {
-    for (var cls in map) {
-      var val = window.TWOPIR_STATS[map[cls]];
-      if (val === undefined) continue;
-      var nodes = document.getElementsByClassName(cls);
-      for (var i = 0; i < nodes.length; i++) { nodes[i].textContent = val; }
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', apply);
-  } else {
-    apply();
-  }
-})();
-</script>
+<!-- The TWOPIR_STATS object and the class-swap script load site-wide from the
+     server, so this page carries neither. Every .twopir-* element still holds
+     its literal value in the markup, so the numbers render correctly — and
+     stay crawler-visible — even if that script never runs. -->
 
 <script>
 (function () {
@@ -6303,6 +6438,10 @@ window.TWOPIR_STATS = {
     });
     var current = 0;
     var lastFocus = null;
+    /* Remember the inline body overflow we found, so closing the lightbox
+       restores it instead of blanking whatever the theme had set. A mobile
+       menu or cookie banner can own this property too. */
+    var prevBodyOverflow = '';
     var hideTimer = null;
 
     function render() {
@@ -6319,12 +6458,13 @@ window.TWOPIR_STATS = {
       overlay.removeAttribute('hidden');
       // next frame, so the opacity transition has a starting state
       requestAnimationFrame(function () { overlay.classList.add('is-open'); });
+      prevBodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       closeBtn.focus();
     }
     function closeLb() {
       overlay.classList.remove('is-open');
-      document.body.style.overflow = '';
+      document.body.style.overflow = prevBodyOverflow;
       hideTimer = setTimeout(function () { overlay.setAttribute('hidden', ''); hideTimer = null; }, 260);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
@@ -6628,7 +6768,7 @@ window.TWOPIR_STATS = {
   background-image: none !important;
 }
 #twopir-home .twh-faq-btn:focus-visible {
-  outline: 2px solid var(--twh-accent) !important;
+  outline: 2px solid var(--twh-accent, #00aff6) !important;
   outline-offset: -3px;
 }
 #twopir-home .twh-faq-btn-icon {
@@ -6637,4 +6777,273 @@ window.TWOPIR_STATS = {
   line-height: 0 !important;
 }
 #twopir-home .twh-faq-btn-icon svg { font-size: initial; }
+
+/* ════════════════════════════════════════════════════════════
+   102 · Page-wide dynamic scale
+   The hero now shrinks against viewport HEIGHT so it always fits
+   one screen. Without a matching adjustment, every section below
+   it looked oversized on shorter laptop screens. These rules give
+   the rest of the page the same height/width aware scale so the
+   whole document reads at one consistent size on any display.
+   Scale is applied per-section (the hero and the review lightbox
+   are deliberately excluded).
+   ════════════════════════════════════════════════════════════ */
+#twopir-home {
+  --twh-scale-h: 1;
+  --twh-scale-w: 1;
+}
+@media (min-width: 901px) {
+  #twopir-home > section.twh-section {
+    zoom: min(var(--twh-scale-h, 1), var(--twh-scale-w, 1));
+  }
+}
+
+/* height steps — mirrors the hero's vh tightening */
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-home { --twh-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height: 940px)  { #twopir-home { --twh-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height: 880px)  { #twopir-home { --twh-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height: 820px)  { #twopir-home { --twh-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height: 760px)  { #twopir-home { --twh-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height: 700px)  { #twopir-home { --twh-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height: 640px)  { #twopir-home { --twh-scale-h: 0.85; } }
+
+/* width steps — keeps narrow laptops from feeling text-heavy */
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-home { --twh-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-home { --twh-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-home { --twh-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-home { --twh-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-home { --twh-scale-w: 0.88; } }
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   101 · MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   Sections are scaled by the zoom ladder (0.79–1.0), so the
+   declared size is not what the reader gets: at 0.88 — a
+   1366-wide laptop, the most common desktop width — an 11px
+   label renders at 9.7px and a 9px one at 7.9px.
+
+   Every role below was still landing under ~11px effective
+   after the token scale was raised, because each carried its
+   own literal size from an earlier pass. They are collected
+   here so the small end of the page uses ONE size per tier
+   instead of drifting between 8, 9, 10, 11 and 12px.
+
+   Tier values are set against that 0.88 worst case:
+     12.5px -> 11.0px   micro labels
+     13.5px -> 11.9px   secondary meta
+     14px   -> 12.3px   supporting copy
+   The hero is never zoomed, so its tiers sit one step lower
+   and still read at the same physical size.                */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-home .twh-ind-live,
+#twopir-home .twh-ind-stat-label,
+#twopir-home .twh-ind-block-label,
+#twopir-home .twh-ind-arrow,
+#twopir-home .twh-rv-check,
+#twopir-home .twh-rv-badge,
+#twopir-home .twh-rv-outcome-label,
+#twopir-home .twh-ss-outcome-label,
+#twopir-home .twh-lb-hint {
+  font-size: 13px !important;
+}
+
+/* secondary meta and supporting copy */
+#twopir-home .twh-ind-tab-title    { font-size: var(--twh-fs-sm, 14px) !important; }
+#twopir-home .twh-ind-feature-desc { font-size: var(--twh-fs-sm, 14px) !important; }
+
+/* The industry sidebar is the one space-constrained list on the page —
+   ten items, each subtitle wrapping to two lines. It gets a smaller
+   step than the rest so the column does not grow disproportionately;
+   11px is still a 22% lift on the 9px it was set at. */
+#twopir-home .twh-ind-tab-sub      { font-size: var(--twh-fs-xs, 13px) !important; }
+/* the height that buys back — the tabs were padded for 9px text */
+#twopir-home .twh-ind-tab          { padding: 8px 12px !important; }
+
+/* Hero — outside the zoom ladder, so declared == rendered */
+#twopir-hero .twpr-canvas-label,
+#twopir-hero .twpr-tag,
+#twopir-hero .twpr-layer-h,
+#twopir-hero .twpr-float-k {
+  font-size: var(--twh-fs-micro, 12px) !important;
+}
+#twopir-hero .twpr-chip,
+#twopir-hero .twpr-float-v {
+  font-size: var(--twh-fs-xs, 13px) !important;
+}
+
+/* ── Small screens ────────────────────────────────────────────
+   Below 680px the industry list becomes a horizontal chip strip
+   whose chips were sized around 10px text, and two card fields
+   are line-clamped. Raising the type without giving those three
+   components more room truncated them, so the room is granted
+   here rather than reverting the size. Mobile sits outside the
+   zoom ladder, so these values are what actually renders.      */
+@media (max-width: 680px) {
+  #twopir-home .twh-ind-tab {
+    min-width: 92px !important;
+    max-width: 110px !important;
+    height: auto !important;
+    padding: 8px 8px !important;
+  }
+  #twopir-home .twh-ind-tab-title {
+    font-size: var(--twh-fs-xs, 13px) !important;
+    -webkit-line-clamp: 3 !important;
+  }
+  #twopir-home .twh-ind-tab-sub { font-size: var(--twh-fs-micro, 12px) !important; }
+}
+@media (max-width: 900px) {
+  /* Below 900px the case-study card is narrow enough that the outcome
+     sentence needs a fourth line at the new size. The panel holding it is
+     pinned to an exact 105px — sized when this text was 13px on three
+     lines — so it has to grow with it. */
+  #twopir-home .twh-ss-outcome-text { -webkit-line-clamp: 4 !important; }
+  #twopir-home .twh-ss-outcome {
+    min-height: 128px !important;
+    max-height: 128px !important;
+  }
+}
+
+/* ── Card proportion ──────────────────────────────────────────
+   Three fixes that are about ratio rather than absolute size.
+
+   1 · The four "How We Work" cards ran to 603px on a 252px card.
+       Body line-height comes down with the geometry above so the
+       column reads as a block, not a ribbon.
+   2 · In the industry list the subtitle is JetBrains Mono, which
+       is far wider per character than the Inter title above it —
+       at 13px against 14px it was reading as the LARGER of the
+       two. The title takes the step up instead, and the mono
+       loses most of its tracking so it stops sprawling.
+   3 · "Salesforce + HubSpot + AI + Integration under one roof"
+       wrapped to three title lines and five body lines, setting
+       the height for its whole row.                            */
+#twopir-home .twh-ab-card-body { line-height: 1.55 !important; }
+#twopir-home .twh-ab-card-title { font-size: var(--twh-fs-h4, clamp(17px, 1.4vw, 19px)) !important; }
+
+/* The sidebar is NAVIGATION, not content. Raising it to 16px put a nav
+   label level with the page's 16.5px body copy and just under the 23px
+   panel headline beside it, so the left column read as louder than the
+   thing it indexes. A nav label belongs a clear step below body size.
+
+   This is the one place the 13px minimum is deliberately not applied: ten
+   stacked items, each with a second metadata line, is exactly the density
+   where a blanket floor does more harm than the extra pixel does good. */
+#twopir-home .twh-ind-tab-title { font-size: var(--twh-fs-sm, 14px) !important; }
+#twopir-home .twh-ind-tab-sub   { font-size: var(--twh-fs-xs, 13px) !important; letter-spacing: 0.01em !important; }
+
+#twopir-home .twh-ab-why-title {
+  font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-home .twh-ab-why-desc { font-size: var(--twh-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.55 !important; }
+
+/* Sizes for the 680-900px band. They have to sit after the block above,
+   which sets them unconditionally, or the narrow vertical sidebar keeps
+   the full desktop sizes and the subtitle truncates harder than it needs
+   to. Zoom starts at 901px, so these render at face value. */
+@media (min-width: 681px) and (max-width: 900px) {
+  #twopir-home .twh-ind-tab-title { font-size: var(--twh-fs-sm, 14px) !important; }
+  #twopir-home .twh-ind-tab-sub   { font-size: var(--twh-fs-xs, 13px) !important; }
+}
+
+/* ── Stats strip ──────────────────────────────────────────────
+   The label carried 0.08em of tracking against a 20ch measure,
+   which pushed the longest of the four onto a FOURTH line and
+   that line set the height of the whole panel. Tighter tracking
+   and no artificial measure cap put every label on two.       */
+#twopir-home .twh-stat-number {
+  font-size: clamp(26px, 2.4vw, 32px) !important;
+  line-height: 1.05 !important;
+}
+#twopir-home .twh-stat-label {
+  font-size: var(--twh-fs-xs, 13px) !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.4 !important;
+  max-width: none !important;
+  color: rgba(255,255,255,0.82) !important;
+}
+
+/* ── Keyboard focus parity ────────────────────────────────────
+   Every other control on the page carries a :focus-visible ring;
+   the three lightbox controls were the only ones without one, so
+   a keyboard user opening a case study had no visible position. */
+#twopir-home .twh-lb-prev:focus-visible,
+#twopir-home .twh-lb-next:focus-visible,
+#twopir-home .twh-lb-exit:focus-visible {
+  outline: 2px solid var(--twh-accent, #00aff6);
+  outline-offset: 3px;
+}
+
+
+/* ── Review card: the outcome panel is a fixed slot too ───────
+   Below 900px the card narrows enough that two thirds of the
+   outcome lines wrap to a second line and a third do not, so the
+   KEY OUTCOME block came out 66px on some cards and 85px on
+   others. The footer above is already locked; this is the same
+   fix one level up. Desktop needs no rule — the outcome is
+   already one height there at every width. */
+@media (max-width: 1023px) {
+  #twopir-home .twh-rv-outcome { min-height: 85px; }
+}
+
+/* Just above the mobile breakpoint the review card is at its narrowest on
+   desktop (~410px), and the longest job titles wrap to a second line on four
+   of the twenty-four cards while the rest stay on one — the same uneven
+   footer, in a narrow band. Rather than pin a height that the zoom ladder
+   would then scale out from under, this band gets the stacked footer that
+   mobile already uses: the right-hand block takes the full width, every role
+   fits on one line, and all cards match by construction. */
+@media (min-width: 901px) and (max-width: 1023px) {
+  #twopir-home .twh-rv-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase and wide tracking
+   compounds it, so a 13px caps label at 0.10em reads heavier than
+   13px of body copy. This one sits under a 24px figure and was
+   competing with it.
+
+   The stats strip is the reference: same 13px, tracked at 0.03em,
+   and it reads as the quiet caption it should be. The single-line
+   labels elsewhere (KEY OUTCOME, STACK DEPLOYED) are fine as they
+   are — they never wrap, so the tracking costs nothing. */
+#twopir-home .twh-ind-stat-label {
+  font-size: var(--twh-fs-xs, 13px) !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   every <button> in this block. On the Legal page that put 2px of
+   tracking on the FAQ question and made the section read as
+   oversized. Declared here so the theme cannot decide it. */
+#twopir-home .twh-faq-btn { letter-spacing: 0.01em !important; }
+#twopir-home .twh-ind-tab { letter-spacing: normal !important; }
+#twopir-home .twh-lb-arrow,
+#twopir-home .twh-lb-exit { letter-spacing: normal !important; }
+</style>
+
+<style>
+/* ── Industry panel: clip sideways only ───────────────────────
+   .twh-ind-panel-wrap is in the `overflow: clip` list added for the
+   iOS scroll-latching fix — that fix is about the HORIZONTAL axis,
+   the rails wider than their box. Clipping both axes also cut the
+   bottom of the panel, and the larger type in this pass pushed nine
+   of the ten industry panels 10px past the box, so each one lost the
+   foot of its CTA row.
+
+   Clipping x only keeps the iOS behaviour and lets the panel be as
+   tall as its content. Verified: all ten panels fully visible. */
+#twopir-home .twh-ind-panel-wrap {
+  overflow: visible !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}
 </style>

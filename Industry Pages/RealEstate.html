@@ -1,0 +1,4205 @@
+<!-- ============================================================
+     SEO / AEO — SALESFORCE FOR NONPROFITS
+     This file is a WordPress Custom HTML block, so it has no HEAD section of its own.
+     Meta title, description and canonical cannot work from inside a
+     body fragment — paste these into the SEO plugin (Yoast / Rank
+     Math) on the page that hosts this block. The JSON-LD at the
+     bottom of this file is real markup and works as-is.
+
+       Title tag  (55 chars)
+         Salesforce for Nonprofits | Twopir Consulting
+
+       Meta description  (157 chars)
+         Salesforce for nonprofits from Twopir Consulting: donor CRM,
+         fundraising operations, grant and program management and board
+         reporting on one Nonprofit Cloud architecture.
+
+       Slug       /salesforce-for-nonprofits/
+       Canonical  https://twopirconsulting.com/salesforce-for-nonprofits/
+                  ^ PLACEHOLDER — confirm the final permalink before
+                    publishing, and keep http/https + trailing slash
+                    consistent with the rest of the site.
+
+       Primary keyword    Salesforce for nonprofits
+       Secondary keywords Salesforce Nonprofit Cloud implementation,
+                          NPSP to Nonprofit Cloud migration, donor CRM
+                          for nonprofits, Raisely Salesforce integration,
+                          nonprofit grant management Salesforce
+
+       Which query this page wins that no existing page wins:
+         "Salesforce for nonprofits" and its donor-CRM, grant-management
+         and NPSP-migration long tail.
+
+       Sitemap    add this URL to sitemap.xml and submit in Google
+                  Search Console + Bing Webmaster Tools.
+     ============================================================ -->
+
+<!-- ============================================================
+     TWOPIR CONSULTING — SALESFORCE FOR NONPROFITS (Industry Page)
+     WordPress-ready snippet. Paste into a Custom HTML block.
+
+     DESIGN SYSTEM — inherited from the homepage sections
+     (Hero.html, About Us.html, Our Services.html, Industry We
+     Serve.html, FAQ.html, OUR ECOSYSTEM.html):
+
+       Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
+                 #00aff6 accent · #007ec6 accent-dark
+                 rgba(0,175,246,0.28) border · #1a2a35 ink
+                 #566b79 muted · #1e2447/#12183a/#1a2e4a navy
+                 #35d39a green
+       Type      Bricolage Grotesque (display) · Inter (body)
+                 JetBrains Mono (eyebrows / labels)
+       Radius    22px large · 18px card · 14px small · 100px pill
+       Shadow    0 2px 16px rgba(0,130,200,.10), 0 1px 4px rgba(0,130,200,.08)
+                 hover: 0 8px 32px rgba(0,130,200,.18), 0 2px 8px rgba(0,130,200,.12)
+                 dark panels: 0 8px 40px rgba(18,24,58,.20)
+       Pattern   mono eyebrow → Bricolage title → line/diamond/line
+                 rule → Inter 300 description → content grid
+
+     SCOPING
+       Every selector is prefixed with #twopir-realestate, and every
+       class uses the .tre- prefix. Keyframes use the tre prefix
+       too. Nothing here can leak into other WordPress pages or
+       into the homepage sections. All sizes are px / clamp() —
+       never rem — so the page is immune to whatever root
+       font-size the active theme sets.
+
+     SCROLL PERFORMANCE (2024-08 patch)
+       - `html { scroll-behavior: auto }` guards against a theme
+         applying global smooth-scrolling that fights the many
+         continuous CSS animations below.
+       - `content-visibility: auto` is applied to page sections
+         (skipping the one section that holds a `position: sticky`
+         element, since layout containment can interfere with
+         sticky) so the browser skips layout/paint work for
+         sections currently off-screen. This is the single biggest
+         lever for scroll jank on long, animation-heavy pages.
+     ============================================================ -->
+
+<!-- ============================================================
+     USING THIS FILE AS THE INDUSTRY-PAGE TEMPLATE
+     ============================================================
+     This page is the reference build for every other industry page
+     (Healthcare, Real Estate, Fintech, …). To spin up a new one,
+     five things change and nothing else needs to:
+
+     1 · IDENTIFIERS   find-and-replace two strings, in this order:
+                         #twopir-realestate   →  #twopir-<industry>
+                         tre-            →  t<xx>-        (3-4 chars)
+                       The keyframe names (trePulse, treLive, treFlow,
+                       treSpin, treMarquee) carry the same prefix and
+                       are caught by the second replace. Renaming both
+                       is what keeps two industry pages from colliding
+                       if they ever render on the same URL.
+
+     2 · CONTENT       headings, copy, cards, stats, testimonials, FAQ.
+                       Section structure stays; only the words change.
+
+     3 · HERO DIAGRAM  the SVG is a three-layer model —
+                         systems of record → Twopir layer → outcomes.
+                       Swap the node labels for the industry's own
+                       systems and vocabulary. Keep the 560×548 viewBox
+                       and the layer geometry; only the text changes.
+
+     4 · SCHEMA        the three JSON-LD blocks at the bottom: breadcrumb
+                       names, Service name/description, FAQ pairs. The
+                       FAQ block must stay word-for-word identical to the
+                       visible accordion.
+
+     5 · SEO VALUES    the plugin block directly below this comment.
+
+     ── WHAT MUST NOT CHANGE ─────────────────────────────────────
+     · The type scale and the colour tokens. They come from the
+       homepage and they are what makes the pages read as one site.
+     · The single token rule. Every custom property is declared in ONE
+       `#twopir-<industry> { }` block, and every var() carries a literal
+       fallback. Autoptimize merges duplicate selectors and will silently
+       drop a second token block — that is what broke the type scale on
+       the first live deploy.
+     · px / clamp() sizing only, never rem. The live theme sets
+       `html { font-size: 10px }`, so rem values would rescale.
+     · `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns
+       the wrapper into a scroll container and breaks the sticky callout.
+
+     ── HOW IT HANDLES MORE OR LESS CONTENT ──────────────────────
+     The hero is min-height, flex, vertically centred. A page with a
+     short headline and two stats centres in the first screen and reads
+     as composed; a page with a long lede grows past it and scrolls.
+     Nothing is clipped and no font size needs touching either way.
+     The stats row is a wrapping flex list, so three, four or five
+     entries all lay out cleanly.
+
+     PASTE INTO A CUSTOM HTML BLOCK, never the visual editor — the
+     visual editor injects paragraph and line-break tags inside the
+     style element, which breaks the CSS outright.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Scroll performance fix ─────────────────────────────────
+   Forces native (non-smooth) scrolling so this page never fights
+   a theme-level `scroll-behavior: smooth` while heavy decorative
+   animations are running elsewhere on the page. Scoped globally
+   because scroll-behavior only has effect on the actual scrolling
+   element (html/body), which sits outside #twopir-realestate. */
+html { scroll-behavior: auto !important; }
+
+/* ── Tokens (scoped) ───────────────────────────────────────── */
+#twopir-realestate {
+  --tre-bg:          #dff1fa;
+  --tre-bg-alt:      #e8f5fd;
+  --tre-bg-top:      #ecf8fd;
+  --tre-card:        #eef8fd;
+  --tre-surface:     #ffffff;
+
+  --tre-accent:      #00aff6;   /* fills, borders, icons, dots, large display type */
+  --tre-accent-dk:   #007ec6;   /* gradients and hover states */
+  /* Text-safe brand blue. The accent itself measures 2.14 against the page
+     background, 2.23 on the alt, 2.30 on a card and 2.48 on white — all far
+     under the 4.5 minimum — and every role that used it as a text colour on
+     those grounds runs 11–16px. This is the same hue darkened until it clears
+     5.1 everywhere (5.14 / 5.37 / 5.53 / 5.96), so eyebrows and labels still
+     read as brand blue but are actually legible. For TEXT on light grounds
+     only: icons, borders, fills, the large gradient display type and anything
+     sitting on a navy panel all keep --tre-accent. */
+  --tre-accent-ink:  #00699f;
+  --tre-border:      rgba(0,175,246,0.28);
+  --tre-border-soft: rgba(0,175,246,0.22);
+
+  --tre-text:        #1a2a35;
+  /* nudged from #5a7080, which measured 4.45 against the page background —
+     a hair under the 4.5 minimum for body copy. This clears it on every
+     surface (4.79 / 5.01 / 5.16 / 5.56) and the shift is imperceptible
+     side by side. */
+  --tre-muted:       #566b79;
+
+  --tre-navy:        #1e2447;
+  --tre-navy-deep:   #12183a;
+  --tre-navy-soft:   #1a2e4a;
+  --tre-green:       #35d39a;
+  /* the homepage's only warm hue. Used here as the semantic left-border on
+     the "where firms stall" cards; #f0a53c was off-palette. */
+  --tre-star:        #e0961f;
+
+  --tre-ff-display:  'Bricolage Grotesque', sans-serif;
+  --tre-ff-body:     'Inter', sans-serif;
+  --tre-ff-mono:     'JetBrains Mono', monospace;
+
+  --tre-radius-lg:   22px;
+  --tre-radius-card: 18px;
+  --tre-radius-md:   14px;
+
+  --tre-shadow:      0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08);
+  --tre-shadow-hv:   0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12);
+  --tre-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
+
+  --tre-ease:        0.28s cubic-bezier(.4,0,.2,1);
+  --tre-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
+
+  /* Fluid terms for the hero. Declared on the wrapper, not inside the rules
+     that use them, because the publish pipeline mangles a rule whose
+     font-size it is rewriting — it dropped these twice when they lived
+     there. Wrapper custom properties come through intact. */
+  --tre-h1-fluid:    min(3.2vw, 5.45vh);
+  --tre-sub-fluid:   min(1.2vw, 2.35vh);
+  --tre-pad-x:       clamp(16px, 4vw, 48px);
+
+  /* TEMPLATE KNOB — height of the site header sitting above this block in
+     normal flow (measured 87px on the live theme). The only value in this
+     file tied to the surrounding site; it lets the hero be exactly "one
+     screen minus the header". Re-measure if the header ever changes. */
+  --tre-nav:         87px;
+
+  /* ── Type scale ──────────────────────────────────────────────
+     These live in the SAME rule as the colour tokens on purpose.
+     They used to sit in a second, standalone `#twopir-realestate { }`
+     block further down the sheet, and Autoptimize's CSS minifier
+     merges duplicate selectors — on the live site it merged the
+     three #twopir-realestate rules and silently dropped this one. The
+     result: 62 surviving `var(--tre-fs-*)` references with zero
+     declarations behind them. An unresolvable var() is invalid at
+     computed-value time, and for font-size that means INHERIT, so
+     the H1 fell back to the wrapper's 16px while every label and
+     button inherited 16px too — a small headline surrounded by
+     oversized body text. One token rule means there is nothing
+     left for the minifier to merge. Every var() below also carries
+     a literal fallback as a second line of defence. */
+  --tre-fs-display:     clamp(34px, 4.5vw, 56px);
+  --tre-fs-h2:          clamp(30px, 3.4vw, 44px);
+  --tre-fs-h3:          clamp(20px, 1.8vw, 24px);
+  --tre-fs-h4:          clamp(17px, 1.4vw, 19px);
+  --tre-fs-lede:        clamp(17px, 1.4vw, 19px);
+  --tre-fs-body:        clamp(15px, 1.1vw, 17px);
+  --tre-fs-sm:          14px;
+  --tre-fs-xs:          13px;
+  --tre-fs-label:       12px;
+  --tre-fs-micro:    12px;
+  --tre-fs-eyebrow:     clamp(13px, 1vw, 14px);
+  --tre-fs-stat-sm:     clamp(22px, 2vw, 26px);
+
+  position: relative;
+  width: 100%;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  /* The wrapper is the inheritance root for anything without an explicit
+     size of its own, so it takes the body step rather than a flat 16px.
+     The literal fallback matters most here: if this one failed to resolve
+     the block would inherit the theme's body size instead. */
+  font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px));
+  line-height: 1.65;
+  color: var(--tre-text, #1a2a35);
+  background: var(--tre-bg, #dff1fa);
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
+     other computes from visible to AUTO — so `overflow-x: hidden` silently
+     turned this wrapper into a scroll container around the whole page
+     (measured: overflow resolved to hidden / auto). That makes it the scroll
+     ancestor for `position: sticky`, which is why the sticky "How We Engage"
+     callout in the Why section would stop sticking above 960px, and it also
+     gives a trackpad gesture something to latch onto. `clip` clips exactly
+     the same way but creates no scroll container. The `hidden` line stays
+     first as the fallback for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
+  isolation: isolate;
+  /* FIX: this component previously relied only on JS (treFullBleed) to cancel
+     horizontal spacing from the theme/builder wrapper. It never touched
+     *vertical* spacing, so any top/bottom padding/margin the theme's content
+     wrapper added around the widget rendered as plain white gaps — first
+     above the hero, then (once that was fixed) below the CTA section.
+     margin-top/margin-bottom are pulled to 0 here too, and the matching
+     ancestor walk in the script (treKillAncestorSpacing) zeroes out top AND
+     bottom padding/margin on every parent between this element and the page
+     body element,
+     since the real offending wrapper class differs per theme/builder. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  /* Page-scaling ladder defaults. The @media rungs further down override
+     these; the 1 / 1 base belongs here so no second bare rule exists. */
+  --tre-scale-h: 1;
+  --tre-scale-w: 1;
+}
+
+/* ── Local reset (scoped — cannot touch the rest of the site) ─ */
+#twopir-realestate,
+#twopir-realestate *,
+#twopir-realestate *::before,
+#twopir-realestate *::after { box-sizing: border-box; }
+
+#twopir-realestate p,
+#twopir-realestate h1, #twopir-realestate h2, #twopir-realestate h3,
+#twopir-realestate ul, #twopir-realestate li,
+#twopir-realestate figure, #twopir-realestate blockquote { margin: 0; padding: 0; }
+#twopir-realestate li { list-style: none; }
+#twopir-realestate a  { text-decoration: none; }
+
+
+#twopir-realestate img { display: block; max-width: 100%; }
+#twopir-realestate button { font-family: inherit; }
+
+/* The wrapper's own styling is folded into the single token rule at the top
+   of this sheet: exactly ONE bare #twopir-realestate rule exists. */
+
+/* ── Elementor / builder wrapper reset ──
+   Page builders wrap the HTML widget in padded containers, which
+   would leave white bars between these full-bleed sections. This
+   only matches wrappers that actually contain #twopir-realestate. */
+section.elementor-section:has(#twopir-realestate),
+.elementor-column:has(#twopir-realestate),
+.elementor-widget-wrap:has(#twopir-realestate),
+.elementor-widget:has(#twopir-realestate),
+.elementor-container:has(#twopir-realestate),
+.wp-block-html:has(#twopir-realestate) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The theme wraps page content in `.page-inner { overflow: hidden }`, and on
+   the live site that box overflows horizontally by about 3px. A clipping box
+   with real overflow is still a scroll container, which makes it a latch
+   target for scroll gestures and the scroll ancestor that stops the sticky
+   callout working. `clip` clips identically but is not a scroll container.
+   Scoped with :has() so only pages carrying this block are affected. */
+.page-inner:has(#twopir-realestate) { overflow: clip; }
+
+/* FIX: added — the block above only catches Elementor/Gutenberg wrapper
+   classes. Classic-editor / theme "entry-content" wrappers and generic
+   <main>/<article> containers were not covered, and one of those is the
+   most likely source of the top gap. Matching them here too, in addition
+   to the JS ancestor walk, covers both cases without guessing which theme
+   is in use. */
+.entry-content:has(#twopir-realestate),
+.post-content:has(#twopir-realestate),
+.page-content:has(#twopir-realestate),
+main:has(#twopir-realestate),
+article:has(#twopir-realestate) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Shared layout primitives ──────────────────────────────── */
+#twopir-realestate .tre-section {
+  position: relative;
+  width: 100%;
+  padding: var(--tre-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--tre-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--tre-bg, #dff1fa);
+}
+#twopir-realestate .tre-section--alt  { background: var(--tre-bg-alt, #e8f5fd); }
+#twopir-realestate .tre-section--dark {
+  background:
+    radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
+    linear-gradient(158deg, var(--tre-navy, #1e2447) 0%, var(--tre-navy-deep, #12183a) 58%, var(--tre-navy-soft, #1a2e4a) 100%);
+  color: #fff;
+}
+
+/* Skip layout/paint work for sections while they are off-screen.
+   Excludes the section that contains the `position: sticky`
+   callout (Why Twopir / #tre-why-title), since layout containment
+   on an ancestor can interfere with sticky positioning. This is
+   the main scroll-jank fix: it stops the browser from repeatedly
+   re-rendering the marquee, pulses, spin and flow animations in
+   sections that aren't currently visible. */
+#twopir-realestate .tre-section:not(:has(.tre-callout)) {
+  content-visibility: auto;
+  /* Two declarations on purpose. The first is the placeholder size used by
+     browsers without `auto` support. The second lets the browser remember
+     each section's real rendered height once it has been on screen, so the
+     scrollbar stops jumping as you scroll back up past a section whose true
+     height is nowhere near the 900px estimate. Browsers that cannot parse
+     `auto` drop the second line and keep the first. */
+  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* iOS Safari mis-handles content-visibility during momentum scrolling:
+   sections re-lay-out mid-gesture and the page appears to stop moving. The
+   perf win only matters on large, pointer-driven screens anyway. */
+@media (hover: none), (pointer: coarse) {
+  #twopir-realestate .tre-section:not(:has(.tre-callout)) {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}
+
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-realestate .tre-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
+#twopir-realestate .tre-wrap--narrow { max-width: 900px; }
+
+/* ── Section header pattern (matches Our Services / Industries) */
+#twopir-realestate .tre-head {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+#twopir-realestate .tre-eyebrow {
+  display: block;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  margin-bottom: 10px;
+}
+#twopir-realestate .tre-title {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  color: var(--tre-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-realestate .tre-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tre-accent, #00aff6) 0%, var(--tre-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tre-accent, #00aff6);
+}
+#twopir-realestate .tre-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 22px;
+}
+#twopir-realestate .tre-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
+#twopir-realestate .tre-rule-diamond {
+  width: 8px; height: 8px;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-realestate .tre-lede {
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 300;
+  line-height: 1.78;
+  color: var(--tre-muted, #566b79);
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+#twopir-realestate .tre-lede strong { color: var(--tre-text, #1a2a35); font-weight: 600; }
+
+/* dark-section variants of the same header pattern */
+#twopir-realestate .tre-section--dark .tre-title { color: #fff; }
+#twopir-realestate .tre-section--dark .tre-lede  { color: rgba(220,238,252,0.78); }
+#twopir-realestate .tre-section--dark .tre-lede strong { color: #fff; }
+#twopir-realestate .tre-section--dark .tre-rule-line { background: rgba(0,175,246,0.45); }
+
+/* ── Buttons (identical geometry to the homepage hero) ─────── */
+#twopir-realestate .tre-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  transition: background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform 0.18s ease;
+}
+#twopir-realestate .tre-btn svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+#twopir-realestate .tre-btn--primary {
+  color: #fff !important;
+  background: var(--tre-accent, #00aff6);
+  border-color: var(--tre-accent, #00aff6);
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+}
+#twopir-realestate .tre-btn--primary:hover,
+#twopir-realestate .tre-btn--primary:focus-visible {
+  background: var(--tre-text, #1a2a35);
+  border-color: var(--tre-text, #1a2a35);
+  box-shadow: 0 8px 24px rgba(26,42,53,0.24);
+  transform: translateY(-2px);
+}
+#twopir-realestate .tre-btn--ghost {
+  color: var(--tre-accent, #00aff6) !important;
+  background: rgba(255,255,255,0.72);
+  border-color: var(--tre-border, rgba(0,175,246,0.28));
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+}
+#twopir-realestate .tre-btn--ghost:hover,
+#twopir-realestate .tre-btn--ghost:focus-visible {
+  background: var(--tre-accent, #00aff6);
+  color: #fff !important;
+  border-color: var(--tre-accent, #00aff6);
+  box-shadow: 0 8px 24px rgba(0,175,246,0.32);
+  transform: translateY(-2px);
+}
+#twopir-realestate .tre-section--dark .tre-btn--ghost {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#twopir-realestate .tre-section--dark .tre-btn--ghost:hover {
+  background: var(--tre-accent, #00aff6);
+  border-color: var(--tre-accent, #00aff6);
+}
+#twopir-realestate .tre-btn:focus-visible { outline: 2px solid var(--tre-accent, #00aff6); outline-offset: 3px; }
+#twopir-realestate .tre-btn-arrow { transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
+#twopir-realestate .tre-btn--primary:hover .tre-btn-arrow { transform: translateX(3px); }
+
+/* ════════════════════════════════════════════════════════════
+   1 · HERO
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 44px) var(--tre-pad-x, clamp(16px, 4vw, 48px)) clamp(20px, 2.4vw, 32px);
+  background:
+    radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
+    linear-gradient(180deg, var(--tre-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--tre-bg, #dff1fa) 92%, var(--tre-bg, #dff1fa) 100%);
+  overflow: hidden;
+}
+#twopir-realestate .tre-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,175,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,175,246,0.07) 1px, transparent 1px);
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+}
+#twopir-realestate .tre-hero-inner {
+  position: relative;
+  z-index: 1;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  /* the copy column carries the room. Widening it reflows the headline
+     from four lines to three and the lede from six to five, which is where
+     most of the first-screen budget comes from — layout, not type. */
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  align-items: center;
+  gap: clamp(28px, 3.6vw, 58px);
+}
+#twopir-realestate .tre-hero-copy { max-width: 640px; }
+
+#twopir-realestate .tre-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  /* the flat 11px label step rather than the eyebrow clamp, plus tighter
+     padding and tracking. The pill reads noticeably smaller without leaving
+     the type scale — which matters, because every industry page reuses it. */
+  font-size: var(--tre-fs-label, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid #b3d9f2;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  margin-bottom: clamp(11px, 1.4vw, 16px);
+  box-shadow: 0 2px 10px rgba(0,130,200,0.08);
+}
+#twopir-realestate .tre-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--tre-accent, #00aff6);
+  animation: trePulse 2.6s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes trePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,175,246,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,175,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,175,246,0); }
+}
+
+#twopir-realestate .tre-hero-title {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(30px, 3.05vw, 48px);   /* was rem — the theme sets html{font-size:10px} */
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.09;
+  color: var(--tre-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-realestate .tre-hero-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tre-accent, #00aff6) 0%, var(--tre-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tre-accent, #00aff6);
+}
+#twopir-realestate .tre-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 1.2vw, 14px) 0 clamp(9px, 1.1vw, 13px);
+}
+#twopir-realestate .tre-hero-rule .tre-rule-line { width: 54px; }
+#twopir-realestate .tre-hero-rule .tre-rule-line--sm { width: 26px; }
+
+#twopir-realestate .tre-hero-sub {
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--tre-muted, #566b79);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+#twopir-realestate .tre-hero-sub strong { color: var(--tre-text, #1a2a35); font-weight: 600; }
+
+#twopir-realestate .tre-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+#twopir-realestate .tre-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 14px;
+  margin-top: clamp(14px, 1.6vw, 18px);
+}
+#twopir-realestate .tre-hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tre-muted, #566b79);
+}
+#twopir-realestate .tre-hero-proof b {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tre-text, #1a2a35);
+}
+#twopir-realestate .tre-hero-proof li + li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.75;
+  margin-right: 8px;
+}
+
+/* ── Hero: dark architecture canvas ─────────────────────────── */
+#twopir-realestate .tre-visual { position: relative; display: flex; justify-content: center; }
+#twopir-realestate .tre-canvas {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, calc(58vh + 34px));
+  background:
+    radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tre-navy, #1e2447) 0%, var(--tre-navy-deep, #12183a) 58%, var(--tre-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tre-radius-lg, 22px);
+  padding: clamp(13px, 1.5vw, 17px);
+  box-shadow: var(--tre-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+}
+#twopir-realestate .tre-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tre-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-realestate .tre-canvas-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+#twopir-realestate .tre-canvas-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#twopir-realestate .tre-live {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--tre-green, #35d39a);
+  animation: treLive 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes treLive {
+  0%   { box-shadow: 0 0 0 0 rgba(53,211,154,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(53,211,154,0); }
+  100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
+}
+#twopir-realestate .tre-tag {
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 5px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* The panel is capped in viewport units so it shrinks on short windows
+   instead of forcing the hero to grow. The px ceiling stops it ballooning
+   on very tall monitors, where 58vh would otherwise outrun the copy. */
+#twopir-realestate .tre-map {
+  display: block; width: 100%; height: auto;
+  max-height: 58vh;
+  max-height: min(58vh, 540px);
+}
+#twopir-realestate .tre-map text { font-family: var(--tre-ff-body, 'Inter', sans-serif); }
+#twopir-realestate .tre-map .m   { font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace); }
+
+#twopir-realestate .tre-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+#twopir-realestate .tre-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+#twopir-realestate .tre-core     { fill: rgba(0,175,246,0.08);    stroke: rgba(0,175,246,0.42);   stroke-width: 1.2; }
+#twopir-realestate .tre-pillbox  { fill: rgba(255,255,255,0.07);  stroke: rgba(0,175,246,0.34);   stroke-width: 1; }
+#twopir-realestate .tre-out      { fill: rgba(53,211,154,0.05);   stroke: rgba(53,211,154,0.28);  stroke-width: 1; }
+#twopir-realestate .tre-chip-r   { fill: rgba(255,255,255,0.05);  stroke: rgba(255,255,255,0.13); stroke-width: 1; }
+
+#twopir-realestate .tre-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
+#twopir-realestate .tre-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
+#twopir-realestate .tre-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-realestate .tre-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-realestate .tre-h--acc { fill: rgba(0,175,246,0.95); }
+#twopir-realestate .tre-h--out { fill: rgba(53,211,154,0.9); }
+#twopir-realestate .tre-mark      { fill: var(--tre-accent, #00aff6); }
+#twopir-realestate .tre-mark--out { fill: var(--tre-green, #35d39a); }
+
+#twopir-realestate .tre-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
+#twopir-realestate .tre-flow {
+  fill: none;
+  stroke: var(--tre-accent, #00aff6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 14;
+  opacity: 0.9;
+  animation: treFlow 2.2s linear infinite;
+}
+#twopir-realestate .tre-flow--out { stroke: var(--tre-green, #35d39a); }
+#twopir-realestate .tre-flow.d1 { animation-delay: 0s; }
+#twopir-realestate .tre-flow.d2 { animation-delay: 0.28s; }
+#twopir-realestate .tre-flow.d3 { animation-delay: 0.56s; }
+@keyframes treFlow { to { stroke-dashoffset: -152; } }
+
+#twopir-realestate .tre-hit rect { transition: fill 0.22s ease, stroke 0.22s ease; }
+#twopir-realestate .tre-hit:hover rect.tre-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
+#twopir-realestate .tre-hit:hover rect.tre-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
+
+#twopir-realestate .tre-badge-ring { fill: none; stroke: var(--tre-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-realestate .tre-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
+#twopir-realestate .tre-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
+#twopir-realestate .tre-spin { transform-origin: 280px 158px; animation: treSpin 26s linear infinite; }
+@keyframes treSpin { to { transform: rotate(360deg); } }
+
+/* floating delivery card */
+#twopir-realestate .tre-float {
+  position: absolute;
+  left: -20px;
+  bottom: -22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-md, 14px);
+  padding: 11px 15px;
+  box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
+}
+#twopir-realestate .tre-float-ico {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--tre-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,175,246,0.35);
+  flex-shrink: 0;
+}
+#twopir-realestate .tre-float-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-realestate .tre-float-k {
+  display: block;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  margin-bottom: 2px;
+}
+#twopir-realestate .tre-float-v {
+  display: block;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--tre-text, #1a2a35);
+  white-space: nowrap;
+}
+
+/* stacked map for small screens */
+#twopir-realestate .tre-stack { display: none; }
+#twopir-realestate .tre-layer {
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--tre-radius-md, 14px);
+  padding: 12px 13px 13px;
+}
+#twopir-realestate .tre-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
+#twopir-realestate .tre-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
+#twopir-realestate .tre-layer-h {
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+}
+#twopir-realestate .tre-layer--core .tre-layer-h { color: rgba(0,175,246,0.95); }
+#twopir-realestate .tre-layer--out  .tre-layer-h { color: rgba(53,211,154,0.9); }
+#twopir-realestate .tre-layer-t {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+  margin-bottom: 9px;
+}
+#twopir-realestate .tre-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-realestate .tre-chip {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+#twopir-realestate .tre-layer--core .tre-chip { background: rgba(0,175,246,0.16);  border-color: rgba(0,175,246,0.42);  color: #fff; }
+#twopir-realestate .tre-layer--out  .tre-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
+#twopir-realestate .tre-connector { height: 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+#twopir-realestate .tre-connector::before {
+  content: ''; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(0,175,246,0.05), rgba(0,175,246,0.7), rgba(0,175,246,0.05));
+}
+#twopir-realestate .tre-connector::after {
+  content: ''; position: absolute;
+  width: 6px; height: 6px;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg); border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2 · TRUST STRIP (client logos + credentials)
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-trust { padding: clamp(28px, 3vw, 40px) var(--tre-pad-x, clamp(16px, 4vw, 48px)); background: var(--tre-bg, #dff1fa); }
+#twopir-realestate .tre-trust-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--tre-card, #eef8fd);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-card, 18px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
+}
+#twopir-realestate .tre-trust-lead {
+  text-align: center;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 400;
+  color: var(--tre-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-realestate .tre-trust-lead strong { color: var(--tre-accent-ink, #00699f); font-weight: 700; }
+
+#twopir-realestate .tre-marquee {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#twopir-realestate .tre-marquee::before,
+#twopir-realestate .tre-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; height: 100%; width: 56px;
+  z-index: 2; pointer-events: none;
+}
+#twopir-realestate .tre-marquee::before { left: 0;  background: linear-gradient(to right, var(--tre-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-realestate .tre-marquee::after  { right: 0; background: linear-gradient(to left,  var(--tre-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-realestate .tre-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 52px;
+  animation: treScroll 26s linear infinite;
+  will-change: transform;
+}
+#twopir-realestate .tre-marquee:hover .tre-marquee-track { animation-play-state: paused; }
+#twopir-realestate .tre-marquee-item { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#twopir-realestate .tre-marquee-item img {
+  height: 38px; width: auto; max-width: 130px;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
+@keyframes treScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+#twopir-realestate .tre-badges-label {
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  margin-bottom: 12px;
+}
+#twopir-realestate .tre-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#twopir-realestate .tre-badge {
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--tre-muted, #566b79);
+  background: var(--tre-bg, #dff1fa);
+  border: 1px solid rgba(0,175,246,0.25);
+  border-radius: 6px;
+  padding: 4px 11px;
+  transition: background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-badge:hover { background: var(--tre-accent, #00aff6); color: #fff; border-color: var(--tre-accent, #00aff6); }
+
+/* ════════════════════════════════════════════════════════════
+   3 · PAIN GRID
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+#twopir-realestate .tre-pain-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tre-card, #eef8fd);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--tre-star, #e0961f);
+  border-radius: var(--tre-radius-card, 18px);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-pain-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tre-surface, #ffffff);
+}
+#twopir-realestate .tre-pain-ico {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(240,165,60,0.12);
+  border: 1px solid rgba(240,165,60,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+}
+#twopir-realestate .tre-pain-item h3 {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--tre-text, #1a2a35);
+  margin-bottom: 7px;
+}
+#twopir-realestate .tre-pain-item p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--tre-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4 · PHILOSOPHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-philosophy {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--tre-card, #eef8fd);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-lg, 22px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#twopir-realestate .tre-philosophy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#twopir-realestate .tre-philosophy > * { position: relative; }
+#twopir-realestate .tre-philosophy p + p { margin-top: 16px; }
+#twopir-realestate .tre-philosophy p {
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--tre-muted, #566b79);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+#twopir-realestate .tre-philosophy p strong { color: var(--tre-text, #1a2a35); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   5 · SERVICES
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#twopir-realestate .tre-svc-card {
+  background: var(--tre-card, #eef8fd);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tre-accent, #00aff6), var(--tre-accent-dk, #007ec6));
+  opacity: 0;
+  transition: opacity var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-svc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tre-surface, #ffffff);
+}
+#twopir-realestate .tre-svc-card:hover::after { opacity: 1; }
+#twopir-realestate .tre-svc-ico {
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  border-radius: 12px;
+  background: var(--tre-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+#twopir-realestate .tre-svc-ico svg {
+  width: 24px; height: 24px;
+  fill: none; stroke: #fff;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-realestate .tre-svc-card h3 {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--tre-text, #1a2a35);
+  margin-bottom: 9px;
+}
+#twopir-realestate .tre-svc-card > p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.72;
+  color: var(--tre-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-realestate .tre-svc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  margin-top: auto;
+}
+/* Positioned ::before, NOT `display: grid` with the diamond as the first grid
+   item — grid promotes every child, anonymous text nodes included, so an item
+   containing an inline element renders one word per line. Legal still carries
+   that defect. */
+#twopir-realestate .tre-svc-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--tre-muted, #566b79);
+}
+#twopir-realestate .tre-svc-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 6px; height: 6px;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · PROCESS
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+#twopir-realestate .tre-step {
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-md, 14px);
+  padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  position: relative;
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-realestate .tre-step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  margin-bottom: 14px;
+}
+#twopir-realestate .tre-step-num::after {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+#twopir-realestate .tre-step h3 {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--tre-text, #1a2a35);
+  margin-bottom: 8px;
+}
+#twopir-realestate .tre-step p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tre-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 · INTEGRATIONS
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-int-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+#twopir-realestate .tre-int-item {
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--tre-radius-md, 14px);
+  padding: 20px 18px;
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-int-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-realestate .tre-int-ico {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--tre-bg, #dff1fa);
+  border: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  margin-bottom: 12px;
+}
+#twopir-realestate .tre-int-name {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tre-text, #1a2a35);
+  margin-bottom: 5px;
+  line-height: 1.35;
+}
+#twopir-realestate .tre-int-desc {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tre-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8 · PROOF (dark section)
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-proof-pair {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+#twopir-realestate .tre-proof-pair + .tre-proof-pair { margin-top: 22px; }
+
+#twopir-realestate .tre-quote-card,
+#twopir-realestate .tre-cs-card {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--tre-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#twopir-realestate .tre-cs-card {
+  background: rgba(0,175,246,0.07);
+  border-color: rgba(0,175,246,0.34);
+}
+#twopir-realestate .tre-cs-card--green { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.32); }
+
+#twopir-realestate .tre-quote-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#twopir-realestate .tre-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tre-accent, #00aff6), var(--tre-accent-dk, #007ec6));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+#twopir-realestate .tre-avatar--green { background: linear-gradient(135deg, var(--tre-green, #35d39a), #1a9c73); }
+#twopir-realestate .tre-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
+
+#twopir-realestate .tre-quote-text {
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(224,240,252,0.9);
+  border-left: 2px solid var(--tre-accent, #00aff6);
+  padding-left: 20px;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+#twopir-realestate .tre-quote-text--green { border-left-color: var(--tre-green, #35d39a); }
+
+#twopir-realestate .tre-quote-name {
+  display: block;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+#twopir-realestate .tre-quote-role {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.5;
+}
+#twopir-realestate .tre-mono-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  border: 1px solid rgba(0,175,246,0.38);
+  background: rgba(0,175,246,0.09);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+#twopir-realestate .tre-mono-tag--green {
+  color: var(--tre-green, #35d39a);
+  border-color: rgba(53,211,154,0.4);
+  background: rgba(53,211,154,0.09);
+}
+#twopir-realestate .tre-cs-card .tre-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
+
+#twopir-realestate .tre-cs-company {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+#twopir-realestate .tre-cs-title {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(184,214,242,0.8);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+#twopir-realestate .tre-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+#twopir-realestate .tre-cs-metric {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px;
+  padding: 13px 10px;
+  text-align: center;
+}
+#twopir-realestate .tre-cs-val {
+  display: block;
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--tre-accent, #00aff6);
+  margin-bottom: 6px;
+}
+#twopir-realestate .tre-cs-val--green { color: var(--tre-green, #35d39a); }
+#twopir-realestate .tre-cs-lbl {
+  display: block;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.45;
+}
+#twopir-realestate .tre-cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--tre-ff-body, 'Inter', sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--tre-accent, #00aff6);
+  border-radius: 100px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.32);
+  transition: background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
+#twopir-realestate .tre-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
+#twopir-realestate .tre-cs-link--green:hover { background: var(--tre-green, #35d39a); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-realestate .tre-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ════════════════════════════════════════════════════════════
+   9 · WHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+}
+#twopir-realestate .tre-why-list { display: flex; flex-direction: column; gap: 12px; }
+#twopir-realestate .tre-why-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tre-card, #eef8fd);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-md, 14px);
+  padding: 18px 20px;
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-why-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tre-surface, #ffffff);
+}
+#twopir-realestate .tre-why-num {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(0,175,246,0.10);
+  border: 1px solid rgba(0,175,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--tre-accent, #00aff6);
+}
+#twopir-realestate .tre-why-item h3 {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--tre-text, #1a2a35);
+  margin-bottom: 5px;
+}
+#twopir-realestate .tre-why-item p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tre-muted, #566b79);
+}
+
+#twopir-realestate .tre-callout {
+  position: sticky;
+  top: 28px;
+  background:
+    radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tre-navy, #1e2447) 0%, var(--tre-navy-deep, #12183a) 58%, var(--tre-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tre-radius-lg, 22px);
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: var(--tre-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+  position: relative;
+  overflow: hidden;
+}
+#twopir-realestate .tre-callout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tre-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-realestate .tre-callout-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tre-accent, #00aff6);
+  margin-bottom: 16px;
+}
+#twopir-realestate .tre-callout-text {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+#twopir-realestate .tre-callout-author {
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(184,214,242,0.78);
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-realestate .tre-callout-author strong { color: var(--tre-accent, #00aff6); font-weight: 600; }
+#twopir-realestate .tre-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+}
+#twopir-realestate .tre-engage li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(232,244,253,0.9);
+}
+#twopir-realestate .tre-engage li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--tre-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-realestate .tre-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-realestate .tre-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+#twopir-realestate .tre-fact b {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tre-accent, #00aff6);
+}
+/* homepage stat hooks — keep inline so injected values don't break layout */
+#twopir-realestate .twopir-years,
+#twopir-realestate .twopir-clients,
+#twopir-realestate .twopir-countries,
+#twopir-realestate .twopir-salesforce,
+#twopir-realestate .twopir-hubspot,
+#twopir-realestate .twopir-ai { display: inline; }
+
+/* ════════════════════════════════════════════════════════════
+   10 · FAQ (accordion — same behaviour as the homepage FAQ)
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-faq-list {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#twopir-realestate .tre-faq-row {
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  border-radius: var(--tre-radius-md, 14px);
+  overflow: hidden;
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-faq-row.is-open {
+  border-color: rgba(0,175,246,0.5);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-realestate .tre-faq-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  text-align: left;
+  /* Matched to the homepage's .twh-faq-btn. The question is a HEADING, so it
+     takes the display face at 700 — not the body face at 600. The h4 size
+     step was already correct; the family and weight were not, which is why
+     the two FAQ sections looked different despite passing the type check. */
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--tre-text, #1a2a35);
+  transition: color 150ms ease;
+}
+#twopir-realestate .tre-faq-row.is-open .tre-faq-btn { color: var(--tre-accent, #00aff6); }
+#twopir-realestate .tre-faq-btn:focus-visible { outline: 2px solid var(--tre-accent, #00aff6); outline-offset: -3px; }
+#twopir-realestate .tre-faq-ico {
+  width: 22px; height: 22px;
+  min-width: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--tre-border, rgba(0,175,246,0.28));
+  background: rgba(0,175,246,0.07);
+  color: var(--tre-accent-ink, #00699f);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              border-color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-faq-ico svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
+}
+#twopir-realestate .tre-faq-row.is-open .tre-faq-ico {
+  transform: rotate(180deg);
+  background: var(--tre-accent, #00aff6);
+  border-color: var(--tre-accent, #00aff6);
+  color: #fff;
+}
+/* plus becomes a minus — the homepage's open affordance, rather than
+   rotating the plus into an x */
+#twopir-realestate .tre-faq-ico .tre-faq-v {
+  transform-origin: center;
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              opacity var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-faq-row.is-open .tre-faq-ico .tre-faq-v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+#twopir-realestate .tre-faq-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
+}
+#twopir-realestate .tre-faq-panel-inner {
+  padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
+}
+#twopir-realestate .tre-faq-row.is-open .tre-faq-panel-inner { border-top: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22)); }
+
+/* Inline citation link to an external authority source. Inherits font
+   size, weight and line-height from its parent, so it never changes
+   type scale or layout — only colour + underline mark it as a link. */
+#twopir-realestate .tre-src {
+  color: var(--tre-accent-ink, #00699f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-src:hover,
+#twopir-realestate .tre-src:focus-visible { color: var(--tre-accent, #00aff6); }
+#twopir-realestate .tre-faq-panel-inner p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--tre-muted, #566b79);
+  padding-top: 15px;
+  text-wrap: pretty;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11 · CTA (dark close, mirrors the homepage stats strip)
+   ════════════════════════════════════════════════════════════ */
+#twopir-realestate .tre-cta { text-align: center; }
+#twopir-realestate .tre-cta-inner { max-width: 1100px; margin: 0 auto; }
+#twopir-realestate .tre-cta .tre-eyebrow { color: var(--tre-accent, #00aff6); }
+#twopir-realestate .tre-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+#twopir-realestate .tre-cta-note {
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,214,242,0.7);
+  margin-top: 22px;
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────
+   Progressive enhancement (2026-08 SEO/CWV patch).
+
+   Previously every .tre-fade started at opacity:0 and only became
+   visible once the reveal script added .tre-in. That meant a crawler
+   which does not execute JavaScript — most AI answer engines and some
+   SEO tools — saw the whole page, H1 included, at opacity:0, and real
+   users waited on script execution before anything painted.
+
+   Now:
+   • Default state is VISIBLE. No JS, no CSS → the page still reads.
+   • The hidden start state applies only under .tre-js, which the
+     inline flag script sets on #twopir-realestate before first paint, so
+     JS users see exactly the same animation as before.
+   • The hero is above the fold, so it uses a CSS keyframe entrance
+     instead of the observer. Its H1 (the LCP element) starts painting
+     on the first frame rather than after the 120KB document has been
+     parsed and the end-of-body script has run.
+   Timing, easing, distance and stagger are unchanged throughout.    */
+#twopir-realestate .tre-fade {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Below-the-fold content: hidden only when JS is there to reveal it */
+#twopir-realestate.tre-js .tre-fade {
+  opacity: 0;
+  transform: translateY(18px);
+}
+#twopir-realestate .tre-fade.tre-in,
+#twopir-realestate.tre-js .tre-fade.tre-in { opacity: 1; transform: none; }
+
+/* Above-the-fold hero: CSS-only entrance, never gated on JS */
+#twopir-realestate .tre-hero .tre-fade,
+#twopir-realestate.tre-js .tre-hero .tre-fade {
+  opacity: 1;
+  transform: none;
+  /* Longhands, not the animation shorthand: the shorthand resets
+     animation-delay to 0s, and this rule outranks the .tre-d1..d5
+     stagger classes - which silently flattened the hero stagger. */
+  animation-name: treFadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+@keyframes treFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Delays drive the transition below the fold and the animation in the
+   hero, so both properties are set on the same stagger classes. */
+#twopir-realestate .tre-d1 { transition-delay: 0.07s; animation-delay: 0.07s; }
+#twopir-realestate .tre-d2 { transition-delay: 0.15s; animation-delay: 0.15s; }
+#twopir-realestate .tre-d3 { transition-delay: 0.23s; animation-delay: 0.23s; }
+#twopir-realestate .tre-d4 { transition-delay: 0.31s; animation-delay: 0.31s; }
+#twopir-realestate .tre-d5 { transition-delay: 0.18s; animation-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #twopir-realestate .tre-fade,
+  #twopir-realestate.tre-js .tre-fade,
+  #twopir-realestate .tre-hero .tre-fade,
+  #twopir-realestate.tre-js .tre-hero .tre-fade { opacity: 1; transform: none; transition: none; animation: none; }
+  #twopir-realestate .tre-flow { animation: none; stroke-dasharray: none; opacity: 0.5; }
+  #twopir-realestate .tre-dot,
+  #twopir-realestate .tre-live,
+  #twopir-realestate .tre-spin,
+  #twopir-realestate .tre-marquee-track { animation: none; }
+  #twopir-realestate .tre-faq-panel { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  #twopir-realestate .tre-float      { display: none; }
+  #twopir-realestate .tre-process    { grid-template-columns: repeat(3, 1fr); }
+  #twopir-realestate .tre-pain-grid  { grid-template-columns: repeat(2, 1fr); }
+  #twopir-realestate .tre-svc-grid   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-realestate .tre-int-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Hero metric row: a 2x2 grid, not Legal's inline chip row — this page's
+   labels are full sentences that break the baseline when wrapped as chips. */
+#twopir-realestate .tre-hero-proof {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(14px, 2vw, 26px);
+  align-items: start;
+}
+#twopir-realestate .tre-hero-proof li { display: block; }
+#twopir-realestate .tre-hero-proof b  { display: block; margin-bottom: 3px; }
+#twopir-realestate .tre-hero-proof li + li::before { content: none; }
+
+#twopir-realestate .tre-quote-card { display: flex; flex-direction: column; }
+#twopir-realestate .tre-quote-card > div:last-child { margin-top: auto; }
+
+@media (max-width: 960px) {
+  #twopir-realestate .tre-why-grid  { grid-template-columns: 1fr; }
+  #twopir-realestate .tre-callout   { position: static; }
+  #twopir-realestate .tre-proof-pair{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  #twopir-realestate .tre-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(26px, 4vw, 36px);
+  }
+  #twopir-realestate .tre-hero-copy { max-width: 700px; margin: 0 auto; text-align: center; }
+  #twopir-realestate .tre-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
+  #twopir-realestate .tre-hero-rule,
+  #twopir-realestate .tre-hero-cta,
+  #twopir-realestate .tre-hero-proof { justify-content: center; }
+  #twopir-realestate .tre-canvas { max-width: 560px; }
+  #twopir-realestate .tre-map    { max-height: none; }
+}
+
+@media (max-width: 760px) {
+  #twopir-realestate .tre-process   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-realestate .tre-int-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  #twopir-realestate .tre-map   { display: none; }
+  #twopir-realestate .tre-stack { display: block; }
+  #twopir-realestate .tre-canvas { border-radius: var(--tre-radius-md, 14px); }
+  #twopir-realestate .tre-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
+  #twopir-realestate .tre-hero-cta,
+  #twopir-realestate .tre-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  #twopir-realestate .tre-hero-cta .tre-btn,
+  #twopir-realestate .tre-cta-actions .tre-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    white-space: normal;
+  }
+  #twopir-realestate .tre-pain-grid,
+  #twopir-realestate .tre-svc-grid,
+  #twopir-realestate .tre-process { grid-template-columns: 1fr; }
+  #twopir-realestate .tre-cs-metrics { gap: 8px; }
+  #twopir-realestate .tre-quote-text { padding-left: 16px; }
+  #twopir-realestate .tre-marquee::before,
+  #twopir-realestate .tre-marquee::after { width: 34px; }
+  #twopir-realestate .tre-marquee-track { gap: 34px; }
+  #twopir-realestate .tre-marquee-item img { height: 30px; max-width: 100px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-realestate .tre-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
+  #twopir-realestate .tre-hero-sub { font-size: 14.5px; line-height: 1.7; }
+  #twopir-realestate .tre-hero-proof { gap: 6px 11px; }
+  #twopir-realestate .tre-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
+  #twopir-realestate .tre-hero-proof li + li::before { margin-right: 5px; }
+  #twopir-realestate .tre-canvas-bar .tre-tag { display: none; }
+  #twopir-realestate .tre-int-grid  { grid-template-columns: 1fr; }
+  #twopir-realestate .tre-cs-metrics { grid-template-columns: 1fr; }
+  #twopir-realestate .tre-pain-item,
+  #twopir-realestate .tre-why-item { gap: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE SCALE — CONSISTENCY PASS WITH THE HOMEPAGE
+   ════════════════════════════════════════════════════════════
+   Design untouched — every component, colour, layout and section
+   above stays exactly as built. This block only remaps font sizes
+   and line-heights onto the homepage's fluid type scale, loaded
+   last (the same way homepage.html loads its own type pass) so no
+   earlier rule and no theme rule can re-impose a different size.
+
+   The homepage scale, verbatim:
+
+     display  hero headline          clamp(30px, 4vw, 46px)
+     h2       section titles        clamp(26px, 3vw, 38px) / 1.16
+     h3       card / panel titles   clamp(17px, 1.5vw, 19px) / 1.3
+     h4       dense titles, FAQ     clamp(15px, 1.25vw, 16px)
+     lede     section intros        clamp(15px, 1.2vw, 17px) / 1.7
+     body     paragraph copy        clamp(14px, 1.05vw, 15px) / 1.65
+     sm / xs  dense copy, meta      13px / 12px
+     label    mono uppercase        11px  ← the page-wide floor
+     eyebrow  section eyebrows      clamp(11px, 0.9vw, 12px) / 0.2em
+     stat-sm  smaller numbers       clamp(20px, 1.9vw, 24px)
+
+   Two deliberate fixes folded in:
+     · the hero H1 was clamp(1.85rem, 3.05vw, 3rem) — rem against
+       whatever root size the active theme sets. It is now the
+       homepage's px-based display clamp, so it renders identically
+       on any theme.
+     · nothing outside the navy hero panel sits below 11px anymore
+       (9/9.5/10px labels are lifted to the 11px label floor). The
+       10px mono labels INSIDE the hero panel stay at 10px because
+       the homepage hero itself uses 10px for those same roles
+       (canvas label, tag, float card).                          */
+
+
+/* ── display · hero ──────────────────────────────────────────── */
+#twopir-realestate .tre-hero-title { font-size: var(--tre-fs-display, clamp(34px, 4.5vw, 56px)); line-height: 1.09; }
+/* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
+#twopir-realestate .tre-hero-sub   { font-size: var(--tre-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-realestate .tre-pill       { font-size: var(--tre-fs-label, 12px); letter-spacing: 0.1em; }
+/* hero stat row — homepage's exact pairing: 11px mono label,
+   13px display number */
+#twopir-realestate .tre-hero-proof li { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-hero-proof b  { font-size: var(--tre-fs-sm, 14px); }
+
+/* hero navy panel internals — matched to the homepage hero's own
+   values (10px canvas label / tag / float key, 11px float value) */
+#twopir-realestate .tre-tag     { font-size: 10px; }
+#twopir-realestate .tre-layer-h { font-size: 10px; }
+/* the float card sits on white, outside the navy panel, so it takes the
+   11px label floor rather than the panel's 10px */
+#twopir-realestate .tre-float-k { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-float-v { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-chip    { font-size: var(--tre-fs-label, 12px); }
+
+/* ── h2 · section titles ─────────────────────────────────────── */
+#twopir-realestate .tre-title { font-size: var(--tre-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
+
+/* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
+#twopir-realestate .tre-eyebrow { font-size: var(--tre-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
+
+/* ── lede · section intros and long-form copy ────────────────── */
+#twopir-realestate .tre-lede         { font-size: var(--tre-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+#twopir-realestate .tre-philosophy p { font-size: var(--tre-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+
+/* ── buttons — homepage buttons are 13px ─────────────────────── */
+#twopir-realestate .tre-btn     { font-size: var(--tre-fs-sm, 14px); }
+#twopir-realestate .tre-cs-link { font-size: var(--tre-fs-sm, 14px); }
+
+/* ── trust strip ─────────────────────────────────────────────── */
+#twopir-realestate .tre-trust-lead { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); }
+#twopir-realestate .tre-badge      { font-size: var(--tre-fs-xs, 13px); }
+
+/* ── card titles · h4 role (dense cards keep their designed
+      family and case — only the size snaps to the scale) ─────── */
+#twopir-realestate .tre-pain-item h3 { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-realestate .tre-svc-card h3  { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-realestate .tre-step h3      { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-realestate .tre-int-name     { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-realestate .tre-why-item h3  { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-realestate .tre-cs-company   { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-realestate .tre-avatar       { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-realestate .tre-faq-btn      { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-realestate .tre-callout-text { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.6; }
+
+/* ── body · primary card copy ────────────────────────────────── */
+#twopir-realestate .tre-pain-item p       { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-realestate .tre-svc-card > p      { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-realestate .tre-why-item p        { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-realestate .tre-faq-panel-inner p { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-realestate .tre-quote-text        { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.7; }
+
+/* ── sm · dense lists, meta, secondary copy ──────────────────── */
+#twopir-realestate .tre-svc-list li    { font-size: var(--tre-fs-sm, 14px); }
+#twopir-realestate .tre-step p         { font-size: var(--tre-fs-sm, 14px); line-height: 1.6; }
+#twopir-realestate .tre-int-desc       { font-size: var(--tre-fs-sm, 14px); line-height: 1.6; }
+#twopir-realestate .tre-engage li      { font-size: var(--tre-fs-sm, 14px); }
+#twopir-realestate .tre-callout-author { font-size: var(--tre-fs-sm, 14px); line-height: 1.65; }
+#twopir-realestate .tre-quote-name     { font-size: var(--tre-fs-sm, 14px); }
+#twopir-realestate .tre-cs-title       { font-size: var(--tre-fs-sm, 14px); line-height: 1.55; }
+#twopir-realestate .tre-fact b         { font-size: var(--tre-fs-sm, 14px); }
+#twopir-realestate .tre-stars          { font-size: var(--tre-fs-sm, 14px); }
+
+/* ── xs ──────────────────────────────────────────────────────── */
+#twopir-realestate .tre-quote-role { font-size: var(--tre-fs-xs, 13px); }
+
+/* ── label · 11px mono floor (was 9–10px) ────────────────────── */
+#twopir-realestate .tre-step-num  { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-mono-tag  { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-cs-lbl    { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-why-num   { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-callout-k { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-fact      { font-size: var(--tre-fs-label, 12px); }
+#twopir-realestate .tre-cta-note  { font-size: var(--tre-fs-label, 12px); }
+
+/* ── stat numbers · case-study metrics ───────────────────────── */
+#twopir-realestate .tre-cs-val { font-size: var(--tre-fs-stat-sm, clamp(22px, 2vw, 26px)); }
+
+/* ── Small screens — same values as the homepage's own
+      small-screen type block. This pass loads after the page's
+      620px/420px blocks, so mobile type is owned here. ────────── */
+@media (max-width: 620px) {
+  #twopir-realestate .tre-hero-title { font-size: 30px; line-height: 1.18; }
+  #twopir-realestate .tre-hero-sub   { font-size: 16px; line-height: 1.65; }
+  #twopir-realestate .tre-title      { font-size: 26px; line-height: 1.2; }
+
+  #twopir-realestate .tre-lede,
+  #twopir-realestate .tre-philosophy p { font-size: 16px; line-height: 1.65; }
+
+  #twopir-realestate .tre-pain-item p,
+  #twopir-realestate .tre-svc-card > p,
+  #twopir-realestate .tre-why-item p,
+  #twopir-realestate .tre-quote-text,
+  #twopir-realestate .tre-faq-panel-inner p { font-size: 15px; }
+
+  #twopir-realestate .tre-faq-btn { font-size: 16px; }
+
+  #twopir-realestate .tre-pain-item h3,
+  #twopir-realestate .tre-svc-card h3,
+  #twopir-realestate .tre-step h3,
+  #twopir-realestate .tre-int-name,
+  #twopir-realestate .tre-why-item h3,
+  #twopir-realestate .tre-cs-company { font-size: 16px; }
+
+  #twopir-realestate .tre-svc-list li,
+  #twopir-realestate .tre-step p,
+  #twopir-realestate .tre-int-desc,
+  #twopir-realestate .tre-engage li,
+  #twopir-realestate .tre-callout-author { font-size: 14px; }
+
+  #twopir-realestate .tre-btn,
+  #twopir-realestate .tre-cs-link { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-realestate .tre-pill { font-size: 11px; letter-spacing: 0.14em; padding: 6px 13px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   OPERATIONAL OUTCOMES
+   ════════════════════════════════════════════════════════════
+   Not a stat grid: this page's outcome "values" are short accent
+   phrases ("↑ Donor Retention"), not figures, so they take the
+   h4 step rather than the display step. Setting a five-word
+   phrase at 48px would break the row and the hierarchy. */
+#twopir-realestate .tre-out-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-realestate .tre-out-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  border-left: 3px solid var(--tre-accent, #00aff6);
+  border-radius: var(--tre-radius-card, 18px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-out-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-realestate .tre-out-val {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--tre-accent-ink, #00699f);
+}
+#twopir-realestate .tre-out-lbl {
+  font-size: var(--tre-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tre-muted, #566b79);
+}
+#twopir-realestate .tre-out-lbl strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  color: var(--tre-text, #1a2a35);
+}
+
+/* ════════════════════════════════════════════════════════════
+   WHO WE SERVE
+   ════════════════════════════════════════════════════════════
+   Six audience cards. The source ran these through the same
+   four-up grid as the integrations, which left a ragged row of
+   two; three-up divides evenly and gives the longer descriptions
+   a workable measure. */
+#twopir-realestate .tre-who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-realestate .tre-who-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 2.1vw, 24px);
+  background: var(--tre-surface, #ffffff);
+  border: 1px solid var(--tre-border-soft, rgba(0,175,246,0.22));
+  border-top: 3px solid var(--tre-accent, #00aff6);
+  border-radius: var(--tre-radius-md, 14px);
+  box-shadow: var(--tre-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tre-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-realestate .tre-who-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tre-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+/* The source labels each audience card with a job title ("Directors of
+   Operations & COOs") rather than an icon. A title is a label, so it takes
+   the mono eyebrow treatment — not an emoji frame. */
+#twopir-realestate .tre-who-role {
+  font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--tre-fs-micro, 12px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--tre-accent-ink, #00699f);
+}
+#twopir-realestate .tre-who-card h3 {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--tre-text, #1a2a35);
+}
+#twopir-realestate .tre-who-card p {
+  font-size: var(--tre-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tre-muted, #566b79);
+}
+
+@media (max-width: 960px) {
+  #twopir-realestate .tre-out-grid,
+  #twopir-realestate .tre-who-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  #twopir-realestate .tre-out-grid,
+  #twopir-realestate .tre-who-grid { grid-template-columns: 1fr; }
+  #twopir-realestate .tre-hero-proof { grid-template-columns: 1fr; gap: 8px; }
+  #twopir-realestate .tre-who-card h3,
+  #twopir-realestate .tre-out-val { font-size: 16px; }
+  #twopir-realestate .tre-who-card p,
+  #twopir-realestate .tre-out-lbl { font-size: 14px; }
+}
+
+</style>
+
+
+<div id="twopir-realestate">
+<script>document.getElementById('twopir-realestate').className += ' tre-js';</script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1 · HERO
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-hero" aria-labelledby="tre-hero-title">
+    <div class="tre-hero-grid" aria-hidden="true"></div>
+
+    <div class="tre-hero-inner">
+
+      <div class="tre-hero-copy">
+
+        <span class="tre-pill tre-fade">
+          <span class="tre-dot" aria-hidden="true"></span>
+          Salesforce for Real Estate
+        </span>
+
+        <h1 class="tre-hero-title tre-fade tre-d1" id="tre-hero-title">
+          Deals Don't Stall Because of the Market.<br>They Stall Because of <em>Broken Operations.</em>
+        </h1>
+
+        <div class="tre-hero-rule tre-fade tre-d1" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line tre-rule-line--sm"></span>
+        </div>
+
+        <p class="tre-hero-sub tre-fade tre-d2">
+          Most real estate firms don't have a demand problem — they have a systems problem. Leads
+          arrive from six different sources with no consistent follow-up. Buyers and sellers move
+          through onboarding manually. Listings hand off to transactions without clean coordination.
+          And leadership can't tell which agents, markets, or lead sources are actually driving growth.
+          Twopir Consulting builds the Salesforce-based infrastructure that closes those gaps — from
+          first inquiry to commission reconciliation.
+        </p>
+
+        <div class="tre-hero-cta tre-fade tre-d3">
+          <a class="tre-btn tre-btn--primary" href="#tre-cta">
+            Talk to a Real Estate Expert
+            <svg class="tre-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+          <a class="tre-btn tre-btn--ghost" href="#tre-proof"
+             aria-label="See what we build for real estate firms">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
+            </svg>
+            See What We Build
+          </a>
+        </div>
+
+        <ul class="tre-hero-proof tre-fade tre-d4">
+          <li><b>3×</b> Faster lead response through automated routing and follow-up</li>
+          <li><b>40%</b> Reduction in transaction coordination time post-implementation</li>
+          <li><b>100%</b> Pipeline and commission visibility across agents and markets</li>
+          <li><b>60+</b> Real estate and property workflows designed and deployed</li>
+        </ul>
+
+      </div>
+
+      <!-- Right: real estate operating architecture panel -->
+      <div class="tre-visual tre-fade tre-d5">
+        <figure class="tre-canvas" aria-labelledby="tre-canvas-label">
+
+          <div class="tre-canvas-bar">
+            <span class="tre-canvas-label" id="tre-canvas-label">
+              <span class="tre-live" aria-hidden="true"></span>
+              Brokerage Operating Model
+            </span>
+            <span class="tre-tag" aria-hidden="true">Twopir · 2πr</span>
+          </div>
+
+          <svg class="tre-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
+               role="img"
+               aria-label="Twopir real estate operating model. Systems of record — Salesforce Sales Cloud and the real estate platforms Propertybase and REDA, plus MLS and IDX feeds, Dotloop and DocuSign, and Accounting Seed and QuickBooks — feed the Twopir real estate architecture layer, made up of leads and agents, listings and transactions, and commission and reporting. That layer produces operational outcomes: faster lead response, clean commissions and pipeline visibility.">
+
+            <text class="m tre-h" x="12" y="14">SYSTEMS OF RECORD</text>
+            <line x1="150" y1="10.5" x2="548" y2="10.5" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+            <rect class="tre-layerbox" x="12" y="22" width="536" height="108" rx="14"/>
+
+            <g class="tre-hit">
+              <rect class="tre-node" x="22" y="32" width="248" height="56" rx="11"/>
+              <circle class="tre-mark" cx="40" cy="60" r="3.5"/>
+              <text class="tre-t" x="54" y="56">Salesforce Sales Cloud</text>
+              <text class="tre-s" x="54" y="73">Leads · Contacts · Opportunities</text>
+            </g>
+            <g class="tre-hit">
+              <rect class="tre-node" x="290" y="32" width="248" height="56" rx="11"/>
+              <circle class="tre-mark" cx="308" cy="60" r="3.5"/>
+              <text class="tre-t" x="322" y="56">Propertybase &amp; REDA</text>
+              <text class="tre-s" x="322" y="73">Listings · Leasing · Property</text>
+            </g>
+
+            <rect class="tre-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
+            <text class="tre-s" x="104" y="111" text-anchor="middle">MLS · IDX</text>
+            <rect class="tre-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
+            <text class="tre-s" x="280" y="111" text-anchor="middle">Dotloop · DocuSign</text>
+            <rect class="tre-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
+            <text class="tre-s" x="456" y="111" text-anchor="middle">Accounting Seed</text>
+
+            <path class="tre-link" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tre-link" d="M280,130 L280,137"/>
+            <path class="tre-link" d="M456,130 C456,146 376,142 298,148"/>
+            <path class="tre-flow d1" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tre-flow d2" d="M280,130 L280,137"/>
+            <path class="tre-flow d3" d="M456,130 C456,146 376,142 298,148"/>
+
+            <rect class="tre-core" x="12" y="158" width="536" height="196" rx="16"/>
+
+            <text class="m tre-h tre-h--acc" x="280" y="200" text-anchor="middle">TWOPIR REAL ESTATE ARCHITECTURE LAYER</text>
+            <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
+
+            <rect class="tre-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
+            <text class="tre-t2" x="104" y="248" text-anchor="middle">Leads &amp; Agents</text>
+            <text class="tre-s"  x="104" y="266" text-anchor="middle">Routing · Scoring</text>
+            <text class="tre-s"  x="104" y="279" text-anchor="middle">Nurture · Follow-up</text>
+
+            <rect class="tre-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
+            <text class="tre-t2" x="280" y="248" text-anchor="middle">Listings &amp; Transactions</text>
+            <text class="tre-s"  x="280" y="266" text-anchor="middle">Milestones · Compliance</text>
+            <text class="tre-s"  x="280" y="279" text-anchor="middle">Offer to close</text>
+
+            <rect class="tre-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
+            <text class="tre-t2" x="456" y="248" text-anchor="middle">Commission &amp; Reporting</text>
+            <text class="tre-s"  x="456" y="266" text-anchor="middle">Splits · Disbursements</text>
+            <text class="tre-s"  x="456" y="279" text-anchor="middle">Broker dashboards</text>
+
+            <text class="m tre-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE DEAL RECORD · FRONT OFFICE TO BACK OFFICE</text>
+
+            <g class="tre-spin" aria-hidden="true">
+              <path class="tre-badge-ring" d="M280,131 A27,27 0 0 1 306,151"/>
+              <path class="tre-badge-ring" d="M280,185 A27,27 0 0 1 254,165"/>
+            </g>
+            <circle class="tre-badge-face" cx="280" cy="158" r="21"/>
+            <text class="tre-badge-txt" x="280" y="163" text-anchor="middle">2πr</text>
+
+            <path class="tre-link" d="M280,354 L280,378"/>
+            <path class="tre-flow tre-flow--out d1" d="M280,354 L280,378"/>
+            <polyline points="273,372 280,379 287,372" fill="none" stroke="rgba(53,211,154,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <rect class="tre-layerbox" x="12" y="384" width="536" height="150" rx="14"/>
+            <text class="m tre-h tre-h--out" x="28" y="410">OPERATIONAL OUTCOMES</text>
+            <line x1="216" y1="406.5" x2="532" y2="406.5" stroke="rgba(53,211,154,0.22)" stroke-width="1"/>
+
+            <g class="tre-hit">
+              <rect class="tre-out" x="22" y="422" width="164" height="76" rx="11"/>
+              <circle class="tre-mark--out" cx="38" cy="441" r="3.5"/>
+              <text class="tre-t2" x="50" y="445">Faster Response</text>
+              <text class="tre-s"  x="36" y="463">Every inquiry routed</text>
+              <text class="tre-s"  x="36" y="476">before it goes cold</text>
+            </g>
+            <g class="tre-hit">
+              <rect class="tre-out" x="198" y="422" width="164" height="76" rx="11"/>
+              <circle class="tre-mark--out" cx="214" cy="441" r="3.5"/>
+              <text class="tre-t2" x="226" y="445">Clean Commissions</text>
+              <text class="tre-s"  x="212" y="463">Statements out the day</text>
+              <text class="tre-s"  x="212" y="476">a transaction closes</text>
+            </g>
+            <g class="tre-hit">
+              <rect class="tre-out" x="374" y="422" width="164" height="76" rx="11"/>
+              <circle class="tre-mark--out" cx="390" cy="441" r="3.5"/>
+              <text class="tre-t2" x="402" y="445">Pipeline Visibility</text>
+              <text class="tre-s"  x="388" y="463">Agent, market and deal</text>
+              <text class="tre-s"  x="388" y="476">velocity in one view</text>
+            </g>
+
+            <text class="m tre-h" x="280" y="520" text-anchor="middle" style="font-size:9px">LEADS · LISTINGS · TRANSACTIONS · COMMISSIONS · REPORTING</text>
+          </svg>
+
+          <div class="tre-stack" aria-hidden="true">
+            <div class="tre-layer">
+              <div class="tre-layer-h">Layer 01</div>
+              <div class="tre-layer-t">Systems of Record</div>
+              <div class="tre-chips">
+                <span class="tre-chip">Sales Cloud</span>
+                <span class="tre-chip">Propertybase &amp; REDA</span>
+                <span class="tre-chip">MLS · IDX</span>
+                <span class="tre-chip">Dotloop · DocuSign</span>
+                <span class="tre-chip">Accounting Seed</span>
+              </div>
+            </div>
+
+            <div class="tre-connector"></div>
+
+            <div class="tre-layer tre-layer--core">
+              <div class="tre-layer-h">Layer 02 · 2πr</div>
+              <div class="tre-layer-t">Twopir Real Estate Architecture Layer</div>
+              <div class="tre-chips">
+                <span class="tre-chip">Leads &amp; Agents</span>
+                <span class="tre-chip">Listings &amp; Transactions</span>
+                <span class="tre-chip">Commission &amp; Reporting</span>
+                <span class="tre-chip">Marketing</span>
+              </div>
+            </div>
+
+            <div class="tre-connector"></div>
+
+            <div class="tre-layer tre-layer--out">
+              <div class="tre-layer-h">Layer 03</div>
+              <div class="tre-layer-t">Operational Outcomes</div>
+              <div class="tre-chips">
+                <span class="tre-chip">Faster Response</span>
+                <span class="tre-chip">Clean Commissions</span>
+                <span class="tre-chip">Pipeline Visibility</span>
+              </div>
+            </div>
+          </div>
+
+        </figure>
+
+        <div class="tre-float tre-fade tre-d4" aria-hidden="true">
+          <span class="tre-float-ico">
+            <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/></svg>
+          </span>
+          <span>
+            <span class="tre-float-k">Delivery Model</span>
+            <span class="tre-float-v">Assess → Architect → Build → Scale</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       2 · TRUST STRIP
+       ══════════════════════════════════════════════════════════
+       Note: unlike every other page built in this batch, the logo
+       alt attributes in this source are CORRECT — they name the
+       real estate firms whose logos the image files actually are.
+       Carried over unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-trust" aria-label="Real estate firms and platforms we work with">
+    <div class="tre-trust-card tre-fade">
+
+      <p class="tre-trust-lead">
+        Trusted by <strong><span class="twopir-clients">500+</span> Companies</strong> building and
+        scaling revenue operations with Twopir Consulting.
+      </p>
+
+      <div class="tre-marquee">
+        <div class="tre-marquee-track">
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Leverage%20Companies.png" alt="Leverage Companies" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/The%20Rodger%20Group.png" alt="The Rodger Group" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Windsor%20Group.png" alt="Windsor Group" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/simone%20realty%20Inc.png" alt="Simone Realty Inc" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sure%20Equity.png" alt="Sure Equity" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/RealTools_Logo_Final_MB-Buzz-599x462-1.webp" alt="RealTools" loading="lazy" decoding="async" width="600" height="170"></div>
+
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Leverage%20Companies.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/The%20Rodger%20Group.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Windsor%20Group.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/simone%20realty%20Inc.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Sure%20Equity.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="tre-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/RealTools_Logo_Final_MB-Buzz-599x462-1.webp" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+        </div>
+      </div>
+
+      <p class="tre-eyebrow tre-badges-label">Built On &amp; Connected To</p>
+      <ul class="tre-badges">
+        <li class="tre-badge">Salesforce Sales Cloud</li>
+        <li class="tre-badge">Propertybase</li>
+        <li class="tre-badge">REDA</li>
+        <li class="tre-badge">MLS / IDX</li>
+        <li class="tre-badge">Dotloop</li>
+        <li class="tre-badge">DocuSign</li>
+        <li class="tre-badge">Accounting Seed</li>
+        <li class="tre-badge">Marketing Cloud</li>
+        <li class="tre-badge">Agentforce AI</li>
+      </ul>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       3 · THE REAL PROBLEM
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--alt" aria-labelledby="tre-pain-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">The Real Problem</span>
+        <h2 class="tre-title" id="tre-pain-title">The Operational Gaps That Slow Every <em>Real Estate Firm Down</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          The real estate market moves fast. Your internal systems often don't. Leads go cold because
+          follow-up is inconsistent. Transactions stall because coordination relies on manual handoffs.
+          Commissions get delayed because accounting operates separately from everything else. And
+          leadership is making growth decisions without reliable data. These are not isolated problems
+          — they are symptoms of infrastructure that was never designed to scale.
+        </p>
+      </header>
+
+      <div class="tre-pain-grid" role="list">
+
+        <article class="tre-pain-item tre-fade" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">⏱️</span>
+          <div>
+            <h3>Slow Lead Response Times</h3>
+            <p>Inquiries from Zillow, your website, referrals, and open houses land in different places and get followed up at different speeds. By the time the right agent reaches a prospect, the opportunity has moved on.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade tre-d1" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">📊</span>
+          <div>
+            <h3>No Visibility Into Pipeline or Agent Performance</h3>
+            <p>Brokerage leadership can't see where deals are stalling, which agents are converting, or which lead sources actually drive closings — not without hours of manual spreadsheet work that is already outdated by the time it's ready.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade tre-d2" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">📋</span>
+          <div>
+            <h3>Manual Buyer and Seller Onboarding</h3>
+            <p>New clients fill out forms, receive introductory emails, and get handoffs to agents through inconsistent, ad hoc processes. Every agent does it differently, and there is no standard operating model across the brokerage.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">🔄</span>
+          <div>
+            <h3>Inefficient Listing-to-Close Workflows</h3>
+            <p>From the moment a listing is activated to the day a transaction closes, the coordination between agents, TC staff, lenders, title, and compliance involves too many manual touchpoints, missed tasks, and communication gaps.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade tre-d1" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">🔌</span>
+          <div>
+            <h3>Disconnected Systems Across Front and Back Office</h3>
+            <p>Your CRM, email, transaction management platform, accounting system, and reporting tools don't talk to each other. Your team spends hours re-entering data that already exists somewhere else in the stack.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade tre-d2" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">💸</span>
+          <div>
+            <h3>Commission and Financial Reporting Challenges</h3>
+            <p>Calculating agent splits, tracking disbursements, generating commission statements, and reconciling invoices is still handled manually — creating delays, errors, and disputes that slow down your back office and erode agent trust.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">📣</span>
+          <div>
+            <h3>Poor Visibility Into Marketing ROI and Lead Sources</h3>
+            <p>You're spending on portals, campaigns, and paid channels — but you can't definitively answer which source produces the most closings at the lowest cost. Without that data, marketing budgets are guesswork.</p>
+          </div>
+        </article>
+
+        <article class="tre-pain-item tre-fade tre-d1" role="listitem">
+          <span class="tre-pain-ico" aria-hidden="true">🏢</span>
+          <div>
+            <h3>No Standardized Processes Across Agents and Offices</h3>
+            <p>When every agent operates on their own system and follows their own process, quality is inconsistent, handoffs are unreliable, and scaling the brokerage means scaling the chaos — not the results.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       4 · THE TWOPIR APPROACH
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section" aria-labelledby="tre-phil-title">
+    <div class="tre-wrap">
+      <div class="tre-philosophy tre-fade">
+
+        <span class="tre-eyebrow">The Twopir Approach</span>
+        <h2 class="tre-title" id="tre-phil-title">One Connected Operating Model, <em>Built for Real Estate Scale</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+
+        <p>
+          Real estate operations fail when the front office, back office, and leadership layer treat
+          each other as separate departments. Lead management is siloed from transaction workflows.
+          Commission systems aren't connected to deal records. Reporting is assembled manually from
+          disconnected exports.
+        </p>
+        <p>
+          Twopir Consulting designs and builds the infrastructure that connects these layers — on
+          Salesforce, with the real estate-specific applications, automations, and integrations that
+          make it operational from day one. We don't install software and walk away. We architect a
+          revenue infrastructure model that covers how leads are captured, how agents convert them, how
+          transactions are coordinated, how commissions are reconciled, and how leadership gets the
+          visibility they need to manage the business.
+        </p>
+        <p>
+          The result is not a better CRM. It is a better-run brokerage.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       5 · WHAT WE BUILD
+       ══════════════════════════════════════════════════════════
+       The source left every service card's icon box EMPTY —
+       <div class="icon-box" aria-hidden="true"></div> — so the
+       cards rendered with a blank tile above the heading. They
+       carry the design system's SVG tiles here.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--alt" aria-labelledby="tre-svc-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">What We Build</span>
+        <h2 class="tre-title" id="tre-svc-title">Salesforce Infrastructure Across Every Real Estate Workflow</h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          Twopir Consulting builds connected systems across the six core operational areas where real
+          estate firms lose the most time, money, and opportunities.
+        </p>
+      </header>
+
+      <div class="tre-svc-grid" role="list">
+
+        <article class="tre-svc-card tre-fade" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </span>
+          <h3>Lead Capture &amp; Intelligent Routing</h3>
+          <p>Every inquiry — from your website, MLS portals, Zillow, referrals, or open house sign-ins — flows into one system, gets scored, and routes to the right agent automatically.</p>
+          <ul class="tre-svc-list">
+            <li>Multi-source lead consolidation into a single Salesforce pipeline</li>
+            <li>AI-powered lead scoring with Einstein or custom rules</li>
+            <li>Automated round-robin or territory-based agent assignment</li>
+            <li>Instant follow-up sequences triggered on lead entry</li>
+            <li>Duplicate detection and lead source attribution tracking</li>
+            <li>IDX and portal integration for seamless lead ingestion</li>
+          </ul>
+        </article>
+
+        <article class="tre-svc-card tre-fade tre-d1" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><polyline points="20 8 23 11 20 14"/></svg>
+          </span>
+          <h3>Buyer, Seller &amp; Tenant Onboarding</h3>
+          <p>Structured onboarding workflows replace ad hoc agent processes — so every client gets a consistent, professional experience from their first conversation to an accepted offer.</p>
+          <ul class="tre-svc-list">
+            <li>Standardized onboarding flows for buyers, sellers, and renters</li>
+            <li>Automated intake questionnaires and preference capture</li>
+            <li>Agent task checklists tied to deal stage progression</li>
+            <li>DocuSign and e-signature integration for agreements</li>
+            <li>Client communication cadences with personalization at scale</li>
+            <li>Experience Cloud portals for client self-service and visibility</li>
+          </ul>
+        </article>
+
+        <article class="tre-svc-card tre-fade tre-d2" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          <h3>Listing Management &amp; Transaction Coordination</h3>
+          <p>From listing activation to closing day, every milestone, document, and task is tracked — giving transaction coordinators, agents, and leadership a single source of truth on every deal.</p>
+          <ul class="tre-svc-list">
+            <li>Listing record management with status tracking and MLS sync</li>
+            <li>End-to-end transaction workflow from offer to close</li>
+            <li>Automated compliance checklists and deadline reminders</li>
+            <li>Dotloop and transaction management platform integration</li>
+            <li>Milestone-based notifications across agents, TCs, and clients</li>
+            <li>Deal velocity dashboards for leadership and team leaders</li>
+          </ul>
+        </article>
+
+        <article class="tre-svc-card tre-fade" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          <h3>Commission Management &amp; Back-Office Automation</h3>
+          <p>Commission reconciliation, agent disbursements, referral fee tracking, and financial reporting — all connected to your deal records so nothing falls through the cracks at closing.</p>
+          <ul class="tre-svc-list">
+            <li>Commission plan configuration for split structures and tiers</li>
+            <li>Automated commission calculation on deal close</li>
+            <li>Agent disbursement statements generated without manual entry</li>
+            <li>Referral fee and co-broke tracking across transactions</li>
+            <li>Accounting Seed, QuickBooks, and Xero integration</li>
+            <li>Invoicing, payment tracking, and accounts receivable visibility</li>
+          </ul>
+        </article>
+
+        <article class="tre-svc-card tre-fade tre-d1" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <h3>Agent Productivity &amp; Performance Reporting</h3>
+          <p>Give managing brokers and team leaders real-time visibility into agent activity, pipeline health, conversion rates, and deal velocity — without building another spreadsheet.</p>
+          <ul class="tre-svc-list">
+            <li>Individual and team-level performance dashboards</li>
+            <li>Lead-to-close conversion tracking by agent and source</li>
+            <li>Activity tracking — calls, showings, offers, and follow-ups</li>
+            <li>Goal-setting and attainment monitoring across the brokerage</li>
+            <li>Market and territory performance comparison reporting</li>
+            <li>Agentforce AI coaching prompts based on deal data patterns</li>
+          </ul>
+        </article>
+
+        <article class="tre-svc-card tre-fade tre-d2" role="listitem">
+          <span class="tre-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <h3>Marketing Automation &amp; Lead Nurture</h3>
+          <p>Buyers who aren't ready today are your best closings six months from now — if you nurture them correctly. Twopir Consulting builds the automation that keeps leads engaged without adding work to your agents' plates.</p>
+          <ul class="tre-svc-list">
+            <li>Drip sequences and email nurture campaigns by buyer or seller stage</li>
+            <li>Marketing Cloud and Account Engagement (Pardot) implementation</li>
+            <li>Lead source ROI tracking tied directly to closed transactions</li>
+            <li>Referral program tracking and partner relationship management</li>
+            <li>Re-engagement campaigns for cold leads and past clients</li>
+            <li>Campaign attribution reporting linked to closed deal revenue</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       6 · HOW WE ENGAGE
+       ══════════════════════════════════════════════════════════
+       The source put the section's supporting paragraph BEFORE the
+       line/diamond rule, which reads as a caption to the heading
+       rather than a lede. It follows the rule here, matching every
+       other section on the page; the text is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section" aria-labelledby="tre-process-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">How We Engage</span>
+        <h2 class="tre-title" id="tre-process-title">From Architecture to Adoption — Not Just Go-Live</h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          Every Twopir Consulting engagement starts with understanding your operating model, not
+          opening a project template. The build follows the strategy — not the other way around.
+        </p>
+      </header>
+
+      <div class="tre-process" role="list">
+
+        <article class="tre-step tre-fade" role="listitem">
+          <span class="tre-step-num">Step 01</span>
+          <h3>Operating Model Assessment</h3>
+          <p>We map your current lead flow, transaction process, commission structure, and reporting gaps before we touch any system. We need to understand the business before we architect the infrastructure.</p>
+        </article>
+
+        <article class="tre-step tre-fade tre-d1" role="listitem">
+          <span class="tre-step-num">Step 02</span>
+          <h3>Infrastructure Architecture</h3>
+          <p>We design your Salesforce architecture — objects, workflows, automations, integrations, and data model — around how your brokerage actually operates, including agent teams, market segments, and deal types.</p>
+        </article>
+
+        <article class="tre-step tre-fade tre-d2" role="listitem">
+          <span class="tre-step-num">Step 03</span>
+          <h3>Build and Integration</h3>
+          <p>We configure Salesforce, implement the right real estate applications, connect your MLS, portal, transaction, and accounting tools, and migrate your data without losing history or context.</p>
+        </article>
+
+        <article class="tre-step tre-fade tre-d3" role="listitem">
+          <span class="tre-step-num">Step 04</span>
+          <h3>Rollout and Enablement</h3>
+          <p>We train agents, TCs, and leadership on their specific workflows — not on the platform in general. Adoption is part of the deliverable, not an afterthought.</p>
+        </article>
+
+        <article class="tre-step tre-fade tre-d4" role="listitem">
+          <span class="tre-step-num">Step 05</span>
+          <h3>Scale and Optimize</h3>
+          <p>Post-launch, we monitor performance, measure outcomes, and iterate on workflows as your volume grows, your team expands, or your market strategy shifts. The system should get better over time, not just hold steady.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       7 · CONNECTED ECOSYSTEM
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--alt" aria-labelledby="tre-int-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Connected Ecosystem</span>
+        <h2 class="tre-title" id="tre-int-title">The Real Estate Tech Stack We Work With</h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          Twopir Consulting integrates Salesforce with the tools your brokerage already relies on — and
+          the specialized platforms that take your operations further.
+        </p>
+      </header>
+
+      <div class="tre-int-grid" role="list">
+
+        <article class="tre-int-item tre-fade" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🏠</span>
+          <h3 class="tre-int-name">Propertybase</h3>
+          <p class="tre-int-desc">Full-lifecycle real estate CRM and marketing platform built on Salesforce</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d1" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🏗</span>
+          <h3 class="tre-int-name">REDA</h3>
+          <p class="tre-int-desc">Real estate development, leasing, and property management on Salesforce</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d2" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🔌</span>
+          <h3 class="tre-int-name">MLS / IDX Integration</h3>
+          <p class="tre-int-desc">Sync listing data and buyer inquiries directly into Salesforce records</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d3" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">📝</span>
+          <h3 class="tre-int-name">Dotloop</h3>
+          <p class="tre-int-desc">Transaction management, e-signature, and document coordination</p>
+        </article>
+
+        <article class="tre-int-item tre-fade" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">✍️</span>
+          <h3 class="tre-int-name">DocuSign</h3>
+          <p class="tre-int-desc">eSignature workflows connected to listing agreements and deal records</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d1" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">📈</span>
+          <h3 class="tre-int-name">Accounting Seed</h3>
+          <p class="tre-int-desc">Native Salesforce accounting for commissions, invoices, and reporting</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d2" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">💼</span>
+          <h3 class="tre-int-name">QuickBooks / Xero</h3>
+          <p class="tre-int-desc">Back-office accounting integration for agent and firm-level financials</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d3" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🤖</span>
+          <h3 class="tre-int-name">Agentforce AI</h3>
+          <p class="tre-int-desc">Autonomous AI agents for lead follow-up, service, and deal support</p>
+        </article>
+
+        <article class="tre-int-item tre-fade" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">📧</span>
+          <h3 class="tre-int-name">Marketing Cloud</h3>
+          <p class="tre-int-desc">Multi-channel marketing automation, nurture journeys, and campaign analytics</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d1" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🗺</span>
+          <h3 class="tre-int-name">AscendixRE / REthink</h3>
+          <p class="tre-int-desc">Commercial real estate CRM with mapping, comps, and deal tracking</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d2" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">🔗</span>
+          <h3 class="tre-int-name">Zillow / Realtor.com</h3>
+          <p class="tre-int-desc">Portal lead ingestion and attribution connected to your Salesforce pipeline</p>
+        </article>
+
+        <article class="tre-int-item tre-fade tre-d3" role="listitem">
+          <span class="tre-int-ico" aria-hidden="true">☁️</span>
+          <h3 class="tre-int-name">Experience Cloud</h3>
+          <p class="tre-int-desc">Client and agent portals for self-service access to listings and deal status</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       8 · CLIENT PROOF
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--dark" id="tre-proof" aria-labelledby="tre-proof-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Client Proof</span>
+        <h2 class="tre-title" id="tre-proof-title">What Changes When the <em>Systems Are Built Right</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          Real estate firms across residential, commercial, and property management have used Twopir
+          Consulting's Salesforce infrastructure to transform how their teams operate — from lead to
+          close and commission to reconciliation.
+        </p>
+      </header>
+
+      <div class="tre-proof-pair tre-fade">
+
+        <article class="tre-quote-card">
+          <div class="tre-quote-top">
+            <span class="tre-avatar" aria-hidden="true">DP</span>
+            <span class="tre-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tre-quote-text">
+            We had Salesforce. We had Propertybase. We had agents using three different follow-up tools.
+            Nothing was connected, and our managing broker was flying blind. Twopir Consulting came in,
+            mapped everything, and built a single operating model that our entire team actually uses. We went
+            from not knowing where deals were to having a live dashboard that tells us exactly what's
+            open, what's at risk, and what closed last week.
+          </blockquote>
+          <div>
+            <span class="tre-quote-name">Director of Operations</span>
+            <span class="tre-quote-role">Residential Brokerage — 90+ Agents, 3 Markets</span>
+            <span class="tre-mono-tag">Multi-Market Residential Brokerage</span>
+          </div>
+        </article>
+
+        <article class="tre-cs-card">
+          <span class="tre-mono-tag">Case Study</span>
+          <h3 class="tre-cs-company">Propertybase + Salesforce Overhaul</h3>
+          <p class="tre-cs-title">Streamlining property management operations for a multi-market residential brokerage</p>
+          <div class="tre-cs-metrics">
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val">3×</span>
+              <span class="tre-cs-lbl">Faster lead response rate</span>
+            </div>
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val">65%</span>
+              <span class="tre-cs-lbl">Reduction in manual data entry</span>
+            </div>
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val">100%</span>
+              <span class="tre-cs-lbl">Pipeline visibility for leadership</span>
+            </div>
+          </div>
+          <a class="tre-cs-link" href="https://twopirconsulting.com/case-study/streamlining-property-management-with-propertybase/"
+             target="_blank" rel="noopener noreferrer">
+            Read Full Case Study
+            <svg class="tre-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="tre-proof-pair tre-fade tre-d1">
+
+        <article class="tre-quote-card">
+          <div class="tre-quote-top">
+            <span class="tre-avatar tre-avatar--green" aria-hidden="true">MB</span>
+            <span class="tre-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tre-quote-text tre-quote-text--green">
+            Commission reconciliation used to take our back office three full days at the end of every
+            month. Agents were questioning their splits, and we had no clean audit trail. Twopir
+            Consulting connected our deal records to Accounting Seed and built automated disbursement workflows. We
+            now close commission statements the same day a transaction closes. The trust that has
+            rebuilt with our agents because of that alone has been significant.
+          </blockquote>
+          <div>
+            <span class="tre-quote-name">Managing Broker</span>
+            <span class="tre-quote-role">Commercial Real Estate Firm — Multi-Office Operations</span>
+            <span class="tre-mono-tag tre-mono-tag--green">Commercial Real Estate Firm</span>
+          </div>
+        </article>
+
+        <article class="tre-cs-card tre-cs-card--green">
+          <span class="tre-mono-tag tre-mono-tag--green">Case Study</span>
+          <h3 class="tre-cs-company">Commission + Accounting Integration</h3>
+          <p class="tre-cs-title">Automating commission reconciliation and financial reporting for a commercial brokerage</p>
+          <div class="tre-cs-metrics">
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val tre-cs-val--green">Same Day</span>
+              <span class="tre-cs-lbl">Commission statement generation</span>
+            </div>
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val tre-cs-val--green">3 Days</span>
+              <span class="tre-cs-lbl">Saved in month-end close</span>
+            </div>
+            <div class="tre-cs-metric">
+              <span class="tre-cs-val tre-cs-val--green">0</span>
+              <span class="tre-cs-lbl">Manual reconciliation disputes post-launch</span>
+            </div>
+          </div>
+          <a class="tre-cs-link tre-cs-link--green"
+             href="https://twopirconsulting.com/propertybase-enhanced-solutions/"
+             target="_blank" rel="noopener noreferrer">
+            Read Integration Story
+            <svg class="tre-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       9 · OPERATIONAL OUTCOMES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section" aria-labelledby="tre-out-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Operational Outcomes</span>
+        <h2 class="tre-title" id="tre-out-title">What You Can Expect When the <em>Infrastructure Is Right</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          The right Salesforce architecture doesn't just organize your data — it changes how your
+          entire brokerage performs. Here is what real estate firms consistently see once the
+          foundation is built correctly.
+        </p>
+      </header>
+
+      <div class="tre-out-grid" role="list">
+
+        <article class="tre-out-card tre-fade" role="listitem">
+          <span class="tre-out-val">3×</span>
+          <p class="tre-out-lbl">Faster response to new buyer and seller inquiries with automated routing and follow-up</p>
+        </article>
+
+        <article class="tre-out-card tre-fade tre-d1" role="listitem">
+          <span class="tre-out-val">60%</span>
+          <p class="tre-out-lbl">Reduction in manual administrative tasks across lead intake, onboarding, and transaction coordination</p>
+        </article>
+
+        <article class="tre-out-card tre-fade tre-d2" role="listitem">
+          <span class="tre-out-val">40%</span>
+          <p class="tre-out-lbl">Improvement in lead-to-showing conversion with structured follow-up pipelines and agent accountability</p>
+        </article>
+
+        <article class="tre-out-card tre-fade" role="listitem">
+          <span class="tre-out-val">Same Day</span>
+          <p class="tre-out-lbl">Commission statement generation when deal records are connected to automated back-office workflows</p>
+        </article>
+
+        <article class="tre-out-card tre-fade tre-d1" role="listitem">
+          <span class="tre-out-val">100%</span>
+          <p class="tre-out-lbl">Leadership visibility into agent performance, pipeline health, and deal velocity across all markets</p>
+        </article>
+
+        <article class="tre-out-card tre-fade tre-d2" role="listitem">
+          <span class="tre-out-val">Scale</span>
+          <p class="tre-out-lbl">Infrastructure that replicates consistently across new agents, offices, and market expansions</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · BUILT FOR
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--alt" aria-labelledby="tre-who-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Built For</span>
+        <h2 class="tre-title" id="tre-who-title">Who This Work Is <em>Designed For</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+        <p class="tre-lede">
+          Twopir Consulting works with real estate decision-makers who are responsible for growth,
+          operational performance, and the systems that underpin both.
+        </p>
+      </header>
+
+      <div class="tre-who-grid" role="list">
+
+        <article class="tre-who-card tre-fade" role="listitem">
+          <span class="tre-who-role">Brokerage Owners &amp; Managing Brokers</span>
+          <h3>Scale Without Scaling the Chaos</h3>
+          <p>You're growing — more agents, more markets, more transactions — but the operational infrastructure isn't keeping up. Twopir Consulting builds the systems that let you grow without losing control over quality, compliance, or performance visibility.</p>
+        </article>
+
+        <article class="tre-who-card tre-fade tre-d1" role="listitem">
+          <span class="tre-who-role">Directors of Operations &amp; COOs</span>
+          <h3>Replace Manual Processes With Working Infrastructure</h3>
+          <p>You know where the bottlenecks are. You've lived them through growth spurts and system failures. Twopir Consulting gives you an architecture partner who thinks at the operational level — not just at the platform configuration level.</p>
+        </article>
+
+        <article class="tre-who-card tre-fade tre-d2" role="listitem">
+          <span class="tre-who-role">Team Leaders &amp; Expansion Managers</span>
+          <h3>Standardize What Works Across Every Agent</h3>
+          <p>Your top performers have a process. The rest of the team doesn't. Twopir Consulting codifies that process into Salesforce so it is repeatable, trackable, and scalable — regardless of how many agents you add or markets you enter.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · WHY TWOPIR
+       ══════════════════════════════════════════════════════════
+       The source nested a second why-engage-list inside the first
+       and left one item's closing tag unbalanced, so the last three
+       credentials rendered inside the preceding item. The list is
+       flattened here into the shared engage + facts pattern; the
+       item text is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section" aria-labelledby="tre-why-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Why Twopir</span>
+        <h2 class="tre-title" id="tre-why-title">We Don't Just Implement. <em>We Own the Outcome.</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tre-why-grid">
+
+        <div class="tre-why-list" role="list">
+
+          <article class="tre-why-item tre-fade" role="listitem">
+            <span class="tre-why-num" aria-hidden="true">01</span>
+            <div>
+              <h3>We Design Strategy First, Platform Second</h3>
+              <p>Most implementation partners configure what you ask for. Twopir Consulting designs what you need — starting from how your brokerage actually generates revenue, where deals break down, and what leadership needs to see in order to make better decisions. The platform follows the strategy.</p>
+            </div>
+          </article>
+
+          <article class="tre-why-item tre-fade tre-d1" role="listitem">
+            <span class="tre-why-num" aria-hidden="true">02</span>
+            <div>
+              <h3>We Know Real Estate Operations From the Inside</h3>
+              <p>We've architected Salesforce for residential brokerages, commercial teams, property management firms, and real estate investment groups. The workflows, the compliance requirements, the commission structures, and the agent adoption challenges — we've solved them before. You don't pay for our learning curve.</p>
+            </div>
+          </article>
+
+          <article class="tre-why-item tre-fade tre-d2" role="listitem">
+            <span class="tre-why-num" aria-hidden="true">03</span>
+            <div>
+              <h3>We Connect Front Office to Back Office</h3>
+              <p>Lead capture, transaction coordination, commission reconciliation, and leadership reporting are not separate projects. We design them as one connected operating model — so improvement in agent follow-up actually shows up in your commission data and management dashboards.</p>
+            </div>
+          </article>
+
+          <article class="tre-why-item tre-fade tre-d3" role="listitem">
+            <span class="tre-why-num" aria-hidden="true">04</span>
+            <div>
+              <h3>We Build for the Brokerage You're Becoming</h3>
+              <p>The system you implement today must still work when you have twice the agents, three times the transaction volume, and new markets. Twopir Consulting designs for scale from the first architectural decision — so you don't face a replacement project in 18 months.</p>
+            </div>
+          </article>
+
+          <article class="tre-why-item tre-fade tre-d4" role="listitem">
+            <span class="tre-why-num" aria-hidden="true">05</span>
+            <div>
+              <h3>We Rescue Underperforming Implementations</h3>
+              <p>Many brokerages already have Salesforce or Propertybase. They just don't have it working. If your existing environment isn't delivering adoption, clean data, or operational value, Twopir Consulting can diagnose, redesign, and rebuild — without requiring you to start from scratch.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="tre-callout tre-fade tre-d2">
+          <span class="tre-callout-k">
+            <span class="tre-live" aria-hidden="true"></span>
+            How We Engage
+          </span>
+
+          <p class="tre-callout-text">
+            "The problem isn't that real estate firms lack software. The problem is that their CRM,
+            transaction system, commission tools, and reporting layer were never designed to work
+            together — and nobody built the bridge."
+          </p>
+
+          <p class="tre-callout-author">
+            <strong>Twopir Consulting</strong> — Salesforce architecture, automation, integrations, and
+            operating infrastructure for real estate firms ready to grow at scale.
+          </p>
+
+          <ul class="tre-engage">
+            <li>Full architecture, build, and brokerage rollout</li>
+            <li>Salesforce and Propertybase rescue and redesign</li>
+            <li>Transaction, commission, and back-office integration</li>
+            <li>Ongoing optimization and scale support</li>
+          </ul>
+
+          <ul class="tre-facts">
+            <li class="tre-fact"><b class="twopir-years">12+</b> Years Salesforce &amp; HubSpot Delivery</li>
+            <li class="tre-fact"><b class="twopir-clients">500+</b> Clients Served</li>
+            <li class="tre-fact"><span class="twopir-countries">Serving: US | Canada | UK | UAE | Australia | New Zealand</span></li>
+            <li class="tre-fact"><span class="twopir-salesforce">Salesforce Partner</span></li>
+            <li class="tre-fact"><span class="twopir-hubspot">HubSpot Partner</span></li>
+            <li class="tre-fact"><span class="twopir-ai">AI Delivery</span></li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       12 · FAQ
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--alt" aria-labelledby="tre-faq-title">
+    <div class="tre-wrap">
+
+      <header class="tre-head tre-fade">
+        <span class="tre-eyebrow">Common Questions</span>
+        <h2 class="tre-title" id="tre-faq-title">Answers Before <em>the First Call</em></h2>
+        <div class="tre-rule" aria-hidden="true">
+          <span class="tre-rule-line"></span>
+          <span class="tre-rule-diamond"></span>
+          <span class="tre-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tre-faq-list">
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp1" id="tre-fb1">
+            <span>How does Salesforce improve lead management for a real estate brokerage?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp1" role="region" aria-labelledby="tre-fb1">
+            <div class="tre-faq-panel-inner">
+              <p>Salesforce centralizes inquiries from every source — your website, Zillow, MLS feeds, referrals, open houses — into one pipeline. Leads get scored, routed to the right agent automatically, and followed up through structured cadences. Your team stops working from inboxes and spreadsheets, and leadership gets a live view of who is converting and who is letting leads go cold.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp2" id="tre-fb2">
+            <span>Can Salesforce manage our listing-to-close transaction workflow?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp2" role="region" aria-labelledby="tre-fb2">
+            <div class="tre-faq-panel-inner">
+              <p>Yes. With the right architecture and platforms like Propertybase, REDA, or Dotloop integration, Salesforce can support the full listing and transaction lifecycle — from listing activation and offer management through due diligence, compliance checkpoints, document coordination, and closing. Transaction coordinators and agents get task checklists and milestone notifications automatically triggered by deal stage.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp3" id="tre-fb3">
+            <span>We already have Salesforce set up but it's not performing. Can Twopir Consulting fix it?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp3" role="region" aria-labelledby="tre-fb3">
+            <div class="tre-faq-panel-inner">
+              <p>Yes. A significant portion of Twopir Consulting's real estate engagements begin with an existing Salesforce or Propertybase environment that is technically live but operationally broken — low adoption, dirty data, disconnected integrations, or workflows that don't match how the team actually works. We conduct a full architecture audit, redesign around real operational needs, and rebuild what isn't working without requiring a full restart.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp4" id="tre-fb4">
+            <span>Do you help with commission tracking, disbursements, and financial reporting?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp4" role="region" aria-labelledby="tre-fb4">
+            <div class="tre-faq-panel-inner">
+              <p>Yes. Twopir Consulting connects your Salesforce deal records to commission management workflows and accounting platforms like Accounting Seed, QuickBooks, and Xero. We automate commission calculation on close, generate agent disbursement statements, track referral fees and co-broke splits, and provide financial reporting that eliminates the manual month-end reconciliation process your back office currently relies on.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp5" id="tre-fb5">
+            <span>What types of real estate firms does Twopir Consulting work with?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp5" role="region" aria-labelledby="tre-fb5">
+            <div class="tre-faq-panel-inner">
+              <p>Twopir Consulting works with residential brokerages, commercial real estate firms, property management companies, real estate investment groups, and multi-market expansion teams. The core operating challenges — lead follow-up, transaction coordination, commission management, and leadership reporting — are shared across most firm types, even when deal structures differ. The architecture we design reflects your specific model.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp6" id="tre-fb6">
+            <span>How is Twopir Consulting different from a standard Salesforce implementation partner?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp6" role="region" aria-labelledby="tre-fb6">
+            <div class="tre-faq-panel-inner">
+              <p>Standard implementation partners optimize for platform delivery — configuring what you ask for and closing the project. Twopir Consulting optimizes for operating performance — meaning we design the architecture around how your brokerage generates revenue, where deals break down, and what would actually make leadership's visibility and agents' workflows better. That difference shows up in every design decision, not just at go-live.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tre-faq-row tre-fade">
+          <button class="tre-faq-btn" type="button" aria-expanded="false" aria-controls="tre-fp7" id="tre-fb7">
+            <span>Do you support AI-powered capabilities for real estate operations?</span>
+            <span class="tre-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tre-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tre-faq-panel" id="tre-fp7" role="region" aria-labelledby="tre-fb7">
+            <div class="tre-faq-panel-inner">
+              <p>Yes. Twopir Consulting implements Salesforce Einstein for predictive lead scoring and deal risk identification, and we design and deploy Agentforce AI agents for autonomous lead follow-up, client inquiry handling, and service coordination. We also help firms integrate AI into marketing personalization, listing recommendations, and agent performance coaching — grounded in your actual data, not generic outputs.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       13 · CTA
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tre-section tre-section--dark tre-cta" id="tre-cta" aria-labelledby="tre-cta-title">
+    <div class="tre-cta-inner tre-fade">
+
+      <span class="tre-eyebrow">Next Step</span>
+      <h2 class="tre-title" id="tre-cta-title">If Your Firm Is Growing Faster Than Its Systems, <em>This Is the Right Conversation</em></h2>
+      <div class="tre-rule" aria-hidden="true">
+        <span class="tre-rule-line"></span>
+        <span class="tre-rule-diamond"></span>
+        <span class="tre-rule-line"></span>
+      </div>
+
+      <p class="tre-lede">
+        Twopir Consulting helps real estate firms create operating discipline across lead management,
+        buyer and seller onboarding, transaction coordination, commission reconciliation, and
+        leadership reporting — with Salesforce as the foundation and architecture that holds up at
+        scale.
+      </p>
+
+      <div class="tre-cta-actions">
+        <a class="tre-btn tre-btn--primary" href="https://meetings-na2.hubspot.com/ccomstock/initial-discovery-call-15-minutes?uuid=3a74faf4-9484-47ff-96bd-760731037191">
+          Book a Strategy Call
+          <svg class="tre-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+          </svg>
+        </a>
+        <a class="tre-btn tre-btn--ghost" href="https://twopirconsulting.com/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v12H7l-3 3z"/>
+          </svg>
+          Visit Twopir Consulting
+        </a>
+      </div>
+
+      <p class="tre-cta-note">Speak with a team that understands real estate operations, Salesforce architecture, and what it actually takes to scale a brokerage on connected infrastructure.</p>
+
+    </div>
+  </section>
+
+</div><!-- /#twopir-realestate -->
+
+<!-- ============================================================
+     STRUCTURED DATA — SALESFORCE FOR REAL ESTATE
+     BreadcrumbList + Service + FAQPage.
+
+     • Service.provider points at the homepage Organization node
+       (@id …/#organization, emitted once from Hero.html). Keep the
+       two @ids in sync or the provider reference will dangle.
+     • FAQPage is a no-harm addition only: Google removed FAQ rich
+       results for all sites in May 2026, so this produces no SERP
+       snippet. It is kept because the page already has a real FAQ
+       section and the markup still helps machines parse it.
+     • Every FAQ answer below is copied verbatim from the visible
+       accordion on this page. If the visible copy is edited, edit it
+       here too — mismatched schema and on-page text is an AEO risk.
+     • The FAQ block below was GENERATED from the visible accordion by
+       scripts/generate_schema.py. If you edit a question or an answer
+       in the accordion, re-run that script rather than editing this
+       block by hand.
+     • The URLs assume the /salesforce-for-real-estate/ permalink and the
+       /industries-we-serve/ parent. Confirm both before publishing.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://twopirconsulting.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Industries We Serve",
+      "item": "https://twopirconsulting.com/industries-we-serve/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Salesforce for Real Estate",
+      "item": "https://twopirconsulting.com/salesforce-for-real-estate/"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://twopirconsulting.com/salesforce-for-real-estate/#service",
+  "name": "Salesforce for Real Estate",
+  "serviceType": "Salesforce implementation and real estate operations infrastructure",
+  "provider": {
+    "@id": "https://twopirconsulting.com/#organization"
+  },
+  "areaServed": [
+    "US",
+    "CA",
+    "GB",
+    "AE",
+    "AU",
+    "NZ"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Real Estate Brokerages and Property Firms"
+  },
+  "description": "Twopir Consulting builds the Salesforce-based operating infrastructure behind real estate growth — lead capture and routing, buyer and seller onboarding, listing and transaction coordination, commission automation, agent performance reporting and marketing attribution on one connected architecture.",
+  "url": "https://twopirconsulting.com/salesforce-for-real-estate/",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Real estate operations services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Lead Capture & Intelligent Routing"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Buyer, Seller & Tenant Onboarding"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Listing Management & Transaction Coordination"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Commission Management & Back-Office Automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Agent Productivity & Performance Reporting"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Marketing Automation & Lead Nurture"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Salesforce improve lead management for a real estate brokerage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce centralizes inquiries from every source — your website, Zillow, MLS feeds, referrals, open houses — into one pipeline. Leads get scored, routed to the right agent automatically, and followed up through structured cadences. Your team stops working from inboxes and spreadsheets, and leadership gets a live view of who is converting and who is letting leads go cold."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Salesforce manage our listing-to-close transaction workflow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With the right architecture and platforms like Propertybase, REDA, or Dotloop integration, Salesforce can support the full listing and transaction lifecycle — from listing activation and offer management through due diligence, compliance checkpoints, document coordination, and closing. Transaction coordinators and agents get task checklists and milestone notifications automatically triggered by deal stage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "We already have Salesforce set up but it's not performing. Can Twopir Consulting fix it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A significant portion of Twopir Consulting's real estate engagements begin with an existing Salesforce or Propertybase environment that is technically live but operationally broken — low adoption, dirty data, disconnected integrations, or workflows that don't match how the team actually works. We conduct a full architecture audit, redesign around real operational needs, and rebuild what isn't working without requiring a full restart."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you help with commission tracking, disbursements, and financial reporting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting connects your Salesforce deal records to commission management workflows and accounting platforms like Accounting Seed, QuickBooks, and Xero. We automate commission calculation on close, generate agent disbursement statements, track referral fees and co-broke splits, and provide financial reporting that eliminates the manual month-end reconciliation process your back office currently relies on."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What types of real estate firms does Twopir Consulting work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Twopir Consulting works with residential brokerages, commercial real estate firms, property management companies, real estate investment groups, and multi-market expansion teams. The core operating challenges — lead follow-up, transaction coordination, commission management, and leadership reporting — are shared across most firm types, even when deal structures differ. The architecture we design reflects your specific model."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Twopir Consulting different from a standard Salesforce implementation partner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard implementation partners optimize for platform delivery — configuring what you ask for and closing the project. Twopir Consulting optimizes for operating performance — meaning we design the architecture around how your brokerage generates revenue, where deals break down, and what would actually make leadership's visibility and agents' workflows better. That difference shows up in every design decision, not just at go-live."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you support AI-powered capabilities for real estate operations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting implements Salesforce Einstein for predictive lead scoring and deal risk identification, and we design and deploy Agentforce AI agents for autonomous lead follow-up, client inquiry handling, and service coordination. We also help firms integrate AI into marketing personalization, listing recommendations, and agent performance coaching — grounded in your actual data, not generic outputs."
+      }
+    }
+  ]
+}
+</script>
+
+
+<script>
+(function () {
+  var root = document.getElementById('twopir-realestate');
+  if (!root) return;
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  var items = root.querySelectorAll('.tre-fade');
+  var reveal = function (el) { el.classList.add('tre-in'); };
+
+  if (items.length) {
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(items, reveal);
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); }
+        });
+      });
+    }
+  }
+
+  /* ── FAQ accordion ─────────────────────────────────────── */
+  var faqBtns = root.querySelectorAll('.tre-faq-btn');
+
+  function closeRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'false');
+    row.classList.remove('is-open');
+    if (panel) panel.style.maxHeight = '0px';
+  }
+
+  function openRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'true');
+    row.classList.add('is-open');
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  Array.prototype.forEach.call(faqBtns, function (btn) {
+    btn.addEventListener('click', function () {
+      var wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      Array.prototype.forEach.call(faqBtns, closeRow);
+      if (!wasOpen) openRow(btn);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeRow(btn);
+        btn.focus();
+      }
+    });
+  });
+
+  // keep an open panel correctly sized when the viewport reflows
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(faqBtns, function (btn) {
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── FIX: kill top AND bottom spacing from theme/builder ancestors ──
+     This is the actual fix for the white gaps seen above the hero and
+     below the closing CTA section. The CSS reset above only zeroes
+     padding/margin on a fixed list of known wrapper class names
+     (Elementor, Gutenberg, entry-content, etc). If the live theme uses a
+     different wrapper class we haven't guessed, that CSS won't catch it
+     and a gap stays — first it showed up at the top, now it's the same
+     issue at the bottom, coming from the wrapper's bottom padding/margin.
+     This walks every real ancestor element from #twopir-realestate up to
+     (but not including) the page body element, forcing margin/padding on both top
+     AND bottom to 0 on each one — regardless of what class or theme put
+     it there. It mirrors the existing treFullBleed() approach just below,
+     which does the same "measure and cancel" trick for horizontal spacing. */
+  function treKillAncestorSpacing() {
+    var el = root.parentElement;
+    while (el && el !== document.body && el.nodeType === 1) {
+      el.style.marginTop = '0px';
+      el.style.paddingTop = '0px';
+      el.style.marginBottom = '0px';
+      el.style.paddingBottom = '0px';
+      el = el.parentElement;
+    }
+  }
+
+  /* ── Scrollbar-safe full-viewport-width breakout ─────────
+     Page builders wrap content in a boxed container, which would
+     leave the section backgrounds floating in the middle of the
+     page. A pure-CSS "100vw / -50vw" breakout clips the left edge
+     whenever a vertical scrollbar exists, because 100vw includes
+     the scrollbar track. So we measure the real visible width
+     with documentElement.clientWidth and apply exact pixels.
+     If JS is unavailable the page simply stays contained — safe,
+     never clipped. ── */
+  function treFullBleed() {
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+
+    var rect = root.getBoundingClientRect();
+    var visibleWidth = document.documentElement.clientWidth; // excludes scrollbar
+
+    if (!visibleWidth || rect.width === 0) return;
+
+    root.style.width = visibleWidth + 'px';
+    root.style.marginLeft = (-rect.left) + 'px';
+    root.style.marginRight = (rect.left - (visibleWidth - (rect.left + rect.width))) + 'px';
+  }
+
+  var bleedRaf;
+  function applyBleed() {
+    treKillAncestorSpacing();
+    treFullBleed();
+  }
+  function scheduleBleed() {
+    if (bleedRaf) cancelAnimationFrame(bleedRaf);
+    bleedRaf = requestAnimationFrame(applyBleed);
+  }
+
+  /* CLS fix (2026-08): the first breakout runs synchronously rather
+     than inside requestAnimationFrame, so the final width and margins
+     are in place for the first layout pass instead of being applied
+     one frame after the page has already painted at the wrong width.
+     Resize/orientation changes still go through the rAF-throttled
+     path, where batching matters and a shift is unavoidable anyway. */
+  applyBleed();
+  window.addEventListener('resize', scheduleBleed);
+  window.addEventListener('orientationchange', scheduleBleed);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleBleed);
+  }
+
+  /* Page builders / admin bars can shift layout after first paint, so
+     one late re-check stays. It runs synchronously inside a single
+     task: when the geometry has not moved, the styles are rewritten to
+     the same values within that task and the browser never paints an
+     intermediate state, so no layout shift is recorded. */
+  setTimeout(applyBleed, 500);
+})();
+</script>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE ALIGNMENT PASS  ·  loaded last
+   Typography + a few sizing/consistency fixes carried over from
+   the homepage build. No colour changes, no content changes.
+   !important is used the same way the homepage uses it: the live
+   WordPress theme restyles h2/h3/button/li globally, and without
+   it the theme wins on the published page.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1 · Font families pinned — the theme's own body font must not
+       leak into headings, copy or mono labels. */
+#twopir-realestate,
+#twopir-realestate p,
+#twopir-realestate li,
+#twopir-realestate a,
+#twopir-realestate span,
+#twopir-realestate button { font-family: var(--tre-ff-body, 'Inter', sans-serif) !important; }
+
+/* Card titles belong to the display face too. Without them listed here the
+   blanket body-font rule above wins by inheritance and every card title on
+   the page renders in Inter — which flattens the hierarchy to two levels
+   where the homepage has three (h1 / section title / card title). */
+#twopir-realestate h1,
+#twopir-realestate h2,
+#twopir-realestate h3,
+#twopir-realestate .tre-hero-title,
+#twopir-realestate .tre-title,
+#twopir-realestate .tre-pain-item h3,
+#twopir-realestate .tre-svc-card h3,
+#twopir-realestate .tre-step h3,
+#twopir-realestate .tre-who-card h3,
+#twopir-realestate .tre-why-item h3,
+#twopir-realestate .tre-int-name,
+#twopir-realestate .tre-cs-company,
+#twopir-realestate .tre-cs-val,
+#twopir-realestate .tre-layer-t,
+#twopir-realestate .tre-avatar,
+#twopir-realestate .tre-fact b,
+#twopir-realestate .tre-hero-proof b { font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif) !important; }
+
+#twopir-realestate .tre-eyebrow,
+#twopir-realestate .tre-mono-tag,
+#twopir-realestate .tre-cs-lbl,
+#twopir-realestate .tre-step-num,
+#twopir-realestate .tre-why-num,
+#twopir-realestate .tre-callout-k,
+#twopir-realestate .tre-fact,
+#twopir-realestate .tre-cta-note,
+#twopir-realestate .tre-canvas-label,
+#twopir-realestate .tre-pill,
+#twopir-realestate .tre-chip { font-family: var(--tre-ff-mono, 'JetBrains Mono', monospace) !important; }
+
+/* 2 · The type scale from the pass above, re-asserted with the
+       same protection the homepage uses. */
+#twopir-realestate .tre-hero-title { font-size: var(--tre-fs-display, clamp(34px, 4.5vw, 56px)) !important; line-height: 1.14 !important; }
+#twopir-realestate .tre-title      { font-size: var(--tre-fs-h2, clamp(30px, 3.4vw, 44px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-realestate .tre-title em   { font-weight: 800 !important; font-style: normal !important; }
+#twopir-realestate .tre-hero-sub,
+#twopir-realestate .tre-lede,
+#twopir-realestate .tre-philosophy p { font-size: var(--tre-fs-lede, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.7 !important; }
+
+/* Primary card titles take the h3 step (17–19px), the same rung the
+   homepage gives its service and about cards. The denser grids — process
+   steps, the integration tiles, the case-study company line, FAQ rows —
+   stay on h4, matching the homepage's own dense-card treatment. Before
+   this split, --tre-fs-h3 was defined but never used and every card title
+   sat at 16px, the same size as the FAQ button text. */
+#twopir-realestate .tre-pain-item h3 { font-size: var(--tre-fs-h3, clamp(20px, 1.8vw, 24px)) !important; line-height: 1.3 !important; }
+
+#twopir-realestate .tre-step h3,
+#twopir-realestate .tre-who-card h3,
+#twopir-realestate .tre-int-name,
+#twopir-realestate .tre-cs-company,
+#twopir-realestate .tre-faq-btn,
+#twopir-realestate .tre-layer-h { font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.4 !important; }
+
+#twopir-realestate .tre-pain-item p,
+#twopir-realestate .tre-svc-card > p,
+#twopir-realestate .tre-why-item p,
+#twopir-realestate .tre-faq-panel-inner p,
+#twopir-realestate .tre-quote-text { font-size: var(--tre-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65 !important; }
+
+#twopir-realestate .tre-svc-list li,
+#twopir-realestate .tre-step p,
+#twopir-realestate .tre-int-desc,
+#twopir-realestate .tre-engage li,
+#twopir-realestate .tre-why-list li,
+#twopir-realestate .tre-callout-author,
+#twopir-realestate .tre-quote-name,
+#twopir-realestate .tre-trust-lead { font-size: var(--tre-fs-sm, 14px) !important; line-height: 1.6 !important; }
+
+#twopir-realestate .tre-quote-role,
+#twopir-realestate .tre-badge,
+#twopir-realestate .tre-tag,
+#twopir-realestate .tre-src { font-size: var(--tre-fs-xs, 13px) !important; }
+
+/* 11px mono floor — nothing on the page sits below it */
+#twopir-realestate .tre-eyebrow   { font-size: var(--tre-fs-eyebrow, clamp(13px, 1vw, 14px)) !important; letter-spacing: 0.2em !important; }
+#twopir-realestate .tre-mono-tag,
+#twopir-realestate .tre-cs-lbl,
+#twopir-realestate .tre-step-num,
+#twopir-realestate .tre-why-num,
+#twopir-realestate .tre-callout-k,
+#twopir-realestate .tre-fact,
+#twopir-realestate .tre-cta-note,
+#twopir-realestate .tre-canvas-label,
+#twopir-realestate .tre-layer-t,
+#twopir-realestate .tre-chip { font-size: var(--tre-fs-label, 12px) !important; letter-spacing: 0.08em; }
+/* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
+#twopir-realestate .tre-pill { font-size: var(--tre-fs-label, 12px) !important; letter-spacing: 0.1em !important; }
+
+#twopir-realestate .tre-btn,
+#twopir-realestate .tre-cs-link { font-size: var(--tre-fs-sm, 14px) !important; }
+#twopir-realestate .tre-cs-val  { font-size: var(--tre-fs-stat-sm, clamp(22px, 2vw, 26px)) !important; line-height: 1.1; }
+
+/* 3 · Caps card titles — the homepage's own uppercase card-title recipe
+       (display face, h4 step, weight 800, 0.055em tracking). Applied to
+       both the "Why" cards and the service cards, which share the
+       treatment. Set in caps they need the h4 step, not h3: uppercase at
+       19px with this much tracking wraps badly in a three-up grid. */
+#twopir-realestate .tre-why-item h3,
+#twopir-realestate .tre-svc-card h3 {
+  text-transform: uppercase !important;
+  font-size: var(--tre-fs-h4, clamp(17px, 1.4vw, 19px)) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.35 !important;
+}
+
+/* 3b · CONTRAST — brand blue as TEXT on light grounds
+        #00aff6 measures 2.14 / 2.23 / 2.30 / 2.48 against the page, alt,
+        card and white surfaces. Every role below is 11–16px, so it needs
+        the 4.5 minimum, and --tre-accent-ink (5.14–5.96) is the same hue
+        darkened to clear it. Loaded here, after every section rule, so
+        there is nothing left to override it. */
+#twopir-realestate .tre-eyebrow,
+#twopir-realestate .tre-pill,
+#twopir-realestate .tre-float-k,
+#twopir-realestate .tre-step-num,
+#twopir-realestate .tre-why-num,
+#twopir-realestate .tre-faq-ico,
+#twopir-realestate .tre-faq-row.is-open .tre-faq-btn,
+#twopir-realestate .tre-src:hover,
+#twopir-realestate .tre-src:focus-visible { color: var(--tre-accent-ink, #00699f) !important; }
+
+/* …but on a navy panel the bright accent is the legible one, so the dark
+   sections, the hero canvas and the sticky callout all keep it. The open
+   FAQ icon also keeps white-on-accent, which already passes. */
+#twopir-realestate .tre-section--dark .tre-eyebrow,
+#twopir-realestate .tre-cta .tre-eyebrow,
+#twopir-realestate .tre-callout .tre-callout-k { color: var(--tre-accent, #00aff6) !important; }
+#twopir-realestate .tre-faq-row.is-open .tre-faq-ico { color: #fff !important; }
+
+/* 4 · Case-study cards — the theme uppercases and enlarges h3,
+       which blew these headlines up mid-card on the homepage too. */
+#twopir-realestate .tre-cs-title {
+  text-transform: none !important;
+  font-size: var(--tre-fs-sm, 14px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+#twopir-realestate .tre-cs-company {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+#twopir-realestate .tre-cs-lbl { letter-spacing: 0.14em !important; }
+
+/* 5 · Client logo rail — vendor marks must never be cropped.
+       The <img> tags carry width/height attributes and the theme
+       defaults to object-fit: cover, which slices wide logos. */
+#twopir-realestate .tre-marquee-item img {
+  height: 36px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* 6 · FAQ — kill the stray square the theme injects next to the
+       +/− toggle on hover and click. */
+#twopir-realestate .tre-faq-btn::before,
+#twopir-realestate .tre-faq-btn::after,
+#twopir-realestate .tre-faq-ico::before,
+#twopir-realestate .tre-faq-ico::after,
+#twopir-realestate .tre-faq-row > button::before,
+#twopir-realestate .tre-faq-row > button::after {
+  content: none !important;
+  display: none !important;
+}
+#twopir-realestate .tre-faq-btn,
+#twopir-realestate .tre-faq-btn:hover,
+#twopir-realestate .tre-faq-btn:focus,
+#twopir-realestate .tre-faq-btn:active,
+#twopir-realestate .tre-faq-ico {
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+#twopir-realestate .tre-faq-btn:focus-visible {
+  outline: 2px solid var(--tre-accent, #00aff6) !important;
+  outline-offset: -3px;
+}
+#twopir-realestate .tre-faq-ico {
+  overflow: hidden;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+#twopir-realestate .tre-faq-ico svg { font-size: initial; }
+
+/* 7 · Small screens — matches the homepage's mobile type block */
+@media (max-width: 620px) {
+  #twopir-realestate .tre-hero-title { font-size: 30px !important; line-height: 1.18 !important; }
+  #twopir-realestate .tre-title      { font-size: 26px !important; line-height: 1.2 !important; }
+  #twopir-realestate .tre-hero-sub,
+  #twopir-realestate .tre-lede,
+  #twopir-realestate .tre-philosophy p { font-size: 16px !important; }
+
+  #twopir-realestate .tre-pain-item h3,
+  #twopir-realestate .tre-svc-card h3,
+  #twopir-realestate .tre-step h3,
+  #twopir-realestate .tre-who-card h3,
+  #twopir-realestate .tre-int-name,
+  #twopir-realestate .tre-cs-company,
+  #twopir-realestate .tre-faq-btn { font-size: 16px !important; }
+  #twopir-realestate .tre-why-item h3 { font-size: 15px !important; }
+
+  #twopir-realestate .tre-pain-item p,
+  #twopir-realestate .tre-svc-card > p,
+  #twopir-realestate .tre-why-item p,
+  #twopir-realestate .tre-quote-text,
+  #twopir-realestate .tre-faq-panel-inner p { font-size: 15px !important; }
+
+  #twopir-realestate .tre-svc-list li,
+  #twopir-realestate .tre-step p,
+  #twopir-realestate .tre-int-desc,
+  #twopir-realestate .tre-engage li,
+  #twopir-realestate .tre-callout-author { font-size: 14px !important; }
+
+  #twopir-realestate .tre-cs-title { font-size: 14px !important; }
+  #twopir-realestate .tre-marquee-item img { height: 30px !important; max-width: 130px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · TEMPLATE BEHAVIOUR
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 6a · Theme pseudo-element guard ─────────────────────────
+   The live theme sets `blockquote::before { font-family: FontAwesome;
+   content: "10d" }` — a decorative quote glyph. FontAwesome is not
+   loaded on this page, so it renders as an empty tofu box at the head
+   of every testimonial. Neutralised rather than restyled: the design
+   already carries its own quote treatment through the accent rule down
+   the left edge.
+
+   Only blockquote and q are cleared. A blanket `::before` reset would
+   destroy the rule diamonds, the list bullets and the separators, all of
+   which are real parts of this design. If another theme decorates a
+   different tag, add that tag here — do not widen the selector. */
+#twopir-realestate blockquote::before,
+#twopir-realestate blockquote::after,
+#twopir-realestate q::before,
+#twopir-realestate q::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   FIRST-SCREEN HERO — height-responsive
+   ════════════════════════════════════════════════════════════
+   Ported from the homepage. Replaces the earlier
+   `(min-width: 901px) and (min-height: 720px)` gate: instead of giving
+   up below 720px tall and letting the hero scroll, the hero now SCALES
+   to whatever height it has. Everything below is clamped with px floors
+   and ceilings, so nothing scales without bound, and it is desktop-only
+   so mobile viewport-unit quirks cannot apply. */
+@media (min-width: 901px) {
+  #twopir-realestate .tre-hero {
+    min-height: calc(100vh  - var(--tre-nav, 87px));
+    min-height: calc(100svh - var(--tre-nav, 87px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
+  }
+  #twopir-realestate .tre-hero-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-realestate .tre-pill {
+    margin-bottom: clamp(10px, 1.9vh, 18px);
+    padding: clamp(5px, 0.8vh, 7px) 12px;
+  }
+  /* min(vw, vh): the headline yields to whichever dimension binds first */
+  #twopir-realestate .tre-hero-title {
+    font-size: clamp(32px, var(--tre-h1-fluid, 3.2vw), 46px) !important;
+    line-height: 1.08 !important;
+  }
+  #twopir-realestate .tre-hero-rule {
+    margin: clamp(12px, 1.9vh, 16px) 0 clamp(10px, 1.6vh, 15px);
+  }
+  #twopir-realestate .tre-hero-sub {
+    font-size: clamp(15px, var(--tre-sub-fluid, 1.2vw), 17px) !important;
+    line-height: 1.55 !important;
+  }
+  #twopir-realestate .tre-hero-cta {
+    margin-top: clamp(18px, 2.9vh, 26px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-realestate .tre-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(19px, 1.6vw, 24px);
+  }
+  #twopir-realestate .tre-hero-proof {
+    margin-top: clamp(15px, 2.5vh, 22px);
+    gap: clamp(7px, 1.2vh, 9px) 15px;
+  }
+  #twopir-realestate .tre-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-realestate .tre-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-realestate .tre-map { max-height: min(53vh, 486px); }
+}
+
+/* Short windows — a laptop with a bookmarks bar, or a scaled display.
+   The panel gives up more room so the copy column never has to. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-realestate .tre-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-realestate .tre-map { max-height: 50vh; }
+  #twopir-realestate .tre-float { transform: scale(0.92); transform-origin: left bottom; }
+}
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PAGE SCALING — the ladder, ported from the homepage
+   ════════════════════════════════════════════════════════════
+   Sections scale so a short laptop window sees the page at
+   85-100% instead of scrolling more. The floor is 0.85: the
+   bottom three rungs are deliberately equal, because 0.79 and
+   0.82 are what made the site read as squeezed.
+
+   The hero is NOT in the ladder — it does its own min(vw, vh)
+   scaling already, which is the whole reason the ladder exists. */
+/* The 1 / 1 defaults for the ladder below are declared in the single
+   #twopir-realestate token rule at the top of this sheet, not here — a second
+   bare wrapper rule is exactly what Autoptimize merges and drops. */
+
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-realestate { --tre-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height:  940px) { #twopir-realestate { --tre-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height:  880px) { #twopir-realestate { --tre-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height:  820px) { #twopir-realestate { --tre-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height:  760px) { #twopir-realestate { --tre-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  700px) { #twopir-realestate { --tre-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  640px) { #twopir-realestate { --tre-scale-h: 0.85; } }
+
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-realestate { --tre-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-realestate { --tre-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-realestate { --tre-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-realestate { --tre-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-realestate { --tre-scale-w: 0.88; } }
+
+@media (min-width: 901px) {
+  #twopir-realestate > section.tre-section,
+  #twopir-realestate > section.tre-trust {
+    zoom: min(var(--tre-scale-h, 1), var(--tre-scale-w, 1));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   The ladder MULTIPLIES every declared size: at 0.85 a 9px label
+   renders at 7.6px. A 1366x768 laptop has roughly a 650px
+   viewport once browser chrome is off, so a typical machine
+   lands on the bottom rungs, not the 0.88 one its width suggests.
+
+   Every role below was declared between 9 and 12.5px. Collected
+   here so the small end uses ONE size per tier instead of
+   drifting across 9, 9.5, 10, 10.5, 11, 11.5, 12 and 12.5.
+
+     13px -> 11.05px at 0.85   micro labels
+     14px -> 11.90px at 0.85   secondary meta and supporting copy
+
+   The hero sits OUTSIDE the ladder, so declared == rendered and
+   its labels sit one step lower at the same physical size.      */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-realestate .tre-cs-lbl,
+#twopir-realestate .tre-mono-tag,
+#twopir-realestate .tre-callout-k,
+#twopir-realestate .tre-fact,
+#twopir-realestate .tre-step-num,
+#twopir-realestate .tre-cta-note,
+#twopir-realestate .tre-why-num,
+#twopir-realestate .tre-badge {
+  font-size: 13px !important;
+}
+/* .tre-eyebrow is deliberately NOT pinned here: its token is
+   clamp(13px, 1vw, 14px), whose own floor is already 13px, so it cannot
+   fall under the readable floor. Pinning it held the eyebrow at 13px
+   while the homepage rendered 14px. */
+
+/* secondary meta and supporting copy */
+#twopir-realestate .tre-svc-list,
+#twopir-realestate .tre-step,
+#twopir-realestate .tre-int-desc,
+#twopir-realestate .tre-quote-role,
+#twopir-realestate .tre-cs-title,
+#twopir-realestate .tre-cs-link,
+#twopir-realestate .tre-callout-author,
+#twopir-realestate .tre-engage {
+  font-size: 14px !important;
+}
+
+/* hero — never zoomed, so one step lower reads the same size */
+#twopir-realestate .tre-float-k,
+#twopir-realestate .tre-tag,
+#twopir-realestate .tre-layer-h,
+#twopir-realestate .tre-canvas-label,
+#twopir-realestate .tre-hero-proof li {
+  font-size: 11.5px !important;
+}
+#twopir-realestate .tre-chip,
+#twopir-realestate .tre-float-v,
+#twopir-realestate .tre-s,
+#twopir-realestate .tre-h,
+#twopir-realestate .tre-t2 {
+  font-size: 12px !important;
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase, and wide tracking
+   compounds it. These two sat at 0.14em and 0.08em inside narrow
+   boxes: the case-study label ran to FOUR lines under a 24px
+   number and read louder than the number it was labelling.
+
+   The homepage stats strip already shows the right setting — its
+   label is the same 13px but tracked at 0.03em, and reads as the
+   quiet caption it is. Size comes down a step as well.
+
+   These sit below the 11px effective floor on purpose. That floor
+   is for reading matter; a tracked caps label is scanned, not
+   read, and its caps give it a larger apparent size. */
+#twopir-realestate .tre-cs-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-realestate .tre-fact {
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   the FAQ question, which is this page's only <button> element.
+   Two pixels of tracking on a 17.5px uppercase line is enough to
+   make the whole section read as oversized. Tracking is declared
+   here so the theme cannot decide it. */
+#twopir-realestate .tre-faq-btn {
+  letter-spacing: 0.01em !important;
+}
+
+/* ── The FAQ question is a heading, not a control ─────────────
+   The blanket body-font pass includes `#twopir-realestate button`, with
+   !important, so it beat the .tre-faq-btn display-face rule and the
+   questions rendered in Inter while the homepage's render in
+   Bricolage Grotesque. Same failure that rule's own comment warns
+   about for card titles — a <button> that is semantically a heading
+   has to be listed as an exception.
+
+   Case is left to the theme deliberately: the caps are wanted. */
+#twopir-realestate .tre-faq-btn {
+  font-family: var(--tre-ff-display, 'Bricolage Grotesque', sans-serif) !important;
+}
+</style>

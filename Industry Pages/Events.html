@@ -1,0 +1,4167 @@
+<!-- ============================================================
+     SEO / AEO — SALESFORCE FOR NONPROFITS
+     This file is a WordPress Custom HTML block, so it has no HEAD section of its own.
+     Meta title, description and canonical cannot work from inside a
+     body fragment — paste these into the SEO plugin (Yoast / Rank
+     Math) on the page that hosts this block. The JSON-LD at the
+     bottom of this file is real markup and works as-is.
+
+       Title tag  (55 chars)
+         Salesforce for Nonprofits | Twopir Consulting
+
+       Meta description  (157 chars)
+         Salesforce for nonprofits from Twopir Consulting: donor CRM,
+         fundraising operations, grant and program management and board
+         reporting on one Nonprofit Cloud architecture.
+
+       Slug       /salesforce-for-nonprofits/
+       Canonical  https://twopirconsulting.com/salesforce-for-nonprofits/
+                  ^ PLACEHOLDER — confirm the final permalink before
+                    publishing, and keep http/https + trailing slash
+                    consistent with the rest of the site.
+
+       Primary keyword    Salesforce for nonprofits
+       Secondary keywords Salesforce Nonprofit Cloud implementation,
+                          NPSP to Nonprofit Cloud migration, donor CRM
+                          for nonprofits, Raisely Salesforce integration,
+                          nonprofit grant management Salesforce
+
+       Which query this page wins that no existing page wins:
+         "Salesforce for nonprofits" and its donor-CRM, grant-management
+         and NPSP-migration long tail.
+
+       Sitemap    add this URL to sitemap.xml and submit in Google
+                  Search Console + Bing Webmaster Tools.
+     ============================================================ -->
+
+<!-- ============================================================
+     TWOPIR CONSULTING — SALESFORCE FOR NONPROFITS (Industry Page)
+     WordPress-ready snippet. Paste into a Custom HTML block.
+
+     DESIGN SYSTEM — inherited from the homepage sections
+     (Hero.html, About Us.html, Our Services.html, Industry We
+     Serve.html, FAQ.html, OUR ECOSYSTEM.html):
+
+       Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
+                 #00aff6 accent · #007ec6 accent-dark
+                 rgba(0,175,246,0.28) border · #1a2a35 ink
+                 #566b79 muted · #1e2447/#12183a/#1a2e4a navy
+                 #35d39a green
+       Type      Bricolage Grotesque (display) · Inter (body)
+                 JetBrains Mono (eyebrows / labels)
+       Radius    22px large · 18px card · 14px small · 100px pill
+       Shadow    0 2px 16px rgba(0,130,200,.10), 0 1px 4px rgba(0,130,200,.08)
+                 hover: 0 8px 32px rgba(0,130,200,.18), 0 2px 8px rgba(0,130,200,.12)
+                 dark panels: 0 8px 40px rgba(18,24,58,.20)
+       Pattern   mono eyebrow → Bricolage title → line/diamond/line
+                 rule → Inter 300 description → content grid
+
+     SCOPING
+       Every selector is prefixed with #twopir-events, and every
+       class uses the .teh- prefix. Keyframes use the teh prefix
+       too. Nothing here can leak into other WordPress pages or
+       into the homepage sections. All sizes are px / clamp() —
+       never rem — so the page is immune to whatever root
+       font-size the active theme sets.
+
+     SCROLL PERFORMANCE (2024-08 patch)
+       - `html { scroll-behavior: auto }` guards against a theme
+         applying global smooth-scrolling that fights the many
+         continuous CSS animations below.
+       - `content-visibility: auto` is applied to page sections
+         (skipping the one section that holds a `position: sticky`
+         element, since layout containment can interfere with
+         sticky) so the browser skips layout/paint work for
+         sections currently off-screen. This is the single biggest
+         lever for scroll jank on long, animation-heavy pages.
+     ============================================================ -->
+
+<!-- ============================================================
+     USING THIS FILE AS THE INDUSTRY-PAGE TEMPLATE
+     ============================================================
+     This page is the reference build for every other industry page
+     (Healthcare, Real Estate, Fintech, …). To spin up a new one,
+     five things change and nothing else needs to:
+
+     1 · IDENTIFIERS   find-and-replace two strings, in this order:
+                         #twopir-events   →  #twopir-<industry>
+                         teh-            →  t<xx>-        (3-4 chars)
+                       The keyframe names (tehPulse, tehLive, tehFlow,
+                       tehSpin, tehMarquee) carry the same prefix and
+                       are caught by the second replace. Renaming both
+                       is what keeps two industry pages from colliding
+                       if they ever render on the same URL.
+
+     2 · CONTENT       headings, copy, cards, stats, testimonials, FAQ.
+                       Section structure stays; only the words change.
+
+     3 · HERO DIAGRAM  the SVG is a three-layer model —
+                         systems of record → Twopir layer → outcomes.
+                       Swap the node labels for the industry's own
+                       systems and vocabulary. Keep the 560×548 viewBox
+                       and the layer geometry; only the text changes.
+
+     4 · SCHEMA        the three JSON-LD blocks at the bottom: breadcrumb
+                       names, Service name/description, FAQ pairs. The
+                       FAQ block must stay word-for-word identical to the
+                       visible accordion.
+
+     5 · SEO VALUES    the plugin block directly below this comment.
+
+     ── WHAT MUST NOT CHANGE ─────────────────────────────────────
+     · The type scale and the colour tokens. They come from the
+       homepage and they are what makes the pages read as one site.
+     · The single token rule. Every custom property is declared in ONE
+       `#twopir-<industry> { }` block, and every var() carries a literal
+       fallback. Autoptimize merges duplicate selectors and will silently
+       drop a second token block — that is what broke the type scale on
+       the first live deploy.
+     · px / clamp() sizing only, never rem. The live theme sets
+       `html { font-size: 10px }`, so rem values would rescale.
+     · `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns
+       the wrapper into a scroll container and breaks the sticky callout.
+
+     ── HOW IT HANDLES MORE OR LESS CONTENT ──────────────────────
+     The hero is min-height, flex, vertically centred. A page with a
+     short headline and two stats centres in the first screen and reads
+     as composed; a page with a long lede grows past it and scrolls.
+     Nothing is clipped and no font size needs touching either way.
+     The stats row is a wrapping flex list, so three, four or five
+     entries all lay out cleanly.
+
+     PASTE INTO A CUSTOM HTML BLOCK, never the visual editor — the
+     visual editor injects paragraph and line-break tags inside the
+     style element, which breaks the CSS outright.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Scroll performance fix ─────────────────────────────────
+   Forces native (non-smooth) scrolling so this page never fights
+   a theme-level `scroll-behavior: smooth` while heavy decorative
+   animations are running elsewhere on the page. Scoped globally
+   because scroll-behavior only has effect on the actual scrolling
+   element (html/body), which sits outside #twopir-events. */
+html { scroll-behavior: auto !important; }
+
+/* ── Tokens (scoped) ───────────────────────────────────────── */
+#twopir-events {
+  --teh-bg:          #dff1fa;
+  --teh-bg-alt:      #e8f5fd;
+  --teh-bg-top:      #ecf8fd;
+  --teh-card:        #eef8fd;
+  --teh-surface:     #ffffff;
+
+  --teh-accent:      #00aff6;   /* fills, borders, icons, dots, large display type */
+  --teh-accent-dk:   #007ec6;   /* gradients and hover states */
+  /* Text-safe brand blue. The accent itself measures 2.14 against the page
+     background, 2.23 on the alt, 2.30 on a card and 2.48 on white — all far
+     under the 4.5 minimum — and every role that used it as a text colour on
+     those grounds runs 11–16px. This is the same hue darkened until it clears
+     5.1 everywhere (5.14 / 5.37 / 5.53 / 5.96), so eyebrows and labels still
+     read as brand blue but are actually legible. For TEXT on light grounds
+     only: icons, borders, fills, the large gradient display type and anything
+     sitting on a navy panel all keep --teh-accent. */
+  --teh-accent-ink:  #00699f;
+  --teh-border:      rgba(0,175,246,0.28);
+  --teh-border-soft: rgba(0,175,246,0.22);
+
+  --teh-text:        #1a2a35;
+  /* nudged from #5a7080, which measured 4.45 against the page background —
+     a hair under the 4.5 minimum for body copy. This clears it on every
+     surface (4.79 / 5.01 / 5.16 / 5.56) and the shift is imperceptible
+     side by side. */
+  --teh-muted:       #566b79;
+
+  --teh-navy:        #1e2447;
+  --teh-navy-deep:   #12183a;
+  --teh-navy-soft:   #1a2e4a;
+  --teh-green:       #35d39a;
+  /* the homepage's only warm hue. Used here as the semantic left-border on
+     the "where firms stall" cards; #f0a53c was off-palette. */
+  --teh-star:        #e0961f;
+
+  --teh-ff-display:  'Bricolage Grotesque', sans-serif;
+  --teh-ff-body:     'Inter', sans-serif;
+  --teh-ff-mono:     'JetBrains Mono', monospace;
+
+  --teh-radius-lg:   22px;
+  --teh-radius-card: 18px;
+  --teh-radius-md:   14px;
+
+  --teh-shadow:      0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08);
+  --teh-shadow-hv:   0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12);
+  --teh-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
+
+  --teh-ease:        0.28s cubic-bezier(.4,0,.2,1);
+  --teh-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
+
+  /* Fluid terms for the hero. Declared on the wrapper, not inside the rules
+     that use them, because the publish pipeline mangles a rule whose
+     font-size it is rewriting — it dropped these twice when they lived
+     there. Wrapper custom properties come through intact. */
+  --teh-h1-fluid:    min(3.2vw, 5.45vh);
+  --teh-sub-fluid:   min(1.2vw, 2.35vh);
+  --teh-pad-x:       clamp(16px, 4vw, 48px);
+
+  /* TEMPLATE KNOB — height of the site header sitting above this block in
+     normal flow (measured 87px on the live theme). The only value in this
+     file tied to the surrounding site; it lets the hero be exactly "one
+     screen minus the header". Re-measure if the header ever changes. */
+  --teh-nav:         87px;
+
+  /* ── Type scale ──────────────────────────────────────────────
+     These live in the SAME rule as the colour tokens on purpose.
+     They used to sit in a second, standalone `#twopir-events { }`
+     block further down the sheet, and Autoptimize's CSS minifier
+     merges duplicate selectors — on the live site it merged the
+     three #twopir-events rules and silently dropped this one. The
+     result: 62 surviving `var(--teh-fs-*)` references with zero
+     declarations behind them. An unresolvable var() is invalid at
+     computed-value time, and for font-size that means INHERIT, so
+     the H1 fell back to the wrapper's 16px while every label and
+     button inherited 16px too — a small headline surrounded by
+     oversized body text. One token rule means there is nothing
+     left for the minifier to merge. Every var() below also carries
+     a literal fallback as a second line of defence. */
+  --teh-fs-display:     clamp(34px, 4.5vw, 56px);
+  --teh-fs-h2:          clamp(30px, 3.4vw, 44px);
+  --teh-fs-h3:          clamp(20px, 1.8vw, 24px);
+  --teh-fs-h4:          clamp(17px, 1.4vw, 19px);
+  --teh-fs-lede:        clamp(17px, 1.4vw, 19px);
+  --teh-fs-body:        clamp(15px, 1.1vw, 17px);
+  --teh-fs-sm:          14px;
+  --teh-fs-xs:          13px;
+  --teh-fs-label:       12px;
+  --teh-fs-micro:    12px;
+  --teh-fs-eyebrow:     clamp(13px, 1vw, 14px);
+  --teh-fs-stat-sm:     clamp(22px, 2vw, 26px);
+
+  position: relative;
+  width: 100%;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  /* The wrapper is the inheritance root for anything without an explicit
+     size of its own, so it takes the body step rather than a flat 16px.
+     The literal fallback matters most here: if this one failed to resolve
+     the block would inherit the theme's body size instead. */
+  font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px));
+  line-height: 1.65;
+  color: var(--teh-text, #1a2a35);
+  background: var(--teh-bg, #dff1fa);
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
+     other computes from visible to AUTO — so `overflow-x: hidden` silently
+     turned this wrapper into a scroll container around the whole page
+     (measured: overflow resolved to hidden / auto). That makes it the scroll
+     ancestor for `position: sticky`, which is why the sticky "How We Engage"
+     callout in the Why section would stop sticking above 960px, and it also
+     gives a trackpad gesture something to latch onto. `clip` clips exactly
+     the same way but creates no scroll container. The `hidden` line stays
+     first as the fallback for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
+  isolation: isolate;
+  /* FIX: this component previously relied only on JS (tehFullBleed) to cancel
+     horizontal spacing from the theme/builder wrapper. It never touched
+     *vertical* spacing, so any top/bottom padding/margin the theme's content
+     wrapper added around the widget rendered as plain white gaps — first
+     above the hero, then (once that was fixed) below the CTA section.
+     margin-top/margin-bottom are pulled to 0 here too, and the matching
+     ancestor walk in the script (tehKillAncestorSpacing) zeroes out top AND
+     bottom padding/margin on every parent between this element and the page
+     body element,
+     since the real offending wrapper class differs per theme/builder. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  /* Page-scaling ladder defaults. The @media rungs further down override
+     these; the 1 / 1 base belongs here so no second bare rule exists. */
+  --teh-scale-h: 1;
+  --teh-scale-w: 1;
+}
+
+/* ── Local reset (scoped — cannot touch the rest of the site) ─ */
+#twopir-events,
+#twopir-events *,
+#twopir-events *::before,
+#twopir-events *::after { box-sizing: border-box; }
+
+#twopir-events p,
+#twopir-events h1, #twopir-events h2, #twopir-events h3,
+#twopir-events ul, #twopir-events li,
+#twopir-events figure, #twopir-events blockquote { margin: 0; padding: 0; }
+#twopir-events li { list-style: none; }
+#twopir-events a  { text-decoration: none; }
+
+
+#twopir-events img { display: block; max-width: 100%; }
+#twopir-events button { font-family: inherit; }
+
+/* The wrapper's own styling is folded into the single token rule at the top
+   of this sheet: exactly ONE bare #twopir-events rule exists. */
+
+/* ── Elementor / builder wrapper reset ──
+   Page builders wrap the HTML widget in padded containers, which
+   would leave white bars between these full-bleed sections. This
+   only matches wrappers that actually contain #twopir-events. */
+section.elementor-section:has(#twopir-events),
+.elementor-column:has(#twopir-events),
+.elementor-widget-wrap:has(#twopir-events),
+.elementor-widget:has(#twopir-events),
+.elementor-container:has(#twopir-events),
+.wp-block-html:has(#twopir-events) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The theme wraps page content in `.page-inner { overflow: hidden }`, and on
+   the live site that box overflows horizontally by about 3px. A clipping box
+   with real overflow is still a scroll container, which makes it a latch
+   target for scroll gestures and the scroll ancestor that stops the sticky
+   callout working. `clip` clips identically but is not a scroll container.
+   Scoped with :has() so only pages carrying this block are affected. */
+.page-inner:has(#twopir-events) { overflow: clip; }
+
+/* FIX: added — the block above only catches Elementor/Gutenberg wrapper
+   classes. Classic-editor / theme "entry-content" wrappers and generic
+   <main>/<article> containers were not covered, and one of those is the
+   most likely source of the top gap. Matching them here too, in addition
+   to the JS ancestor walk, covers both cases without guessing which theme
+   is in use. */
+.entry-content:has(#twopir-events),
+.post-content:has(#twopir-events),
+.page-content:has(#twopir-events),
+main:has(#twopir-events),
+article:has(#twopir-events) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Shared layout primitives ──────────────────────────────── */
+#twopir-events .teh-section {
+  position: relative;
+  width: 100%;
+  padding: var(--teh-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--teh-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--teh-bg, #dff1fa);
+}
+#twopir-events .teh-section--alt  { background: var(--teh-bg-alt, #e8f5fd); }
+#twopir-events .teh-section--dark {
+  background:
+    radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
+    linear-gradient(158deg, var(--teh-navy, #1e2447) 0%, var(--teh-navy-deep, #12183a) 58%, var(--teh-navy-soft, #1a2e4a) 100%);
+  color: #fff;
+}
+
+/* Skip layout/paint work for sections while they are off-screen.
+   Excludes the section that contains the `position: sticky`
+   callout (Why Twopir / #teh-why-title), since layout containment
+   on an ancestor can interfere with sticky positioning. This is
+   the main scroll-jank fix: it stops the browser from repeatedly
+   re-rendering the marquee, pulses, spin and flow animations in
+   sections that aren't currently visible. */
+#twopir-events .teh-section:not(:has(.teh-callout)) {
+  content-visibility: auto;
+  /* Two declarations on purpose. The first is the placeholder size used by
+     browsers without `auto` support. The second lets the browser remember
+     each section's real rendered height once it has been on screen, so the
+     scrollbar stops jumping as you scroll back up past a section whose true
+     height is nowhere near the 900px estimate. Browsers that cannot parse
+     `auto` drop the second line and keep the first. */
+  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* iOS Safari mis-handles content-visibility during momentum scrolling:
+   sections re-lay-out mid-gesture and the page appears to stop moving. The
+   perf win only matters on large, pointer-driven screens anyway. */
+@media (hover: none), (pointer: coarse) {
+  #twopir-events .teh-section:not(:has(.teh-callout)) {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}
+
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-events .teh-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
+#twopir-events .teh-wrap--narrow { max-width: 900px; }
+
+/* ── Section header pattern (matches Our Services / Industries) */
+#twopir-events .teh-head {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+#twopir-events .teh-eyebrow {
+  display: block;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  margin-bottom: 10px;
+}
+#twopir-events .teh-title {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  color: var(--teh-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-events .teh-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--teh-accent, #00aff6) 0%, var(--teh-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--teh-accent, #00aff6);
+}
+#twopir-events .teh-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 22px;
+}
+#twopir-events .teh-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
+#twopir-events .teh-rule-diamond {
+  width: 8px; height: 8px;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-events .teh-lede {
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 300;
+  line-height: 1.78;
+  color: var(--teh-muted, #566b79);
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+#twopir-events .teh-lede strong { color: var(--teh-text, #1a2a35); font-weight: 600; }
+
+/* dark-section variants of the same header pattern */
+#twopir-events .teh-section--dark .teh-title { color: #fff; }
+#twopir-events .teh-section--dark .teh-lede  { color: rgba(220,238,252,0.78); }
+#twopir-events .teh-section--dark .teh-lede strong { color: #fff; }
+#twopir-events .teh-section--dark .teh-rule-line { background: rgba(0,175,246,0.45); }
+
+/* ── Buttons (identical geometry to the homepage hero) ─────── */
+#twopir-events .teh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  transition: background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform 0.18s ease;
+}
+#twopir-events .teh-btn svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+#twopir-events .teh-btn--primary {
+  color: #fff !important;
+  background: var(--teh-accent, #00aff6);
+  border-color: var(--teh-accent, #00aff6);
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+}
+#twopir-events .teh-btn--primary:hover,
+#twopir-events .teh-btn--primary:focus-visible {
+  background: var(--teh-text, #1a2a35);
+  border-color: var(--teh-text, #1a2a35);
+  box-shadow: 0 8px 24px rgba(26,42,53,0.24);
+  transform: translateY(-2px);
+}
+#twopir-events .teh-btn--ghost {
+  color: var(--teh-accent, #00aff6) !important;
+  background: rgba(255,255,255,0.72);
+  border-color: var(--teh-border, rgba(0,175,246,0.28));
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+}
+#twopir-events .teh-btn--ghost:hover,
+#twopir-events .teh-btn--ghost:focus-visible {
+  background: var(--teh-accent, #00aff6);
+  color: #fff !important;
+  border-color: var(--teh-accent, #00aff6);
+  box-shadow: 0 8px 24px rgba(0,175,246,0.32);
+  transform: translateY(-2px);
+}
+#twopir-events .teh-section--dark .teh-btn--ghost {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#twopir-events .teh-section--dark .teh-btn--ghost:hover {
+  background: var(--teh-accent, #00aff6);
+  border-color: var(--teh-accent, #00aff6);
+}
+#twopir-events .teh-btn:focus-visible { outline: 2px solid var(--teh-accent, #00aff6); outline-offset: 3px; }
+#twopir-events .teh-btn-arrow { transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
+#twopir-events .teh-btn--primary:hover .teh-btn-arrow { transform: translateX(3px); }
+
+/* ════════════════════════════════════════════════════════════
+   1 · HERO
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 44px) var(--teh-pad-x, clamp(16px, 4vw, 48px)) clamp(20px, 2.4vw, 32px);
+  background:
+    radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
+    linear-gradient(180deg, var(--teh-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--teh-bg, #dff1fa) 92%, var(--teh-bg, #dff1fa) 100%);
+  overflow: hidden;
+}
+#twopir-events .teh-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,175,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,175,246,0.07) 1px, transparent 1px);
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+}
+#twopir-events .teh-hero-inner {
+  position: relative;
+  z-index: 1;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  /* the copy column carries the room. Widening it reflows the headline
+     from four lines to three and the lede from six to five, which is where
+     most of the first-screen budget comes from — layout, not type. */
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  align-items: center;
+  gap: clamp(28px, 3.6vw, 58px);
+}
+#twopir-events .teh-hero-copy { max-width: 640px; }
+
+#twopir-events .teh-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  /* the flat 11px label step rather than the eyebrow clamp, plus tighter
+     padding and tracking. The pill reads noticeably smaller without leaving
+     the type scale — which matters, because every industry page reuses it. */
+  font-size: var(--teh-fs-label, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid #b3d9f2;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  margin-bottom: clamp(11px, 1.4vw, 16px);
+  box-shadow: 0 2px 10px rgba(0,130,200,0.08);
+}
+#twopir-events .teh-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teh-accent, #00aff6);
+  animation: tehPulse 2.6s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tehPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,175,246,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,175,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,175,246,0); }
+}
+
+#twopir-events .teh-hero-title {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(30px, 3.05vw, 48px);   /* was rem — the theme sets html{font-size:10px} */
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.09;
+  color: var(--teh-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-events .teh-hero-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--teh-accent, #00aff6) 0%, var(--teh-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--teh-accent, #00aff6);
+}
+#twopir-events .teh-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 1.2vw, 14px) 0 clamp(9px, 1.1vw, 13px);
+}
+#twopir-events .teh-hero-rule .teh-rule-line { width: 54px; }
+#twopir-events .teh-hero-rule .teh-rule-line--sm { width: 26px; }
+
+#twopir-events .teh-hero-sub {
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--teh-muted, #566b79);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+#twopir-events .teh-hero-sub strong { color: var(--teh-text, #1a2a35); font-weight: 600; }
+
+#twopir-events .teh-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+#twopir-events .teh-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 14px;
+  margin-top: clamp(14px, 1.6vw, 18px);
+}
+#twopir-events .teh-hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teh-muted, #566b79);
+}
+#twopir-events .teh-hero-proof b {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--teh-text, #1a2a35);
+}
+#twopir-events .teh-hero-proof li + li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.75;
+  margin-right: 8px;
+}
+
+/* ── Hero: dark architecture canvas ─────────────────────────── */
+#twopir-events .teh-visual { position: relative; display: flex; justify-content: center; }
+#twopir-events .teh-canvas {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, calc(58vh + 34px));
+  background:
+    radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--teh-navy, #1e2447) 0%, var(--teh-navy-deep, #12183a) 58%, var(--teh-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--teh-radius-lg, 22px);
+  padding: clamp(13px, 1.5vw, 17px);
+  box-shadow: var(--teh-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+}
+#twopir-events .teh-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--teh-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-events .teh-canvas-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+#twopir-events .teh-canvas-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#twopir-events .teh-live {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teh-green, #35d39a);
+  animation: tehLive 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tehLive {
+  0%   { box-shadow: 0 0 0 0 rgba(53,211,154,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(53,211,154,0); }
+  100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
+}
+#twopir-events .teh-tag {
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 5px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* The panel is capped in viewport units so it shrinks on short windows
+   instead of forcing the hero to grow. The px ceiling stops it ballooning
+   on very tall monitors, where 58vh would otherwise outrun the copy. */
+#twopir-events .teh-map {
+  display: block; width: 100%; height: auto;
+  max-height: 58vh;
+  max-height: min(58vh, 540px);
+}
+#twopir-events .teh-map text { font-family: var(--teh-ff-body, 'Inter', sans-serif); }
+#twopir-events .teh-map .m   { font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace); }
+
+#twopir-events .teh-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+#twopir-events .teh-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+#twopir-events .teh-core     { fill: rgba(0,175,246,0.08);    stroke: rgba(0,175,246,0.42);   stroke-width: 1.2; }
+#twopir-events .teh-pillbox  { fill: rgba(255,255,255,0.07);  stroke: rgba(0,175,246,0.34);   stroke-width: 1; }
+#twopir-events .teh-out      { fill: rgba(53,211,154,0.05);   stroke: rgba(53,211,154,0.28);  stroke-width: 1; }
+#twopir-events .teh-chip-r   { fill: rgba(255,255,255,0.05);  stroke: rgba(255,255,255,0.13); stroke-width: 1; }
+
+#twopir-events .teh-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
+#twopir-events .teh-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
+#twopir-events .teh-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-events .teh-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-events .teh-h--acc { fill: rgba(0,175,246,0.95); }
+#twopir-events .teh-h--out { fill: rgba(53,211,154,0.9); }
+#twopir-events .teh-mark      { fill: var(--teh-accent, #00aff6); }
+#twopir-events .teh-mark--out { fill: var(--teh-green, #35d39a); }
+
+#twopir-events .teh-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
+#twopir-events .teh-flow {
+  fill: none;
+  stroke: var(--teh-accent, #00aff6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 14;
+  opacity: 0.9;
+  animation: tehFlow 2.2s linear infinite;
+}
+#twopir-events .teh-flow--out { stroke: var(--teh-green, #35d39a); }
+#twopir-events .teh-flow.d1 { animation-delay: 0s; }
+#twopir-events .teh-flow.d2 { animation-delay: 0.28s; }
+#twopir-events .teh-flow.d3 { animation-delay: 0.56s; }
+@keyframes tehFlow { to { stroke-dashoffset: -152; } }
+
+#twopir-events .teh-hit rect { transition: fill 0.22s ease, stroke 0.22s ease; }
+#twopir-events .teh-hit:hover rect.teh-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
+#twopir-events .teh-hit:hover rect.teh-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
+
+#twopir-events .teh-badge-ring { fill: none; stroke: var(--teh-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-events .teh-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
+#twopir-events .teh-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
+#twopir-events .teh-spin { transform-origin: 280px 158px; animation: tehSpin 26s linear infinite; }
+@keyframes tehSpin { to { transform: rotate(360deg); } }
+
+/* floating delivery card */
+#twopir-events .teh-float {
+  position: absolute;
+  left: -20px;
+  bottom: -22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--teh-surface, #ffffff);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-md, 14px);
+  padding: 11px 15px;
+  box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
+}
+#twopir-events .teh-float-ico {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--teh-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,175,246,0.35);
+  flex-shrink: 0;
+}
+#twopir-events .teh-float-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-events .teh-float-k {
+  display: block;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  margin-bottom: 2px;
+}
+#twopir-events .teh-float-v {
+  display: block;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--teh-text, #1a2a35);
+  white-space: nowrap;
+}
+
+/* stacked map for small screens */
+#twopir-events .teh-stack { display: none; }
+#twopir-events .teh-layer {
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--teh-radius-md, 14px);
+  padding: 12px 13px 13px;
+}
+#twopir-events .teh-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
+#twopir-events .teh-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
+#twopir-events .teh-layer-h {
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+}
+#twopir-events .teh-layer--core .teh-layer-h { color: rgba(0,175,246,0.95); }
+#twopir-events .teh-layer--out  .teh-layer-h { color: rgba(53,211,154,0.9); }
+#twopir-events .teh-layer-t {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+  margin-bottom: 9px;
+}
+#twopir-events .teh-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-events .teh-chip {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+#twopir-events .teh-layer--core .teh-chip { background: rgba(0,175,246,0.16);  border-color: rgba(0,175,246,0.42);  color: #fff; }
+#twopir-events .teh-layer--out  .teh-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
+#twopir-events .teh-connector { height: 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+#twopir-events .teh-connector::before {
+  content: ''; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(0,175,246,0.05), rgba(0,175,246,0.7), rgba(0,175,246,0.05));
+}
+#twopir-events .teh-connector::after {
+  content: ''; position: absolute;
+  width: 6px; height: 6px;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg); border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2 · TRUST STRIP (client logos + credentials)
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-trust { padding: clamp(28px, 3vw, 40px) var(--teh-pad-x, clamp(16px, 4vw, 48px)); background: var(--teh-bg, #dff1fa); }
+#twopir-events .teh-trust-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-card, 18px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
+}
+#twopir-events .teh-trust-lead {
+  text-align: center;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 400;
+  color: var(--teh-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-events .teh-trust-lead strong { color: var(--teh-accent-ink, #00699f); font-weight: 700; }
+
+#twopir-events .teh-marquee {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#twopir-events .teh-marquee::before,
+#twopir-events .teh-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; height: 100%; width: 56px;
+  z-index: 2; pointer-events: none;
+}
+#twopir-events .teh-marquee::before { left: 0;  background: linear-gradient(to right, var(--teh-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-events .teh-marquee::after  { right: 0; background: linear-gradient(to left,  var(--teh-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-events .teh-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 52px;
+  animation: tehScroll 26s linear infinite;
+  will-change: transform;
+}
+#twopir-events .teh-marquee:hover .teh-marquee-track { animation-play-state: paused; }
+#twopir-events .teh-marquee-item { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#twopir-events .teh-marquee-item img {
+  height: 38px; width: auto; max-width: 130px;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
+@keyframes tehScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+#twopir-events .teh-badges-label {
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  margin-bottom: 12px;
+}
+#twopir-events .teh-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#twopir-events .teh-badge {
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--teh-muted, #566b79);
+  background: var(--teh-bg, #dff1fa);
+  border: 1px solid rgba(0,175,246,0.25);
+  border-radius: 6px;
+  padding: 4px 11px;
+  transition: background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-badge:hover { background: var(--teh-accent, #00aff6); color: #fff; border-color: var(--teh-accent, #00aff6); }
+
+/* ════════════════════════════════════════════════════════════
+   3 · PAIN GRID
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+#twopir-events .teh-pain-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--teh-star, #e0961f);
+  border-radius: var(--teh-radius-card, 18px);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-pain-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--teh-surface, #ffffff);
+}
+#twopir-events .teh-pain-ico {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(240,165,60,0.12);
+  border: 1px solid rgba(240,165,60,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+}
+#twopir-events .teh-pain-item h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--teh-text, #1a2a35);
+  margin-bottom: 7px;
+}
+#twopir-events .teh-pain-item p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--teh-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4 · PHILOSOPHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-philosophy {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-lg, 22px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#twopir-events .teh-philosophy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#twopir-events .teh-philosophy > * { position: relative; }
+#twopir-events .teh-philosophy p + p { margin-top: 16px; }
+#twopir-events .teh-philosophy p {
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--teh-muted, #566b79);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+#twopir-events .teh-philosophy p strong { color: var(--teh-text, #1a2a35); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   5 · SERVICES
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#twopir-events .teh-svc-card {
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--teh-accent, #00aff6), var(--teh-accent-dk, #007ec6));
+  opacity: 0;
+  transition: opacity var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-svc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--teh-surface, #ffffff);
+}
+#twopir-events .teh-svc-card:hover::after { opacity: 1; }
+#twopir-events .teh-svc-ico {
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  border-radius: 12px;
+  background: var(--teh-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+#twopir-events .teh-svc-ico svg {
+  width: 24px; height: 24px;
+  fill: none; stroke: #fff;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-events .teh-svc-card h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--teh-text, #1a2a35);
+  margin-bottom: 9px;
+}
+#twopir-events .teh-svc-card > p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.72;
+  color: var(--teh-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-events .teh-svc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  margin-top: auto;
+}
+/* Positioned ::before, NOT `display: grid` with the diamond as the first grid
+   item — grid promotes every child, anonymous text nodes included, so an item
+   containing an inline element renders one word per line. Legal still carries
+   that defect. */
+#twopir-events .teh-svc-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--teh-muted, #566b79);
+}
+#twopir-events .teh-svc-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 6px; height: 6px;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · PROCESS
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+#twopir-events .teh-step {
+  background: var(--teh-surface, #ffffff);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-md, 14px);
+  padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  position: relative;
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-events .teh-step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  margin-bottom: 14px;
+}
+#twopir-events .teh-step-num::after {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+#twopir-events .teh-step h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--teh-text, #1a2a35);
+  margin-bottom: 8px;
+}
+#twopir-events .teh-step p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--teh-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 · INTEGRATIONS
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-int-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+#twopir-events .teh-int-item {
+  background: var(--teh-surface, #ffffff);
+  border: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--teh-radius-md, 14px);
+  padding: 20px 18px;
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-int-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-events .teh-int-ico {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--teh-bg, #dff1fa);
+  border: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  margin-bottom: 12px;
+}
+#twopir-events .teh-int-name {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--teh-text, #1a2a35);
+  margin-bottom: 5px;
+  line-height: 1.35;
+}
+#twopir-events .teh-int-desc {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--teh-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8 · PROOF (dark section)
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-proof-pair {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+#twopir-events .teh-proof-pair + .teh-proof-pair { margin-top: 22px; }
+
+#twopir-events .teh-quote-card,
+#twopir-events .teh-cs-card {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--teh-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#twopir-events .teh-cs-card {
+  background: rgba(0,175,246,0.07);
+  border-color: rgba(0,175,246,0.34);
+}
+#twopir-events .teh-cs-card--green { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.32); }
+
+#twopir-events .teh-quote-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#twopir-events .teh-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teh-accent, #00aff6), var(--teh-accent-dk, #007ec6));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+#twopir-events .teh-avatar--green { background: linear-gradient(135deg, var(--teh-green, #35d39a), #1a9c73); }
+#twopir-events .teh-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
+
+#twopir-events .teh-quote-text {
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(224,240,252,0.9);
+  border-left: 2px solid var(--teh-accent, #00aff6);
+  padding-left: 20px;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+#twopir-events .teh-quote-text--green { border-left-color: var(--teh-green, #35d39a); }
+
+#twopir-events .teh-quote-name {
+  display: block;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+#twopir-events .teh-quote-role {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.5;
+}
+#twopir-events .teh-mono-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  border: 1px solid rgba(0,175,246,0.38);
+  background: rgba(0,175,246,0.09);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+#twopir-events .teh-mono-tag--green {
+  color: var(--teh-green, #35d39a);
+  border-color: rgba(53,211,154,0.4);
+  background: rgba(53,211,154,0.09);
+}
+#twopir-events .teh-cs-card .teh-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
+
+#twopir-events .teh-cs-company {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+#twopir-events .teh-cs-title {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(184,214,242,0.8);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+#twopir-events .teh-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+#twopir-events .teh-cs-metric {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px;
+  padding: 13px 10px;
+  text-align: center;
+}
+#twopir-events .teh-cs-val {
+  display: block;
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--teh-accent, #00aff6);
+  margin-bottom: 6px;
+}
+#twopir-events .teh-cs-val--green { color: var(--teh-green, #35d39a); }
+#twopir-events .teh-cs-lbl {
+  display: block;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.45;
+}
+#twopir-events .teh-cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--teh-ff-body, 'Inter', sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--teh-accent, #00aff6);
+  border-radius: 100px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.32);
+  transition: background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
+#twopir-events .teh-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
+#twopir-events .teh-cs-link--green:hover { background: var(--teh-green, #35d39a); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-events .teh-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ════════════════════════════════════════════════════════════
+   9 · WHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+}
+#twopir-events .teh-why-list { display: flex; flex-direction: column; gap: 12px; }
+#twopir-events .teh-why-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-md, 14px);
+  padding: 18px 20px;
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-why-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--teh-surface, #ffffff);
+}
+#twopir-events .teh-why-num {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(0,175,246,0.10);
+  border: 1px solid rgba(0,175,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--teh-accent, #00aff6);
+}
+#twopir-events .teh-why-item h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--teh-text, #1a2a35);
+  margin-bottom: 5px;
+}
+#twopir-events .teh-why-item p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--teh-muted, #566b79);
+}
+
+#twopir-events .teh-callout {
+  position: sticky;
+  top: 28px;
+  background:
+    radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--teh-navy, #1e2447) 0%, var(--teh-navy-deep, #12183a) 58%, var(--teh-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--teh-radius-lg, 22px);
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: var(--teh-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+  position: relative;
+  overflow: hidden;
+}
+#twopir-events .teh-callout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--teh-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-events .teh-callout-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teh-accent, #00aff6);
+  margin-bottom: 16px;
+}
+#twopir-events .teh-callout-text {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+#twopir-events .teh-callout-author {
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(184,214,242,0.78);
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-events .teh-callout-author strong { color: var(--teh-accent, #00aff6); font-weight: 600; }
+#twopir-events .teh-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+}
+#twopir-events .teh-engage li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(232,244,253,0.9);
+}
+#twopir-events .teh-engage li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--teh-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-events .teh-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-events .teh-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+#twopir-events .teh-fact b {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--teh-accent, #00aff6);
+}
+/* homepage stat hooks — keep inline so injected values don't break layout */
+#twopir-events .twopir-years,
+#twopir-events .twopir-clients,
+#twopir-events .twopir-countries,
+#twopir-events .twopir-salesforce,
+#twopir-events .twopir-hubspot,
+#twopir-events .twopir-ai { display: inline; }
+
+/* ════════════════════════════════════════════════════════════
+   10 · FAQ (accordion — same behaviour as the homepage FAQ)
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-faq-list {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#twopir-events .teh-faq-row {
+  background: var(--teh-surface, #ffffff);
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  border-radius: var(--teh-radius-md, 14px);
+  overflow: hidden;
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-faq-row.is-open {
+  border-color: rgba(0,175,246,0.5);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-events .teh-faq-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  text-align: left;
+  /* Matched to the homepage's .twh-faq-btn. The question is a HEADING, so it
+     takes the display face at 700 — not the body face at 600. The h4 size
+     step was already correct; the family and weight were not, which is why
+     the two FAQ sections looked different despite passing the type check. */
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--teh-text, #1a2a35);
+  transition: color 150ms ease;
+}
+#twopir-events .teh-faq-row.is-open .teh-faq-btn { color: var(--teh-accent, #00aff6); }
+#twopir-events .teh-faq-btn:focus-visible { outline: 2px solid var(--teh-accent, #00aff6); outline-offset: -3px; }
+#twopir-events .teh-faq-ico {
+  width: 22px; height: 22px;
+  min-width: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--teh-border, rgba(0,175,246,0.28));
+  background: rgba(0,175,246,0.07);
+  color: var(--teh-accent-ink, #00699f);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              border-color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-faq-ico svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
+}
+#twopir-events .teh-faq-row.is-open .teh-faq-ico {
+  transform: rotate(180deg);
+  background: var(--teh-accent, #00aff6);
+  border-color: var(--teh-accent, #00aff6);
+  color: #fff;
+}
+/* plus becomes a minus — the homepage's open affordance, rather than
+   rotating the plus into an x */
+#twopir-events .teh-faq-ico .teh-faq-v {
+  transform-origin: center;
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              opacity var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-faq-row.is-open .teh-faq-ico .teh-faq-v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+#twopir-events .teh-faq-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
+}
+#twopir-events .teh-faq-panel-inner {
+  padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
+}
+#twopir-events .teh-faq-row.is-open .teh-faq-panel-inner { border-top: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22)); }
+
+/* Inline citation link to an external authority source. Inherits font
+   size, weight and line-height from its parent, so it never changes
+   type scale or layout — only colour + underline mark it as a link. */
+#twopir-events .teh-src {
+  color: var(--teh-accent-ink, #00699f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-src:hover,
+#twopir-events .teh-src:focus-visible { color: var(--teh-accent, #00aff6); }
+#twopir-events .teh-faq-panel-inner p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--teh-muted, #566b79);
+  padding-top: 15px;
+  text-wrap: pretty;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11 · CTA (dark close, mirrors the homepage stats strip)
+   ════════════════════════════════════════════════════════════ */
+#twopir-events .teh-cta { text-align: center; }
+#twopir-events .teh-cta-inner { max-width: 1100px; margin: 0 auto; }
+#twopir-events .teh-cta .teh-eyebrow { color: var(--teh-accent, #00aff6); }
+#twopir-events .teh-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+#twopir-events .teh-cta-note {
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,214,242,0.7);
+  margin-top: 22px;
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────
+   Progressive enhancement (2026-08 SEO/CWV patch).
+
+   Previously every .teh-fade started at opacity:0 and only became
+   visible once the reveal script added .teh-in. That meant a crawler
+   which does not execute JavaScript — most AI answer engines and some
+   SEO tools — saw the whole page, H1 included, at opacity:0, and real
+   users waited on script execution before anything painted.
+
+   Now:
+   • Default state is VISIBLE. No JS, no CSS → the page still reads.
+   • The hidden start state applies only under .teh-js, which the
+     inline flag script sets on #twopir-events before first paint, so
+     JS users see exactly the same animation as before.
+   • The hero is above the fold, so it uses a CSS keyframe entrance
+     instead of the observer. Its H1 (the LCP element) starts painting
+     on the first frame rather than after the 120KB document has been
+     parsed and the end-of-body script has run.
+   Timing, easing, distance and stagger are unchanged throughout.    */
+#twopir-events .teh-fade {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Below-the-fold content: hidden only when JS is there to reveal it */
+#twopir-events.teh-js .teh-fade {
+  opacity: 0;
+  transform: translateY(18px);
+}
+#twopir-events .teh-fade.teh-in,
+#twopir-events.teh-js .teh-fade.teh-in { opacity: 1; transform: none; }
+
+/* Above-the-fold hero: CSS-only entrance, never gated on JS */
+#twopir-events .teh-hero .teh-fade,
+#twopir-events.teh-js .teh-hero .teh-fade {
+  opacity: 1;
+  transform: none;
+  /* Longhands, not the animation shorthand: the shorthand resets
+     animation-delay to 0s, and this rule outranks the .teh-d1..d5
+     stagger classes - which silently flattened the hero stagger. */
+  animation-name: tehFadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+@keyframes tehFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Delays drive the transition below the fold and the animation in the
+   hero, so both properties are set on the same stagger classes. */
+#twopir-events .teh-d1 { transition-delay: 0.07s; animation-delay: 0.07s; }
+#twopir-events .teh-d2 { transition-delay: 0.15s; animation-delay: 0.15s; }
+#twopir-events .teh-d3 { transition-delay: 0.23s; animation-delay: 0.23s; }
+#twopir-events .teh-d4 { transition-delay: 0.31s; animation-delay: 0.31s; }
+#twopir-events .teh-d5 { transition-delay: 0.18s; animation-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #twopir-events .teh-fade,
+  #twopir-events.teh-js .teh-fade,
+  #twopir-events .teh-hero .teh-fade,
+  #twopir-events.teh-js .teh-hero .teh-fade { opacity: 1; transform: none; transition: none; animation: none; }
+  #twopir-events .teh-flow { animation: none; stroke-dasharray: none; opacity: 0.5; }
+  #twopir-events .teh-dot,
+  #twopir-events .teh-live,
+  #twopir-events .teh-spin,
+  #twopir-events .teh-marquee-track { animation: none; }
+  #twopir-events .teh-faq-panel { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  #twopir-events .teh-float      { display: none; }
+  #twopir-events .teh-process    { grid-template-columns: repeat(3, 1fr); }
+  #twopir-events .teh-pain-grid  { grid-template-columns: repeat(2, 1fr); }
+  #twopir-events .teh-svc-grid   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-events .teh-int-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Hero metric row: a 2x2 grid, not Legal's inline chip row — this page's
+   labels are full sentences that break the baseline when wrapped as chips. */
+#twopir-events .teh-hero-proof {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(14px, 2vw, 26px);
+  align-items: start;
+}
+#twopir-events .teh-hero-proof li { display: block; }
+#twopir-events .teh-hero-proof b  { display: block; margin-bottom: 3px; }
+#twopir-events .teh-hero-proof li + li::before { content: none; }
+
+@media (max-width: 960px) {
+  #twopir-events .teh-why-grid  { grid-template-columns: 1fr; }
+  #twopir-events .teh-callout   { position: static; }
+  #twopir-events .teh-proof-pair{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  #twopir-events .teh-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(26px, 4vw, 36px);
+  }
+  #twopir-events .teh-hero-copy { max-width: 700px; margin: 0 auto; text-align: center; }
+  #twopir-events .teh-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
+  #twopir-events .teh-hero-rule,
+  #twopir-events .teh-hero-cta,
+  #twopir-events .teh-hero-proof { justify-content: center; }
+  #twopir-events .teh-canvas { max-width: 560px; }
+  #twopir-events .teh-map    { max-height: none; }
+}
+
+@media (max-width: 760px) {
+  #twopir-events .teh-process   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-events .teh-int-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  #twopir-events .teh-map   { display: none; }
+  #twopir-events .teh-stack { display: block; }
+  #twopir-events .teh-canvas { border-radius: var(--teh-radius-md, 14px); }
+  #twopir-events .teh-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
+  #twopir-events .teh-hero-cta,
+  #twopir-events .teh-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  #twopir-events .teh-hero-cta .teh-btn,
+  #twopir-events .teh-cta-actions .teh-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    white-space: normal;
+  }
+  #twopir-events .teh-pain-grid,
+  #twopir-events .teh-svc-grid,
+  #twopir-events .teh-process { grid-template-columns: 1fr; }
+  #twopir-events .teh-cs-metrics { gap: 8px; }
+  #twopir-events .teh-quote-text { padding-left: 16px; }
+  #twopir-events .teh-marquee::before,
+  #twopir-events .teh-marquee::after { width: 34px; }
+  #twopir-events .teh-marquee-track { gap: 34px; }
+  #twopir-events .teh-marquee-item img { height: 30px; max-width: 100px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-events .teh-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
+  #twopir-events .teh-hero-sub { font-size: 14.5px; line-height: 1.7; }
+  #twopir-events .teh-hero-proof { gap: 6px 11px; }
+  #twopir-events .teh-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
+  #twopir-events .teh-hero-proof li + li::before { margin-right: 5px; }
+  #twopir-events .teh-canvas-bar .teh-tag { display: none; }
+  #twopir-events .teh-int-grid  { grid-template-columns: 1fr; }
+  #twopir-events .teh-cs-metrics { grid-template-columns: 1fr; }
+  #twopir-events .teh-pain-item,
+  #twopir-events .teh-why-item { gap: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE SCALE — CONSISTENCY PASS WITH THE HOMEPAGE
+   ════════════════════════════════════════════════════════════
+   Design untouched — every component, colour, layout and section
+   above stays exactly as built. This block only remaps font sizes
+   and line-heights onto the homepage's fluid type scale, loaded
+   last (the same way homepage.html loads its own type pass) so no
+   earlier rule and no theme rule can re-impose a different size.
+
+   The homepage scale, verbatim:
+
+     display  hero headline          clamp(30px, 4vw, 46px)
+     h2       section titles        clamp(26px, 3vw, 38px) / 1.16
+     h3       card / panel titles   clamp(17px, 1.5vw, 19px) / 1.3
+     h4       dense titles, FAQ     clamp(15px, 1.25vw, 16px)
+     lede     section intros        clamp(15px, 1.2vw, 17px) / 1.7
+     body     paragraph copy        clamp(14px, 1.05vw, 15px) / 1.65
+     sm / xs  dense copy, meta      13px / 12px
+     label    mono uppercase        11px  ← the page-wide floor
+     eyebrow  section eyebrows      clamp(11px, 0.9vw, 12px) / 0.2em
+     stat-sm  smaller numbers       clamp(20px, 1.9vw, 24px)
+
+   Two deliberate fixes folded in:
+     · the hero H1 was clamp(1.85rem, 3.05vw, 3rem) — rem against
+       whatever root size the active theme sets. It is now the
+       homepage's px-based display clamp, so it renders identically
+       on any theme.
+     · nothing outside the navy hero panel sits below 11px anymore
+       (9/9.5/10px labels are lifted to the 11px label floor). The
+       10px mono labels INSIDE the hero panel stay at 10px because
+       the homepage hero itself uses 10px for those same roles
+       (canvas label, tag, float card).                          */
+
+
+/* ── display · hero ──────────────────────────────────────────── */
+#twopir-events .teh-hero-title { font-size: var(--teh-fs-display, clamp(34px, 4.5vw, 56px)); line-height: 1.09; }
+/* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
+#twopir-events .teh-hero-sub   { font-size: var(--teh-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-events .teh-pill       { font-size: var(--teh-fs-label, 12px); letter-spacing: 0.1em; }
+/* hero stat row — homepage's exact pairing: 11px mono label,
+   13px display number */
+#twopir-events .teh-hero-proof li { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-hero-proof b  { font-size: var(--teh-fs-sm, 14px); }
+
+/* hero navy panel internals — matched to the homepage hero's own
+   values (10px canvas label / tag / float key, 11px float value) */
+#twopir-events .teh-tag     { font-size: 10px; }
+#twopir-events .teh-layer-h { font-size: 10px; }
+/* the float card sits on white, outside the navy panel, so it takes the
+   11px label floor rather than the panel's 10px */
+#twopir-events .teh-float-k { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-float-v { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-chip    { font-size: var(--teh-fs-label, 12px); }
+
+/* ── h2 · section titles ─────────────────────────────────────── */
+#twopir-events .teh-title { font-size: var(--teh-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
+
+/* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
+#twopir-events .teh-eyebrow { font-size: var(--teh-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
+
+/* ── lede · section intros and long-form copy ────────────────── */
+#twopir-events .teh-lede         { font-size: var(--teh-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+#twopir-events .teh-philosophy p { font-size: var(--teh-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+
+/* ── buttons — homepage buttons are 13px ─────────────────────── */
+#twopir-events .teh-btn     { font-size: var(--teh-fs-sm, 14px); }
+#twopir-events .teh-cs-link { font-size: var(--teh-fs-sm, 14px); }
+
+/* ── trust strip ─────────────────────────────────────────────── */
+#twopir-events .teh-trust-lead { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); }
+#twopir-events .teh-badge      { font-size: var(--teh-fs-xs, 13px); }
+
+/* ── card titles · h4 role (dense cards keep their designed
+      family and case — only the size snaps to the scale) ─────── */
+#twopir-events .teh-pain-item h3 { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-events .teh-svc-card h3  { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-events .teh-step h3      { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-events .teh-int-name     { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-events .teh-why-item h3  { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-events .teh-cs-company   { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-events .teh-avatar       { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-events .teh-faq-btn      { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-events .teh-callout-text { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.6; }
+
+/* ── body · primary card copy ────────────────────────────────── */
+#twopir-events .teh-pain-item p       { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-events .teh-svc-card > p      { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-events .teh-why-item p        { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-events .teh-faq-panel-inner p { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-events .teh-quote-text        { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.7; }
+
+/* ── sm · dense lists, meta, secondary copy ──────────────────── */
+#twopir-events .teh-svc-list li    { font-size: var(--teh-fs-sm, 14px); }
+#twopir-events .teh-step p         { font-size: var(--teh-fs-sm, 14px); line-height: 1.6; }
+#twopir-events .teh-int-desc       { font-size: var(--teh-fs-sm, 14px); line-height: 1.6; }
+#twopir-events .teh-engage li      { font-size: var(--teh-fs-sm, 14px); }
+#twopir-events .teh-callout-author { font-size: var(--teh-fs-sm, 14px); line-height: 1.65; }
+#twopir-events .teh-quote-name     { font-size: var(--teh-fs-sm, 14px); }
+#twopir-events .teh-cs-title       { font-size: var(--teh-fs-sm, 14px); line-height: 1.55; }
+#twopir-events .teh-fact b         { font-size: var(--teh-fs-sm, 14px); }
+#twopir-events .teh-stars          { font-size: var(--teh-fs-sm, 14px); }
+
+/* ── xs ──────────────────────────────────────────────────────── */
+#twopir-events .teh-quote-role { font-size: var(--teh-fs-xs, 13px); }
+
+/* ── label · 11px mono floor (was 9–10px) ────────────────────── */
+#twopir-events .teh-step-num  { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-mono-tag  { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-cs-lbl    { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-why-num   { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-callout-k { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-fact      { font-size: var(--teh-fs-label, 12px); }
+#twopir-events .teh-cta-note  { font-size: var(--teh-fs-label, 12px); }
+
+/* ── stat numbers · case-study metrics ───────────────────────── */
+#twopir-events .teh-cs-val { font-size: var(--teh-fs-stat-sm, clamp(22px, 2vw, 26px)); }
+
+/* ── Small screens — same values as the homepage's own
+      small-screen type block. This pass loads after the page's
+      620px/420px blocks, so mobile type is owned here. ────────── */
+@media (max-width: 620px) {
+  #twopir-events .teh-hero-title { font-size: 30px; line-height: 1.18; }
+  #twopir-events .teh-hero-sub   { font-size: 16px; line-height: 1.65; }
+  #twopir-events .teh-title      { font-size: 26px; line-height: 1.2; }
+
+  #twopir-events .teh-lede,
+  #twopir-events .teh-philosophy p { font-size: 16px; line-height: 1.65; }
+
+  #twopir-events .teh-pain-item p,
+  #twopir-events .teh-svc-card > p,
+  #twopir-events .teh-why-item p,
+  #twopir-events .teh-quote-text,
+  #twopir-events .teh-faq-panel-inner p { font-size: 15px; }
+
+  #twopir-events .teh-faq-btn { font-size: 16px; }
+
+  #twopir-events .teh-pain-item h3,
+  #twopir-events .teh-svc-card h3,
+  #twopir-events .teh-step h3,
+  #twopir-events .teh-int-name,
+  #twopir-events .teh-why-item h3,
+  #twopir-events .teh-cs-company { font-size: 16px; }
+
+  #twopir-events .teh-svc-list li,
+  #twopir-events .teh-step p,
+  #twopir-events .teh-int-desc,
+  #twopir-events .teh-engage li,
+  #twopir-events .teh-callout-author { font-size: 14px; }
+
+  #twopir-events .teh-btn,
+  #twopir-events .teh-cs-link { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-events .teh-pill { font-size: 11px; letter-spacing: 0.14em; padding: 6px 13px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   OPERATING BACKBONE  ·  eight stages
+   ════════════════════════════════════════════════════════════
+   Legal's process rail is five columns. Eight at that width gives
+   each stage ~150px, which puts the measure under 22 characters —
+   the stretched-ribbon failure. Four across on two rows keeps the
+   measure honest and divides evenly. */
+#twopir-events .teh-bone-track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-events .teh-bone-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2.1vw, 24px);
+  background: var(--teh-card, #eef8fd);
+  border: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--teh-radius-md, 14px);
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-bone-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-events .teh-bone-num {
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--teh-fs-micro, 12px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teh-accent-ink, #00699f);
+}
+#twopir-events .teh-bone-step h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--teh-text, #1a2a35);
+}
+#twopir-events .teh-bone-step p {
+  font-size: var(--teh-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--teh-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   BUSINESS OUTCOMES  ·  figure + unit, then a titled body
+   ════════════════════════════════════════════════════════════
+   Unlike the nonprofit page's outcome cards, these values ARE
+   figures ("3x", "40%"), so they take the stat step. The unit
+   ("Faster", "Reduction") is a label, not part of the figure, so
+   it sits beside it in mono at the micro step rather than being
+   set at 26px and competing with the number it modifies. */
+#twopir-events .teh-out-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-events .teh-out-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--teh-surface, #ffffff);
+  border: 1px solid var(--teh-border-soft, rgba(0,175,246,0.22));
+  border-left: 3px solid var(--teh-accent, #00aff6);
+  border-radius: var(--teh-radius-card, 18px);
+  box-shadow: var(--teh-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--teh-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-events .teh-out-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--teh-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-events .teh-out-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#twopir-events .teh-out-val {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--teh-fs-stat-sm, clamp(22px, 2vw, 26px));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--teh-accent-ink, #00699f);
+}
+#twopir-events .teh-out-unit {
+  font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--teh-fs-micro, 12px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teh-muted, #566b79);
+}
+#twopir-events .teh-out-card h3 {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--teh-text, #1a2a35);
+}
+#twopir-events .teh-out-card p {
+  font-size: var(--teh-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--teh-muted, #566b79);
+}
+
+@media (max-width: 960px) {
+  #twopir-events .teh-bone-track,
+  #twopir-events .teh-out-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  #twopir-events .teh-bone-track,
+  #twopir-events .teh-out-grid { grid-template-columns: 1fr; }
+  #twopir-events .teh-hero-proof { grid-template-columns: 1fr; gap: 8px; }
+  #twopir-events .teh-bone-step h3,
+  #twopir-events .teh-out-card h3 { font-size: 16px; }
+  #twopir-events .teh-bone-step p,
+  #twopir-events .teh-out-card p { font-size: 14px; }
+}
+
+</style>
+
+
+<div id="twopir-events">
+<script>document.getElementById('twopir-events').className += ' teh-js';</script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1 · HERO
+       ══════════════════════════════════════════════════════════
+       The source's second hero button pointed at "#proof". There
+       is no proof section on this page — the client-outcome
+       section is "#outcomes" — so the anchor was dead. It targets
+       the outcomes section here. The label is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-hero" aria-labelledby="teh-hero-title">
+    <div class="teh-hero-grid" aria-hidden="true"></div>
+
+    <div class="teh-hero-inner">
+
+      <div class="teh-hero-copy">
+
+        <span class="teh-pill teh-fade">
+          <span class="teh-dot" aria-hidden="true"></span>
+          Salesforce for Events &amp; Hospitality
+        </span>
+
+        <h1 class="teh-hero-title teh-fade teh-d1" id="teh-hero-title">
+          When Bookings Slip, Vendors Fall Through the Cracks, and Operations Can't Keep Up — <em>The System Is the Problem.</em>
+        </h1>
+
+        <div class="teh-hero-rule teh-fade teh-d1" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line teh-rule-line--sm"></span>
+        </div>
+
+        <p class="teh-hero-sub teh-fade teh-d2">
+          Hotels, event venues, food festival operators, and multi-city hospitality brands all run into
+          the same wall — manual coordination, fragmented data, and systems that don't talk to each
+          other. When event volume grows, the friction becomes a ceiling. Twopir Consulting builds the
+          Salesforce-based infrastructure that gives your commercial and operations teams a reliable,
+          scalable foundation to grow from.
+        </p>
+
+        <div class="teh-hero-cta teh-fade teh-d3">
+          <a class="teh-btn teh-btn--primary" href="https://twopirconsulting.com/contact-us/">
+            Talk to a Hospitality Systems Architect
+            <svg class="teh-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+          <a class="teh-btn teh-btn--ghost" href="#teh-outcomes"
+             aria-label="Review client outcomes for events and hospitality businesses">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
+            </svg>
+            Review Client Outcomes
+          </a>
+        </div>
+
+        <ul class="teh-hero-proof teh-fade teh-d4">
+          <li><b>3×</b> Faster inquiry and vendor response through automated routing and follow-up</li>
+          <li><b>40%</b> Reduction in manual coordination overhead across sales, ops, and finance teams</li>
+          <li><b>30%</b> Improvement in lead-to-booking conversion from structured pipeline management</li>
+          <li><b>360°</b> Visibility across vendor pipeline, bookings, payments, and event revenue</li>
+        </ul>
+
+      </div>
+
+      <!-- Right: events and hospitality operating architecture panel -->
+      <div class="teh-visual teh-fade teh-d5">
+        <figure class="teh-canvas" aria-labelledby="teh-canvas-label">
+
+          <div class="teh-canvas-bar">
+            <span class="teh-canvas-label" id="teh-canvas-label">
+              <span class="teh-live" aria-hidden="true"></span>
+              Events Operating Model
+            </span>
+            <span class="teh-tag" aria-hidden="true">Twopir · 2πr</span>
+          </div>
+
+          <svg class="teh-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
+               role="img"
+               aria-label="Twopir events and hospitality operating model. Systems of record — Salesforce CRM and the ticketing and property platforms Eventbrite, Opera and Delphi, plus Stripe and PayPal payments, DocuSign and Conga contracts, and Marketing Cloud and Pardot — feed the Twopir events architecture layer, made up of vendors and sponsors, bookings and operations, and payments and reporting. That layer produces business outcomes: faster onboarding, higher conversion and revenue visibility.">
+
+            <text class="m teh-h" x="12" y="14">SYSTEMS OF RECORD</text>
+            <line x1="150" y1="10.5" x2="548" y2="10.5" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+            <rect class="teh-layerbox" x="12" y="22" width="536" height="108" rx="14"/>
+
+            <g class="teh-hit">
+              <rect class="teh-node" x="22" y="32" width="248" height="56" rx="11"/>
+              <circle class="teh-mark" cx="40" cy="60" r="3.5"/>
+              <text class="teh-t" x="54" y="56">Salesforce CRM</text>
+              <text class="teh-s" x="54" y="73">Vendors · Bookings · Sponsors</text>
+            </g>
+            <g class="teh-hit">
+              <rect class="teh-node" x="290" y="32" width="248" height="56" rx="11"/>
+              <circle class="teh-mark" cx="308" cy="60" r="3.5"/>
+              <text class="teh-t" x="322" y="56">Eventbrite &amp; PMS</text>
+              <text class="teh-s" x="322" y="73">Tickets · Opera · Delphi</text>
+            </g>
+
+            <rect class="teh-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
+            <text class="teh-s" x="104" y="111" text-anchor="middle">Stripe · PayPal</text>
+            <rect class="teh-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
+            <text class="teh-s" x="280" y="111" text-anchor="middle">DocuSign · Conga</text>
+            <rect class="teh-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
+            <text class="teh-s" x="456" y="111" text-anchor="middle">Marketing Cloud</text>
+
+            <path class="teh-link" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="teh-link" d="M280,130 L280,137"/>
+            <path class="teh-link" d="M456,130 C456,146 376,142 298,148"/>
+            <path class="teh-flow d1" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="teh-flow d2" d="M280,130 L280,137"/>
+            <path class="teh-flow d3" d="M456,130 C456,146 376,142 298,148"/>
+
+            <rect class="teh-core" x="12" y="158" width="536" height="196" rx="16"/>
+
+            <text class="m teh-h teh-h--acc" x="280" y="200" text-anchor="middle">TWOPIR EVENTS ARCHITECTURE LAYER</text>
+            <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
+
+            <rect class="teh-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
+            <text class="teh-t2" x="104" y="248" text-anchor="middle">Vendors &amp; Sponsors</text>
+            <text class="teh-s"  x="104" y="266" text-anchor="middle">Applications · Booths</text>
+            <text class="teh-s"  x="104" y="279" text-anchor="middle">Tiers · Activations</text>
+
+            <rect class="teh-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
+            <text class="teh-t2" x="280" y="248" text-anchor="middle">Bookings &amp; Operations</text>
+            <text class="teh-s"  x="280" y="266" text-anchor="middle">Inquiries · Proposals</text>
+            <text class="teh-s"  x="280" y="279" text-anchor="middle">Logistics · Checklists</text>
+
+            <rect class="teh-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
+            <text class="teh-t2" x="456" y="248" text-anchor="middle">Payments &amp; Reporting</text>
+            <text class="teh-s"  x="456" y="266" text-anchor="middle">Fees · Deposits</text>
+            <text class="teh-s"  x="456" y="279" text-anchor="middle">Revenue dashboards</text>
+
+            <text class="m teh-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE EVENT RECORD · BUILT FOR MULTI-CITY SCALE</text>
+
+            <g class="teh-spin" aria-hidden="true">
+              <path class="teh-badge-ring" d="M280,131 A27,27 0 0 1 306,151"/>
+              <path class="teh-badge-ring" d="M280,185 A27,27 0 0 1 254,165"/>
+            </g>
+            <circle class="teh-badge-face" cx="280" cy="158" r="21"/>
+            <text class="teh-badge-txt" x="280" y="163" text-anchor="middle">2πr</text>
+
+            <path class="teh-link" d="M280,354 L280,378"/>
+            <path class="teh-flow teh-flow--out d1" d="M280,354 L280,378"/>
+            <polyline points="273,372 280,379 287,372" fill="none" stroke="rgba(53,211,154,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <rect class="teh-layerbox" x="12" y="384" width="536" height="150" rx="14"/>
+            <text class="m teh-h teh-h--out" x="28" y="410">BUSINESS OUTCOMES</text>
+            <line x1="216" y1="406.5" x2="532" y2="406.5" stroke="rgba(53,211,154,0.22)" stroke-width="1"/>
+
+            <g class="teh-hit">
+              <rect class="teh-out" x="22" y="422" width="164" height="76" rx="11"/>
+              <circle class="teh-mark--out" cx="38" cy="441" r="3.5"/>
+              <text class="teh-t2" x="50" y="445">Faster Onboarding</text>
+              <text class="teh-s"  x="36" y="463">Vendor approvals in</text>
+              <text class="teh-s"  x="36" y="476">days, not weeks</text>
+            </g>
+            <g class="teh-hit">
+              <rect class="teh-out" x="198" y="422" width="164" height="76" rx="11"/>
+              <circle class="teh-mark--out" cx="214" cy="441" r="3.5"/>
+              <text class="teh-t2" x="226" y="445">Higher Conversion</text>
+              <text class="teh-s"  x="212" y="463">Inquiries answered</text>
+              <text class="teh-s"  x="212" y="476">before they go cold</text>
+            </g>
+            <g class="teh-hit">
+              <rect class="teh-out" x="374" y="422" width="164" height="76" rx="11"/>
+              <circle class="teh-mark--out" cx="390" cy="441" r="3.5"/>
+              <text class="teh-t2" x="402" y="445">Revenue Visibility</text>
+              <text class="teh-s"  x="388" y="463">Every city and event</text>
+              <text class="teh-s"  x="388" y="476">in one live view</text>
+            </g>
+
+            <text class="m teh-h" x="280" y="520" text-anchor="middle" style="font-size:9px">VENDORS · BOOKINGS · SPONSORS · PAYMENTS · ATTENDEES</text>
+          </svg>
+
+          <div class="teh-stack" aria-hidden="true">
+            <div class="teh-layer">
+              <div class="teh-layer-h">Layer 01</div>
+              <div class="teh-layer-t">Systems of Record</div>
+              <div class="teh-chips">
+                <span class="teh-chip">Salesforce CRM</span>
+                <span class="teh-chip">Eventbrite</span>
+                <span class="teh-chip">Opera · Delphi</span>
+                <span class="teh-chip">Stripe · PayPal</span>
+                <span class="teh-chip">Marketing Cloud</span>
+              </div>
+            </div>
+
+            <div class="teh-connector"></div>
+
+            <div class="teh-layer teh-layer--core">
+              <div class="teh-layer-h">Layer 02 · 2πr</div>
+              <div class="teh-layer-t">Twopir Events Architecture Layer</div>
+              <div class="teh-chips">
+                <span class="teh-chip">Vendors &amp; Sponsors</span>
+                <span class="teh-chip">Bookings &amp; Operations</span>
+                <span class="teh-chip">Payments &amp; Reporting</span>
+                <span class="teh-chip">Attendees</span>
+              </div>
+            </div>
+
+            <div class="teh-connector"></div>
+
+            <div class="teh-layer teh-layer--out">
+              <div class="teh-layer-h">Layer 03</div>
+              <div class="teh-layer-t">Business Outcomes</div>
+              <div class="teh-chips">
+                <span class="teh-chip">Faster Onboarding</span>
+                <span class="teh-chip">Higher Conversion</span>
+                <span class="teh-chip">Revenue Visibility</span>
+              </div>
+            </div>
+          </div>
+
+        </figure>
+
+        <div class="teh-float teh-fade teh-d4" aria-hidden="true">
+          <span class="teh-float-ico">
+            <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/></svg>
+          </span>
+          <span>
+            <span class="teh-float-k">Delivery Model</span>
+            <span class="teh-float-v">Diagnose → Architect → Build → Scale</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       2 · TRUST STRIP
+       ══════════════════════════════════════════════════════════
+       WARNING — every logo alt below is carried over verbatim from
+       the source file and names a LAW FIRM, on an events page:
+       "LegalZoom", "Bernstein Liebhard LLP", "Weinberger Law
+       Group", "Sterling Law Offices", "Social Justice
+       Collaborative". The image files themselves are events and
+       hospitality logos (Inspired Adventures, FoodieLand, Zarraffa,
+       Cinemaequip). A screen reader on this page announces the
+       wrong organisations. See docs/events-build-report.md
+       section 6.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-trust" aria-label="Event and hospitality segments we serve">
+    <div class="teh-trust-card teh-fade">
+
+      <p class="teh-trust-lead">
+        Trusted by <strong><span class="twopir-clients">500+</span> Companies</strong> building and
+        scaling revenue operations with Twopir Consulting.
+      </p>
+
+      <div class="teh-marquee">
+        <div class="teh-marquee-track">
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/inspired-adventures-logo-redesign-01-400%20(1).webp" alt="Social Justice Collaborative" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/images%20(3).jpg" alt="Bernstein Liebhard LLP" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Header_logo.png.webp" alt="LegalZoom" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/FoodieLand%20LLC.jpg" alt="Weinberger Law Group" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Zarraffa.webp" alt="Sterling Law Offices" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Cinemaequip.png" alt="Sterling Law Offices" loading="lazy" decoding="async" width="600" height="170"></div>
+
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/inspired-adventures-logo-redesign-01-400%20(1).webp" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/images%20(3).jpg" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Header_logo.png.webp" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/FoodieLand%20LLC.jpg" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Zarraffa.webp" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+          <div class="teh-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Cinemaequip.png" alt="" loading="lazy" decoding="async" width="600" height="170"></div>
+        </div>
+      </div>
+
+      <p class="teh-eyebrow teh-badges-label">We Work With</p>
+      <ul class="teh-badges">
+        <li class="teh-badge">Salesforce Partner</li>
+        <li class="teh-badge">Food &amp; Cultural Festivals</li>
+        <li class="teh-badge">Multi-City Event Producers</li>
+        <li class="teh-badge">Outdoor &amp; Experiential Events</li>
+        <li class="teh-badge">Hotels &amp; Resorts</li>
+        <li class="teh-badge">Event Venues</li>
+        <li class="teh-badge">Banquet Operations</li>
+        <li class="teh-badge">Hospitality Groups</li>
+        <li class="teh-badge">MICE &amp; Corporate Events</li>
+      </ul>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       3 · WHERE OPERATIONS BREAK DOWN
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--alt" aria-labelledby="teh-pain-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Where Operations Break Down</span>
+        <h2 class="teh-title" id="teh-pain-title">The Gaps That Cost Events and Hospitality Businesses Revenue at Scale</h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+        <p class="teh-lede">
+          Whether you're producing food festivals across multiple cities, running a hotel events
+          calendar, or managing a multi-venue hospitality portfolio — the structural problems compound
+          with growth. Fragmented data, siloed teams, and manual workflows don't just slow you down. At
+          scale, they become the ceiling.
+        </p>
+      </header>
+
+      <div class="teh-pain-grid" role="list">
+
+        <article class="teh-pain-item teh-fade" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">📋</span>
+          <div>
+            <h3>Vendor Applications and Onboarding Run on Email and Spreadsheets</h3>
+            <p>For event operators managing hundreds of vendor applications per event — across multiple cities and event dates — email threads and spreadsheets create compounding bottlenecks. Applications get missed, approvals stall, booth confirmations go out late, and fee collection has no automated follow-up. What works at 10 events breaks entirely at 25.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade teh-d1" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">🏙️</span>
+          <div>
+            <h3>No Single Operating View Across Multiple Cities or Venues</h3>
+            <p>Running events or properties across multiple locations means multiple sets of vendor lists, contracts, logistics, and revenue figures — all living in different files, inboxes, and local systems. Leadership can't see the real commercial picture without manually assembling it. Decisions get made on assumptions rather than data.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade teh-d2" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">📥</span>
+          <div>
+            <h3>Inquiry and Booking Opportunities Fall Through Unstructured Processes</h3>
+            <p>Event inquiries from sponsors, corporate clients, and venue partners arrive through multiple channels and are manually triaged — slowly. High-value opportunities go cold before anyone assigns ownership or sends a follow-up. There is no pipeline visibility, no lead routing, and no accountability for response time.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">💳</span>
+          <div>
+            <h3>Vendor Fees, Deposits, and Payments Have No Centralized Tracking</h3>
+            <p>When payment collection is disconnected from your CRM and operations tools, finance is always catching up. Outstanding vendor fees go unnoticed, payment reminders require manual tracking, and post-event reconciliation consumes time that your team doesn't have — especially across high-volume event schedules.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade teh-d1" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">🤝</span>
+          <div>
+            <h3>Sponsorship and Brand Partnerships Have No Structured Pipeline</h3>
+            <p>Sponsorship opportunities are often managed informally — through email, personal contact lists, and memory. There is no structured pipeline, no renewal tracking, no activation checklist, and no reporting on which partnerships actually drove commercial value. Revenue from sponsorships is left on the table.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade teh-d2" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">📊</span>
+          <div>
+            <h3>Leadership Has No Reliable View of Revenue, Pipeline, or Performance</h3>
+            <p>Revenue leaders and GMs are making growth decisions from end-of-event exports and delayed weekly summaries. Without live dashboards connecting vendor fees, ticket revenue, sponsorship income, booking pipeline, and market-level comparisons, every planning cycle begins from incomplete information.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">🎟️</span>
+          <div>
+            <h3>Attendee and Guest Data Sits in Ticketing Platforms, Unused</h3>
+            <p>Every event generates valuable attendee data — city preferences, purchase history, repeat attendance frequency — but that data stays locked inside ticketing tools. Without CRM integration, re-engagement campaigns are generic, city-specific promotions miss their audience, and repeat attendance is left to chance rather than driven by systems.</p>
+          </div>
+        </article>
+
+        <article class="teh-pain-item teh-fade teh-d1" role="listitem">
+          <span class="teh-pain-ico" aria-hidden="true">📈</span>
+          <div>
+            <h3>Growth Adds Headcount and Chaos Rather Than Compounding Returns</h3>
+            <p>Expanding from 10 events to 25, or from one venue to four, should not require doubling the coordination team. Without scalable infrastructure — automated onboarding, centralized vendor management, integrated payment tracking, structured reporting — every new event or location adds proportional operational complexity instead of leverage.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       4 · THE TWOPIR APPROACH
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section" aria-labelledby="teh-phil-title">
+    <div class="teh-wrap">
+      <div class="teh-philosophy teh-fade">
+
+        <span class="teh-eyebrow">The Twopir Approach</span>
+        <h2 class="teh-title" id="teh-phil-title">Salesforce as the Operational Backbone for Events, <em>Festivals, and Hospitality Businesses</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+
+        <p>
+          The events and hospitality industry runs on relationships, timing, and execution precision.
+          When those three things are undermined by disconnected systems, the consequences are
+          commercial — slower conversion, missed vendor fees, guest experience gaps, and leadership
+          flying blind on revenue. The infrastructure problem compounds fastest in high-volume
+          environments: multi-city event producers, large venue operators, and hospitality groups with
+          complex commercial models.
+        </p>
+        <p>
+          Twopir Consulting designs and builds Salesforce infrastructure specific to how events and
+          hospitality businesses actually operate — not generic CRM implementations retrofitted onto
+          complex production workflows. We architect the vendor pipeline, booking workflows, payment
+          tracking, cross-team coordination, attendee data integration, and leadership reporting as one
+          connected operating model. The result is a system that improves inquiry-to-booking
+          conversion, eliminates manual vendor coordination, gives finance clean payment data, and
+          gives leadership real-time visibility across every event, city, and revenue stream.
+        </p>
+        <p>
+          Whether you're a food festival operator managing hundreds of vendors across a national event
+          calendar, a hotel group running a high-volume events program, or a venue operator building
+          the infrastructure to scale — Twopir Consulting brings the same methodology: design first,
+          build to outcomes, measure by commercial performance.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       5 · WHAT WE BUILD
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--alt" aria-labelledby="teh-svc-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">What We Build</span>
+        <h2 class="teh-title" id="teh-svc-title">Salesforce Infrastructure Across the Full Event and Hospitality Lifecycle</h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+        <p class="teh-lede">
+          Every service is designed around a real operational or commercial outcome. We build the
+          systems that connect vendor management, booking pipelines, sponsorship programs, attendee
+          data, payment tracking, and revenue reporting into one coherent operating model.
+        </p>
+      </header>
+
+      <div class="teh-svc-grid" role="list">
+
+        <article class="teh-svc-card teh-fade" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="9" y1="12" x2="9" y2="12.01"/><line x1="9" y1="15" x2="9" y2="15.01"/></svg>
+          </span>
+          <h3>Vendor Pipeline &amp; Onboarding Automation</h3>
+          <p>For food festival operators, outdoor event producers, and multi-vendor event businesses — manage the entire vendor relationship from application to event day without spreadsheets, manual emails, or missed follow-ups. Eliminate the administrative overhead that scales linearly with event volume.</p>
+          <ul class="teh-svc-list">
+            <li>Web-to-Salesforce vendor application capture and routing</li>
+            <li>Automated approval workflows with status notifications</li>
+            <li>Booth assignment, contract generation, and e-signature collection</li>
+            <li>Vendor fee invoicing and payment tracking per event and city</li>
+            <li>Repeat vendor history, category management, and roster reporting</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d1" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          </span>
+          <h3>Multi-City Event Operations &amp; Coordination</h3>
+          <p>Give your operations team a shared platform where all event details, logistics, task assignments, and milestones are visible across every city and every event date — so every team is working from the same picture regardless of location.</p>
+          <ul class="teh-svc-list">
+            <li>City-level event records with unified cross-market data model</li>
+            <li>Cross-team task management by role, location, and event type</li>
+            <li>Venue contract, permit, and production logistics coordination</li>
+            <li>Pre-event checklist automation and milestone tracking</li>
+            <li>Real-time operational status visible across the full event calendar</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d2" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <h3>Inquiry Management &amp; Booking Pipeline</h3>
+          <p>For hotels, venues, and banquet operations — centralize every event and booking inquiry and automate the routing, follow-up, and proposal workflows that convert more inquiries into confirmed, contracted bookings.</p>
+          <ul class="teh-svc-list">
+            <li>Web form, email, phone, and partner inquiry consolidation</li>
+            <li>Automated lead routing by event type, date, capacity, and value</li>
+            <li>Structured sales pipeline with stage-specific task automation</li>
+            <li>Proposal generation, approval workflows, and contract management</li>
+            <li>Conversion rate and pipeline reporting for sales leadership</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <h3>Sponsorship &amp; Brand Partnership Pipeline</h3>
+          <p>Replace informal sponsorship management with a structured Salesforce pipeline — so every partnership opportunity, tier, activation deliverable, and renewal cycle is tracked, assigned, and reportable.</p>
+          <ul class="teh-svc-list">
+            <li>Sponsorship pipeline with stage-level tracking and task automation</li>
+            <li>Tiered package management with pricing approval workflows</li>
+            <li>Activation deliverable and compliance tracking per sponsor</li>
+            <li>Renewal forecasting and relationship health dashboards</li>
+            <li>Cross-event sponsorship revenue and performance reporting</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d1" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          <h3>Payment Tracking &amp; Finance Visibility</h3>
+          <p>Give finance, operations, and leadership teams live visibility on vendor fees, deposits, outstanding balances, and confirmed revenue — without manual reconciliation or post-event data pulls.</p>
+          <ul class="teh-svc-list">
+            <li>Vendor fee invoicing and payment milestone automation</li>
+            <li>Booking deposit and balance tracking per event and property</li>
+            <li>Integration with Stripe, PayPal, and accounting platforms</li>
+            <li>Automated overdue payment reminder sequences</li>
+            <li>Revenue forecasting and collection dashboards by event and market</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d2" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V6a2 2 0 0 1 2-2z"/><line x1="13" y1="5" x2="13" y2="19"/></svg>
+          </span>
+          <h3>Attendee Data Integration &amp; Retention Campaigns</h3>
+          <p>Unlock the attendee and guest data sitting in your ticketing and booking platforms and put it to work inside Salesforce. Build targeted re-engagement campaigns by city, event type, or frequency.</p>
+          <ul class="teh-svc-list">
+            <li>Ticketing and booking platform integration with Salesforce CRM</li>
+            <li>Attendee segmentation by city, frequency, event type, and spend</li>
+            <li>Pre-event and post-event communication automation</li>
+            <li>Early-access, loyalty, and returning attendee campaign workflows</li>
+            <li>Attendance trend reporting and city-level engagement analytics</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <h3>Revenue Reporting &amp; Leadership Dashboards</h3>
+          <p>Give GMs, COOs, and revenue leaders a live operating view across every event, city, and revenue stream — so growth decisions are made from real data, not end-of-week exports or assembled spreadsheets.</p>
+          <ul class="teh-svc-list">
+            <li>Event-by-event and market-by-market revenue comparison dashboards</li>
+            <li>Ticket revenue, vendor fees, and sponsorship income breakdown</li>
+            <li>Booking pipeline and forward revenue pacing for venue teams</li>
+            <li>Year-over-year attendance and revenue trend reporting</li>
+            <li>Vendor performance and repeat partnership rate analytics</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d1" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          </span>
+          <h3>Marketing Automation &amp; Community Engagement</h3>
+          <p>Use your event, guest, and vendor data to build marketing journeys that grow your audience, re-engage past attendees, announce city expansions, and activate vendor communities — with campaigns tied directly to ticket sales and booking revenue outcomes.</p>
+          <ul class="teh-svc-list">
+            <li>Salesforce Marketing Cloud and Pardot campaign architecture</li>
+            <li>City-specific event announcement and lineup reveal workflows</li>
+            <li>Post-event re-engagement and loyalty automation sequences</li>
+            <li>Vendor and small-business community engagement campaigns</li>
+            <li>Campaign ROI attribution tied to ticket and booking revenue</li>
+          </ul>
+        </article>
+
+        <article class="teh-svc-card teh-fade teh-d2" role="listitem">
+          <span class="teh-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </span>
+          <h3>Systems Integration &amp; Salesforce Org Rescue</h3>
+          <p>Connect Salesforce to the ticketing, property management, accounting, and production tools your business depends on — or fix a Salesforce environment that is technically live but commercially falling short.</p>
+          <ul class="teh-svc-list">
+            <li>Eventbrite, Opera, Delphi, and PMS platform integration</li>
+            <li>Bi-directional accounting and finance data synchronisation</li>
+            <li>Full Salesforce architecture audit, rescue, and redesign</li>
+            <li>Data migration from legacy CRM and spreadsheet environments</li>
+            <li>Scalable architecture for national and multi-market growth</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       6 · CONNECTED INFRASTRUCTURE  ·  the operating backbone
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section" aria-labelledby="teh-bone-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Connected Infrastructure</span>
+        <h2 class="teh-title" id="teh-bone-title">One Operating Platform Across the <em>Full Event and Guest Lifecycle</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+        <p class="teh-lede">
+          From the first vendor application or booking inquiry to the post-event re-engagement
+          campaign, every stage of an events and hospitality operation can be managed, tracked, and
+          optimised from a single Salesforce-based operating model.
+        </p>
+      </header>
+
+      <div class="teh-bone-track" role="list">
+
+        <article class="teh-bone-step teh-fade" role="listitem">
+          <span class="teh-bone-num">01 — Attract</span>
+          <h3>Vendor &amp; Attendee Acquisition</h3>
+          <p>Vendor applications, booking inquiries, and ticketing data all flowing into Salesforce automatically — no manual entry, no missed submissions, no lost leads.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d1" role="listitem">
+          <span class="teh-bone-num">02 — Manage</span>
+          <h3>CRM &amp; Account Intelligence</h3>
+          <p>Full profiles for vendors, sponsors, corporate clients, and repeat attendees — with event history, preferences, spend data, and communication records always accessible.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d2" role="listitem">
+          <span class="teh-bone-num">03 — Convert</span>
+          <h3>Sales &amp; Booking Pipeline</h3>
+          <p>Structured pipeline stages for venue bookings, sponsorship deals, and vendor approvals — with task automation and conversion visibility built into every stage transition.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d3" role="listitem">
+          <span class="teh-bone-num">04 — Commit</span>
+          <h3>Contracts &amp; Agreements</h3>
+          <p>Proposal generation, e-signature collection, vendor booth contracts, and sponsorship agreements — all connected to the relevant Salesforce record without manual re-entry.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade" role="listitem">
+          <span class="teh-bone-num">05 — Produce</span>
+          <h3>Event Operations</h3>
+          <p>Cross-city logistics, vendor assignment, checklist automation, and milestone tracking from one platform — visible to every team regardless of location or event date.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d1" role="listitem">
+          <span class="teh-bone-num">06 — Collect</span>
+          <h3>Payments &amp; Finance</h3>
+          <p>Vendor fees, ticket revenue, sponsorship income, and booking deposits — tracked, reconciled, and reported without manual finance work between events.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d2" role="listitem">
+          <span class="teh-bone-num">07 — Experience</span>
+          <h3>Guest &amp; Attendee Communication</h3>
+          <p>Pre-event confirmation, lineup announcements, on-day updates, and post-event follow-up — automated, personalised, and connected to each attendee's event history.</p>
+        </article>
+
+        <article class="teh-bone-step teh-fade teh-d3" role="listitem">
+          <span class="teh-bone-num">08 — Retain</span>
+          <h3>Marketing &amp; Reporting</h3>
+          <p>Re-engagement campaigns, sponsorship renewals, vendor loyalty programs, and leadership dashboards that connect activity to revenue across every city and event.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       7 · OUR ENGAGEMENT MODEL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--alt" aria-labelledby="teh-process-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Our Engagement Model</span>
+        <h2 class="teh-title" id="teh-process-title">How We Go from Operational Complexity to a <em>Working System</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="teh-process" role="list">
+
+        <article class="teh-step teh-fade" role="listitem">
+          <span class="teh-step-num">Step 01</span>
+          <h3>Operational Diagnostic</h3>
+          <p>We map your full event and booking workflow end to end — vendor pipeline, sales process, payments, communications, and reporting — and identify exactly where revenue, coordination, and visibility are breaking down.</p>
+        </article>
+
+        <article class="teh-step teh-fade teh-d1" role="listitem">
+          <span class="teh-step-num">Step 02</span>
+          <h3>Architecture Design</h3>
+          <p>We design the Salesforce data model, workflow logic, integration boundaries, and reporting structure specific to your event types, team structure, and growth trajectory. Multi-city operations require multi-city data models — not a generic setup.</p>
+        </article>
+
+        <article class="teh-step teh-fade teh-d2" role="listitem">
+          <span class="teh-step-num">Step 03</span>
+          <h3>Build &amp; Integrate</h3>
+          <p>We configure Salesforce, connect your ticketing, payment, and operations tools, build automations, and test every workflow and handoff before your team touches it — live events don't allow for broken rollouts.</p>
+        </article>
+
+        <article class="teh-step teh-fade teh-d3" role="listitem">
+          <span class="teh-step-num">Step 04</span>
+          <h3>Launch &amp; Adopt</h3>
+          <p>We execute a structured rollout with data migration, team onboarding, and parallel-run support — so no booking, vendor relationship, or event in progress gets disrupted during the transition.</p>
+        </article>
+
+        <article class="teh-step teh-fade teh-d4" role="listitem">
+          <span class="teh-step-num">Step 05</span>
+          <h3>Scale &amp; Optimise</h3>
+          <p>As you expand to new cities, event types, and markets, we extend the infrastructure and keep the architecture stable — so the system improves as the business grows, not the other way around.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       8 · PLATFORM CONNECTIONS
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section" aria-labelledby="teh-int-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Platform Connections</span>
+        <h2 class="teh-title" id="teh-int-title">The Tools We Connect to Salesforce for <em>Events and Hospitality Operations</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+        <p class="teh-lede">
+          We connect Salesforce to the ticketing, venue management, payment, accounting, and
+          communication tools your business depends on — so vendor data, attendee records, booking
+          information, and finance always share one source of truth.
+        </p>
+      </header>
+
+      <div class="teh-int-grid" role="list">
+
+        <article class="teh-int-item teh-fade" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">☁️</span>
+          <h3 class="teh-int-name">Salesforce CRM</h3>
+          <p class="teh-int-desc">Core platform for vendor pipeline, booking management, sponsorship tracking, attendee data, and end-to-end revenue reporting across every event and market.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d1" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">🎟️</span>
+          <h3 class="teh-int-name">Eventbrite &amp; Ticketing</h3>
+          <p class="teh-int-desc">Ticketing platform integration to pull attendee purchase history, city-level preferences, and event frequency data into Salesforce for retention and re-engagement campaigns.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d2" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">💳</span>
+          <h3 class="teh-int-name">Stripe / PayPal</h3>
+          <p class="teh-int-desc">Payment processing connected to Salesforce for vendor fee collection, deposit tracking, booking payment milestones, and automated overdue follow-up sequences.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d3" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">✍️</span>
+          <h3 class="teh-int-name">DocuSign / Conga</h3>
+          <p class="teh-int-desc">Electronic signature and contract automation for vendor agreements, sponsorship contracts, and venue booking confirmations triggered directly from Salesforce workflows.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">🏨</span>
+          <h3 class="teh-int-name">Opera / Delphi PMS</h3>
+          <p class="teh-int-desc">Property and event management system integration for hotel operators and venue teams — connecting booking records, rooming blocks, and guest profiles with Salesforce CRM.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d1" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">📒</span>
+          <h3 class="teh-int-name">QuickBooks / Xero</h3>
+          <p class="teh-int-desc">Accounting integration for invoice generation, payment reconciliation, and event revenue reporting — without manual data entry after each event or booking cycle.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d2" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">📣</span>
+          <h3 class="teh-int-name">Marketing Cloud / Pardot</h3>
+          <p class="teh-int-desc">Automated attendee journeys, city-specific event announcements, vendor community campaigns, and sponsor communications — all driven by live Salesforce data.</p>
+        </article>
+
+        <article class="teh-int-item teh-fade teh-d3" role="listitem">
+          <span class="teh-int-ico" aria-hidden="true">🔗</span>
+          <h3 class="teh-int-name">Custom &amp; Legacy Systems</h3>
+          <p class="teh-int-desc">API-first integration design for in-house scheduling tools, legacy property systems, POS platforms, and OTA or marketplace partner data consolidation workflows.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       9 · BUSINESS OUTCOMES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--alt" id="teh-outcomes" aria-labelledby="teh-out-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Business Outcomes</span>
+        <h2 class="teh-title" id="teh-out-title">What Changes When the <em>Infrastructure Is Right</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+        <p class="teh-lede">
+          The impact of getting the operational backbone right shows up in commercial performance — not
+          just in cleaner systems. These are the outcomes events and hospitality businesses see when
+          Salesforce is designed for how they actually operate.
+        </p>
+      </header>
+
+      <div class="teh-out-grid" role="list">
+
+        <article class="teh-out-card teh-fade" role="listitem">
+          <div class="teh-out-metric">
+            <span class="teh-out-val">3×</span>
+            <span class="teh-out-unit">Faster</span>
+          </div>
+          <h3>Vendor Onboarding &amp; Response Time</h3>
+          <p>Automated application routing, approval workflows, and status notifications replace manual email chains — compressing the vendor onboarding cycle from weeks to days, even at high event volume across multiple cities.</p>
+        </article>
+
+        <article class="teh-out-card teh-fade teh-d1" role="listitem">
+          <div class="teh-out-metric">
+            <span class="teh-out-val">40%</span>
+            <span class="teh-out-unit">Reduction</span>
+          </div>
+          <h3>Manual Coordination Overhead</h3>
+          <p>Automated ops handoffs, cross-team task management, and centralised event records eliminate the internal communication overhead that grows proportionally with every new event, city, or venue added to the portfolio.</p>
+        </article>
+
+        <article class="teh-out-card teh-fade teh-d2" role="listitem">
+          <div class="teh-out-metric">
+            <span class="teh-out-val">30%</span>
+            <span class="teh-out-unit">Improvement</span>
+          </div>
+          <h3>Lead-to-Booking Conversion Rate</h3>
+          <p>Structured pipeline management, automated follow-up sequences, and faster proposal generation mean more inquiries convert before going cold — without adding sales headcount or depending on individual rep discipline.</p>
+        </article>
+
+        <article class="teh-out-card teh-fade teh-d3" role="listitem">
+          <div class="teh-out-metric">
+            <span class="teh-out-val">Zero</span>
+            <span class="teh-out-unit">Missed</span>
+          </div>
+          <h3>Vendor Payment Follow-Ups</h3>
+          <p>Automated payment milestone tracking and overdue reminder sequences ensure every vendor fee and booking deposit is chased on schedule — removing dependency on manual finance tracking and eliminating revenue leakage from missed collections.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · WHY TWOPIR
+       ══════════════════════════════════════════════════════════
+       The source nested a second why-engage-list inside the first
+       and left one item's closing tag unbalanced, so the last three
+       credentials rendered inside the preceding item. The list is
+       flattened here into the shared engage + facts pattern; the
+       item text is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section" aria-labelledby="teh-why-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Why Twopir</span>
+        <h2 class="teh-title" id="teh-why-title">We're Not a Vendor. <em>We're an Architectural Partner.</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="teh-why-grid">
+
+        <div class="teh-why-list" role="list">
+
+          <article class="teh-why-item teh-fade" role="listitem">
+            <span class="teh-why-num" aria-hidden="true">01</span>
+            <div>
+              <h3>We Understand Events and Hospitality Complexity</h3>
+              <p>Multi-city vendor coordination, tentative holds, deposit schedules, sponsor activation tracking, attendee re-engagement, and cross-team event briefing — we are familiar with these use cases before the engagement starts. You are not teaching us the industry.</p>
+            </div>
+          </article>
+
+          <article class="teh-why-item teh-fade teh-d1" role="listitem">
+            <span class="teh-why-num" aria-hidden="true">02</span>
+            <div>
+              <h3>We Design Before We Build</h3>
+              <p>Most implementation partners start configuring. We start with architecture — understanding how your team sells, onboards vendors, produces events, and tracks revenue — before a single workflow is built. That thinking is what makes the system hold up at scale.</p>
+            </div>
+          </article>
+
+          <article class="teh-why-item teh-fade teh-d2" role="listitem">
+            <span class="teh-why-num" aria-hidden="true">03</span>
+            <div>
+              <h3>We Own Outcomes, Not Just Deliverables</h3>
+              <p>Our measure of success is not a go-live date or a handover document. It's whether your vendor processing is faster, your ops team is less stressed, your finance team has clean data, and your leadership has the visibility to make confident growth decisions.</p>
+            </div>
+          </article>
+
+          <article class="teh-why-item teh-fade teh-d3" role="listitem">
+            <span class="teh-why-num" aria-hidden="true">04</span>
+            <div>
+              <h3>We Think Across the Full Commercial Lifecycle</h3>
+              <p>Vendor management, booking pipeline, sponsorship programs, payment tracking, attendee retention, and revenue reporting are not separate projects. We design them as one connected system — so improving vendor onboarding doesn't create a new gap in finance visibility.</p>
+            </div>
+          </article>
+
+          <article class="teh-why-item teh-fade teh-d4" role="listitem">
+            <span class="teh-why-num" aria-hidden="true">05</span>
+            <div>
+              <h3>We Build for the Scale You Are Moving Toward</h3>
+              <p>Expanding to new cities, event formats, or venue portfolios should not require re-implementing your systems. The architecture we build is designed to hold and extend — new markets, new vendor categories, new revenue streams — without a replacement project eighteen months later.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="teh-callout teh-fade teh-d2">
+          <span class="teh-callout-k">
+            <span class="teh-live" aria-hidden="true"></span>
+            How We Engage
+          </span>
+
+          <p class="teh-callout-text">
+            "The problem in most events and hospitality businesses is not a lack of tools — it's that
+            vendor management, booking operations, finance, and attendee communication were never
+            designed to work together under real production pressure. When event volume grows, that gap
+            compounds fast."
+          </p>
+
+          <p class="teh-callout-author">
+            <strong>Twopir Consulting</strong> — Salesforce architecture, automation, integrations, and
+            revenue infrastructure for food festival operators, hotel groups, event venues, and
+            hospitality businesses that need systems to perform at scale.
+          </p>
+
+          <ul class="teh-engage">
+            <li>Full architecture, build, and rollout for new implementations</li>
+            <li>Salesforce rescue and operational redesign</li>
+            <li>Ticketing, payment, and operations tool integration</li>
+            <li>Ongoing scale support as you expand to new markets</li>
+          </ul>
+
+          <ul class="teh-facts">
+            <li class="teh-fact"><b class="twopir-years">12+</b> Years Salesforce &amp; HubSpot Delivery</li>
+            <li class="teh-fact"><b class="twopir-clients">500+</b> Clients Served</li>
+            <li class="teh-fact"><span class="twopir-countries">Serving: US | Canada | UK | UAE | Australia | New Zealand</span></li>
+            <li class="teh-fact"><span class="twopir-salesforce">Salesforce Partner</span></li>
+            <li class="teh-fact"><span class="twopir-hubspot">HubSpot Partner</span></li>
+            <li class="teh-fact"><span class="twopir-ai">AI Delivery</span></li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · FAQ
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--alt" aria-labelledby="teh-faq-title">
+    <div class="teh-wrap">
+
+      <header class="teh-head teh-fade">
+        <span class="teh-eyebrow">Common Questions</span>
+        <h2 class="teh-title" id="teh-faq-title">Answers Before <em>the First Call</em></h2>
+        <div class="teh-rule" aria-hidden="true">
+          <span class="teh-rule-line"></span>
+          <span class="teh-rule-diamond"></span>
+          <span class="teh-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="teh-faq-list">
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp1" id="teh-fb1">
+            <span>How does Salesforce help food festivals and multi-city event producers manage vendor pipelines?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp1" role="region" aria-labelledby="teh-fb1">
+            <div class="teh-faq-panel-inner">
+              <p>Salesforce centralises all vendor applications, approvals, contracts, booth assignments, fee collection, and communications in one platform. For multi-city events running hundreds of vendors per event, this replaces spreadsheets, disconnected email threads, and manual follow-up — giving operations teams real-time vendor status across every city and event date. Your team stops chasing applications. The system manages the workflow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp2" id="teh-fb2">
+            <span>Can Salesforce manage multi-city event operations at national scale?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp2" role="region" aria-labelledby="teh-fb2">
+            <div class="teh-faq-panel-inner">
+              <p>Yes. With the right architecture, Salesforce can coordinate logistics, vendor assignments, venue contracts, sponsorship pipelines, ticketing data, and city-by-city reporting across an entire national event calendar. The critical factor is data model design — each city and event needs to be structured as a record within a unified model, not managed as a separate folder or spreadsheet. Twopir Consulting designs specifically for this kind of multi-entity operational complexity.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp3" id="teh-fb3">
+            <span>How does Salesforce improve inquiry and booking management for hotels and event venues?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp3" role="region" aria-labelledby="teh-fb3">
+            <div class="teh-faq-panel-inner">
+              <p>Salesforce consolidates all event and booking inquiries from web forms, calls, emails, and partner channels into one system. It automates routing to the right sales manager, triggers follow-up sequences, tracks proposal and contract status, and gives leadership a real-time view of pipeline and conversion — replacing reliance on individual rep judgment and manual tracking.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp4" id="teh-fb4">
+            <span>Can Twopir Consulting connect ticketing platforms to Salesforce for attendee data and re-engagement?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp4" role="region" aria-labelledby="teh-fb4">
+            <div class="teh-faq-panel-inner">
+              <p>Yes. Twopir Consulting integrates Eventbrite and other ticketing platforms with Salesforce to pull attendee purchase history, city-specific data, and event frequency signals into your CRM. That data powers segmented re-engagement campaigns, city expansion announcements, early-access promotions, and post-event follow-up sequences — so your marketing is driven by actual attendee behaviour, not broadcast email lists.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp5" id="teh-fb5">
+            <span>Can Twopir Consulting help if we already have Salesforce but it is not delivering results?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp5" role="region" aria-labelledby="teh-fb5">
+            <div class="teh-faq-panel-inner">
+              <p>Yes. Many engagements begin with a Salesforce environment that is live but underperforming — poor team adoption, missing automations, no integration with payment or operations tools, and reporting that doesn't match operational reality. Twopir Consulting audits the full setup, identifies the root causes, redesigns what needs to change, and rebuilds the parts that are holding the business back.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp6" id="teh-fb6">
+            <span>Is Twopir Consulting the right partner for smaller event operators or boutique hospitality businesses?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp6" role="region" aria-labelledby="teh-fb6">
+            <div class="teh-faq-panel-inner">
+              <p>Yes. Twopir Consulting works with boutique hotels, independent event venues, regional food festival operators, banquet halls, and growing hospitality groups — not only enterprise-scale businesses. The underlying operational challenges are consistent regardless of business size. The architecture is always designed to match the specific complexity and growth stage of the organisation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teh-faq-row teh-fade">
+          <button class="teh-faq-btn" type="button" aria-expanded="false" aria-controls="teh-fp7" id="teh-fb7">
+            <span>How is Twopir Consulting different from a standard Salesforce implementation partner?</span>
+            <span class="teh-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="teh-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="teh-faq-panel" id="teh-fp7" role="region" aria-labelledby="teh-fb7">
+            <div class="teh-faq-panel-inner">
+              <p>Standard implementation partners optimise for platform delivery — they configure what they're asked to configure and hand over a trained system. Twopir Consulting optimises for whether the platform actually improves commercial and operational performance. Engagements start with architecture and workflow design — not screen configuration — and the measure of success is business outcomes, not project completion.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       12 · CTA
+       ══════════════════════════════════════════════════════════ -->
+  <section class="teh-section teh-section--dark teh-cta" id="teh-cta" aria-labelledby="teh-cta-title">
+    <div class="teh-cta-inner teh-fade">
+
+      <span class="teh-eyebrow">Next Step</span>
+      <h2 class="teh-title" id="teh-cta-title">If Your Events Business Is Growing Faster Than Its Systems Can Handle, <em>This Is the Right Conversation</em></h2>
+      <div class="teh-rule" aria-hidden="true">
+        <span class="teh-rule-line"></span>
+        <span class="teh-rule-diamond"></span>
+        <span class="teh-rule-line"></span>
+      </div>
+
+      <p class="teh-lede">
+        Twopir Consulting helps food festival operators, multi-city event producers, hotel groups,
+        event venues, and experience-led hospitality brands build the Salesforce infrastructure to
+        manage vendor pipelines, convert more bookings, coordinate operations without chaos, and give
+        leadership the revenue visibility to make confident growth decisions.
+      </p>
+
+      <div class="teh-cta-actions">
+        <a class="teh-btn teh-btn--primary" href="https://twopirconsulting.com/contact-us/">
+          Book a Strategy Call
+          <svg class="teh-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+          </svg>
+        </a>
+        <a class="teh-btn teh-btn--ghost" href="https://twopirconsulting.com/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v12H7l-3 3z"/>
+          </svg>
+          Visit Twopir Consulting
+        </a>
+      </div>
+
+      <p class="teh-cta-note">Speak with a team that understands event production complexity, vendor operations, and the revenue infrastructure behind hospitality businesses at scale.</p>
+
+    </div>
+  </section>
+
+</div><!-- /#twopir-events -->
+
+<!-- ============================================================
+     STRUCTURED DATA — SALESFORCE FOR EVENTS & HOSPITALITY
+     BreadcrumbList + Service + FAQPage.
+
+     • Service.provider points at the homepage Organization node
+       (@id …/#organization, emitted once from Hero.html). Keep the
+       two @ids in sync or the provider reference will dangle.
+     • FAQPage is a no-harm addition only: Google removed FAQ rich
+       results for all sites in May 2026, so this produces no SERP
+       snippet. It is kept because the page already has a real FAQ
+       section and the markup still helps machines parse it.
+     • Every FAQ answer below is copied verbatim from the visible
+       accordion on this page. If the visible copy is edited, edit it
+       here too — mismatched schema and on-page text is an AEO risk.
+     • The FAQ block below was GENERATED from the visible accordion by
+       scripts/generate_schema.py. If you edit a question or an answer
+       in the accordion, re-run that script rather than editing this
+       block by hand.
+     • The URLs assume the /salesforce-for-events-and-hospitality/ permalink and the
+       /industries-we-serve/ parent. Confirm both before publishing.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://twopirconsulting.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Industries We Serve",
+      "item": "https://twopirconsulting.com/industries-we-serve/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Salesforce for Events & Hospitality",
+      "item": "https://twopirconsulting.com/salesforce-for-events-and-hospitality/"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://twopirconsulting.com/salesforce-for-events-and-hospitality/#service",
+  "name": "Salesforce for Events & Hospitality",
+  "serviceType": "Salesforce implementation and events and hospitality operations infrastructure",
+  "provider": {
+    "@id": "https://twopirconsulting.com/#organization"
+  },
+  "areaServed": [
+    "US",
+    "CA",
+    "GB",
+    "AE",
+    "AU",
+    "NZ"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Event Producers, Venues and Hospitality Groups"
+  },
+  "description": "Twopir Consulting builds the Salesforce-based operating infrastructure behind events and hospitality growth — vendor pipeline and onboarding automation, multi-city event coordination, booking and sponsorship pipelines, payment tracking, attendee data integration and revenue reporting on one connected architecture.",
+  "url": "https://twopirconsulting.com/salesforce-for-events-and-hospitality/",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Events and hospitality operations services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Vendor Pipeline & Onboarding Automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Multi-City Event Operations & Coordination"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Inquiry Management & Booking Pipeline"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Sponsorship & Brand Partnership Pipeline"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Payment Tracking & Finance Visibility"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Attendee Data Integration & Retention Campaigns"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Revenue Reporting & Leadership Dashboards"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Marketing Automation & Community Engagement"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Systems Integration & Salesforce Org Rescue"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Salesforce help food festivals and multi-city event producers manage vendor pipelines?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce centralises all vendor applications, approvals, contracts, booth assignments, fee collection, and communications in one platform. For multi-city events running hundreds of vendors per event, this replaces spreadsheets, disconnected email threads, and manual follow-up — giving operations teams real-time vendor status across every city and event date. Your team stops chasing applications. The system manages the workflow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Salesforce manage multi-city event operations at national scale?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With the right architecture, Salesforce can coordinate logistics, vendor assignments, venue contracts, sponsorship pipelines, ticketing data, and city-by-city reporting across an entire national event calendar. The critical factor is data model design — each city and event needs to be structured as a record within a unified model, not managed as a separate folder or spreadsheet. Twopir Consulting designs specifically for this kind of multi-entity operational complexity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Salesforce improve inquiry and booking management for hotels and event venues?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce consolidates all event and booking inquiries from web forms, calls, emails, and partner channels into one system. It automates routing to the right sales manager, triggers follow-up sequences, tracks proposal and contract status, and gives leadership a real-time view of pipeline and conversion — replacing reliance on individual rep judgment and manual tracking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Twopir Consulting connect ticketing platforms to Salesforce for attendee data and re-engagement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting integrates Eventbrite and other ticketing platforms with Salesforce to pull attendee purchase history, city-specific data, and event frequency signals into your CRM. That data powers segmented re-engagement campaigns, city expansion announcements, early-access promotions, and post-event follow-up sequences — so your marketing is driven by actual attendee behaviour, not broadcast email lists."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Twopir Consulting help if we already have Salesforce but it is not delivering results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Many engagements begin with a Salesforce environment that is live but underperforming — poor team adoption, missing automations, no integration with payment or operations tools, and reporting that doesn't match operational reality. Twopir Consulting audits the full setup, identifies the root causes, redesigns what needs to change, and rebuilds the parts that are holding the business back."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Twopir Consulting the right partner for smaller event operators or boutique hospitality businesses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting works with boutique hotels, independent event venues, regional food festival operators, banquet halls, and growing hospitality groups — not only enterprise-scale businesses. The underlying operational challenges are consistent regardless of business size. The architecture is always designed to match the specific complexity and growth stage of the organisation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Twopir Consulting different from a standard Salesforce implementation partner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard implementation partners optimise for platform delivery — they configure what they're asked to configure and hand over a trained system. Twopir Consulting optimises for whether the platform actually improves commercial and operational performance. Engagements start with architecture and workflow design — not screen configuration — and the measure of success is business outcomes, not project completion."
+      }
+    }
+  ]
+}
+</script>
+
+
+<script>
+(function () {
+  var root = document.getElementById('twopir-events');
+  if (!root) return;
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  var items = root.querySelectorAll('.teh-fade');
+  var reveal = function (el) { el.classList.add('teh-in'); };
+
+  if (items.length) {
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(items, reveal);
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); }
+        });
+      });
+    }
+  }
+
+  /* ── FAQ accordion ─────────────────────────────────────── */
+  var faqBtns = root.querySelectorAll('.teh-faq-btn');
+
+  function closeRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'false');
+    row.classList.remove('is-open');
+    if (panel) panel.style.maxHeight = '0px';
+  }
+
+  function openRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'true');
+    row.classList.add('is-open');
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  Array.prototype.forEach.call(faqBtns, function (btn) {
+    btn.addEventListener('click', function () {
+      var wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      Array.prototype.forEach.call(faqBtns, closeRow);
+      if (!wasOpen) openRow(btn);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeRow(btn);
+        btn.focus();
+      }
+    });
+  });
+
+  // keep an open panel correctly sized when the viewport reflows
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(faqBtns, function (btn) {
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── FIX: kill top AND bottom spacing from theme/builder ancestors ──
+     This is the actual fix for the white gaps seen above the hero and
+     below the closing CTA section. The CSS reset above only zeroes
+     padding/margin on a fixed list of known wrapper class names
+     (Elementor, Gutenberg, entry-content, etc). If the live theme uses a
+     different wrapper class we haven't guessed, that CSS won't catch it
+     and a gap stays — first it showed up at the top, now it's the same
+     issue at the bottom, coming from the wrapper's bottom padding/margin.
+     This walks every real ancestor element from #twopir-events up to
+     (but not including) the page body element, forcing margin/padding on both top
+     AND bottom to 0 on each one — regardless of what class or theme put
+     it there. It mirrors the existing tehFullBleed() approach just below,
+     which does the same "measure and cancel" trick for horizontal spacing. */
+  function tehKillAncestorSpacing() {
+    var el = root.parentElement;
+    while (el && el !== document.body && el.nodeType === 1) {
+      el.style.marginTop = '0px';
+      el.style.paddingTop = '0px';
+      el.style.marginBottom = '0px';
+      el.style.paddingBottom = '0px';
+      el = el.parentElement;
+    }
+  }
+
+  /* ── Scrollbar-safe full-viewport-width breakout ─────────
+     Page builders wrap content in a boxed container, which would
+     leave the section backgrounds floating in the middle of the
+     page. A pure-CSS "100vw / -50vw" breakout clips the left edge
+     whenever a vertical scrollbar exists, because 100vw includes
+     the scrollbar track. So we measure the real visible width
+     with documentElement.clientWidth and apply exact pixels.
+     If JS is unavailable the page simply stays contained — safe,
+     never clipped. ── */
+  function tehFullBleed() {
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+
+    var rect = root.getBoundingClientRect();
+    var visibleWidth = document.documentElement.clientWidth; // excludes scrollbar
+
+    if (!visibleWidth || rect.width === 0) return;
+
+    root.style.width = visibleWidth + 'px';
+    root.style.marginLeft = (-rect.left) + 'px';
+    root.style.marginRight = (rect.left - (visibleWidth - (rect.left + rect.width))) + 'px';
+  }
+
+  var bleedRaf;
+  function applyBleed() {
+    tehKillAncestorSpacing();
+    tehFullBleed();
+  }
+  function scheduleBleed() {
+    if (bleedRaf) cancelAnimationFrame(bleedRaf);
+    bleedRaf = requestAnimationFrame(applyBleed);
+  }
+
+  /* CLS fix (2026-08): the first breakout runs synchronously rather
+     than inside requestAnimationFrame, so the final width and margins
+     are in place for the first layout pass instead of being applied
+     one frame after the page has already painted at the wrong width.
+     Resize/orientation changes still go through the rAF-throttled
+     path, where batching matters and a shift is unavoidable anyway. */
+  applyBleed();
+  window.addEventListener('resize', scheduleBleed);
+  window.addEventListener('orientationchange', scheduleBleed);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleBleed);
+  }
+
+  /* Page builders / admin bars can shift layout after first paint, so
+     one late re-check stays. It runs synchronously inside a single
+     task: when the geometry has not moved, the styles are rewritten to
+     the same values within that task and the browser never paints an
+     intermediate state, so no layout shift is recorded. */
+  setTimeout(applyBleed, 500);
+})();
+</script>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE ALIGNMENT PASS  ·  loaded last
+   Typography + a few sizing/consistency fixes carried over from
+   the homepage build. No colour changes, no content changes.
+   !important is used the same way the homepage uses it: the live
+   WordPress theme restyles h2/h3/button/li globally, and without
+   it the theme wins on the published page.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1 · Font families pinned — the theme's own body font must not
+       leak into headings, copy or mono labels. */
+#twopir-events,
+#twopir-events p,
+#twopir-events li,
+#twopir-events a,
+#twopir-events span,
+#twopir-events button { font-family: var(--teh-ff-body, 'Inter', sans-serif) !important; }
+
+/* Card titles belong to the display face too. Without them listed here the
+   blanket body-font rule above wins by inheritance and every card title on
+   the page renders in Inter — which flattens the hierarchy to two levels
+   where the homepage has three (h1 / section title / card title). */
+#twopir-events h1,
+#twopir-events h2,
+#twopir-events h3,
+#twopir-events .teh-hero-title,
+#twopir-events .teh-title,
+#twopir-events .teh-pain-item h3,
+#twopir-events .teh-svc-card h3,
+#twopir-events .teh-step h3,
+#twopir-events .teh-bone-step h3,
+#twopir-events .teh-out-card h3,
+#twopir-events .teh-why-item h3,
+#twopir-events .teh-int-name,
+#twopir-events .teh-cs-company,
+#twopir-events .teh-cs-val,
+#twopir-events .teh-layer-t,
+#twopir-events .teh-avatar,
+#twopir-events .teh-fact b,
+#twopir-events .teh-hero-proof b { font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif) !important; }
+
+#twopir-events .teh-eyebrow,
+#twopir-events .teh-mono-tag,
+#twopir-events .teh-cs-lbl,
+#twopir-events .teh-step-num,
+#twopir-events .teh-why-num,
+#twopir-events .teh-callout-k,
+#twopir-events .teh-fact,
+#twopir-events .teh-cta-note,
+#twopir-events .teh-canvas-label,
+#twopir-events .teh-pill,
+#twopir-events .teh-chip { font-family: var(--teh-ff-mono, 'JetBrains Mono', monospace) !important; }
+
+/* 2 · The type scale from the pass above, re-asserted with the
+       same protection the homepage uses. */
+#twopir-events .teh-hero-title { font-size: var(--teh-fs-display, clamp(34px, 4.5vw, 56px)) !important; line-height: 1.14 !important; }
+#twopir-events .teh-title      { font-size: var(--teh-fs-h2, clamp(30px, 3.4vw, 44px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-events .teh-title em   { font-weight: 800 !important; font-style: normal !important; }
+#twopir-events .teh-hero-sub,
+#twopir-events .teh-lede,
+#twopir-events .teh-philosophy p { font-size: var(--teh-fs-lede, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.7 !important; }
+
+/* Primary card titles take the h3 step (17–19px), the same rung the
+   homepage gives its service and about cards. The denser grids — process
+   steps, the integration tiles, the case-study company line, FAQ rows —
+   stay on h4, matching the homepage's own dense-card treatment. Before
+   this split, --teh-fs-h3 was defined but never used and every card title
+   sat at 16px, the same size as the FAQ button text. */
+#twopir-events .teh-pain-item h3 { font-size: var(--teh-fs-h3, clamp(20px, 1.8vw, 24px)) !important; line-height: 1.3 !important; }
+
+#twopir-events .teh-step h3,
+#twopir-events .teh-bone-step h3,
+#twopir-events .teh-out-card h3,
+#twopir-events .teh-int-name,
+#twopir-events .teh-cs-company,
+#twopir-events .teh-faq-btn,
+#twopir-events .teh-layer-h { font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.4 !important; }
+
+#twopir-events .teh-pain-item p,
+#twopir-events .teh-svc-card > p,
+#twopir-events .teh-why-item p,
+#twopir-events .teh-faq-panel-inner p,
+#twopir-events .teh-quote-text { font-size: var(--teh-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65 !important; }
+
+#twopir-events .teh-svc-list li,
+#twopir-events .teh-step p,
+#twopir-events .teh-int-desc,
+#twopir-events .teh-engage li,
+#twopir-events .teh-why-list li,
+#twopir-events .teh-callout-author,
+#twopir-events .teh-quote-name,
+#twopir-events .teh-trust-lead { font-size: var(--teh-fs-sm, 14px) !important; line-height: 1.6 !important; }
+
+#twopir-events .teh-quote-role,
+#twopir-events .teh-badge,
+#twopir-events .teh-tag,
+#twopir-events .teh-src { font-size: var(--teh-fs-xs, 13px) !important; }
+
+/* 11px mono floor — nothing on the page sits below it */
+#twopir-events .teh-eyebrow   { font-size: var(--teh-fs-eyebrow, clamp(13px, 1vw, 14px)) !important; letter-spacing: 0.2em !important; }
+#twopir-events .teh-mono-tag,
+#twopir-events .teh-cs-lbl,
+#twopir-events .teh-step-num,
+#twopir-events .teh-why-num,
+#twopir-events .teh-callout-k,
+#twopir-events .teh-fact,
+#twopir-events .teh-cta-note,
+#twopir-events .teh-canvas-label,
+#twopir-events .teh-layer-t,
+#twopir-events .teh-chip { font-size: var(--teh-fs-label, 12px) !important; letter-spacing: 0.08em; }
+/* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
+#twopir-events .teh-pill { font-size: var(--teh-fs-label, 12px) !important; letter-spacing: 0.1em !important; }
+
+#twopir-events .teh-btn,
+#twopir-events .teh-cs-link { font-size: var(--teh-fs-sm, 14px) !important; }
+#twopir-events .teh-cs-val  { font-size: var(--teh-fs-stat-sm, clamp(22px, 2vw, 26px)) !important; line-height: 1.1; }
+
+/* 3 · Caps card titles — the homepage's own uppercase card-title recipe
+       (display face, h4 step, weight 800, 0.055em tracking). Applied to
+       both the "Why" cards and the service cards, which share the
+       treatment. Set in caps they need the h4 step, not h3: uppercase at
+       19px with this much tracking wraps badly in a three-up grid. */
+#twopir-events .teh-why-item h3,
+#twopir-events .teh-svc-card h3 {
+  text-transform: uppercase !important;
+  font-size: var(--teh-fs-h4, clamp(17px, 1.4vw, 19px)) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.35 !important;
+}
+
+/* 3b · CONTRAST — brand blue as TEXT on light grounds
+        #00aff6 measures 2.14 / 2.23 / 2.30 / 2.48 against the page, alt,
+        card and white surfaces. Every role below is 11–16px, so it needs
+        the 4.5 minimum, and --teh-accent-ink (5.14–5.96) is the same hue
+        darkened to clear it. Loaded here, after every section rule, so
+        there is nothing left to override it. */
+#twopir-events .teh-eyebrow,
+#twopir-events .teh-pill,
+#twopir-events .teh-float-k,
+#twopir-events .teh-step-num,
+#twopir-events .teh-why-num,
+#twopir-events .teh-faq-ico,
+#twopir-events .teh-faq-row.is-open .teh-faq-btn,
+#twopir-events .teh-src:hover,
+#twopir-events .teh-src:focus-visible { color: var(--teh-accent-ink, #00699f) !important; }
+
+/* …but on a navy panel the bright accent is the legible one, so the dark
+   sections, the hero canvas and the sticky callout all keep it. The open
+   FAQ icon also keeps white-on-accent, which already passes. */
+#twopir-events .teh-section--dark .teh-eyebrow,
+#twopir-events .teh-cta .teh-eyebrow,
+#twopir-events .teh-callout .teh-callout-k { color: var(--teh-accent, #00aff6) !important; }
+#twopir-events .teh-faq-row.is-open .teh-faq-ico { color: #fff !important; }
+
+/* 4 · Case-study cards — the theme uppercases and enlarges h3,
+       which blew these headlines up mid-card on the homepage too. */
+#twopir-events .teh-cs-title {
+  text-transform: none !important;
+  font-size: var(--teh-fs-sm, 14px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+#twopir-events .teh-cs-company {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+#twopir-events .teh-cs-lbl { letter-spacing: 0.14em !important; }
+
+/* 5 · Client logo rail — vendor marks must never be cropped.
+       The <img> tags carry width/height attributes and the theme
+       defaults to object-fit: cover, which slices wide logos. */
+#twopir-events .teh-marquee-item img {
+  height: 36px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* 6 · FAQ — kill the stray square the theme injects next to the
+       +/− toggle on hover and click. */
+#twopir-events .teh-faq-btn::before,
+#twopir-events .teh-faq-btn::after,
+#twopir-events .teh-faq-ico::before,
+#twopir-events .teh-faq-ico::after,
+#twopir-events .teh-faq-row > button::before,
+#twopir-events .teh-faq-row > button::after {
+  content: none !important;
+  display: none !important;
+}
+#twopir-events .teh-faq-btn,
+#twopir-events .teh-faq-btn:hover,
+#twopir-events .teh-faq-btn:focus,
+#twopir-events .teh-faq-btn:active,
+#twopir-events .teh-faq-ico {
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+#twopir-events .teh-faq-btn:focus-visible {
+  outline: 2px solid var(--teh-accent, #00aff6) !important;
+  outline-offset: -3px;
+}
+#twopir-events .teh-faq-ico {
+  overflow: hidden;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+#twopir-events .teh-faq-ico svg { font-size: initial; }
+
+/* 7 · Small screens — matches the homepage's mobile type block */
+@media (max-width: 620px) {
+  #twopir-events .teh-hero-title { font-size: 30px !important; line-height: 1.18 !important; }
+  #twopir-events .teh-title      { font-size: 26px !important; line-height: 1.2 !important; }
+  #twopir-events .teh-hero-sub,
+  #twopir-events .teh-lede,
+  #twopir-events .teh-philosophy p { font-size: 16px !important; }
+
+  #twopir-events .teh-pain-item h3,
+  #twopir-events .teh-svc-card h3,
+  #twopir-events .teh-step h3,
+  #twopir-events .teh-bone-step h3,
+  #twopir-events .teh-out-card h3,
+  #twopir-events .teh-int-name,
+  #twopir-events .teh-cs-company,
+  #twopir-events .teh-faq-btn { font-size: 16px !important; }
+  #twopir-events .teh-why-item h3 { font-size: 15px !important; }
+
+  #twopir-events .teh-pain-item p,
+  #twopir-events .teh-svc-card > p,
+  #twopir-events .teh-why-item p,
+  #twopir-events .teh-quote-text,
+  #twopir-events .teh-faq-panel-inner p { font-size: 15px !important; }
+
+  #twopir-events .teh-svc-list li,
+  #twopir-events .teh-step p,
+  #twopir-events .teh-int-desc,
+  #twopir-events .teh-engage li,
+  #twopir-events .teh-callout-author { font-size: 14px !important; }
+
+  #twopir-events .teh-cs-title { font-size: 14px !important; }
+  #twopir-events .teh-marquee-item img { height: 30px !important; max-width: 130px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · TEMPLATE BEHAVIOUR
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 6a · Theme pseudo-element guard ─────────────────────────
+   The live theme sets `blockquote::before { font-family: FontAwesome;
+   content: "10d" }` — a decorative quote glyph. FontAwesome is not
+   loaded on this page, so it renders as an empty tofu box at the head
+   of every testimonial. Neutralised rather than restyled: the design
+   already carries its own quote treatment through the accent rule down
+   the left edge.
+
+   Only blockquote and q are cleared. A blanket `::before` reset would
+   destroy the rule diamonds, the list bullets and the separators, all of
+   which are real parts of this design. If another theme decorates a
+   different tag, add that tag here — do not widen the selector. */
+#twopir-events blockquote::before,
+#twopir-events blockquote::after,
+#twopir-events q::before,
+#twopir-events q::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   FIRST-SCREEN HERO — height-responsive
+   ════════════════════════════════════════════════════════════
+   Ported from the homepage. Replaces the earlier
+   `(min-width: 901px) and (min-height: 720px)` gate: instead of giving
+   up below 720px tall and letting the hero scroll, the hero now SCALES
+   to whatever height it has. Everything below is clamped with px floors
+   and ceilings, so nothing scales without bound, and it is desktop-only
+   so mobile viewport-unit quirks cannot apply. */
+@media (min-width: 901px) {
+  #twopir-events .teh-hero {
+    min-height: calc(100vh  - var(--teh-nav, 87px));
+    min-height: calc(100svh - var(--teh-nav, 87px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
+  }
+  #twopir-events .teh-hero-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-events .teh-pill {
+    margin-bottom: clamp(10px, 1.9vh, 18px);
+    padding: clamp(5px, 0.8vh, 7px) 12px;
+  }
+  /* min(vw, vh): the headline yields to whichever dimension binds first */
+  #twopir-events .teh-hero-title {
+    font-size: clamp(32px, var(--teh-h1-fluid, 3.2vw), 46px) !important;
+    line-height: 1.08 !important;
+  }
+  #twopir-events .teh-hero-rule {
+    margin: clamp(12px, 1.9vh, 16px) 0 clamp(10px, 1.6vh, 15px);
+  }
+  #twopir-events .teh-hero-sub {
+    font-size: clamp(15px, var(--teh-sub-fluid, 1.2vw), 17px) !important;
+    line-height: 1.55 !important;
+  }
+  #twopir-events .teh-hero-cta {
+    margin-top: clamp(18px, 2.9vh, 26px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-events .teh-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(19px, 1.6vw, 24px);
+  }
+  #twopir-events .teh-hero-proof {
+    margin-top: clamp(15px, 2.5vh, 22px);
+    gap: clamp(7px, 1.2vh, 9px) 15px;
+  }
+  #twopir-events .teh-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-events .teh-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-events .teh-map { max-height: min(53vh, 486px); }
+}
+
+/* Short windows — a laptop with a bookmarks bar, or a scaled display.
+   The panel gives up more room so the copy column never has to. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-events .teh-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-events .teh-map { max-height: 50vh; }
+  #twopir-events .teh-float { transform: scale(0.92); transform-origin: left bottom; }
+}
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PAGE SCALING — the ladder, ported from the homepage
+   ════════════════════════════════════════════════════════════
+   Sections scale so a short laptop window sees the page at
+   85-100% instead of scrolling more. The floor is 0.85: the
+   bottom three rungs are deliberately equal, because 0.79 and
+   0.82 are what made the site read as squeezed.
+
+   The hero is NOT in the ladder — it does its own min(vw, vh)
+   scaling already, which is the whole reason the ladder exists. */
+/* The 1 / 1 defaults for the ladder below are declared in the single
+   #twopir-events token rule at the top of this sheet, not here — a second
+   bare wrapper rule is exactly what Autoptimize merges and drops. */
+
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-events { --teh-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height:  940px) { #twopir-events { --teh-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height:  880px) { #twopir-events { --teh-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height:  820px) { #twopir-events { --teh-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height:  760px) { #twopir-events { --teh-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  700px) { #twopir-events { --teh-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  640px) { #twopir-events { --teh-scale-h: 0.85; } }
+
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-events { --teh-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-events { --teh-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-events { --teh-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-events { --teh-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-events { --teh-scale-w: 0.88; } }
+
+@media (min-width: 901px) {
+  #twopir-events > section.teh-section,
+  #twopir-events > section.teh-trust {
+    zoom: min(var(--teh-scale-h, 1), var(--teh-scale-w, 1));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   The ladder MULTIPLIES every declared size: at 0.85 a 9px label
+   renders at 7.6px. A 1366x768 laptop has roughly a 650px
+   viewport once browser chrome is off, so a typical machine
+   lands on the bottom rungs, not the 0.88 one its width suggests.
+
+   Every role below was declared between 9 and 12.5px. Collected
+   here so the small end uses ONE size per tier instead of
+   drifting across 9, 9.5, 10, 10.5, 11, 11.5, 12 and 12.5.
+
+     13px -> 11.05px at 0.85   micro labels
+     14px -> 11.90px at 0.85   secondary meta and supporting copy
+
+   The hero sits OUTSIDE the ladder, so declared == rendered and
+   its labels sit one step lower at the same physical size.      */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-events .teh-cs-lbl,
+#twopir-events .teh-mono-tag,
+#twopir-events .teh-callout-k,
+#twopir-events .teh-fact,
+#twopir-events .teh-step-num,
+#twopir-events .teh-cta-note,
+#twopir-events .teh-why-num,
+#twopir-events .teh-badge {
+  font-size: 13px !important;
+}
+/* .teh-eyebrow is deliberately NOT pinned here: its token is
+   clamp(13px, 1vw, 14px), whose own floor is already 13px, so it cannot
+   fall under the readable floor. Pinning it held the eyebrow at 13px
+   while the homepage rendered 14px. */
+
+/* secondary meta and supporting copy */
+#twopir-events .teh-svc-list,
+#twopir-events .teh-step,
+#twopir-events .teh-int-desc,
+#twopir-events .teh-quote-role,
+#twopir-events .teh-cs-title,
+#twopir-events .teh-cs-link,
+#twopir-events .teh-callout-author,
+#twopir-events .teh-engage {
+  font-size: 14px !important;
+}
+
+/* hero — never zoomed, so one step lower reads the same size */
+#twopir-events .teh-float-k,
+#twopir-events .teh-tag,
+#twopir-events .teh-layer-h,
+#twopir-events .teh-canvas-label,
+#twopir-events .teh-hero-proof li {
+  font-size: 11.5px !important;
+}
+#twopir-events .teh-chip,
+#twopir-events .teh-float-v,
+#twopir-events .teh-s,
+#twopir-events .teh-h,
+#twopir-events .teh-t2 {
+  font-size: 12px !important;
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase, and wide tracking
+   compounds it. These two sat at 0.14em and 0.08em inside narrow
+   boxes: the case-study label ran to FOUR lines under a 24px
+   number and read louder than the number it was labelling.
+
+   The homepage stats strip already shows the right setting — its
+   label is the same 13px but tracked at 0.03em, and reads as the
+   quiet caption it is. Size comes down a step as well.
+
+   These sit below the 11px effective floor on purpose. That floor
+   is for reading matter; a tracked caps label is scanned, not
+   read, and its caps give it a larger apparent size. */
+#twopir-events .teh-cs-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-events .teh-fact {
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   the FAQ question, which is this page's only <button> element.
+   Two pixels of tracking on a 17.5px uppercase line is enough to
+   make the whole section read as oversized. Tracking is declared
+   here so the theme cannot decide it. */
+#twopir-events .teh-faq-btn {
+  letter-spacing: 0.01em !important;
+}
+
+/* ── The FAQ question is a heading, not a control ─────────────
+   The blanket body-font pass includes `#twopir-events button`, with
+   !important, so it beat the .teh-faq-btn display-face rule and the
+   questions rendered in Inter while the homepage's render in
+   Bricolage Grotesque. Same failure that rule's own comment warns
+   about for card titles — a <button> that is semantically a heading
+   has to be listed as an exception.
+
+   Case is left to the theme deliberately: the caps are wanted. */
+#twopir-events .teh-faq-btn {
+  font-family: var(--teh-ff-display, 'Bricolage Grotesque', sans-serif) !important;
+}
+</style>

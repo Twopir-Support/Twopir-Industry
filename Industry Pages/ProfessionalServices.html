@@ -1,0 +1,4348 @@
+<!-- ============================================================
+     SEO / AEO — SALESFORCE FOR PROFESSIONAL SERVICES
+     This file is a WordPress Custom HTML block, so it has no HEAD section of its own.
+     Meta title, description and canonical cannot work from inside a
+     body fragment — paste these into the SEO plugin (Yoast / Rank
+     Math) on the page that hosts this block.
+
+       Title tag  (58 chars)
+         Salesforce for Professional Services | Twopir
+
+       Meta description  (155 chars)
+         Salesforce for consulting and professional services firms:
+         BD pipeline, proposal workflow, client onboarding and billing
+         readiness on one operating model.
+
+       Slug       /salesforce-for-professional-services/
+       Canonical  https://twopirconsulting.com/salesforce-for-professional-services/
+                  ^ PLACEHOLDER — a page already exists at
+                    /salesforce-for-professional-services-consulting-firms/.
+                    Confirm which permalink this block publishes to, and
+                    301 the other rather than running both.
+
+       Primary keyword    Salesforce for professional services
+       Secondary keywords consulting firm CRM, professional services
+                          automation Salesforce, BD pipeline consulting,
+                          client onboarding automation
+
+       Sitemap    add this URL to sitemap.xml and submit in Google
+                  Search Console + Bing Webmaster Tools.
+     ============================================================ -->
+
+<!-- ============================================================
+     TWOPIR CONSULTING — SALESFORCE FOR PROFESSIONAL SERVICES (Industry Page)
+     WordPress-ready snippet. Paste into a Custom HTML block.
+
+     DESIGN SYSTEM — inherited from the homepage sections
+     (Hero.html, About Us.html, Our Services.html, Industry We
+     Serve.html, FAQ.html, OUR ECOSYSTEM.html):
+
+       Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
+                 #00aff6 accent · #007ec6 accent-dark
+                 rgba(0,175,246,0.28) border · #1a2a35 ink
+                 #566b79 muted · #1e2447/#12183a/#1a2e4a navy
+                 #35d39a green
+       Type      Bricolage Grotesque (display) · Inter (body)
+                 JetBrains Mono (eyebrows / labels)
+       Radius    22px large · 18px card · 14px small · 100px pill
+       Shadow    0 2px 16px rgba(0,130,200,.10), 0 1px 4px rgba(0,130,200,.08)
+                 hover: 0 8px 32px rgba(0,130,200,.18), 0 2px 8px rgba(0,130,200,.12)
+                 dark panels: 0 8px 40px rgba(18,24,58,.20)
+       Pattern   mono eyebrow → Bricolage title → line/diamond/line
+                 rule → Inter 300 description → content grid
+
+     SCOPING
+       Every selector is prefixed with #twopir-ps, and every
+       class uses the .tps- prefix. Keyframes use the tps prefix
+       too. Nothing here can leak into other WordPress pages or
+       into the homepage sections. All sizes are px / clamp() —
+       never rem — so the page is immune to whatever root
+       font-size the active theme sets.
+
+     SCROLL PERFORMANCE (2024-08 patch)
+       - `html { scroll-behavior: auto }` guards against a theme
+         applying global smooth-scrolling that fights the many
+         continuous CSS animations below.
+       - `content-visibility: auto` is applied to page sections
+         (skipping the one section that holds a `position: sticky`
+         element, since layout containment can interfere with
+         sticky) so the browser skips layout/paint work for
+         sections currently off-screen. This is the single biggest
+         lever for scroll jank on long, animation-heavy pages.
+     ============================================================ -->
+
+<!-- ============================================================
+     USING THIS FILE AS THE INDUSTRY-PAGE TEMPLATE
+     ============================================================
+     This page is the reference build for every other industry page
+     (Healthcare, Real Estate, Fintech, …). To spin up a new one,
+     five things change and nothing else needs to:
+
+     1 · IDENTIFIERS   find-and-replace two strings, in this order:
+                         #twopir-ps   →  #twopir-<industry>
+                         tps-            →  t<xx>-        (3-4 chars)
+                       The keyframe names (tpsPulse, tpsLive, tpsFlow,
+                       tpsSpin, tpsMarquee) carry the same prefix and
+                       are caught by the second replace. Renaming both
+                       is what keeps two industry pages from colliding
+                       if they ever render on the same URL.
+
+     2 · CONTENT       headings, copy, cards, stats, testimonials, FAQ.
+                       Section structure stays; only the words change.
+
+     3 · HERO DIAGRAM  the SVG is a three-layer model —
+                         systems of record → Twopir layer → outcomes.
+                       Swap the node labels for the industry's own
+                       systems and vocabulary. Keep the 560×548 viewBox
+                       and the layer geometry; only the text changes.
+
+     4 · SCHEMA        the three JSON-LD blocks at the bottom: breadcrumb
+                       names, Service name/description, FAQ pairs. The
+                       FAQ block must stay word-for-word identical to the
+                       visible accordion.
+
+     5 · SEO VALUES    the plugin block directly below this comment.
+
+     ── WHAT MUST NOT CHANGE ─────────────────────────────────────
+     · The type scale and the colour tokens. They come from the
+       homepage and they are what makes the pages read as one site.
+     · The single token rule. Every custom property is declared in ONE
+       `#twopir-<industry> { }` block, and every var() carries a literal
+       fallback. Autoptimize merges duplicate selectors and will silently
+       drop a second token block — that is what broke the type scale on
+       the first live deploy.
+     · px / clamp() sizing only, never rem. The live theme sets
+       `html { font-size: 10px }`, so rem values would rescale.
+     · `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns
+       the wrapper into a scroll container and breaks the sticky callout.
+
+     ── HOW IT HANDLES MORE OR LESS CONTENT ──────────────────────
+     The hero is min-height, flex, vertically centred. A page with a
+     short headline and two stats centres in the first screen and reads
+     as composed; a page with a long lede grows past it and scrolls.
+     Nothing is clipped and no font size needs touching either way.
+     The stats row is a wrapping flex list, so three, four or five
+     entries all lay out cleanly.
+
+     PASTE INTO A CUSTOM HTML BLOCK, never the visual editor — the
+     visual editor injects paragraph and line-break tags inside the
+     style element, which breaks the CSS outright.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Scroll performance fix ─────────────────────────────────
+   Forces native (non-smooth) scrolling so this page never fights
+   a theme-level `scroll-behavior: smooth` while heavy decorative
+   animations are running elsewhere on the page. Scoped globally
+   because scroll-behavior only has effect on the actual scrolling
+   element (html/body), which sits outside #twopir-ps. */
+html { scroll-behavior: auto !important; }
+
+/* ── Tokens (scoped) ───────────────────────────────────────── */
+#twopir-ps {
+  --tps-bg:          #dff1fa;
+  --tps-bg-alt:      #e8f5fd;
+  --tps-bg-top:      #ecf8fd;
+  --tps-card:        #eef8fd;
+  --tps-surface:     #ffffff;
+
+  --tps-accent:      #00aff6;   /* fills, borders, icons, dots, large display type */
+  --tps-accent-dk:   #007ec6;   /* gradients and hover states */
+  /* Text-safe brand blue. The accent itself measures 2.14 against the page
+     background, 2.23 on the alt, 2.30 on a card and 2.48 on white — all far
+     under the 4.5 minimum — and every role that used it as a text colour on
+     those grounds runs 11–16px. This is the same hue darkened until it clears
+     5.1 everywhere (5.14 / 5.37 / 5.53 / 5.96), so eyebrows and labels still
+     read as brand blue but are actually legible. For TEXT on light grounds
+     only: icons, borders, fills, the large gradient display type and anything
+     sitting on a navy panel all keep --tps-accent. */
+  --tps-accent-ink:  #00699f;
+  --tps-border:      rgba(0,175,246,0.28);
+  --tps-border-soft: rgba(0,175,246,0.22);
+
+  --tps-text:        #1a2a35;
+  /* nudged from #5a7080, which measured 4.45 against the page background —
+     a hair under the 4.5 minimum for body copy. This clears it on every
+     surface (4.79 / 5.01 / 5.16 / 5.56) and the shift is imperceptible
+     side by side. */
+  --tps-muted:       #566b79;
+
+  --tps-navy:        #1e2447;
+  --tps-navy-deep:   #12183a;
+  --tps-navy-soft:   #1a2e4a;
+  --tps-green:       #35d39a;
+  /* the homepage's only warm hue. Used here as the semantic left-border on
+     the "where firms stall" cards; #f0a53c was off-palette. */
+  --tps-star:        #e0961f;
+
+  --tps-ff-display:  'Bricolage Grotesque', sans-serif;
+  --tps-ff-body:     'Inter', sans-serif;
+  --tps-ff-mono:     'JetBrains Mono', monospace;
+
+  --tps-radius-lg:   22px;
+  --tps-radius-card: 18px;
+  --tps-radius-md:   14px;
+
+  --tps-shadow:      0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08);
+  --tps-shadow-hv:   0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12);
+  --tps-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
+
+  --tps-ease:        0.28s cubic-bezier(.4,0,.2,1);
+  --tps-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
+
+  /* Fluid terms for the hero. Declared on the wrapper, not inside the rules
+     that use them, because the publish pipeline mangles a rule whose
+     font-size it is rewriting — it dropped these twice when they lived
+     there. Wrapper custom properties come through intact. */
+  --tps-h1-fluid:    min(3.2vw, 5.45vh);
+  --tps-sub-fluid:   min(1.2vw, 2.35vh);
+  --tps-pad-x:       clamp(16px, 4vw, 48px);
+
+  /* TEMPLATE KNOB — height of the site header sitting above this block in
+     normal flow (measured 87px on the live theme). The only value in this
+     file tied to the surrounding site; it lets the hero be exactly "one
+     screen minus the header". Re-measure if the header ever changes. */
+  --tps-nav:         87px;
+
+  /* ── Type scale ──────────────────────────────────────────────
+     These live in the SAME rule as the colour tokens on purpose.
+     They used to sit in a second, standalone `#twopir-ps { }`
+     block further down the sheet, and Autoptimize's CSS minifier
+     merges duplicate selectors — on the live site it merged the
+     three #twopir-ps rules and silently dropped this one. The
+     result: 62 surviving `var(--tps-fs-*)` references with zero
+     declarations behind them. An unresolvable var() is invalid at
+     computed-value time, and for font-size that means INHERIT, so
+     the H1 fell back to the wrapper's 16px while every label and
+     button inherited 16px too — a small headline surrounded by
+     oversized body text. One token rule means there is nothing
+     left for the minifier to merge. Every var() below also carries
+     a literal fallback as a second line of defence. */
+  --tps-fs-display:     clamp(34px, 4.5vw, 56px);
+  --tps-fs-h2:          clamp(30px, 3.4vw, 44px);
+  --tps-fs-h3:          clamp(20px, 1.8vw, 24px);
+  --tps-fs-h4:          clamp(17px, 1.4vw, 19px);
+  --tps-fs-lede:        clamp(17px, 1.4vw, 19px);
+  --tps-fs-body:        clamp(15px, 1.1vw, 17px);
+  --tps-fs-sm:          14px;
+  --tps-fs-xs:          13px;
+  --tps-fs-label:       12px;
+  --tps-fs-micro:    12px;
+  --tps-fs-eyebrow:     clamp(13px, 1vw, 14px);
+  --tps-fs-stat-sm:     clamp(22px, 2vw, 26px);
+
+  position: relative;
+  width: 100%;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  /* The wrapper is the inheritance root for anything without an explicit
+     size of its own, so it takes the body step rather than a flat 16px.
+     The literal fallback matters most here: if this one failed to resolve
+     the block would inherit the theme's body size instead. */
+  font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px));
+  line-height: 1.65;
+  color: var(--tps-text, #1a2a35);
+  background: var(--tps-bg, #dff1fa);
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
+     other computes from visible to AUTO — so `overflow-x: hidden` silently
+     turned this wrapper into a scroll container around the whole page
+     (measured: overflow resolved to hidden / auto). That makes it the scroll
+     ancestor for `position: sticky`, which is why the sticky "How We Engage"
+     callout in the Why section would stop sticking above 960px, and it also
+     gives a trackpad gesture something to latch onto. `clip` clips exactly
+     the same way but creates no scroll container. The `hidden` line stays
+     first as the fallback for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
+  isolation: isolate;
+  /* FIX: this component previously relied only on JS (tpsFullBleed) to cancel
+     horizontal spacing from the theme/builder wrapper. It never touched
+     *vertical* spacing, so any top/bottom padding/margin the theme's content
+     wrapper added around the widget rendered as plain white gaps — first
+     above the hero, then (once that was fixed) below the CTA section.
+     margin-top/margin-bottom are pulled to 0 here too, and the matching
+     ancestor walk in the script (tpsKillAncestorSpacing) zeroes out top AND
+     bottom padding/margin on every parent between this element and the page
+     body element,
+     since the real offending wrapper class differs per theme/builder. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  /* Page-scaling ladder defaults; the @media rungs below override these. */
+  --tps-scale-h: 1;
+  --tps-scale-w: 1;
+}
+
+/* ── Local reset (scoped — cannot touch the rest of the site) ─ */
+#twopir-ps,
+#twopir-ps *,
+#twopir-ps *::before,
+#twopir-ps *::after { box-sizing: border-box; }
+
+#twopir-ps p,
+#twopir-ps h1, #twopir-ps h2, #twopir-ps h3,
+#twopir-ps ul, #twopir-ps li,
+#twopir-ps figure, #twopir-ps blockquote { margin: 0; padding: 0; }
+#twopir-ps li { list-style: none; }
+#twopir-ps a  { text-decoration: none; }
+
+
+#twopir-ps img { display: block; max-width: 100%; }
+#twopir-ps button { font-family: inherit; }
+
+/* The wrapper's own styling is folded into the single token rule at the top
+   of this sheet: exactly ONE bare #twopir-ps rule exists. */
+
+/* ── Elementor / builder wrapper reset ──
+   Page builders wrap the HTML widget in padded containers, which
+   would leave white bars between these full-bleed sections. This
+   only matches wrappers that actually contain #twopir-ps. */
+section.elementor-section:has(#twopir-ps),
+.elementor-column:has(#twopir-ps),
+.elementor-widget-wrap:has(#twopir-ps),
+.elementor-widget:has(#twopir-ps),
+.elementor-container:has(#twopir-ps),
+.wp-block-html:has(#twopir-ps) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The theme wraps page content in `.page-inner { overflow: hidden }`, and on
+   the live site that box overflows horizontally by about 3px. A clipping box
+   with real overflow is still a scroll container, which makes it a latch
+   target for scroll gestures and the scroll ancestor that stops the sticky
+   callout working. `clip` clips identically but is not a scroll container.
+   Scoped with :has() so only pages carrying this block are affected. */
+.page-inner:has(#twopir-ps) { overflow: clip; }
+
+/* FIX: added — the block above only catches Elementor/Gutenberg wrapper
+   classes. Classic-editor / theme "entry-content" wrappers and generic
+   <main>/<article> containers were not covered, and one of those is the
+   most likely source of the top gap. Matching them here too, in addition
+   to the JS ancestor walk, covers both cases without guessing which theme
+   is in use. */
+.entry-content:has(#twopir-ps),
+.post-content:has(#twopir-ps),
+.page-content:has(#twopir-ps),
+main:has(#twopir-ps),
+article:has(#twopir-ps) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Shared layout primitives ──────────────────────────────── */
+#twopir-ps .tps-section {
+  position: relative;
+  width: 100%;
+  padding: var(--tps-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--tps-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--tps-bg, #dff1fa);
+}
+#twopir-ps .tps-section--alt  { background: var(--tps-bg-alt, #e8f5fd); }
+#twopir-ps .tps-section--dark {
+  background:
+    radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
+    linear-gradient(158deg, var(--tps-navy, #1e2447) 0%, var(--tps-navy-deep, #12183a) 58%, var(--tps-navy-soft, #1a2e4a) 100%);
+  color: #fff;
+}
+
+/* Skip layout/paint work for sections while they are off-screen.
+   Excludes the section that contains the `position: sticky`
+   callout (Why Twopir / #tps-why-title), since layout containment
+   on an ancestor can interfere with sticky positioning. This is
+   the main scroll-jank fix: it stops the browser from repeatedly
+   re-rendering the marquee, pulses, spin and flow animations in
+   sections that aren't currently visible. */
+#twopir-ps .tps-section:not(:has(.tps-callout)) {
+  content-visibility: auto;
+  /* Two declarations on purpose. The first is the placeholder size used by
+     browsers without `auto` support. The second lets the browser remember
+     each section's real rendered height once it has been on screen, so the
+     scrollbar stops jumping as you scroll back up past a section whose true
+     height is nowhere near the 900px estimate. Browsers that cannot parse
+     `auto` drop the second line and keep the first. */
+  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* iOS Safari mis-handles content-visibility during momentum scrolling:
+   sections re-lay-out mid-gesture and the page appears to stop moving. The
+   perf win only matters on large, pointer-driven screens anyway. */
+@media (hover: none), (pointer: coarse) {
+  #twopir-ps .tps-section:not(:has(.tps-callout)) {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}
+
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-ps .tps-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
+#twopir-ps .tps-wrap--narrow { max-width: 900px; }
+
+/* ── Section header pattern (matches Our Services / Industries) */
+#twopir-ps .tps-head {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+#twopir-ps .tps-eyebrow {
+  display: block;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  margin-bottom: 10px;
+}
+#twopir-ps .tps-title {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  color: var(--tps-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-ps .tps-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tps-accent, #00aff6) 0%, var(--tps-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tps-accent, #00aff6);
+}
+#twopir-ps .tps-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 22px;
+}
+#twopir-ps .tps-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
+#twopir-ps .tps-rule-diamond {
+  width: 8px; height: 8px;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-ps .tps-lede {
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 300;
+  line-height: 1.78;
+  color: var(--tps-muted, #566b79);
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+#twopir-ps .tps-lede strong { color: var(--tps-text, #1a2a35); font-weight: 600; }
+
+/* dark-section variants of the same header pattern */
+#twopir-ps .tps-section--dark .tps-title { color: #fff; }
+#twopir-ps .tps-section--dark .tps-lede  { color: rgba(220,238,252,0.78); }
+#twopir-ps .tps-section--dark .tps-lede strong { color: #fff; }
+#twopir-ps .tps-section--dark .tps-rule-line { background: rgba(0,175,246,0.45); }
+
+/* ── Buttons (identical geometry to the homepage hero) ─────── */
+#twopir-ps .tps-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  transition: background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform 0.18s ease;
+}
+#twopir-ps .tps-btn svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+#twopir-ps .tps-btn--primary {
+  color: #fff !important;
+  background: var(--tps-accent, #00aff6);
+  border-color: var(--tps-accent, #00aff6);
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+}
+#twopir-ps .tps-btn--primary:hover,
+#twopir-ps .tps-btn--primary:focus-visible {
+  background: var(--tps-text, #1a2a35);
+  border-color: var(--tps-text, #1a2a35);
+  box-shadow: 0 8px 24px rgba(26,42,53,0.24);
+  transform: translateY(-2px);
+}
+#twopir-ps .tps-btn--ghost {
+  color: var(--tps-accent, #00aff6) !important;
+  background: rgba(255,255,255,0.72);
+  border-color: var(--tps-border, rgba(0,175,246,0.28));
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+}
+#twopir-ps .tps-btn--ghost:hover,
+#twopir-ps .tps-btn--ghost:focus-visible {
+  background: var(--tps-accent, #00aff6);
+  color: #fff !important;
+  border-color: var(--tps-accent, #00aff6);
+  box-shadow: 0 8px 24px rgba(0,175,246,0.32);
+  transform: translateY(-2px);
+}
+#twopir-ps .tps-section--dark .tps-btn--ghost {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#twopir-ps .tps-section--dark .tps-btn--ghost:hover {
+  background: var(--tps-accent, #00aff6);
+  border-color: var(--tps-accent, #00aff6);
+}
+#twopir-ps .tps-btn:focus-visible { outline: 2px solid var(--tps-accent, #00aff6); outline-offset: 3px; }
+#twopir-ps .tps-btn-arrow { transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
+#twopir-ps .tps-btn--primary:hover .tps-btn-arrow { transform: translateX(3px); }
+
+/* ════════════════════════════════════════════════════════════
+   1 · HERO
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 44px) var(--tps-pad-x, clamp(16px, 4vw, 48px)) clamp(20px, 2.4vw, 32px);
+  background:
+    radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
+    linear-gradient(180deg, var(--tps-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--tps-bg, #dff1fa) 92%, var(--tps-bg, #dff1fa) 100%);
+  overflow: hidden;
+}
+#twopir-ps .tps-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,175,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,175,246,0.07) 1px, transparent 1px);
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+}
+#twopir-ps .tps-hero-inner {
+  position: relative;
+  z-index: 1;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  /* the copy column carries the room. Widening it reflows the headline
+     from four lines to three and the lede from six to five, which is where
+     most of the first-screen budget comes from — layout, not type. */
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  align-items: center;
+  gap: clamp(28px, 3.6vw, 58px);
+}
+#twopir-ps .tps-hero-copy { max-width: 640px; }
+
+#twopir-ps .tps-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  /* the flat 11px label step rather than the eyebrow clamp, plus tighter
+     padding and tracking. The pill reads noticeably smaller without leaving
+     the type scale — which matters, because every industry page reuses it. */
+  font-size: var(--tps-fs-label, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid #b3d9f2;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  margin-bottom: clamp(11px, 1.4vw, 16px);
+  box-shadow: 0 2px 10px rgba(0,130,200,0.08);
+}
+#twopir-ps .tps-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--tps-accent, #00aff6);
+  animation: tpsPulse 2.6s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tpsPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,175,246,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,175,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,175,246,0); }
+}
+
+#twopir-ps .tps-hero-title {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(30px, 3.05vw, 48px);   /* was rem — the theme sets html{font-size:10px} */
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.09;
+  color: var(--tps-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-ps .tps-hero-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--tps-accent, #00aff6) 0%, var(--tps-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--tps-accent, #00aff6);
+}
+#twopir-ps .tps-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 1.2vw, 14px) 0 clamp(9px, 1.1vw, 13px);
+}
+#twopir-ps .tps-hero-rule .tps-rule-line { width: 54px; }
+#twopir-ps .tps-hero-rule .tps-rule-line--sm { width: 26px; }
+
+#twopir-ps .tps-hero-sub {
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--tps-muted, #566b79);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+#twopir-ps .tps-hero-sub strong { color: var(--tps-text, #1a2a35); font-weight: 600; }
+
+#twopir-ps .tps-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+#twopir-ps .tps-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 14px;
+  margin-top: clamp(14px, 1.6vw, 18px);
+}
+#twopir-ps .tps-hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tps-muted, #566b79);
+}
+#twopir-ps .tps-hero-proof b {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tps-text, #1a2a35);
+}
+#twopir-ps .tps-hero-proof li + li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.75;
+  margin-right: 8px;
+}
+
+/* ── Hero: dark architecture canvas ─────────────────────────── */
+#twopir-ps .tps-visual { position: relative; display: flex; justify-content: center; }
+#twopir-ps .tps-canvas {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, calc(58vh + 34px));
+  background:
+    radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tps-navy, #1e2447) 0%, var(--tps-navy-deep, #12183a) 58%, var(--tps-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tps-radius-lg, 22px);
+  padding: clamp(13px, 1.5vw, 17px);
+  box-shadow: var(--tps-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+}
+#twopir-ps .tps-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tps-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-ps .tps-canvas-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+#twopir-ps .tps-canvas-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#twopir-ps .tps-live {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--tps-green, #35d39a);
+  animation: tpsLive 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tpsLive {
+  0%   { box-shadow: 0 0 0 0 rgba(53,211,154,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(53,211,154,0); }
+  100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
+}
+#twopir-ps .tps-tag {
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 5px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* The panel is capped in viewport units so it shrinks on short windows
+   instead of forcing the hero to grow. The px ceiling stops it ballooning
+   on very tall monitors, where 58vh would otherwise outrun the copy. */
+#twopir-ps .tps-map {
+  display: block; width: 100%; height: auto;
+  max-height: 58vh;
+  max-height: min(58vh, 540px);
+}
+#twopir-ps .tps-map text { font-family: var(--tps-ff-body, 'Inter', sans-serif); }
+#twopir-ps .tps-map .m   { font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace); }
+
+#twopir-ps .tps-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+#twopir-ps .tps-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+#twopir-ps .tps-core     { fill: rgba(0,175,246,0.08);    stroke: rgba(0,175,246,0.42);   stroke-width: 1.2; }
+#twopir-ps .tps-pillbox  { fill: rgba(255,255,255,0.07);  stroke: rgba(0,175,246,0.34);   stroke-width: 1; }
+#twopir-ps .tps-out      { fill: rgba(53,211,154,0.05);   stroke: rgba(53,211,154,0.28);  stroke-width: 1; }
+#twopir-ps .tps-chip-r   { fill: rgba(255,255,255,0.05);  stroke: rgba(255,255,255,0.13); stroke-width: 1; }
+
+#twopir-ps .tps-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
+#twopir-ps .tps-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
+#twopir-ps .tps-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-ps .tps-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-ps .tps-h--acc { fill: rgba(0,175,246,0.95); }
+#twopir-ps .tps-h--out { fill: rgba(53,211,154,0.9); }
+#twopir-ps .tps-mark      { fill: var(--tps-accent, #00aff6); }
+#twopir-ps .tps-mark--out { fill: var(--tps-green, #35d39a); }
+
+#twopir-ps .tps-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
+#twopir-ps .tps-flow {
+  fill: none;
+  stroke: var(--tps-accent, #00aff6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 14;
+  opacity: 0.9;
+  animation: tpsFlow 2.2s linear infinite;
+}
+#twopir-ps .tps-flow--out { stroke: var(--tps-green, #35d39a); }
+#twopir-ps .tps-flow.d1 { animation-delay: 0s; }
+#twopir-ps .tps-flow.d2 { animation-delay: 0.28s; }
+#twopir-ps .tps-flow.d3 { animation-delay: 0.56s; }
+@keyframes tpsFlow { to { stroke-dashoffset: -152; } }
+
+#twopir-ps .tps-hit rect { transition: fill 0.22s ease, stroke 0.22s ease; }
+#twopir-ps .tps-hit:hover rect.tps-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
+#twopir-ps .tps-hit:hover rect.tps-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
+
+#twopir-ps .tps-badge-ring { fill: none; stroke: var(--tps-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-ps .tps-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
+#twopir-ps .tps-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
+#twopir-ps .tps-spin { transform-origin: 280px 158px; animation: tpsSpin 26s linear infinite; }
+@keyframes tpsSpin { to { transform: rotate(360deg); } }
+
+/* floating delivery card */
+#twopir-ps .tps-float {
+  position: absolute;
+  left: -20px;
+  bottom: -22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-md, 14px);
+  padding: 11px 15px;
+  box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
+}
+#twopir-ps .tps-float-ico {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--tps-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,175,246,0.35);
+  flex-shrink: 0;
+}
+#twopir-ps .tps-float-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-ps .tps-float-k {
+  display: block;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  margin-bottom: 2px;
+}
+#twopir-ps .tps-float-v {
+  display: block;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--tps-text, #1a2a35);
+  white-space: nowrap;
+}
+
+/* stacked map for small screens */
+#twopir-ps .tps-stack { display: none; }
+#twopir-ps .tps-layer {
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--tps-radius-md, 14px);
+  padding: 12px 13px 13px;
+}
+#twopir-ps .tps-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
+#twopir-ps .tps-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
+#twopir-ps .tps-layer-h {
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+}
+#twopir-ps .tps-layer--core .tps-layer-h { color: rgba(0,175,246,0.95); }
+#twopir-ps .tps-layer--out  .tps-layer-h { color: rgba(53,211,154,0.9); }
+#twopir-ps .tps-layer-t {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+  margin-bottom: 9px;
+}
+#twopir-ps .tps-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-ps .tps-chip {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+#twopir-ps .tps-layer--core .tps-chip { background: rgba(0,175,246,0.16);  border-color: rgba(0,175,246,0.42);  color: #fff; }
+#twopir-ps .tps-layer--out  .tps-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
+#twopir-ps .tps-connector { height: 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+#twopir-ps .tps-connector::before {
+  content: ''; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(0,175,246,0.05), rgba(0,175,246,0.7), rgba(0,175,246,0.05));
+}
+#twopir-ps .tps-connector::after {
+  content: ''; position: absolute;
+  width: 6px; height: 6px;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg); border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2 · TRUST STRIP (client logos + credentials)
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-trust { padding: clamp(28px, 3vw, 40px) var(--tps-pad-x, clamp(16px, 4vw, 48px)); background: var(--tps-bg, #dff1fa); }
+#twopir-ps .tps-trust-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-card, 18px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
+}
+#twopir-ps .tps-trust-lead {
+  text-align: center;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 400;
+  color: var(--tps-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-ps .tps-trust-lead strong { color: var(--tps-accent-ink, #00699f); font-weight: 700; }
+
+#twopir-ps .tps-marquee {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#twopir-ps .tps-marquee::before,
+#twopir-ps .tps-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; height: 100%; width: 56px;
+  z-index: 2; pointer-events: none;
+}
+#twopir-ps .tps-marquee::before { left: 0;  background: linear-gradient(to right, var(--tps-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-ps .tps-marquee::after  { right: 0; background: linear-gradient(to left,  var(--tps-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-ps .tps-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 52px;
+  animation: tpsScroll 26s linear infinite;
+  will-change: transform;
+}
+#twopir-ps .tps-marquee:hover .tps-marquee-track { animation-play-state: paused; }
+#twopir-ps .tps-marquee-item { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#twopir-ps .tps-marquee-item img {
+  height: 38px; width: auto; max-width: 130px;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
+@keyframes tpsScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+#twopir-ps .tps-badges-label {
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  margin-bottom: 12px;
+}
+#twopir-ps .tps-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#twopir-ps .tps-badge {
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--tps-muted, #566b79);
+  background: var(--tps-bg, #dff1fa);
+  border: 1px solid rgba(0,175,246,0.25);
+  border-radius: 6px;
+  padding: 4px 11px;
+  transition: background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-badge:hover { background: var(--tps-accent, #00aff6); color: #fff; border-color: var(--tps-accent, #00aff6); }
+
+/* ════════════════════════════════════════════════════════════
+   3 · PAIN GRID
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+#twopir-ps .tps-pain-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--tps-star, #e0961f);
+  border-radius: var(--tps-radius-card, 18px);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-pain-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tps-surface, #ffffff);
+}
+#twopir-ps .tps-pain-ico {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(240,165,60,0.12);
+  border: 1px solid rgba(240,165,60,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+}
+#twopir-ps .tps-pain-item h3 {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 7px;
+}
+#twopir-ps .tps-pain-item p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--tps-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4 · PHILOSOPHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-philosophy {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-lg, 22px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#twopir-ps .tps-philosophy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#twopir-ps .tps-philosophy > * { position: relative; }
+#twopir-ps .tps-philosophy p + p { margin-top: 16px; }
+#twopir-ps .tps-philosophy p {
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--tps-muted, #566b79);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+#twopir-ps .tps-philosophy p strong { color: var(--tps-text, #1a2a35); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   5 · SERVICES
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#twopir-ps .tps-svc-card {
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tps-accent, #00aff6), var(--tps-accent-dk, #007ec6));
+  opacity: 0;
+  transition: opacity var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-svc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tps-surface, #ffffff);
+}
+#twopir-ps .tps-svc-card:hover::after { opacity: 1; }
+#twopir-ps .tps-svc-ico {
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  border-radius: 12px;
+  background: var(--tps-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+#twopir-ps .tps-svc-ico svg {
+  width: 24px; height: 24px;
+  fill: none; stroke: #fff;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-ps .tps-svc-card h3 {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 9px;
+}
+#twopir-ps .tps-svc-card > p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.72;
+  color: var(--tps-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-ps .tps-svc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  margin-top: auto;
+}
+/* Positioned ::before, not `display: grid` with the diamond as a grid item —
+   grid promotes every child, so an item containing an inline element renders
+   one word per line. Legal still carries that defect. */
+#twopir-ps .tps-svc-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--tps-muted, #566b79);
+}
+#twopir-ps .tps-svc-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 6px; height: 6px;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · PROCESS
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+#twopir-ps .tps-step {
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-md, 14px);
+  padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  position: relative;
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-ps .tps-step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  margin-bottom: 14px;
+}
+#twopir-ps .tps-step-num::after {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+#twopir-ps .tps-step h3 {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 8px;
+}
+#twopir-ps .tps-step p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tps-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 · INTEGRATIONS
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-int-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+#twopir-ps .tps-int-item {
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--tps-radius-md, 14px);
+  padding: 20px 18px;
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-int-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-ps .tps-int-ico {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--tps-bg, #dff1fa);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  margin-bottom: 12px;
+}
+#twopir-ps .tps-int-name {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 5px;
+  line-height: 1.35;
+}
+#twopir-ps .tps-int-desc {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tps-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8 · PROOF (dark section)
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-proof-pair {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+#twopir-ps .tps-proof-pair + .tps-proof-pair { margin-top: 22px; }
+
+#twopir-ps .tps-quote-card,
+#twopir-ps .tps-cs-card {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--tps-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#twopir-ps .tps-cs-card {
+  background: rgba(0,175,246,0.07);
+  border-color: rgba(0,175,246,0.34);
+}
+#twopir-ps .tps-cs-card--green { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.32); }
+
+#twopir-ps .tps-quote-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#twopir-ps .tps-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tps-accent, #00aff6), var(--tps-accent-dk, #007ec6));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+#twopir-ps .tps-avatar--green { background: linear-gradient(135deg, var(--tps-green, #35d39a), #1a9c73); }
+#twopir-ps .tps-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
+
+#twopir-ps .tps-quote-text {
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(224,240,252,0.9);
+  border-left: 2px solid var(--tps-accent, #00aff6);
+  padding-left: 20px;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+#twopir-ps .tps-quote-text--green { border-left-color: var(--tps-green, #35d39a); }
+
+#twopir-ps .tps-quote-name {
+  display: block;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+#twopir-ps .tps-quote-role {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.5;
+}
+#twopir-ps .tps-mono-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  border: 1px solid rgba(0,175,246,0.38);
+  background: rgba(0,175,246,0.09);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+#twopir-ps .tps-mono-tag--green {
+  color: var(--tps-green, #35d39a);
+  border-color: rgba(53,211,154,0.4);
+  background: rgba(53,211,154,0.09);
+}
+#twopir-ps .tps-cs-card .tps-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
+
+#twopir-ps .tps-cs-company {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+#twopir-ps .tps-cs-title {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(184,214,242,0.8);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+#twopir-ps .tps-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+#twopir-ps .tps-cs-metric {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px;
+  padding: 13px 10px;
+  text-align: center;
+}
+#twopir-ps .tps-cs-val {
+  display: block;
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--tps-accent, #00aff6);
+  margin-bottom: 6px;
+}
+#twopir-ps .tps-cs-val--green { color: var(--tps-green, #35d39a); }
+#twopir-ps .tps-cs-lbl {
+  display: block;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.45;
+}
+#twopir-ps .tps-cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--tps-ff-body, 'Inter', sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--tps-accent, #00aff6);
+  border-radius: 100px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.32);
+  transition: background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
+#twopir-ps .tps-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
+#twopir-ps .tps-cs-link--green:hover { background: var(--tps-green, #35d39a); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-ps .tps-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ════════════════════════════════════════════════════════════
+   9 · WHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+}
+#twopir-ps .tps-why-list { display: flex; flex-direction: column; gap: 12px; }
+#twopir-ps .tps-why-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-md, 14px);
+  padding: 18px 20px;
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-why-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--tps-surface, #ffffff);
+}
+#twopir-ps .tps-why-num {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(0,175,246,0.10);
+  border: 1px solid rgba(0,175,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--tps-accent, #00aff6);
+}
+#twopir-ps .tps-why-item h3 {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 5px;
+}
+#twopir-ps .tps-why-item p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--tps-muted, #566b79);
+}
+
+#twopir-ps .tps-callout {
+  position: sticky;
+  top: 28px;
+  background:
+    radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--tps-navy, #1e2447) 0%, var(--tps-navy-deep, #12183a) 58%, var(--tps-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--tps-radius-lg, 22px);
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: var(--tps-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+  position: relative;
+  overflow: hidden;
+}
+#twopir-ps .tps-callout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tps-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-ps .tps-callout-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tps-accent, #00aff6);
+  margin-bottom: 16px;
+}
+#twopir-ps .tps-callout-text {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+#twopir-ps .tps-callout-author {
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(184,214,242,0.78);
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-ps .tps-callout-author strong { color: var(--tps-accent, #00aff6); font-weight: 600; }
+#twopir-ps .tps-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+}
+#twopir-ps .tps-engage li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(232,244,253,0.9);
+}
+#twopir-ps .tps-engage li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--tps-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-ps .tps-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-ps .tps-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+#twopir-ps .tps-fact b {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tps-accent, #00aff6);
+}
+/* homepage stat hooks — keep inline so injected values don't break layout */
+#twopir-ps .twopir-years,
+#twopir-ps .twopir-clients,
+#twopir-ps .twopir-countries,
+#twopir-ps .twopir-salesforce,
+#twopir-ps .twopir-hubspot,
+#twopir-ps .twopir-ai { display: inline; }
+
+/* ════════════════════════════════════════════════════════════
+   10 · FAQ (accordion — same behaviour as the homepage FAQ)
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-faq-list {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#twopir-ps .tps-faq-row {
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  border-radius: var(--tps-radius-md, 14px);
+  overflow: hidden;
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-faq-row.is-open {
+  border-color: rgba(0,175,246,0.5);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-ps .tps-faq-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  text-align: left;
+  /* Matched to the homepage's .twh-faq-btn. The question is a HEADING, so it
+     takes the display face at 700 — not the body face at 600. The h4 size
+     step was already correct; the family and weight were not, which is why
+     the two FAQ sections looked different despite passing the type check. */
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--tps-text, #1a2a35);
+  transition: color 150ms ease;
+}
+#twopir-ps .tps-faq-row.is-open .tps-faq-btn { color: var(--tps-accent, #00aff6); }
+#twopir-ps .tps-faq-btn:focus-visible { outline: 2px solid var(--tps-accent, #00aff6); outline-offset: -3px; }
+#twopir-ps .tps-faq-ico {
+  width: 22px; height: 22px;
+  min-width: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--tps-border, rgba(0,175,246,0.28));
+  background: rgba(0,175,246,0.07);
+  color: var(--tps-accent-ink, #00699f);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              border-color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-faq-ico svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
+}
+#twopir-ps .tps-faq-row.is-open .tps-faq-ico {
+  transform: rotate(180deg);
+  background: var(--tps-accent, #00aff6);
+  border-color: var(--tps-accent, #00aff6);
+  color: #fff;
+}
+/* plus becomes a minus — the homepage's open affordance, rather than
+   rotating the plus into an x */
+#twopir-ps .tps-faq-ico .tps-faq-v {
+  transform-origin: center;
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              opacity var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-faq-row.is-open .tps-faq-ico .tps-faq-v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+#twopir-ps .tps-faq-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
+}
+#twopir-ps .tps-faq-panel-inner {
+  padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
+}
+#twopir-ps .tps-faq-row.is-open .tps-faq-panel-inner { border-top: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22)); }
+
+/* Inline citation link to an external authority source. Inherits font
+   size, weight and line-height from its parent, so it never changes
+   type scale or layout — only colour + underline mark it as a link. */
+#twopir-ps .tps-src {
+  color: var(--tps-accent-ink, #00699f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-src:hover,
+#twopir-ps .tps-src:focus-visible { color: var(--tps-accent, #00aff6); }
+#twopir-ps .tps-faq-panel-inner p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--tps-muted, #566b79);
+  padding-top: 15px;
+  text-wrap: pretty;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11 · CTA (dark close, mirrors the homepage stats strip)
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-cta { text-align: center; }
+#twopir-ps .tps-cta-inner { max-width: 1100px; margin: 0 auto; }
+#twopir-ps .tps-cta .tps-eyebrow { color: var(--tps-accent, #00aff6); }
+#twopir-ps .tps-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+#twopir-ps .tps-cta-note {
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,214,242,0.7);
+  margin-top: 22px;
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────
+   Progressive enhancement (2026-08 SEO/CWV patch).
+
+   Previously every .tps-fade started at opacity:0 and only became
+   visible once the reveal script added .tps-in. That meant a crawler
+   which does not execute JavaScript — most AI answer engines and some
+   SEO tools — saw the whole page, H1 included, at opacity:0, and real
+   users waited on script execution before anything painted.
+
+   Now:
+   • Default state is VISIBLE. No JS, no CSS → the page still reads.
+   • The hidden start state applies only under .tps-js, which the
+     inline flag script sets on #twopir-ps before first paint, so
+     JS users see exactly the same animation as before.
+   • The hero is above the fold, so it uses a CSS keyframe entrance
+     instead of the observer. Its H1 (the LCP element) starts painting
+     on the first frame rather than after the 120KB document has been
+     parsed and the end-of-body script has run.
+   Timing, easing, distance and stagger are unchanged throughout.    */
+#twopir-ps .tps-fade {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Below-the-fold content: hidden only when JS is there to reveal it */
+#twopir-ps.tps-js .tps-fade {
+  opacity: 0;
+  transform: translateY(18px);
+}
+#twopir-ps .tps-fade.tps-in,
+#twopir-ps.tps-js .tps-fade.tps-in { opacity: 1; transform: none; }
+
+/* Above-the-fold hero: CSS-only entrance, never gated on JS */
+#twopir-ps .tps-hero .tps-fade,
+#twopir-ps.tps-js .tps-hero .tps-fade {
+  opacity: 1;
+  transform: none;
+  /* Longhands, not the animation shorthand: the shorthand resets
+     animation-delay to 0s, and this rule outranks the .tps-d1..d5
+     stagger classes - which silently flattened the hero stagger. */
+  animation-name: tpsFadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+@keyframes tpsFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Delays drive the transition below the fold and the animation in the
+   hero, so both properties are set on the same stagger classes. */
+#twopir-ps .tps-d1 { transition-delay: 0.07s; animation-delay: 0.07s; }
+#twopir-ps .tps-d2 { transition-delay: 0.15s; animation-delay: 0.15s; }
+#twopir-ps .tps-d3 { transition-delay: 0.23s; animation-delay: 0.23s; }
+#twopir-ps .tps-d4 { transition-delay: 0.31s; animation-delay: 0.31s; }
+#twopir-ps .tps-d5 { transition-delay: 0.18s; animation-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #twopir-ps .tps-fade,
+  #twopir-ps.tps-js .tps-fade,
+  #twopir-ps .tps-hero .tps-fade,
+  #twopir-ps.tps-js .tps-hero .tps-fade { opacity: 1; transform: none; transition: none; animation: none; }
+  #twopir-ps .tps-flow { animation: none; stroke-dasharray: none; opacity: 0.5; }
+  #twopir-ps .tps-dot,
+  #twopir-ps .tps-live,
+  #twopir-ps .tps-spin,
+  #twopir-ps .tps-marquee-track { animation: none; }
+  #twopir-ps .tps-faq-panel { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  #twopir-ps .tps-float      { display: none; }
+  #twopir-ps .tps-process    { grid-template-columns: repeat(3, 1fr); }
+  #twopir-ps .tps-pain-grid  { grid-template-columns: repeat(2, 1fr); }
+  #twopir-ps .tps-svc-grid   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-ps .tps-int-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 960px) {
+  #twopir-ps .tps-why-grid  { grid-template-columns: 1fr; }
+  #twopir-ps .tps-callout   { position: static; }
+  #twopir-ps .tps-proof-pair{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  #twopir-ps .tps-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(26px, 4vw, 36px);
+  }
+  #twopir-ps .tps-hero-copy { max-width: 700px; margin: 0 auto; text-align: center; }
+  #twopir-ps .tps-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
+  #twopir-ps .tps-hero-rule,
+  #twopir-ps .tps-hero-cta,
+  #twopir-ps .tps-hero-proof { justify-content: center; }
+  #twopir-ps .tps-canvas { max-width: 560px; }
+  #twopir-ps .tps-map    { max-height: none; }
+}
+
+@media (max-width: 760px) {
+  #twopir-ps .tps-process   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-ps .tps-int-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  #twopir-ps .tps-map   { display: none; }
+  #twopir-ps .tps-stack { display: block; }
+  #twopir-ps .tps-canvas { border-radius: var(--tps-radius-md, 14px); }
+  #twopir-ps .tps-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
+  #twopir-ps .tps-hero-cta,
+  #twopir-ps .tps-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  #twopir-ps .tps-hero-cta .tps-btn,
+  #twopir-ps .tps-cta-actions .tps-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    white-space: normal;
+  }
+  #twopir-ps .tps-pain-grid,
+  #twopir-ps .tps-svc-grid,
+  #twopir-ps .tps-process { grid-template-columns: 1fr; }
+  #twopir-ps .tps-cs-metrics { gap: 8px; }
+  #twopir-ps .tps-quote-text { padding-left: 16px; }
+  #twopir-ps .tps-marquee::before,
+  #twopir-ps .tps-marquee::after { width: 34px; }
+  #twopir-ps .tps-marquee-track { gap: 34px; }
+  #twopir-ps .tps-marquee-item img { height: 30px; max-width: 100px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-ps .tps-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
+  #twopir-ps .tps-hero-sub { font-size: 14.5px; line-height: 1.7; }
+  #twopir-ps .tps-hero-proof { gap: 6px 11px; }
+  #twopir-ps .tps-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
+  #twopir-ps .tps-hero-proof li + li::before { margin-right: 5px; }
+  #twopir-ps .tps-canvas-bar .tps-tag { display: none; }
+  #twopir-ps .tps-int-grid  { grid-template-columns: 1fr; }
+  #twopir-ps .tps-cs-metrics { grid-template-columns: 1fr; }
+  #twopir-ps .tps-pain-item,
+  #twopir-ps .tps-why-item { gap: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE SCALE — CONSISTENCY PASS WITH THE HOMEPAGE
+   ════════════════════════════════════════════════════════════
+   Design untouched — every component, colour, layout and section
+   above stays exactly as built. This block only remaps font sizes
+   and line-heights onto the homepage's fluid type scale, loaded
+   last (the same way homepage.html loads its own type pass) so no
+   earlier rule and no theme rule can re-impose a different size.
+
+   The homepage scale, verbatim:
+
+     display  hero headline          clamp(30px, 4vw, 46px)
+     h2       section titles        clamp(26px, 3vw, 38px) / 1.16
+     h3       card / panel titles   clamp(17px, 1.5vw, 19px) / 1.3
+     h4       dense titles, FAQ     clamp(15px, 1.25vw, 16px)
+     lede     section intros        clamp(15px, 1.2vw, 17px) / 1.7
+     body     paragraph copy        clamp(14px, 1.05vw, 15px) / 1.65
+     sm / xs  dense copy, meta      13px / 12px
+     label    mono uppercase        11px  ← the page-wide floor
+     eyebrow  section eyebrows      clamp(11px, 0.9vw, 12px) / 0.2em
+     stat-sm  smaller numbers       clamp(20px, 1.9vw, 24px)
+
+   Two deliberate fixes folded in:
+     · the hero H1 was clamp(1.85rem, 3.05vw, 3rem) — rem against
+       whatever root size the active theme sets. It is now the
+       homepage's px-based display clamp, so it renders identically
+       on any theme.
+     · nothing outside the navy hero panel sits below 11px anymore
+       (9/9.5/10px labels are lifted to the 11px label floor). The
+       10px mono labels INSIDE the hero panel stay at 10px because
+       the homepage hero itself uses 10px for those same roles
+       (canvas label, tag, float card).                          */
+
+
+/* ── display · hero ──────────────────────────────────────────── */
+#twopir-ps .tps-hero-title { font-size: var(--tps-fs-display, clamp(34px, 4.5vw, 56px)); line-height: 1.09; }
+/* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
+#twopir-ps .tps-hero-sub   { font-size: var(--tps-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-ps .tps-pill       { font-size: var(--tps-fs-label, 12px); letter-spacing: 0.1em; }
+/* hero stat row — homepage's exact pairing: 11px mono label,
+   13px display number */
+#twopir-ps .tps-hero-proof li { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-hero-proof b  { font-size: var(--tps-fs-sm, 14px); }
+
+/* hero navy panel internals — matched to the homepage hero's own
+   values (10px canvas label / tag / float key, 11px float value) */
+#twopir-ps .tps-tag     { font-size: 10px; }
+#twopir-ps .tps-layer-h { font-size: 10px; }
+/* the float card sits on white, outside the navy panel, so it takes the
+   11px label floor rather than the panel's 10px */
+#twopir-ps .tps-float-k { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-float-v { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-chip    { font-size: var(--tps-fs-label, 12px); }
+
+/* ── h2 · section titles ─────────────────────────────────────── */
+#twopir-ps .tps-title { font-size: var(--tps-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
+
+/* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
+#twopir-ps .tps-eyebrow { font-size: var(--tps-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
+
+/* ── lede · section intros and long-form copy ────────────────── */
+#twopir-ps .tps-lede         { font-size: var(--tps-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+#twopir-ps .tps-philosophy p { font-size: var(--tps-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+
+/* ── buttons — homepage buttons are 13px ─────────────────────── */
+#twopir-ps .tps-btn     { font-size: var(--tps-fs-sm, 14px); }
+#twopir-ps .tps-cs-link { font-size: var(--tps-fs-sm, 14px); }
+
+/* ── trust strip ─────────────────────────────────────────────── */
+#twopir-ps .tps-trust-lead { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); }
+#twopir-ps .tps-badge      { font-size: var(--tps-fs-xs, 13px); }
+
+/* ── card titles · h4 role (dense cards keep their designed
+      family and case — only the size snaps to the scale) ─────── */
+#twopir-ps .tps-pain-item h3 { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-ps .tps-svc-card h3  { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-ps .tps-step h3      { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-ps .tps-int-name     { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-ps .tps-why-item h3  { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-ps .tps-cs-company   { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-ps .tps-avatar       { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-ps .tps-faq-btn      { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-ps .tps-callout-text { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.6; }
+
+/* ── body · primary card copy ────────────────────────────────── */
+#twopir-ps .tps-pain-item p       { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-ps .tps-svc-card > p      { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-ps .tps-why-item p        { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-ps .tps-faq-panel-inner p { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-ps .tps-quote-text        { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.7; }
+
+/* ── sm · dense lists, meta, secondary copy ──────────────────── */
+#twopir-ps .tps-svc-list li    { font-size: var(--tps-fs-sm, 14px); }
+#twopir-ps .tps-step p         { font-size: var(--tps-fs-sm, 14px); line-height: 1.6; }
+#twopir-ps .tps-int-desc       { font-size: var(--tps-fs-sm, 14px); line-height: 1.6; }
+#twopir-ps .tps-engage li      { font-size: var(--tps-fs-sm, 14px); }
+#twopir-ps .tps-callout-author { font-size: var(--tps-fs-sm, 14px); line-height: 1.65; }
+#twopir-ps .tps-quote-name     { font-size: var(--tps-fs-sm, 14px); }
+#twopir-ps .tps-cs-title       { font-size: var(--tps-fs-sm, 14px); line-height: 1.55; }
+#twopir-ps .tps-fact b         { font-size: var(--tps-fs-sm, 14px); }
+#twopir-ps .tps-stars          { font-size: var(--tps-fs-sm, 14px); }
+
+/* ── xs ──────────────────────────────────────────────────────── */
+#twopir-ps .tps-quote-role { font-size: var(--tps-fs-xs, 13px); }
+
+/* ── label · 11px mono floor (was 9–10px) ────────────────────── */
+#twopir-ps .tps-step-num  { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-mono-tag  { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-cs-lbl    { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-why-num   { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-callout-k { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-fact      { font-size: var(--tps-fs-label, 12px); }
+#twopir-ps .tps-cta-note  { font-size: var(--tps-fs-label, 12px); }
+
+/* ── stat numbers · case-study metrics ───────────────────────── */
+#twopir-ps .tps-cs-val { font-size: var(--tps-fs-stat-sm, clamp(22px, 2vw, 26px)); }
+
+/* ── Small screens — same values as the homepage's own
+      small-screen type block. This pass loads after the page's
+      620px/420px blocks, so mobile type is owned here. ────────── */
+@media (max-width: 620px) {
+  #twopir-ps .tps-hero-title { font-size: 30px; line-height: 1.18; }
+  #twopir-ps .tps-hero-sub   { font-size: 16px; line-height: 1.65; }
+  #twopir-ps .tps-title      { font-size: 26px; line-height: 1.2; }
+
+  #twopir-ps .tps-lede,
+  #twopir-ps .tps-philosophy p { font-size: 16px; line-height: 1.65; }
+
+  #twopir-ps .tps-pain-item p,
+  #twopir-ps .tps-svc-card > p,
+  #twopir-ps .tps-why-item p,
+  #twopir-ps .tps-quote-text,
+  #twopir-ps .tps-faq-panel-inner p { font-size: 15px; }
+
+  #twopir-ps .tps-faq-btn { font-size: 16px; }
+
+  #twopir-ps .tps-pain-item h3,
+  #twopir-ps .tps-svc-card h3,
+  #twopir-ps .tps-step h3,
+  #twopir-ps .tps-int-name,
+  #twopir-ps .tps-why-item h3,
+  #twopir-ps .tps-cs-company { font-size: 16px; }
+
+  #twopir-ps .tps-svc-list li,
+  #twopir-ps .tps-step p,
+  #twopir-ps .tps-int-desc,
+  #twopir-ps .tps-engage li,
+  #twopir-ps .tps-callout-author { font-size: 14px; }
+
+  #twopir-ps .tps-btn,
+  #twopir-ps .tps-cs-link { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-ps .tps-pill { font-size: 11px; letter-spacing: 0.14em; padding: 6px 13px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   FIRMS WE SERVE  ·  eight chips
+   ════════════════════════════════════════════════════════════
+   Name only, no description — so these are chips, not cards. A
+   card surface here would promise a body that never arrives. */
+#twopir-ps .tps-firm-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.3vw, 14px);
+}
+#twopir-ps .tps-firm-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px clamp(14px, 1.6vw, 18px);
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--tps-radius-md, 14px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-firm-chip:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-ps .tps-firm-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--tps-bg-alt, #e8f5fd);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  font-size: 16px;
+  line-height: 1;
+}
+#twopir-ps .tps-firm-name {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--tps-fs-sm, 14px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--tps-text, #1a2a35);
+}
+
+/* ════════════════════════════════════════════════════════════
+   CLIENT LIFECYCLE  ·  six stages
+   ════════════════════════════════════════════════════════════
+   Three across, two rows. Six on Legal's five-column process
+   rail would leave a single orphan on the second row. */
+#twopir-ps .tps-life-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-ps .tps-life-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: clamp(18px, 2.1vw, 24px);
+  background: var(--tps-card, #eef8fd);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--tps-radius-md, 14px);
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-life-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-ps .tps-life-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--tps-accent, #00aff6) 0%, var(--tps-accent-dk, #007ec6) 100%);
+  font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace);
+  font-size: var(--tps-fs-micro, 12px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+#twopir-ps .tps-life-step h3 {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--tps-text, #1a2a35);
+  margin-bottom: 6px;
+}
+#twopir-ps .tps-life-step p {
+  font-size: var(--tps-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--tps-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   WHAT CHANGES  ·  six outcome cards
+   ════════════════════════════════════════════════════════════ */
+#twopir-ps .tps-out-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-ps .tps-out-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--tps-surface, #ffffff);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  border-left: 3px solid var(--tps-accent, #00aff6);
+  border-radius: var(--tps-radius-card, 18px);
+  box-shadow: var(--tps-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--tps-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-ps .tps-out-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--tps-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-ps .tps-out-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--tps-radius-md, 14px);
+  background: var(--tps-bg-alt, #e8f5fd);
+  border: 1px solid var(--tps-border-soft, rgba(0,175,246,0.22));
+  font-size: 19px;
+  line-height: 1;
+}
+#twopir-ps .tps-out-title {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--tps-text, #1a2a35);
+}
+#twopir-ps .tps-out-desc {
+  font-size: var(--tps-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--tps-muted, #566b79);
+}
+
+/* Hero metric row as a 2x2 grid — the labels are full sentences. */
+#twopir-ps .tps-hero-proof {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(14px, 2vw, 26px);
+  align-items: start;
+}
+#twopir-ps .tps-hero-proof li { display: block; }
+#twopir-ps .tps-hero-proof b  { display: block; margin-bottom: 3px; }
+#twopir-ps .tps-hero-proof li + li::before { content: none; }
+
+#twopir-ps .tps-quote-card { display: flex; flex-direction: column; }
+#twopir-ps .tps-quote-card > div:last-child { margin-top: auto; }
+
+@media (max-width: 960px) {
+  #twopir-ps .tps-firm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #twopir-ps .tps-life-track,
+  #twopir-ps .tps-out-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  #twopir-ps .tps-firm-grid,
+  #twopir-ps .tps-life-track,
+  #twopir-ps .tps-out-grid { grid-template-columns: 1fr; }
+  #twopir-ps .tps-hero-proof { grid-template-columns: 1fr; gap: 8px; }
+  #twopir-ps .tps-life-step h3,
+  #twopir-ps .tps-out-title { font-size: 16px; }
+  #twopir-ps .tps-life-step p,
+  #twopir-ps .tps-out-desc { font-size: 14px; }
+}
+
+</style>
+
+
+<div id="twopir-ps">
+<script>document.getElementById('twopir-ps').className += ' tps-js';</script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1 · HERO
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-hero" aria-labelledby="tps-hero-title">
+    <div class="tps-hero-grid" aria-hidden="true"></div>
+
+    <div class="tps-hero-inner">
+
+      <div class="tps-hero-copy">
+
+        <span class="tps-pill tps-fade">
+          <span class="tps-dot" aria-hidden="true"></span>
+          Salesforce for Professional Services &amp; Consulting Firms
+        </span>
+
+        <h1 class="tps-hero-title tps-fade tps-d1" id="tps-hero-title">
+          Your Firm Wins Business on Relationships. <em>It Scales on Systems.</em>
+        </h1>
+
+        <div class="tps-hero-rule tps-fade tps-d1" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line tps-rule-line--sm"></span>
+        </div>
+
+        <p class="tps-hero-sub tps-fade tps-d2">
+          Most professional services and consulting firms don't struggle to attract the right clients.
+          They struggle to move those clients efficiently from inquiry to engagement, and from
+          engagement to delivery — without losing momentum, data, or accountability along the way.
+          Twopir Consulting builds the Salesforce-first operating infrastructure that fixes those gaps
+          and gives your firm a scalable foundation for growth.
+        </p>
+
+        <div class="tps-hero-cta tps-fade tps-d3">
+          <a class="tps-btn tps-btn--primary" href="https://twopirconsulting.com/contact-us/"
+             aria-label="Talk to a practice systems architect at Twopir Consulting">
+            Talk to a Practice Systems Architect
+            <svg class="tps-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+          <a class="tps-btn tps-btn--ghost" href="#tps-proof"
+             aria-label="See client outcomes from professional services engagements">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
+            </svg>
+            See Client Outcomes
+          </a>
+        </div>
+
+        <ul class="tps-hero-proof tps-fade tps-d4">
+          <li><b>45%</b> Reduction in manual effort across BD, onboarding, and engagement operations</li>
+          <li><b>60%</b> Faster lead-to-signed-engagement conversion with structured pipeline workflows</li>
+          <li><b>3×</b> Improvement in cross-team visibility across business development, delivery, and finance</li>
+          <li><b>360°</b> Operating view of pipeline, engagements, billing readiness, and practice performance</li>
+        </ul>
+
+      </div>
+
+      <!-- Right: professional services operating architecture panel -->
+      <div class="tps-visual tps-fade tps-d5">
+        <figure class="tps-canvas" aria-labelledby="tps-canvas-label">
+
+          <div class="tps-canvas-bar">
+            <span class="tps-canvas-label" id="tps-canvas-label">
+              <span class="tps-live" aria-hidden="true"></span>
+              Firm Operating Model
+            </span>
+            <span class="tps-tag" aria-hidden="true">Twopir · 2πr</span>
+          </div>
+
+          <svg class="tps-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
+               role="img"
+               aria-label="Twopir professional services operating model. Systems of record — Salesforce and the project delivery platform, plus DocuSign and document tools, QuickBooks and Xero, and time and expense platforms — feed the Twopir firm architecture layer, made up of BD and proposal, onboarding and delivery, and billing and renewal. That layer produces firm outcomes: faster conversion, cross-team alignment and practice visibility.">
+
+            <text class="m tps-h" x="12" y="14">SYSTEMS OF RECORD</text>
+            <line x1="150" y1="10.5" x2="548" y2="10.5" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+            <rect class="tps-layerbox" x="12" y="22" width="536" height="108" rx="14"/>
+
+            <g class="tps-hit">
+              <rect class="tps-node" x="22" y="32" width="248" height="56" rx="11"/>
+              <circle class="tps-mark" cx="40" cy="60" r="3.5"/>
+              <text class="tps-t" x="54" y="56">Salesforce</text>
+              <text class="tps-s" x="54" y="73">Pipeline · Clients · Engagements</text>
+            </g>
+            <g class="tps-hit">
+              <rect class="tps-node" x="290" y="32" width="248" height="56" rx="11"/>
+              <circle class="tps-mark" cx="308" cy="60" r="3.5"/>
+              <text class="tps-t" x="322" y="56">Project Delivery</text>
+              <text class="tps-s" x="322" y="73">Asana · Monday · Teamwork</text>
+            </g>
+
+            <rect class="tps-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
+            <text class="tps-s" x="104" y="111" text-anchor="middle">DocuSign · SharePoint</text>
+            <rect class="tps-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
+            <text class="tps-s" x="280" y="111" text-anchor="middle">QuickBooks · Xero</text>
+            <rect class="tps-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
+            <text class="tps-s" x="456" y="111" text-anchor="middle">Time &amp; Expense</text>
+
+            <path class="tps-link" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tps-link" d="M280,130 L280,137"/>
+            <path class="tps-link" d="M456,130 C456,146 376,142 298,148"/>
+            <path class="tps-flow d1" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="tps-flow d2" d="M280,130 L280,137"/>
+            <path class="tps-flow d3" d="M456,130 C456,146 376,142 298,148"/>
+
+            <rect class="tps-core" x="12" y="158" width="536" height="196" rx="16"/>
+
+            <text class="m tps-h tps-h--acc" x="280" y="200" text-anchor="middle">TWOPIR FIRM ARCHITECTURE LAYER</text>
+            <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
+
+            <rect class="tps-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
+            <text class="tps-t2" x="104" y="248" text-anchor="middle">BD &amp; Proposal</text>
+            <text class="tps-s"  x="104" y="266" text-anchor="middle">Referrals · Pipeline</text>
+            <text class="tps-s"  x="104" y="279" text-anchor="middle">Scope approvals</text>
+
+            <rect class="tps-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
+            <text class="tps-t2" x="280" y="248" text-anchor="middle">Onboarding &amp; Delivery</text>
+            <text class="tps-s"  x="280" y="266" text-anchor="middle">Kickoff · Milestones</text>
+            <text class="tps-s"  x="280" y="279" text-anchor="middle">Team allocation</text>
+
+            <rect class="tps-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
+            <text class="tps-t2" x="456" y="248" text-anchor="middle">Billing &amp; Renewal</text>
+            <text class="tps-s"  x="456" y="266" text-anchor="middle">Readiness · Invoices</text>
+            <text class="tps-s"  x="456" y="279" text-anchor="middle">Expansion signals</text>
+
+            <text class="m tps-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE CLIENT RECORD · BUILT FOR MULTI-PRACTICE SCALE</text>
+
+            <g class="tps-spin" aria-hidden="true">
+              <path class="tps-badge-ring" d="M280,131 A27,27 0 0 1 306,151"/>
+              <path class="tps-badge-ring" d="M280,185 A27,27 0 0 1 254,165"/>
+            </g>
+            <circle class="tps-badge-face" cx="280" cy="158" r="21"/>
+            <text class="tps-badge-txt" x="280" y="163" text-anchor="middle">2πr</text>
+
+            <path class="tps-link" d="M280,354 L280,378"/>
+            <path class="tps-flow tps-flow--out d1" d="M280,354 L280,378"/>
+            <polyline points="273,372 280,379 287,372" fill="none" stroke="rgba(53,211,154,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <rect class="tps-layerbox" x="12" y="384" width="536" height="150" rx="14"/>
+            <text class="m tps-h tps-h--out" x="28" y="410">FIRM OUTCOMES</text>
+            <line x1="140" y1="406.5" x2="532" y2="406.5" stroke="rgba(53,211,154,0.22)" stroke-width="1"/>
+
+            <g class="tps-hit">
+              <rect class="tps-out" x="22" y="422" width="164" height="76" rx="11"/>
+              <circle class="tps-mark--out" cx="38" cy="441" r="3.5"/>
+              <text class="tps-t2" x="50" y="445">Faster Conversion</text>
+              <text class="tps-s"  x="36" y="463">Inquiry to signed</text>
+              <text class="tps-s"  x="36" y="476">engagement, tracked</text>
+            </g>
+            <g class="tps-hit">
+              <rect class="tps-out" x="198" y="422" width="164" height="76" rx="11"/>
+              <circle class="tps-mark--out" cx="214" cy="441" r="3.5"/>
+              <text class="tps-t2" x="226" y="445">Team Alignment</text>
+              <text class="tps-s"  x="212" y="463">BD, delivery and</text>
+              <text class="tps-s"  x="212" y="476">finance in one view</text>
+            </g>
+            <g class="tps-hit">
+              <rect class="tps-out" x="374" y="422" width="164" height="76" rx="11"/>
+              <circle class="tps-mark--out" cx="390" cy="441" r="3.5"/>
+              <text class="tps-t2" x="402" y="445">Practice Visibility</text>
+              <text class="tps-s"  x="388" y="463">Live pipeline and</text>
+              <text class="tps-s"  x="388" y="476">engagement status</text>
+            </g>
+
+            <text class="m tps-h" x="280" y="520" text-anchor="middle" style="font-size:9px">CAPTURE · PROPOSE · ONBOARD · DELIVER · BILL · RENEW</text>
+          </svg>
+
+          <div class="tps-stack" aria-hidden="true">
+            <div class="tps-layer">
+              <div class="tps-layer-h">Layer 01</div>
+              <div class="tps-layer-t">Systems of Record</div>
+              <div class="tps-chips">
+                <span class="tps-chip">Salesforce</span>
+                <span class="tps-chip">Project Delivery</span>
+                <span class="tps-chip">DocuSign · SharePoint</span>
+                <span class="tps-chip">QuickBooks · Xero</span>
+                <span class="tps-chip">Time &amp; Expense</span>
+              </div>
+            </div>
+
+            <div class="tps-connector"></div>
+
+            <div class="tps-layer tps-layer--core">
+              <div class="tps-layer-h">Layer 02 · 2πr</div>
+              <div class="tps-layer-t">Twopir Firm Architecture Layer</div>
+              <div class="tps-chips">
+                <span class="tps-chip">BD &amp; Proposal</span>
+                <span class="tps-chip">Onboarding &amp; Delivery</span>
+                <span class="tps-chip">Billing &amp; Renewal</span>
+                <span class="tps-chip">Reporting</span>
+              </div>
+            </div>
+
+            <div class="tps-connector"></div>
+
+            <div class="tps-layer tps-layer--out">
+              <div class="tps-layer-h">Layer 03</div>
+              <div class="tps-layer-t">Firm Outcomes</div>
+              <div class="tps-chips">
+                <span class="tps-chip">Faster Conversion</span>
+                <span class="tps-chip">Team Alignment</span>
+                <span class="tps-chip">Practice Visibility</span>
+              </div>
+            </div>
+          </div>
+
+        </figure>
+
+        <div class="tps-float tps-fade tps-d4" aria-hidden="true">
+          <span class="tps-float-ico">
+            <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/></svg>
+          </span>
+          <span>
+            <span class="tps-float-k">Delivery Model</span>
+            <span class="tps-float-v">Diagnose → Design → Build → Scale</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       2 · TRUST STRIP
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-trust" aria-label="Credentials and platforms">
+    <div class="tps-trust-card tps-fade">
+
+      <p class="tps-eyebrow tps-badges-label">Built for Professional Services Operations</p>
+      <ul class="tps-badges">
+        <li class="tps-badge"><span class="twopir-salesforce">Salesforce Partner</span></li>
+        <li class="tps-badge">Management Consulting</li>
+        <li class="tps-badge">Financial Advisory</li>
+        <li class="tps-badge">Legal &amp; Compliance</li>
+        <li class="tps-badge">IT &amp; Technical Consulting</li>
+        <li class="tps-badge">Marketing Agencies</li>
+        <li class="tps-badge">HR &amp; Executive Advisory</li>
+        <li class="tps-badge">BI &amp; Data Advisory</li>
+      </ul>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       3 · FIRMS WE SERVE
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--alt" aria-labelledby="tps-firms-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Firms We Serve</span>
+        <h2 class="tps-title" id="tps-firms-title">Built for the Full Spectrum of <em>Professional Services</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          Whether you bill by project, retainer, or hourly — and whether you run a boutique practice or
+          a multi-office firm — the core operating challenges are the same. Twopir Consulting designs
+          around your specific delivery model, not a generic template.
+        </p>
+      </header>
+
+      <div class="tps-firm-grid" role="list">
+        <div class="tps-firm-chip tps-fade" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">🏛️</span>
+          <span class="tps-firm-name">Management &amp; Strategy Consulting</span>
+        </div>
+        <div class="tps-firm-chip tps-fade" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">⚖️</span>
+          <span class="tps-firm-name">Legal &amp; Compliance Services</span>
+        </div>
+        <div class="tps-firm-chip tps-fade" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">📊</span>
+          <span class="tps-firm-name">Financial Advisory &amp; Accounting Firms</span>
+        </div>
+        <div class="tps-firm-chip tps-fade" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">🎯</span>
+          <span class="tps-firm-name">Marketing &amp; Creative Agencies</span>
+        </div>
+        <div class="tps-firm-chip tps-fade tps-d1" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">💻</span>
+          <span class="tps-firm-name">IT &amp; Technical Consulting</span>
+        </div>
+        <div class="tps-firm-chip tps-fade tps-d1" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">🔍</span>
+          <span class="tps-firm-name">Business Intelligence &amp; Data Advisory</span>
+        </div>
+        <div class="tps-firm-chip tps-fade tps-d1" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">👥</span>
+          <span class="tps-firm-name">HR, Talent &amp; Executive Advisory</span>
+        </div>
+        <div class="tps-firm-chip tps-fade tps-d1" role="listitem">
+          <span class="tps-firm-ico" aria-hidden="true">🗓️</span>
+          <span class="tps-firm-name">Professional Events &amp; Corporate Networks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       4 · WHERE FIRMS STALL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section" aria-labelledby="tps-pain-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Where Firms Stall</span>
+        <h2 class="tps-title" id="tps-pain-title">The Operational Friction <em>Holding Your Firm Back</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          The best professional services firms don't just deliver excellent work — they run tightly
+          across every handoff. From referral to signed engagement, from kickoff to delivery, from
+          project close to renewal. When those handoffs break, growth slows, client experience suffers,
+          and leadership is left managing by gut feel instead of data.
+        </p>
+      </header>
+
+      <div class="tps-pain-grid" role="list">
+
+        <article class="tps-pain-item tps-fade" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">📥</span>
+          <div>
+            <h3>Business Development Lives Everywhere Except Your CRM</h3>
+            <p>Leads, referrals, and inbound inquiries arrive through email, LinkedIn, events, and word of mouth — then get tracked in spreadsheets, sticky notes, or no system at all. Pipeline visibility is wishful thinking.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade tps-d1" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">🐌</span>
+          <div>
+            <h3>Proposals and Qualification Move Too Slowly</h3>
+            <p>Prospects wait days for a response. Proposals sit in inboxes while the right approver is tracked down. No structured qualification process means time gets spent on the wrong opportunities.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade tps-d2" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">🔀</span>
+          <div>
+            <h3>Client Onboarding Relies on Tribal Knowledge</h3>
+            <p>When an engagement is signed, the handoff to delivery is informal. Client data is re-entered manually. Kickoff tasks aren't standardized. New team members have no reliable process to follow — and clients feel the disorganization.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">🧩</span>
+          <div>
+            <h3>Systems Don't Connect Across Teams</h3>
+            <p>Business development, project delivery, finance, and marketing each operate in their own tools. No single view of a client relationship exists. Revenue decisions are made with incomplete data.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade tps-d1" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">💰</span>
+          <div>
+            <h3>Billing Readiness Trails Engagement Completion</h3>
+            <p>Invoices get delayed because project milestones aren't tracked in the billing system. Time entries are late or missing. Finance chases down project leads, and cash flow suffers as a result.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade tps-d2" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">📊</span>
+          <div>
+            <h3>Leadership Can't See Across Practice Areas</h3>
+            <p>Managing partners and COOs need clean answers — which clients are expanding, where delivery is at risk, how pipeline converts by service line. Instead, they get stale reports assembled the night before a board meeting.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">🔁</span>
+          <div>
+            <h3>Renewals and Expansions Get Left to Chance</h3>
+            <p>Client relationships that should turn into retainers or follow-on work simply expire because no one has a system for tracking engagement end dates, satisfaction signals, or expansion triggers.</p>
+          </div>
+        </article>
+
+        <article class="tps-pain-item tps-fade tps-d1" role="listitem">
+          <span class="tps-pain-ico" aria-hidden="true">🤖</span>
+          <div>
+            <h3>Manual Work Consumes High-Margin Capacity</h3>
+            <p>Senior practitioners spend time chasing approvals, re-entering data, formatting status reports, and sending reminders that automation could handle in seconds. The cost is invisible — until it shows up in utilization rates and margin compression.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       5 · OUR PHILOSOPHY
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--alt" aria-labelledby="tps-phil-title">
+    <div class="tps-wrap">
+      <div class="tps-philosophy tps-fade">
+
+        <span class="tps-eyebrow">Our Philosophy</span>
+        <h2 class="tps-title" id="tps-phil-title">We Build the Operating Backbone <em>Behind Firm Growth</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+
+        <p>Twopir Consulting is not a software deployment shop. We are a revenue and operating infrastructure partner for professional services and consulting firms that need business development, client delivery, and financial workflows to function as one connected system — not three separate departments using three separate tools.</p>
+        <p>We are Salesforce-first in execution. That means Salesforce is the operating core — where your pipeline lives, where client records are authoritative, where engagement status is tracked, and where leadership dashboards are built. Then we connect it cleanly to the accounting, project management, document, marketing, and communication platforms your firm already depends on.</p>
+        <p>Our standard is not a successful go-live. Our standard is a system your business development team, practice leaders, and operations staff use 18 months from now — one that holds up under more engagements, more clients, more complexity, and more growth.</p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       6 · END-TO-END COVERAGE
+       ══════════════════════════════════════════════════════════
+       The source set these stage titles as h4 directly under the
+       section h2, which skips a level. They are h3 here; the text
+       is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section" aria-labelledby="tps-life-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">End-to-End Coverage</span>
+        <h2 class="tps-title" id="tps-life-title">We Design the Full Client Lifecycle — <em>Not Just the CRM</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          Every engagement starts with how your firm acquires clients and ends when they renew or
+          expand. We architect every stage of that lifecycle on Salesforce, so no handoff falls through
+          the cracks.
+        </p>
+      </header>
+
+      <div class="tps-life-track" role="list" aria-label="Client lifecycle stages">
+
+        <article class="tps-life-step tps-fade" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">01</span>
+          <div>
+            <h3>Lead &amp; Referral Capture</h3>
+            <p>All inbound channels — web forms, events, referrals, email — flow into one CRM record with full source attribution.</p>
+          </div>
+        </article>
+
+        <article class="tps-life-step tps-fade tps-d1" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">02</span>
+          <div>
+            <h3>Qualification &amp; BD Pipeline</h3>
+            <p>Structured stages, scoring logic, and automated follow-up keep prospects moving and priorities visible.</p>
+          </div>
+        </article>
+
+        <article class="tps-life-step tps-fade tps-d2" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">03</span>
+          <div>
+            <h3>Proposal &amp; Scope Workflow</h3>
+            <p>Proposal generation, internal approvals, and engagement letter creation — automated and tracked against the opportunity.</p>
+          </div>
+        </article>
+
+        <article class="tps-life-step tps-fade" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">04</span>
+          <div>
+            <h3>Client Onboarding &amp; Kickoff</h3>
+            <p>Signed engagements trigger standardized onboarding — task routing, data sync, and kickoff checklist without manual re-entry.</p>
+          </div>
+        </article>
+
+        <article class="tps-life-step tps-fade tps-d1" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">05</span>
+          <div>
+            <h3>Engagement Delivery &amp; Visibility</h3>
+            <p>Project status, milestones, team allocation, and delivery risks visible to leadership without status meetings.</p>
+          </div>
+        </article>
+
+        <article class="tps-life-step tps-fade tps-d2" role="listitem">
+          <span class="tps-life-num" aria-hidden="true">06</span>
+          <div>
+            <h3>Billing Readiness &amp; Finance</h3>
+            <p>Milestone completion triggers invoice readiness. Time, expenses, and billing data flow to accounting without manual reconciliation.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       7 · WHAT WE BUILD
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--alt" aria-labelledby="tps-svc-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">What We Build</span>
+        <h2 class="tps-title" id="tps-svc-title">Systems Designed Around How <em>Professional Services Firms Actually Operate</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          Every engagement starts with your firm's operating reality — how you source work, win
+          clients, staff engagements, and get paid. We design Salesforce architecture around that
+          model, not the other way around.
+        </p>
+      </header>
+
+      <div class="tps-svc-grid" role="list">
+
+        <article class="tps-svc-card tps-fade" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <h3>Business Development &amp; Pipeline Architecture</h3>
+          <p>Replace scattered spreadsheets and disconnected inboxes with a structured BD pipeline your partners and rainmakers will actually use.</p>
+          <ul class="tps-svc-list">
+            <li>Lead capture from all inbound channels — web, events, referrals, and email</li>
+            <li>Referral source attribution and partner relationship tracking</li>
+            <li>Pipeline stage design aligned to your qualification and proposal process</li>
+            <li>Automated follow-up tasks, reminders, and sequence triggers</li>
+            <li>BD performance dashboards for managing partners and practice leads</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d1" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </span>
+          <h3>Proposal, Scope &amp; Engagement Workflow</h3>
+          <p>Automate the journey from qualified opportunity to signed engagement — with consistent process, reduced cycle time, and clear ownership.</p>
+          <ul class="tps-svc-list">
+            <li>Proposal generation linked to CRM opportunity data</li>
+            <li>Scope and pricing approval workflows with audit trail</li>
+            <li>Engagement letter and contract automation</li>
+            <li>eSignature integration and signed document storage</li>
+            <li>Won/lost analysis and stage conversion reporting</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d2" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h3>Client Onboarding &amp; Project Handoff Automation</h3>
+          <p>Give every new client a consistent, professional onboarding experience — without burdening your team with manual coordination.</p>
+          <ul class="tps-svc-list">
+            <li>Automated onboarding checklists triggered by engagement close</li>
+            <li>Client intake data captured once and shared across delivery and finance</li>
+            <li>Project team assignment and kickoff task routing</li>
+            <li>Internal handoff notifications and cross-team visibility</li>
+            <li>Client-facing welcome communications and portal access setup</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          </span>
+          <h3>Billing Readiness &amp; Revenue Process Alignment</h3>
+          <p>Connect engagement milestones and delivery progress to billing workflows so invoices go out faster and finance stops chasing project leads.</p>
+          <ul class="tps-svc-list">
+            <li>Milestone-triggered billing readiness alerts</li>
+            <li>Time and expense data routing to accounting systems</li>
+            <li>Retainer tracking, renewal alerts, and billing schedule automation</li>
+            <li>Integration with QuickBooks, Xero, Accounting Seed, and ERP platforms</li>
+            <li>Invoice workflow and approval process design</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d1" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
+          </span>
+          <h3>Practice Performance &amp; Leadership Reporting</h3>
+          <p>Give practice leaders and managing partners the real-time operating data they need to lead the firm — not assembled two weeks after the fact.</p>
+          <ul class="tps-svc-list">
+            <li>Pipeline health and BD conversion dashboards</li>
+            <li>Engagement status and delivery risk reporting</li>
+            <li>Client profitability, utilization, and revenue dashboards</li>
+            <li>Practice area and service line performance comparisons</li>
+            <li>Forecasting and capacity planning visibility</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d2" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </span>
+          <h3>System Integration &amp; Connected Infrastructure</h3>
+          <p>Bring business development, delivery, finance, and marketing into one connected operating model — with Salesforce at the center.</p>
+          <ul class="tps-svc-list">
+            <li>Integration with project management tools — Asana, Monday, Teamwork, ClickUp</li>
+            <li>Marketing automation and email platform connections</li>
+            <li>Document management — SharePoint, Google Drive, DocuSign</li>
+            <li>Accounting and ERP synchronization</li>
+            <li>Data cleanup, governance, and process standardization</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.4 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
+          <h3>Workflow Automation &amp; Operational Efficiency</h3>
+          <p>Remove the manual work that slows down your team and erodes client experience — replace it with automated, accountable processes.</p>
+          <ul class="tps-svc-list">
+            <li>Approval workflows for proposals, engagements, and spend</li>
+            <li>Automated reminders, follow-ups, and status notifications</li>
+            <li>Document generation — scopes, agreements, reports</li>
+            <li>Task routing and deadline management automation</li>
+            <li>AI-assisted data entry and document classification</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d1" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </span>
+          <h3>Salesforce CRM Strategy, Implementation &amp; Org Rescue</h3>
+          <p>Whether you are starting from scratch or fixing a broken Salesforce environment, we build or rebuild the architecture your firm needs to perform.</p>
+          <ul class="tps-svc-list">
+            <li>Full Salesforce CRM strategy and architecture for professional services</li>
+            <li>Greenfield implementation aligned to firm-specific workflows</li>
+            <li>Org audit and performance rescue for underperforming environments</li>
+            <li>Adoption improvement — usability, training, and rollout support</li>
+            <li>Ongoing strategic advisory and managed scale support</li>
+          </ul>
+        </article>
+
+        <article class="tps-svc-card tps-fade tps-d2" role="listitem">
+          <span class="tps-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </span>
+          <h3>Client Retention, Renewal &amp; Expansion Systems</h3>
+          <p>Build the infrastructure that surfaces the right expansion and renewal conversations before clients walk out the door.</p>
+          <ul class="tps-svc-list">
+            <li>Engagement renewal and expiry alert workflows</li>
+            <li>Client health scoring and satisfaction signal tracking</li>
+            <li>Expansion opportunity identification and tracking</li>
+            <li>Cross-sell and upsell pipeline management</li>
+            <li>Executive relationship and key contact tracking</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       8 · ENGAGEMENT MODEL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section" aria-labelledby="tps-process-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Our Engagement Model</span>
+        <h2 class="tps-title" id="tps-process-title">How We Move from Operational Friction to a <em>Running System</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          We don't start with a platform and work backward. We start with your operating model and
+          build the architecture around it.
+        </p>
+      </header>
+
+      <div class="tps-process" role="list">
+
+        <article class="tps-step tps-fade" role="listitem">
+          <span class="tps-step-num">Step 01</span>
+          <h3>Operational Diagnostic</h3>
+          <p>We map your full BD-to-billing lifecycle, identify where deals stall, handoffs break, and data gets lost. We quantify the cost of each friction point.</p>
+        </article>
+
+        <article class="tps-step tps-fade tps-d1" role="listitem">
+          <span class="tps-step-num">Step 02</span>
+          <h3>Architecture &amp; Process Design</h3>
+          <p>We design the data model, pipeline structure, workflow logic, integration layer, and reporting framework — before a single line of configuration is written.</p>
+        </article>
+
+        <article class="tps-step tps-fade tps-d2" role="listitem">
+          <span class="tps-step-num">Step 03</span>
+          <h3>Build, Integrate &amp; Test</h3>
+          <p>We configure Salesforce, connect integrated platforms, build automations, and stress-test every handoff before any team member touches the system.</p>
+        </article>
+
+        <article class="tps-step tps-fade tps-d3" role="listitem">
+          <span class="tps-step-num">Step 04</span>
+          <h3>Rollout &amp; Adoption</h3>
+          <p>Structured launch with data migration, team onboarding, and parallel-run support. No disruption to active client engagements during transition.</p>
+        </article>
+
+        <article class="tps-step tps-fade tps-d4" role="listitem">
+          <span class="tps-step-num">Step 05</span>
+          <h3>Scale &amp; Continuous Improvement</h3>
+          <p>As your firm grows, we extend the infrastructure — new service lines, additional offices, expanded automation — while the architecture stays stable and clean.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       9 · CONNECTED INFRASTRUCTURE
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--alt" aria-labelledby="tps-int-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Connected Infrastructure</span>
+        <h2 class="tps-title" id="tps-int-title">Salesforce at the Center. <em>Every Critical Tool Connected.</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          We integrate Salesforce with the tools your firm depends on across business development,
+          delivery, finance, and operations — so no team is working in a silo.
+        </p>
+      </header>
+
+      <div class="tps-int-grid" role="list">
+
+        <article class="tps-int-item tps-fade" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">☁️</span>
+          <h3 class="tps-int-name">Salesforce CRM</h3>
+          <p class="tps-int-desc">Core operating platform for BD pipeline, client records, workflow automation, and leadership reporting.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d1" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📋</span>
+          <h3 class="tps-int-name">Asana / Monday.com</h3>
+          <p class="tps-int-desc">Project delivery platforms connected to Salesforce engagement records for real-time status visibility.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d2" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📄</span>
+          <h3 class="tps-int-name">DocuSign / Adobe Sign</h3>
+          <p class="tps-int-desc">Proposal, scope, and engagement letter workflows with signed document storage back to CRM.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d3" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📒</span>
+          <h3 class="tps-int-name">QuickBooks / Xero</h3>
+          <p class="tps-int-desc">Accounting integration for invoice generation, billing readiness, and revenue reconciliation from Salesforce milestones.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📣</span>
+          <h3 class="tps-int-name">HubSpot / Pardot / Marketo</h3>
+          <p class="tps-int-desc">Marketing automation connected to CRM so nurture, campaigns, and lead scoring align with BD pipeline data.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d1" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">💬</span>
+          <h3 class="tps-int-name">Slack / Microsoft Teams</h3>
+          <p class="tps-int-desc">Communication platforms connected to Salesforce for deal alerts, onboarding notifications, and delivery updates.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d2" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📁</span>
+          <h3 class="tps-int-name">SharePoint / Google Drive</h3>
+          <p class="tps-int-desc">Document management connected to client and engagement records — proposals, contracts, and deliverables, all in context.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d3" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">⏱️</span>
+          <h3 class="tps-int-name">Harvest / Toggl / Replicon</h3>
+          <p class="tps-int-desc">Time and expense tracking platforms integrated with Salesforce for billing readiness and resource utilization reporting.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📊</span>
+          <h3 class="tps-int-name">Tableau / Einstein Analytics</h3>
+          <p class="tps-int-desc">Advanced reporting and BI dashboards for firm-wide performance, pipeline forecasting, and client profitability analysis.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d1" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">🤝</span>
+          <h3 class="tps-int-name">Calendly / Chili Piper</h3>
+          <p class="tps-int-desc">Meeting scheduling tools connected to Salesforce lead and opportunity records — no manual CRM entry after a prospect call.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d2" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">📧</span>
+          <h3 class="tps-int-name">Gmail / Outlook / Email</h3>
+          <p class="tps-int-desc">Email-to-CRM sync so every client communication is captured against the right account and engagement record.</p>
+        </article>
+
+        <article class="tps-int-item tps-fade tps-d3" role="listitem">
+          <span class="tps-int-ico" aria-hidden="true">🧩</span>
+          <h3 class="tps-int-name">Custom &amp; Legacy Systems</h3>
+          <p class="tps-int-desc">API and middleware integration for firm-specific tools, legacy data, and custom platforms your team has built or inherited.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · WHAT CHANGES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section" aria-labelledby="tps-out-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">What Changes</span>
+        <h2 class="tps-title" id="tps-out-title">What Professional Services Firms Gain <em>When Systems Work</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tps-out-grid" role="list">
+
+        <article class="tps-out-card tps-fade" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">⚡</span>
+          <span class="tps-out-title">Faster Lead-to-Engagement Conversion</span>
+          <p class="tps-out-desc">Structured pipeline stages, automated follow-up, and clear ownership cut the time from first inquiry to signed engagement — without adding headcount to the BD team.</p>
+        </article>
+
+        <article class="tps-out-card tps-fade tps-d1" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">🎯</span>
+          <span class="tps-out-title">Consistent Client Onboarding</span>
+          <p class="tps-out-desc">Every new engagement kicks off the same way — tasks assigned, data transferred, team notified, and client communication sent — regardless of which partner closed the deal.</p>
+        </article>
+
+        <article class="tps-out-card tps-fade tps-d2" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">🔗</span>
+          <span class="tps-out-title">Cross-Functional Alignment</span>
+          <p class="tps-out-desc">Business development, client delivery, and finance share one operating view of each engagement. No more status meetings to understand where a client stands.</p>
+        </article>
+
+        <article class="tps-out-card tps-fade" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">💵</span>
+          <span class="tps-out-title">Improved Billing Cycle and Cash Flow</span>
+          <p class="tps-out-desc">When milestones automatically trigger billing readiness, invoices go out faster, reconciliation effort drops, and collections improve without anyone chasing the process.</p>
+        </article>
+
+        <article class="tps-out-card tps-fade tps-d1" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">📈</span>
+          <span class="tps-out-title">Real-Time Practice Visibility</span>
+          <p class="tps-out-desc">Practice leaders and managing partners see pipeline health, engagement status, revenue trends, and team performance — live, not assembled weekly from five different sources.</p>
+        </article>
+
+        <article class="tps-out-card tps-fade tps-d2" role="listitem">
+          <span class="tps-out-ico" aria-hidden="true">🔄</span>
+          <span class="tps-out-title">Higher Retention and Renewal Rate</span>
+          <p class="tps-out-desc">Automated renewal tracking, client health monitoring, and expansion opportunity alerts mean the right conversation happens before a client relationship quietly expires.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · CLIENT OUTCOMES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--dark" id="tps-proof" aria-labelledby="tps-proof-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Client Outcomes</span>
+        <h2 class="tps-title" id="tps-proof-title">What Happens When the <em>Infrastructure Actually Works</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+        <p class="tps-lede">
+          Real results from professional services and advisory firm engagements — operational
+          improvements that show up in pipeline velocity, client experience, and leadership confidence.
+        </p>
+      </header>
+
+      <div class="tps-proof-pair tps-fade">
+
+        <article class="tps-quote-card">
+          <div class="tps-quote-top">
+            <span class="tps-avatar" aria-hidden="true">CO</span>
+            <span class="tps-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tps-quote-text">
+            Before Twopir, our partners tracked business development in personal spreadsheets. We had no
+            shared visibility into pipeline health across practice areas. Within three months of going
+            live, our managing partner had a real-time dashboard showing conversion by service line,
+            referral source, and partner. That kind of visibility changes how you lead a firm.
+          </blockquote>
+          <div>
+            <span class="tps-quote-name">COO</span>
+            <span class="tps-quote-role">Mid-Market Management Consulting Firm — US Strategy &amp; Operations Practice</span>
+            <span class="tps-mono-tag">Strategy Consulting</span>
+          </div>
+        </article>
+
+        <article class="tps-cs-card">
+          <span class="tps-mono-tag">Case Study</span>
+          <h3 class="tps-cs-company">Professional Services Firm — AI Document Automation</h3>
+          <p class="tps-cs-title">Automating Email Attachment Processing &amp; Salesforce Data Routing</p>
+          <div class="tps-cs-metrics">
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val">40%</span>
+              <span class="tps-cs-lbl">Reduction in manual document processing time</span>
+            </div>
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val">2×</span>
+              <span class="tps-cs-lbl">Admin throughput without additional headcount</span>
+            </div>
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val">100%</span>
+              <span class="tps-cs-lbl">Automated classification &amp; CRM routing</span>
+            </div>
+          </div>
+          <a class="tps-cs-link"
+             href="https://twopirconsulting.com/case-study/automating-email-attachment-summaries-for-a-personal-injury-law-firm/"
+             target="_blank" rel="noopener noreferrer">
+            Read Full Case Study
+            <svg class="tps-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="tps-proof-pair tps-fade tps-d1">
+
+        <article class="tps-quote-card">
+          <div class="tps-quote-top">
+            <span class="tps-avatar tps-avatar--green" aria-hidden="true">HP</span>
+            <span class="tps-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="tps-quote-text tps-quote-text--green">
+            Our client onboarding used to take 10 to 14 days because every new engagement required
+            manual re-entry across four different systems. Twopir redesigned the handoff so the moment a
+            proposal is signed, Salesforce triggers the full onboarding sequence automatically. We cut
+            that cycle to under two days. Clients notice the difference immediately.
+          </blockquote>
+          <div>
+            <span class="tps-quote-name">Head of Operations</span>
+            <span class="tps-quote-role">Financial Advisory Firm · Wealth Management &amp; Tax Planning</span>
+            <span class="tps-mono-tag tps-mono-tag--green">Financial Advisory</span>
+          </div>
+        </article>
+
+        <article class="tps-cs-card tps-cs-card--green">
+          <span class="tps-mono-tag tps-mono-tag--green">Case Study</span>
+          <h3 class="tps-cs-company">Professional Events Organization — CRM Integration</h3>
+          <p class="tps-cs-title">Salesforce–MeetMax Integration for a Corporate Networking Organization</p>
+          <div class="tps-cs-metrics">
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val tps-cs-val--green">100%</span>
+              <span class="tps-cs-lbl">Elimination of manual data sync between platforms</span>
+            </div>
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val tps-cs-val--green">360°</span>
+              <span class="tps-cs-lbl">Unified client view across events &amp; CRM</span>
+            </div>
+            <div class="tps-cs-metric">
+              <span class="tps-cs-val tps-cs-val--green">0</span>
+              <span class="tps-cs-lbl">Manual reconciliation tasks post-integration</span>
+            </div>
+          </div>
+          <a class="tps-cs-link tps-cs-link--green"
+             href="https://twopirconsulting.com/case-study/salesforce-meetmax-integration/"
+             target="_blank" rel="noopener noreferrer">
+            Read Integration Story
+            <svg class="tps-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       12 · WHY TWOPIR
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section" aria-labelledby="tps-why-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Why Twopir</span>
+        <h2 class="tps-title" id="tps-why-title">Why Professional Services Firms <em>Choose Twopir Consulting</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tps-why-grid">
+
+        <div class="tps-why-list" role="list">
+
+          <article class="tps-why-item tps-fade" role="listitem">
+            <span class="tps-why-num" aria-hidden="true">01</span>
+            <div>
+              <h3>We Own the Outcome, Not Just the Delivery</h3>
+              <p>Most implementation partners hand over the keys at go-live. We measure success by whether the system improves how your firm wins business, onboards clients, and makes decisions — six months after launch, not six days.</p>
+            </div>
+          </article>
+
+          <article class="tps-why-item tps-fade tps-d1" role="listitem">
+            <span class="tps-why-num" aria-hidden="true">02</span>
+            <div>
+              <h3>We Understand Professional Services Operating Models</h3>
+              <p>We know the difference between a retainer-based advisory practice and a project-based consulting firm. We understand how partners sell, how delivery teams operate, how billing cycles work, and where the real friction lives — because we've seen it across dozens of engagements.</p>
+            </div>
+          </article>
+
+          <article class="tps-why-item tps-fade tps-d2" role="listitem">
+            <span class="tps-why-num" aria-hidden="true">03</span>
+            <div>
+              <h3>We Design Across the Full Revenue Lifecycle</h3>
+              <p>Business development, client onboarding, engagement delivery, billing, and renewal are not separate projects in our world. We architect them as one connected system so a change in one area doesn't create a new failure somewhere else.</p>
+            </div>
+          </article>
+
+          <article class="tps-why-item tps-fade tps-d3" role="listitem">
+            <span class="tps-why-num" aria-hidden="true">04</span>
+            <div>
+              <h3>We Think Architecturally, Not Tactically</h3>
+              <p>Our RevOps architects and Salesforce engineers design systems that hold up under growth — more clients, more service lines, more offices — not systems that have to be rebuilt when the firm scales past a certain threshold.</p>
+            </div>
+          </article>
+
+          <article class="tps-why-item tps-fade tps-d4" role="listitem">
+            <span class="tps-why-num" aria-hidden="true">05</span>
+            <div>
+              <h3>We Work Across the Full Technology Stack</h3>
+              <p>Salesforce is the operating core, but the value comes from what you connect to it. We integrate across accounting, project management, document workflows, marketing, and communication platforms so the system reflects how your firm actually operates.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="tps-callout tps-fade tps-d2">
+          <span class="tps-callout-k">
+            <span class="tps-live" aria-hidden="true"></span>
+            How We Engage
+          </span>
+
+          <p class="tps-callout-text">
+            "The problem most professional services firms face is not a lack of software. It's that the
+            systems underneath business development, client delivery, and finance were never designed
+            to operate as one. They're connected by email, manual effort, and institutional memory —
+            none of which scale."
+          </p>
+
+          <p class="tps-callout-author">
+            <strong>Twopir Consulting</strong> — Salesforce architecture, automation, integrations, and
+            revenue infrastructure for professional services and consulting firms.
+          </p>
+
+          <ul class="tps-engage">
+            <li>Full architecture, build, and rollout</li>
+            <li>Salesforce rescue and performance redesign</li>
+            <li>Integration and workflow modernization</li>
+            <li>Ongoing scale support and strategic advisory</li>
+            <li>White-label RevOps delivery for consulting partners</li>
+          </ul>
+
+          <ul class="tps-facts">
+            <li class="tps-fact"><b class="twopir-years">12+</b> Years Salesforce &amp; HubSpot Delivery</li>
+            <li class="tps-fact"><b class="twopir-clients">500+</b> Clients Served</li>
+            <li class="tps-fact"><span class="twopir-countries">Serving: US | Canada | UK | UAE | Australia | New Zealand</span></li>
+            <li class="tps-fact"><span class="twopir-salesforce">Salesforce Partner</span></li>
+            <li class="tps-fact"><span class="twopir-hubspot">HubSpot Partner</span></li>
+            <li class="tps-fact"><span class="twopir-ai">AI Delivery</span></li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       13 · FAQ
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--alt" aria-labelledby="tps-faq-title">
+    <div class="tps-wrap">
+
+      <header class="tps-head tps-fade">
+        <span class="tps-eyebrow">Common Questions</span>
+        <h2 class="tps-title" id="tps-faq-title">Answers Before <em>the First Call</em></h2>
+        <div class="tps-rule" aria-hidden="true">
+          <span class="tps-rule-line"></span>
+          <span class="tps-rule-diamond"></span>
+          <span class="tps-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="tps-faq-list">
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp1" id="tps-fb1">
+            <span>How does Salesforce help consulting firms manage business development and pipeline?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp1" role="region" aria-labelledby="tps-fb1">
+            <div class="tps-faq-panel-inner">
+              <p>Salesforce centralizes every lead, referral, and inbound inquiry into one operating view — regardless of whether it came through email, LinkedIn, an event, or a partner introduction. With structured pipeline stages, automated follow-up triggers, and real-time dashboards, partners and practice leaders can track conversion rates, see where opportunities are stalling, and hold the BD team accountable without manual status meetings or spreadsheet consolidation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp2" id="tps-fb2">
+            <span>Can Salesforce support the full engagement lifecycle — from proposal to delivery to billing?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp2" role="region" aria-labelledby="tps-fb2">
+            <div class="tps-faq-panel-inner">
+              <p>Yes. With the right architecture, Salesforce supports the entire client lifecycle — lead qualification, proposal workflow, engagement close, client onboarding, project handoff, delivery tracking, billing readiness, and renewal management. Twopir Consulting designs these stages as a connected system so data flows between them cleanly, without manual re-entry or cross-team coordination overhead.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp3" id="tps-fb3">
+            <span>Our firm already has Salesforce, but it isn't delivering. Can Twopir Consulting help?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp3" role="region" aria-labelledby="tps-fb3">
+            <div class="tps-faq-panel-inner">
+              <p>Yes. A significant portion of our engagements begin with a firm that has a live Salesforce environment that is underperforming — low adoption, broken automations, poor data quality, or disconnected integrations. We conduct a full architecture audit, identify the root causes, and redesign the system around what the firm actually needs operationally. We often find that a targeted redesign is faster and more effective than starting over.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp4" id="tps-fb4">
+            <span>Can Twopir Consulting integrate Salesforce with our project management and accounting tools?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp4" role="region" aria-labelledby="tps-fb4">
+            <div class="tps-faq-panel-inner">
+              <p>Yes. Integration work is a core part of how we operate. We connect Salesforce to project management platforms such as Asana, Monday.com, Teamwork, and ClickUp, as well as accounting systems like QuickBooks, Xero, and Accounting Seed, document tools like DocuSign and SharePoint, and marketing platforms. The goal is always one connected operating view — not more tools running in parallel with no shared data.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp5" id="tps-fb5">
+            <span>Do you work with boutique firms, or only large consulting organizations?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp5" role="region" aria-labelledby="tps-fb5">
+            <div class="tps-faq-panel-inner">
+              <p>We work across firm sizes — from boutique advisory practices with small partner teams to multi-office, multi-practice consulting organizations. The operating challenges are consistent across firm sizes, even if the scale differs. What changes is the architecture complexity, integration depth, and reporting sophistication — not the fundamental approach. We size the engagement appropriately to the firm's current stage and growth trajectory.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp6" id="tps-fb6">
+            <span>How is Twopir Consulting different from a standard Salesforce implementation partner?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp6" role="region" aria-labelledby="tps-fb6">
+            <div class="tps-faq-panel-inner">
+              <p>Standard implementation partners optimize for deploying the platform to spec and on time. We optimize for whether the platform improves how the firm operates — which means the engagement starts earlier, with operating model analysis and architecture design, and continues beyond go-live with adoption support and ongoing advisory. We bring RevOps and GTM thinking to every engagement, not just technical configuration.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp7" id="tps-fb7">
+            <span>Do you offer white-label or partner delivery services for consulting firms?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp7" role="region" aria-labelledby="tps-fb7">
+            <div class="tps-faq-panel-inner">
+              <p>Yes. Twopir Consulting serves as a white-label RevOps delivery and Salesforce backbone for consulting firms and agencies that want to offer CRM and operational infrastructure services to their own clients. We handle the technical execution, integration engineering, and architecture work under your brand. This allows partner firms to expand their service offering without building an internal technical practice.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tps-faq-row tps-fade">
+          <button class="tps-faq-btn" type="button" aria-expanded="false" aria-controls="tps-fp8" id="tps-fb8">
+            <span>Does Twopir Consulting work with multiple types of professional services firms?</span>
+            <span class="tps-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="tps-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="tps-faq-panel" id="tps-fp8" role="region" aria-labelledby="tps-fb8">
+            <div class="tps-faq-panel-inner">
+              <p>Yes. We work across management consulting, financial advisory, legal services, marketing and creative agencies, IT consulting, HR and executive advisory, business intelligence firms, and professional events organizations. The architecture reflects each firm's delivery model, team structure, and revenue workflows.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       14 · CTA
+       ══════════════════════════════════════════════════════════ -->
+  <section class="tps-section tps-section--dark tps-cta" id="tps-cta" aria-labelledby="tps-cta-title">
+    <div class="tps-cta-inner tps-fade">
+
+      <span class="tps-eyebrow">Next Step</span>
+      <h2 class="tps-title" id="tps-cta-title">If Your Firm Is Outgrowing Its Current Systems, <em>This Is the Right Conversation</em></h2>
+      <div class="tps-rule" aria-hidden="true">
+        <span class="tps-rule-line"></span>
+        <span class="tps-rule-diamond"></span>
+        <span class="tps-rule-line"></span>
+      </div>
+
+      <p class="tps-lede">
+        Twopir Consulting helps professional services and consulting firms build a connected operating
+        model across business development, client delivery, and finance — with Salesforce as the
+        foundation, and architecture designed to hold up at scale.
+      </p>
+
+      <div class="tps-cta-actions">
+        <a class="tps-btn tps-btn--primary" href="https://twopirconsulting.com/contact-us/">
+          Book a Strategy Call
+          <svg class="tps-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+          </svg>
+        </a>
+        <a class="tps-btn tps-btn--ghost" href="https://twopirconsulting.com/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v12H7l-3 3z"/>
+          </svg>
+          Visit Twopir Consulting
+        </a>
+      </div>
+
+      <p class="tps-cta-note">Speak with a team that understands how professional services firms operate, grow, and scale — not just how to configure a CRM.</p>
+
+    </div>
+  </section>
+
+</div><!-- /#twopir-ps -->
+
+<!-- ============================================================
+     STRUCTURED DATA — SALESFORCE FOR PROFESSIONAL SERVICES
+     BreadcrumbList + Service + FAQPage.
+
+     • Service.provider points at the homepage Organization node
+       (@id …/#organization, emitted once from Hero.html). Keep the
+       two @ids in sync or the provider reference will dangle.
+     • FAQPage is a no-harm addition only: Google removed FAQ rich
+       results for all sites in May 2026, so this produces no SERP
+       snippet. It is kept because the page already has a real FAQ
+       section and the markup still helps machines parse it.
+     • Every FAQ answer below is copied verbatim from the visible
+       accordion on this page. If the visible copy is edited, edit it
+       here too — mismatched schema and on-page text is an AEO risk.
+     • The FAQ block below was GENERATED from the visible accordion by
+       scripts/generate_schema.py; re-run it rather than hand-editing.
+     • The permalink below is a PLACEHOLDER and a similar page already
+       exists on the site — see the SEO block at the top of this file.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home",
+      "item": "https://twopirconsulting.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Industries We Serve",
+      "item": "https://twopirconsulting.com/industries-we-serve/" },
+    { "@type": "ListItem", "position": 3, "name": "Salesforce for Professional Services",
+      "item": "https://twopirconsulting.com/salesforce-for-professional-services/" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://twopirconsulting.com/salesforce-for-professional-services/#service",
+  "name": "Salesforce for Professional Services and Consulting Firms",
+  "serviceType": "Salesforce implementation and revenue operations for professional services firms",
+  "provider": {
+    "@id": "https://twopirconsulting.com/#organization"
+  },
+  "areaServed": [
+    "US",
+    "CA",
+    "GB",
+    "AE",
+    "AU",
+    "NZ"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Professional Services and Consulting Firms"
+  },
+  "description": "Twopir Consulting builds the Salesforce-first operating infrastructure behind professional services growth \u2014 business development pipeline, proposal and scope workflow, client onboarding, engagement delivery visibility, billing readiness and practice reporting on one connected architecture.",
+  "url": "https://twopirconsulting.com/salesforce-for-professional-services/",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Professional services operations services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Business Development & Pipeline Architecture"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Proposal, Scope & Engagement Workflow"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Client Onboarding & Project Handoff Automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Billing Readiness & Revenue Process Alignment"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Practice Performance & Leadership Reporting"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "System Integration & Connected Infrastructure"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Workflow Automation & Operational Efficiency"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Salesforce CRM Strategy, Implementation & Org Rescue"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Client Retention, Renewal & Expansion Systems"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Salesforce help consulting firms manage business development and pipeline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce centralizes every lead, referral, and inbound inquiry into one operating view — regardless of whether it came through email, LinkedIn, an event, or a partner introduction. With structured pipeline stages, automated follow-up triggers, and real-time dashboards, partners and practice leaders can track conversion rates, see where opportunities are stalling, and hold the BD team accountable without manual status meetings or spreadsheet consolidation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Salesforce support the full engagement lifecycle — from proposal to delivery to billing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With the right architecture, Salesforce supports the entire client lifecycle — lead qualification, proposal workflow, engagement close, client onboarding, project handoff, delivery tracking, billing readiness, and renewal management. Twopir Consulting designs these stages as a connected system so data flows between them cleanly, without manual re-entry or cross-team coordination overhead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Our firm already has Salesforce, but it isn't delivering. Can Twopir Consulting help?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A significant portion of our engagements begin with a firm that has a live Salesforce environment that is underperforming — low adoption, broken automations, poor data quality, or disconnected integrations. We conduct a full architecture audit, identify the root causes, and redesign the system around what the firm actually needs operationally. We often find that a targeted redesign is faster and more effective than starting over."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Twopir Consulting integrate Salesforce with our project management and accounting tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Integration work is a core part of how we operate. We connect Salesforce to project management platforms such as Asana, Monday.com, Teamwork, and ClickUp, as well as accounting systems like QuickBooks, Xero, and Accounting Seed, document tools like DocuSign and SharePoint, and marketing platforms. The goal is always one connected operating view — not more tools running in parallel with no shared data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you work with boutique firms, or only large consulting organizations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We work across firm sizes — from boutique advisory practices with small partner teams to multi-office, multi-practice consulting organizations. The operating challenges are consistent across firm sizes, even if the scale differs. What changes is the architecture complexity, integration depth, and reporting sophistication — not the fundamental approach. We size the engagement appropriately to the firm's current stage and growth trajectory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Twopir Consulting different from a standard Salesforce implementation partner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard implementation partners optimize for deploying the platform to spec and on time. We optimize for whether the platform improves how the firm operates — which means the engagement starts earlier, with operating model analysis and architecture design, and continues beyond go-live with adoption support and ongoing advisory. We bring RevOps and GTM thinking to every engagement, not just technical configuration."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer white-label or partner delivery services for consulting firms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting serves as a white-label RevOps delivery and Salesforce backbone for consulting firms and agencies that want to offer CRM and operational infrastructure services to their own clients. We handle the technical execution, integration engineering, and architecture work under your brand. This allows partner firms to expand their service offering without building an internal technical practice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Twopir Consulting work with multiple types of professional services firms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We work across management consulting, financial advisory, legal services, marketing and creative agencies, IT consulting, HR and executive advisory, business intelligence firms, and professional events organizations. The architecture reflects each firm's delivery model, team structure, and revenue workflows."
+      }
+    }
+  ]
+}
+</script>
+
+
+<script>
+(function () {
+  var root = document.getElementById('twopir-ps');
+  if (!root) return;
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  var items = root.querySelectorAll('.tps-fade');
+  var reveal = function (el) { el.classList.add('tps-in'); };
+
+  if (items.length) {
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(items, reveal);
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); }
+        });
+      });
+    }
+  }
+
+  /* ── FAQ accordion ─────────────────────────────────────── */
+  var faqBtns = root.querySelectorAll('.tps-faq-btn');
+
+  function closeRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'false');
+    row.classList.remove('is-open');
+    if (panel) panel.style.maxHeight = '0px';
+  }
+
+  function openRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'true');
+    row.classList.add('is-open');
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  Array.prototype.forEach.call(faqBtns, function (btn) {
+    btn.addEventListener('click', function () {
+      var wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      Array.prototype.forEach.call(faqBtns, closeRow);
+      if (!wasOpen) openRow(btn);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeRow(btn);
+        btn.focus();
+      }
+    });
+  });
+
+  // keep an open panel correctly sized when the viewport reflows
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(faqBtns, function (btn) {
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── FIX: kill top AND bottom spacing from theme/builder ancestors ──
+     This is the actual fix for the white gaps seen above the hero and
+     below the closing CTA section. The CSS reset above only zeroes
+     padding/margin on a fixed list of known wrapper class names
+     (Elementor, Gutenberg, entry-content, etc). If the live theme uses a
+     different wrapper class we haven't guessed, that CSS won't catch it
+     and a gap stays — first it showed up at the top, now it's the same
+     issue at the bottom, coming from the wrapper's bottom padding/margin.
+     This walks every real ancestor element from #twopir-ps up to
+     (but not including) the page body element, forcing margin/padding on both top
+     AND bottom to 0 on each one — regardless of what class or theme put
+     it there. It mirrors the existing tpsFullBleed() approach just below,
+     which does the same "measure and cancel" trick for horizontal spacing. */
+  function tpsKillAncestorSpacing() {
+    var el = root.parentElement;
+    while (el && el !== document.body && el.nodeType === 1) {
+      el.style.marginTop = '0px';
+      el.style.paddingTop = '0px';
+      el.style.marginBottom = '0px';
+      el.style.paddingBottom = '0px';
+      el = el.parentElement;
+    }
+  }
+
+  /* ── Scrollbar-safe full-viewport-width breakout ─────────
+     Page builders wrap content in a boxed container, which would
+     leave the section backgrounds floating in the middle of the
+     page. A pure-CSS "100vw / -50vw" breakout clips the left edge
+     whenever a vertical scrollbar exists, because 100vw includes
+     the scrollbar track. So we measure the real visible width
+     with documentElement.clientWidth and apply exact pixels.
+     If JS is unavailable the page simply stays contained — safe,
+     never clipped. ── */
+  function tpsFullBleed() {
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+
+    var rect = root.getBoundingClientRect();
+    var visibleWidth = document.documentElement.clientWidth; // excludes scrollbar
+
+    if (!visibleWidth || rect.width === 0) return;
+
+    root.style.width = visibleWidth + 'px';
+    root.style.marginLeft = (-rect.left) + 'px';
+    root.style.marginRight = (rect.left - (visibleWidth - (rect.left + rect.width))) + 'px';
+  }
+
+  var bleedRaf;
+  function applyBleed() {
+    tpsKillAncestorSpacing();
+    tpsFullBleed();
+  }
+  function scheduleBleed() {
+    if (bleedRaf) cancelAnimationFrame(bleedRaf);
+    bleedRaf = requestAnimationFrame(applyBleed);
+  }
+
+  /* CLS fix (2026-08): the first breakout runs synchronously rather
+     than inside requestAnimationFrame, so the final width and margins
+     are in place for the first layout pass instead of being applied
+     one frame after the page has already painted at the wrong width.
+     Resize/orientation changes still go through the rAF-throttled
+     path, where batching matters and a shift is unavoidable anyway. */
+  applyBleed();
+  window.addEventListener('resize', scheduleBleed);
+  window.addEventListener('orientationchange', scheduleBleed);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleBleed);
+  }
+
+  /* Page builders / admin bars can shift layout after first paint, so
+     one late re-check stays. It runs synchronously inside a single
+     task: when the geometry has not moved, the styles are rewritten to
+     the same values within that task and the browser never paints an
+     intermediate state, so no layout shift is recorded. */
+  setTimeout(applyBleed, 500);
+})();
+</script>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE ALIGNMENT PASS  ·  loaded last
+   Typography + a few sizing/consistency fixes carried over from
+   the homepage build. No colour changes, no content changes.
+   !important is used the same way the homepage uses it: the live
+   WordPress theme restyles h2/h3/button/li globally, and without
+   it the theme wins on the published page.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1 · Font families pinned — the theme's own body font must not
+       leak into headings, copy or mono labels. */
+#twopir-ps,
+#twopir-ps p,
+#twopir-ps li,
+#twopir-ps a,
+#twopir-ps span,
+#twopir-ps button { font-family: var(--tps-ff-body, 'Inter', sans-serif) !important; }
+
+/* Card titles belong to the display face too. Without them listed here the
+   blanket body-font rule above wins by inheritance and every card title on
+   the page renders in Inter — which flattens the hierarchy to two levels
+   where the homepage has three (h1 / section title / card title). */
+#twopir-ps h1,
+#twopir-ps h2,
+#twopir-ps h3,
+#twopir-ps .tps-hero-title,
+#twopir-ps .tps-title,
+#twopir-ps .tps-pain-item h3,
+#twopir-ps .tps-svc-card h3,
+#twopir-ps .tps-step h3,
+#twopir-ps .tps-why-item h3,
+#twopir-ps .tps-int-name,
+#twopir-ps .tps-cs-company,
+#twopir-ps .tps-cs-val,
+#twopir-ps .tps-layer-t,
+#twopir-ps .tps-avatar,
+#twopir-ps .tps-fact b,
+#twopir-ps .tps-hero-proof b { font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif) !important; }
+
+#twopir-ps .tps-eyebrow,
+#twopir-ps .tps-mono-tag,
+#twopir-ps .tps-cs-lbl,
+#twopir-ps .tps-step-num,
+#twopir-ps .tps-why-num,
+#twopir-ps .tps-callout-k,
+#twopir-ps .tps-fact,
+#twopir-ps .tps-cta-note,
+#twopir-ps .tps-canvas-label,
+#twopir-ps .tps-pill,
+#twopir-ps .tps-chip { font-family: var(--tps-ff-mono, 'JetBrains Mono', monospace) !important; }
+
+/* 2 · The type scale from the pass above, re-asserted with the
+       same protection the homepage uses. */
+#twopir-ps .tps-hero-title { font-size: var(--tps-fs-display, clamp(34px, 4.5vw, 56px)) !important; line-height: 1.14 !important; }
+#twopir-ps .tps-title      { font-size: var(--tps-fs-h2, clamp(30px, 3.4vw, 44px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-ps .tps-title em   { font-weight: 800 !important; font-style: normal !important; }
+#twopir-ps .tps-hero-sub,
+#twopir-ps .tps-lede,
+#twopir-ps .tps-philosophy p { font-size: var(--tps-fs-lede, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.7 !important; }
+
+/* Primary card titles take the h3 step (17–19px), the same rung the
+   homepage gives its service and about cards. The denser grids — process
+   steps, the integration tiles, the case-study company line, FAQ rows —
+   stay on h4, matching the homepage's own dense-card treatment. Before
+   this split, --tps-fs-h3 was defined but never used and every card title
+   sat at 16px, the same size as the FAQ button text. */
+#twopir-ps .tps-pain-item h3 { font-size: var(--tps-fs-h3, clamp(20px, 1.8vw, 24px)) !important; line-height: 1.3 !important; }
+
+#twopir-ps .tps-step h3,
+#twopir-ps .tps-int-name,
+#twopir-ps .tps-cs-company,
+#twopir-ps .tps-faq-btn,
+#twopir-ps .tps-layer-h { font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.4 !important; }
+
+#twopir-ps .tps-pain-item p,
+#twopir-ps .tps-svc-card > p,
+#twopir-ps .tps-why-item p,
+#twopir-ps .tps-faq-panel-inner p,
+#twopir-ps .tps-quote-text { font-size: var(--tps-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65 !important; }
+
+#twopir-ps .tps-svc-list li,
+#twopir-ps .tps-step p,
+#twopir-ps .tps-int-desc,
+#twopir-ps .tps-engage li,
+#twopir-ps .tps-why-list li,
+#twopir-ps .tps-callout-author,
+#twopir-ps .tps-quote-name,
+#twopir-ps .tps-trust-lead { font-size: var(--tps-fs-sm, 14px) !important; line-height: 1.6 !important; }
+
+#twopir-ps .tps-quote-role,
+#twopir-ps .tps-badge,
+#twopir-ps .tps-tag,
+#twopir-ps .tps-src { font-size: var(--tps-fs-xs, 13px) !important; }
+
+/* 11px mono floor — nothing on the page sits below it */
+#twopir-ps .tps-eyebrow   { font-size: var(--tps-fs-eyebrow, clamp(13px, 1vw, 14px)) !important; letter-spacing: 0.2em !important; }
+#twopir-ps .tps-mono-tag,
+#twopir-ps .tps-cs-lbl,
+#twopir-ps .tps-step-num,
+#twopir-ps .tps-why-num,
+#twopir-ps .tps-callout-k,
+#twopir-ps .tps-fact,
+#twopir-ps .tps-cta-note,
+#twopir-ps .tps-canvas-label,
+#twopir-ps .tps-layer-t,
+#twopir-ps .tps-chip { font-size: var(--tps-fs-label, 12px) !important; letter-spacing: 0.08em; }
+/* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
+#twopir-ps .tps-pill { font-size: var(--tps-fs-label, 12px) !important; letter-spacing: 0.1em !important; }
+
+#twopir-ps .tps-btn,
+#twopir-ps .tps-cs-link { font-size: var(--tps-fs-sm, 14px) !important; }
+#twopir-ps .tps-cs-val  { font-size: var(--tps-fs-stat-sm, clamp(22px, 2vw, 26px)) !important; line-height: 1.1; }
+
+/* 3 · Caps card titles — the homepage's own uppercase card-title recipe
+       (display face, h4 step, weight 800, 0.055em tracking). Applied to
+       both the "Why" cards and the service cards, which share the
+       treatment. Set in caps they need the h4 step, not h3: uppercase at
+       19px with this much tracking wraps badly in a three-up grid. */
+#twopir-ps .tps-why-item h3,
+#twopir-ps .tps-svc-card h3 {
+  text-transform: uppercase !important;
+  font-size: var(--tps-fs-h4, clamp(17px, 1.4vw, 19px)) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.35 !important;
+}
+
+/* 3b · CONTRAST — brand blue as TEXT on light grounds
+        #00aff6 measures 2.14 / 2.23 / 2.30 / 2.48 against the page, alt,
+        card and white surfaces. Every role below is 11–16px, so it needs
+        the 4.5 minimum, and --tps-accent-ink (5.14–5.96) is the same hue
+        darkened to clear it. Loaded here, after every section rule, so
+        there is nothing left to override it. */
+#twopir-ps .tps-eyebrow,
+#twopir-ps .tps-pill,
+#twopir-ps .tps-float-k,
+#twopir-ps .tps-step-num,
+#twopir-ps .tps-why-num,
+#twopir-ps .tps-faq-ico,
+#twopir-ps .tps-faq-row.is-open .tps-faq-btn,
+#twopir-ps .tps-src:hover,
+#twopir-ps .tps-src:focus-visible { color: var(--tps-accent-ink, #00699f) !important; }
+
+/* …but on a navy panel the bright accent is the legible one, so the dark
+   sections, the hero canvas and the sticky callout all keep it. The open
+   FAQ icon also keeps white-on-accent, which already passes. */
+#twopir-ps .tps-section--dark .tps-eyebrow,
+#twopir-ps .tps-cta .tps-eyebrow,
+#twopir-ps .tps-callout .tps-callout-k { color: var(--tps-accent, #00aff6) !important; }
+#twopir-ps .tps-faq-row.is-open .tps-faq-ico { color: #fff !important; }
+
+/* 4 · Case-study cards — the theme uppercases and enlarges h3,
+       which blew these headlines up mid-card on the homepage too. */
+#twopir-ps .tps-cs-title {
+  text-transform: none !important;
+  font-size: var(--tps-fs-sm, 14px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+#twopir-ps .tps-cs-company {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+#twopir-ps .tps-cs-lbl { letter-spacing: 0.14em !important; }
+
+/* 5 · Client logo rail — vendor marks must never be cropped.
+       The <img> tags carry width/height attributes and the theme
+       defaults to object-fit: cover, which slices wide logos. */
+#twopir-ps .tps-marquee-item img {
+  height: 36px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* 6 · FAQ — kill the stray square the theme injects next to the
+       +/− toggle on hover and click. */
+#twopir-ps .tps-faq-btn::before,
+#twopir-ps .tps-faq-btn::after,
+#twopir-ps .tps-faq-ico::before,
+#twopir-ps .tps-faq-ico::after,
+#twopir-ps .tps-faq-row > button::before,
+#twopir-ps .tps-faq-row > button::after {
+  content: none !important;
+  display: none !important;
+}
+#twopir-ps .tps-faq-btn,
+#twopir-ps .tps-faq-btn:hover,
+#twopir-ps .tps-faq-btn:focus,
+#twopir-ps .tps-faq-btn:active,
+#twopir-ps .tps-faq-ico {
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+#twopir-ps .tps-faq-btn:focus-visible {
+  outline: 2px solid var(--tps-accent, #00aff6) !important;
+  outline-offset: -3px;
+}
+#twopir-ps .tps-faq-ico {
+  overflow: hidden;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+#twopir-ps .tps-faq-ico svg { font-size: initial; }
+
+/* 7 · Small screens — matches the homepage's mobile type block */
+@media (max-width: 620px) {
+  #twopir-ps .tps-hero-title { font-size: 30px !important; line-height: 1.18 !important; }
+  #twopir-ps .tps-title      { font-size: 26px !important; line-height: 1.2 !important; }
+  #twopir-ps .tps-hero-sub,
+  #twopir-ps .tps-lede,
+  #twopir-ps .tps-philosophy p { font-size: 16px !important; }
+
+  #twopir-ps .tps-pain-item h3,
+  #twopir-ps .tps-svc-card h3,
+  #twopir-ps .tps-step h3,
+  #twopir-ps .tps-int-name,
+  #twopir-ps .tps-cs-company,
+  #twopir-ps .tps-faq-btn { font-size: 16px !important; }
+  #twopir-ps .tps-why-item h3 { font-size: 15px !important; }
+
+  #twopir-ps .tps-pain-item p,
+  #twopir-ps .tps-svc-card > p,
+  #twopir-ps .tps-why-item p,
+  #twopir-ps .tps-quote-text,
+  #twopir-ps .tps-faq-panel-inner p { font-size: 15px !important; }
+
+  #twopir-ps .tps-svc-list li,
+  #twopir-ps .tps-step p,
+  #twopir-ps .tps-int-desc,
+  #twopir-ps .tps-engage li,
+  #twopir-ps .tps-callout-author { font-size: 14px !important; }
+
+  #twopir-ps .tps-cs-title { font-size: 14px !important; }
+  #twopir-ps .tps-marquee-item img { height: 30px !important; max-width: 130px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · TEMPLATE BEHAVIOUR
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 6a · Theme pseudo-element guard ─────────────────────────
+   The live theme sets `blockquote::before { font-family: FontAwesome;
+   content: "10d" }` — a decorative quote glyph. FontAwesome is not
+   loaded on this page, so it renders as an empty tofu box at the head
+   of every testimonial. Neutralised rather than restyled: the design
+   already carries its own quote treatment through the accent rule down
+   the left edge.
+
+   Only blockquote and q are cleared. A blanket `::before` reset would
+   destroy the rule diamonds, the list bullets and the separators, all of
+   which are real parts of this design. If another theme decorates a
+   different tag, add that tag here — do not widen the selector. */
+#twopir-ps blockquote::before,
+#twopir-ps blockquote::after,
+#twopir-ps q::before,
+#twopir-ps q::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   FIRST-SCREEN HERO — height-responsive
+   ════════════════════════════════════════════════════════════
+   Ported from the homepage. Replaces the earlier
+   `(min-width: 901px) and (min-height: 720px)` gate: instead of giving
+   up below 720px tall and letting the hero scroll, the hero now SCALES
+   to whatever height it has. Everything below is clamped with px floors
+   and ceilings, so nothing scales without bound, and it is desktop-only
+   so mobile viewport-unit quirks cannot apply. */
+@media (min-width: 901px) {
+  #twopir-ps .tps-hero {
+    min-height: calc(100vh  - var(--tps-nav, 87px));
+    min-height: calc(100svh - var(--tps-nav, 87px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
+  }
+  #twopir-ps .tps-hero-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-ps .tps-pill {
+    margin-bottom: clamp(10px, 1.9vh, 18px);
+    padding: clamp(5px, 0.8vh, 7px) 12px;
+  }
+  /* min(vw, vh): the headline yields to whichever dimension binds first */
+  #twopir-ps .tps-hero-title {
+    font-size: clamp(32px, var(--tps-h1-fluid, 3.2vw), 46px) !important;
+    line-height: 1.08 !important;
+  }
+  #twopir-ps .tps-hero-rule {
+    margin: clamp(12px, 1.9vh, 16px) 0 clamp(10px, 1.6vh, 15px);
+  }
+  #twopir-ps .tps-hero-sub {
+    font-size: clamp(15px, var(--tps-sub-fluid, 1.2vw), 17px) !important;
+    line-height: 1.55 !important;
+  }
+  #twopir-ps .tps-hero-cta {
+    margin-top: clamp(18px, 2.9vh, 26px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-ps .tps-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(19px, 1.6vw, 24px);
+  }
+  #twopir-ps .tps-hero-proof {
+    margin-top: clamp(15px, 2.5vh, 22px);
+    gap: clamp(7px, 1.2vh, 9px) 15px;
+  }
+  #twopir-ps .tps-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-ps .tps-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-ps .tps-map { max-height: min(53vh, 486px); }
+}
+
+/* Short windows — a laptop with a bookmarks bar, or a scaled display.
+   The panel gives up more room so the copy column never has to. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-ps .tps-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-ps .tps-map { max-height: 50vh; }
+  #twopir-ps .tps-float { transform: scale(0.92); transform-origin: left bottom; }
+}
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PAGE SCALING — the ladder, ported from the homepage
+   ════════════════════════════════════════════════════════════
+   Sections scale so a short laptop window sees the page at
+   85-100% instead of scrolling more. The floor is 0.85: the
+   bottom three rungs are deliberately equal, because 0.79 and
+   0.82 are what made the site read as squeezed.
+
+   The hero is NOT in the ladder — it does its own min(vw, vh)
+   scaling already, which is the whole reason the ladder exists. */
+/* The 1 / 1 defaults for the ladder below are declared in the single
+   #twopir-ps token rule at the top of this sheet, not here. */
+
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-ps { --tps-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height:  940px) { #twopir-ps { --tps-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height:  880px) { #twopir-ps { --tps-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height:  820px) { #twopir-ps { --tps-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height:  760px) { #twopir-ps { --tps-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  700px) { #twopir-ps { --tps-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  640px) { #twopir-ps { --tps-scale-h: 0.85; } }
+
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-ps { --tps-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-ps { --tps-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-ps { --tps-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-ps { --tps-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-ps { --tps-scale-w: 0.88; } }
+
+@media (min-width: 901px) {
+  #twopir-ps > section.tps-section,
+  #twopir-ps > section.tps-trust {
+    zoom: min(var(--tps-scale-h, 1), var(--tps-scale-w, 1));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   The ladder MULTIPLIES every declared size: at 0.85 a 9px label
+   renders at 7.6px. A 1366x768 laptop has roughly a 650px
+   viewport once browser chrome is off, so a typical machine
+   lands on the bottom rungs, not the 0.88 one its width suggests.
+
+   Every role below was declared between 9 and 12.5px. Collected
+   here so the small end uses ONE size per tier instead of
+   drifting across 9, 9.5, 10, 10.5, 11, 11.5, 12 and 12.5.
+
+     13px -> 11.05px at 0.85   micro labels
+     14px -> 11.90px at 0.85   secondary meta and supporting copy
+
+   The hero sits OUTSIDE the ladder, so declared == rendered and
+   its labels sit one step lower at the same physical size.      */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-ps .tps-cs-lbl,
+#twopir-ps .tps-mono-tag,
+#twopir-ps .tps-callout-k,
+#twopir-ps .tps-fact,
+#twopir-ps .tps-step-num,
+#twopir-ps .tps-cta-note,
+#twopir-ps .tps-why-num,
+#twopir-ps .tps-badge {
+  font-size: 13px !important;
+}
+/* .tps-eyebrow is deliberately NOT pinned here: its token is
+   clamp(13px, 1vw, 14px), whose own floor is already 13px, so it cannot
+   fall under the readable floor. Pinning it held the eyebrow at 13px
+   while the homepage rendered 14px. */
+
+/* secondary meta and supporting copy */
+#twopir-ps .tps-svc-list,
+#twopir-ps .tps-step,
+#twopir-ps .tps-int-desc,
+#twopir-ps .tps-quote-role,
+#twopir-ps .tps-cs-title,
+#twopir-ps .tps-cs-link,
+#twopir-ps .tps-callout-author,
+#twopir-ps .tps-engage {
+  font-size: 14px !important;
+}
+
+/* hero — never zoomed, so one step lower reads the same size */
+#twopir-ps .tps-float-k,
+#twopir-ps .tps-tag,
+#twopir-ps .tps-layer-h,
+#twopir-ps .tps-canvas-label,
+#twopir-ps .tps-hero-proof li {
+  font-size: 11.5px !important;
+}
+#twopir-ps .tps-chip,
+#twopir-ps .tps-float-v,
+#twopir-ps .tps-s,
+#twopir-ps .tps-h,
+#twopir-ps .tps-t2 {
+  font-size: 12px !important;
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase, and wide tracking
+   compounds it. These two sat at 0.14em and 0.08em inside narrow
+   boxes: the case-study label ran to FOUR lines under a 24px
+   number and read louder than the number it was labelling.
+
+   The homepage stats strip already shows the right setting — its
+   label is the same 13px but tracked at 0.03em, and reads as the
+   quiet caption it is. Size comes down a step as well.
+
+   These sit below the 11px effective floor on purpose. That floor
+   is for reading matter; a tracked caps label is scanned, not
+   read, and its caps give it a larger apparent size. */
+#twopir-ps .tps-cs-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-ps .tps-fact {
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   the FAQ question, which is this page's only <button> element.
+   Two pixels of tracking on a 17.5px uppercase line is enough to
+   make the whole section read as oversized. Tracking is declared
+   here so the theme cannot decide it. */
+#twopir-ps .tps-faq-btn {
+  letter-spacing: 0.01em !important;
+}
+
+/* ── The FAQ question is a heading, not a control ─────────────
+   The blanket body-font pass includes `#twopir-ps button`, with
+   !important, so it beat the .tps-faq-btn display-face rule and the
+   questions rendered in Inter while the homepage's render in
+   Bricolage Grotesque. Same failure that rule's own comment warns
+   about for card titles — a <button> that is semantically a heading
+   has to be listed as an exception.
+
+   Case is left to the theme deliberately: the caps are wanted. */
+#twopir-ps .tps-faq-btn {
+  font-family: var(--tps-ff-display, 'Bricolage Grotesque', sans-serif) !important;
+}
+</style>
