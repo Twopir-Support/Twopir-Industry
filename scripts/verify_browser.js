@@ -90,6 +90,9 @@ const WANT = {
   'table tbody th':  [19, 'Bricolage Grotesque'],   // SaaS only
   'table td':        [14, 'Inter'],                 // SaaS only
   'seg-card h3':     [19, 'Bricolage Grotesque'],
+  'uc-card h3':      [19, 'Bricolage Grotesque'],   // AIFintech: use-case cards
+  'uc-cols li':      [14, 'Inter'],                 //   stand in for svc-card
+  'icp-v':           [19, 'Bricolage Grotesque'],
 };
 
 /* Pages still on the type scale that the August 2026 homepage/Legal finals

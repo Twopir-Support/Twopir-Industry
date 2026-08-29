@@ -17,6 +17,7 @@ Industry Pages/
   Telecom.html        Salesforce for Telecom & Infrastructure
   RealEstate.html     Salesforce for Real Estate
   Events.html         Salesforce for Events & Hospitality
+  AIFintech.html      AI for Fintech
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -41,6 +42,8 @@ docs/
                                batch whose logo alt text is correct
   events-build-report.md       the same for Events.html; section 6 records law-firm
                                alt text and the absence of any proof section
+  ai-fintech-build-report.md   the same for AIFintech.html; section 6 records the
+                               cannibalisation risk against /salesforce-for-fintech/
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -117,6 +120,7 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `Telecom.html` | current | ✓ | ✓ fixed | pass |
 | `RealEstate.html` | current | ✓ | ✓ fixed | pass |
 | `Events.html` | current | ✓ | ✓ fixed | pass |
+| `AIFintech.html` | current | ✓ | ✓ fixed | pass |
 
 One piece of known debt, recorded in the tooling rather than hidden:
 
