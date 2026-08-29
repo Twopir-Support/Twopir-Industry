@@ -15,6 +15,8 @@ Industry Pages/
   Manufacturing.html  Salesforce for Manufacturing & Industrial
   ProfessionalServices.html  Salesforce for Professional Services
   Telecom.html        Salesforce for Telecom & Infrastructure
+  RealEstate.html     Salesforce for Real Estate
+  Events.html         Salesforce for Events & Hospitality
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -35,6 +37,10 @@ docs/
                                section 4 records a duplicate live page
   telecom-build-report.md      the same for Telecom.html; section 6 records law-firm
                                logo alt text carried over from the source
+  real-estate-build-report.md  the same for RealEstate.html; the only source in the
+                               batch whose logo alt text is correct
+  events-build-report.md       the same for Events.html; section 6 records law-firm
+                               alt text and the absence of any proof section
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -109,6 +115,8 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `Manufacturing.html` | current | ✓ | ✓ fixed | pass |
 | `ProfessionalServices.html` | current | ✓ | ✓ fixed | pass |
 | `Telecom.html` | current | ✓ | ✓ fixed | pass |
+| `RealEstate.html` | current | ✓ | ✓ fixed | pass |
+| `Events.html` | current | ✓ | ✓ fixed | pass |
 
 One piece of known debt, recorded in the tooling rather than hidden:
 
