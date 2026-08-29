@@ -167,7 +167,13 @@ def verify(path):
     prose = copy
     for w in widget:
         prose = prose.replace(w, '')
-    short = re.findall(r'\b(?:Salesforce|HubSpot) Partner\b', prose)
+    # Only a SELF-APPLIED label counts. "every other Salesforce partner" and
+    # "a standard Salesforce implementation partner" refer to competitors —
+    # they are not Twopir claiming a tier, and flagging them would force a
+    # rewrite of ordinary copy. A self-claim names Twopir nearby, so require
+    # the company name within 80 characters either side.
+    short = [m.group(0) for m in re.finditer(r'\b(?:Salesforce|HubSpot) Partner\b', prose)
+             if 'Twopir' in prose[max(0, m.start() - 80):m.end() + 80]]
     full_ok = 'Salesforce Gold Partner' in copy and 'HubSpot Gold Partner' in copy
     chk("partner credential wording (full name outside the stat widget)",
         not short or full_ok,
