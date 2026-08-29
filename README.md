@@ -9,6 +9,7 @@ single Custom HTML block body fragments.
 Industry Pages/
   Legal.html          reference build — the template every other industry page starts from
   SaaS.html           Salesforce for SaaS & Technology
+  Fintech.html        Salesforce for Fintech
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -18,8 +19,14 @@ scripts/
   verify_degradation.js  renders the page with the sheet deliberately broken, both
                          Autoptimize failure modes, and checks nothing collapses
 docs/
-  saas-build-report.md   build, preservation and SEO/AEO report for SaaS.html
+  saas-build-report.md      build, preservation and SEO/AEO report for SaaS.html
+  fintech-build-report.md   the same for Fintech.html, plus what was removed from the
+                            page it replaced and why
 ```
+
+All four scripts take a page filename, or default to every page in the directory.
+They read the wrapper id and class prefix out of the file itself, so nothing needs
+editing per page.
 
 ## Publishing a page
 
@@ -33,9 +40,17 @@ page are in the comment block at the top of its file.
 
 ```sh
 cd "Industry Pages"
-python3 ../scripts/verify_page.py            # run from the directory holding the page
-node ../scripts/verify_browser.js            # needs harness.html; see the script header
+python3 ../scripts/verify_page.py             # every page; or name one, e.g. Fintech.html
+node ../scripts/verify_browser.js
+node ../scripts/verify_degradation.js
 ```
+
+`verify_browser.js` and `verify_degradation.js` build their own `harness.html` — the
+page is a body fragment, so it only renders meaningfully inside a document that
+reproduces what the live theme does to it (`html { font-size: 10px }`). The harness
+files are gitignored and rewritten on every run. Both scripts run **offline**: every
+external request is aborted at the route level, so a sandbox without egress does not
+hang on the webfonts or the HubSpot-hosted client logos.
 
 `verify_page.py` runs the Autoptimize token-deletion simulation, confirms the FAQ JSON-LD matches
 the visible accordion word for word, and checks every `.twopir-*` stat fallback against the
@@ -69,7 +84,26 @@ Start from `Industry Pages/Legal.html` and change five things:
 - `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns the wrapper into a scroll
   container and breaks the sticky callout.
 
-### Known defects in Legal.html, fixed in SaaS.html
+### Current state of the three pages
+
+| | Type scale | One-token rule | Grid-bullet defect | Static checks |
+|---|---|---|---|---|
+| `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 3 failing |
+| `SaaS.html`  | **superseded** — one step small throughout | ✓ | ✓ fixed | pass |
+| `Fintech.html` | current | ✓ | ✓ fixed | pass |
+
+Two pieces of known debt, both recorded in the tooling rather than hidden:
+
+- **`SaaS.html` is on the type scale the finals replaced** — 38px h2 against 44,
+  12px eyebrow against 14, 16px card titles against 19. `verify_browser.js` names it
+  in `LEGACY_SCALE` and reports those rows instead of asserting them. Remove the entry
+  when the page is rebased onto the current tokens.
+- **`Legal.html` fails three static checks** (three bare `#twopir-legal` rules,
+  two orphan tokens, and the generic `Salesforce Partner` wording where the canonical
+  fact set wants the full `Salesforce Gold Partner` outside the stat widget). It is the
+  uploaded design source, so it is carried as-is rather than edited here.
+
+### Known defects in Legal.html, fixed in SaaS.html and Fintech.html
 
 Back-port these before building the next page from `Legal.html`:
 
@@ -77,7 +111,8 @@ Back-port these before building the next page from `Legal.html`:
 2. **`rem` in the hero H1** — `.tlg-hero-title` is `clamp(1.85rem, 3.05vw, 3rem)`. The tail pass
    overrides it, so it renders correctly today, but the theme sets `html { font-size: 10px }` and a
    dropped tail block would leave the H1 at an 18.5px floor.
-3. **Grid-based list bullets break on inline children** — `.tlg-svc-list li` uses
+3. **Grid-based list bullets break on inline children** — still present in the
+   current `Legal.html`. `.tlg-svc-list li` uses
    `display: grid; grid-template-columns: 14px 1fr` with the diamond as the first grid item. Grid
    promotes *every* child, anonymous text nodes included, to its own cell. The moment a list item
    contains an inline element (`<a>`, `<strong>`), the trailing text lands in the 14px bullet

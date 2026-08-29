@@ -1,3 +1,5 @@
 harness.html
 node_modules/
 *.log
+harness-no-tail.html
+harness-no-tokens.html
