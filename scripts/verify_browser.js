@@ -224,7 +224,11 @@ const LEGACY_SCALE = new Set(['SaaS.html']);
      * 901px breakpoint the hero always goes to natural height. */
     for (const [w, h, expectFull] of [[1440, 900, true], [1440, 700, null], [880, 900, false]]) {
       const { ctx, page } = await open_(browser, { width: w, height: h }, url);
-      await page.waitForTimeout(500);
+      /* 1400ms, not 500. The entrance is a 600ms fade that animates
+         translateY, and a still-offset child inflates the hero's
+         scrollHeight — so measuring the clip test mid-animation reports a
+         false positive on any page whose hero copy fills the box. */
+      await page.waitForTimeout(1400);
       const r = await page.evaluate(pfx => {
         const hero = document.querySelector(`.${pfx}-hero`);
         const cs = getComputedStyle(hero);

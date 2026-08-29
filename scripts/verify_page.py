@@ -157,8 +157,22 @@ def verify(path):
             r'.{0,50}\b\d{1,3}%\s*(?:increase|reduction|faster|improvement|gain|less|more)',
             copy, re.I | re.S)]))
     chk("company name is always 'Twopir Consulting', never 'TwoPir'", 'TwoPir' not in s)
-    chk("full credentials used outside the stat widget",
-        'Salesforce Gold Partner' in s and 'HubSpot Gold Partner' in s)
+    # The rule is about HOW a partner credential is worded when the page
+    # states one — full name outside the compact stat widget — not that every
+    # page must state one. A page that makes no partner claim at all (this is
+    # normal for a vertical page led by a product, e.g. Health Cloud) has
+    # nothing to get wrong. So: only the shortened form appearing in prose,
+    # with no full credential anywhere, is a failure.
+    widget = re.findall(r'class="twopir-(?:salesforce|hubspot)"[^>]*>[^<]*<', copy)
+    prose = copy
+    for w in widget:
+        prose = prose.replace(w, '')
+    short = re.findall(r'\b(?:Salesforce|HubSpot) Partner\b', prose)
+    full_ok = 'Salesforce Gold Partner' in copy and 'HubSpot Gold Partner' in copy
+    chk("partner credential wording (full name outside the stat widget)",
+        not short or full_ok,
+        'no partner claim on this page' if not short and not full_ok
+        else (f'shortened in prose: {short}' if short and not full_ok else ''))
 
     print("\n" + "=" * 62)
     print(f"  {os.path.basename(path)}: {len(fails)} FAILING CHECK(S)" if fails

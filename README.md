@@ -10,6 +10,7 @@ Industry Pages/
   Legal.html          reference build — the template every other industry page starts from
   SaaS.html           Salesforce for SaaS & Technology
   Fintech.html        Salesforce for Fintech
+  Healthcare.html     Salesforce for Healthcare
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -20,8 +21,10 @@ scripts/
                          Autoptimize failure modes, and checks nothing collapses
 docs/
   saas-build-report.md      build, preservation and SEO/AEO report for SaaS.html
-  fintech-build-report.md   the same for Fintech.html — a restyle of the live page
-                            onto the design system, with the copy preserved
+  fintech-build-report.md      the same for Fintech.html — a restyle of the live page
+                               onto the design system, with the copy preserved
+  healthcare-build-report.md   the same for Healthcare.html; section 4 records a
+                               blocking content defect carried over from the source
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -91,6 +94,7 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 3 failing |
 | `SaaS.html`  | **superseded** — one step small throughout | ✓ | ✓ fixed | pass |
 | `Fintech.html` | current | ✓ | ✓ fixed | pass |
+| `Healthcare.html` | current | ✓ | ✓ fixed | pass |
 
 Two pieces of known debt, both recorded in the tooling rather than hidden:
 
@@ -103,7 +107,7 @@ Two pieces of known debt, both recorded in the tooling rather than hidden:
   fact set wants the full `Salesforce Gold Partner` outside the stat widget). It is the
   uploaded design source, so it is carried as-is rather than edited here.
 
-### Known defects in Legal.html, fixed in SaaS.html and Fintech.html
+### Known defects in Legal.html, fixed in SaaS.html, Fintech.html and Healthcare.html
 
 Back-port these before building the next page from `Legal.html`:
 

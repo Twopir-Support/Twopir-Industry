@@ -1,0 +1,4157 @@
+<!-- ============================================================
+     SEO / AEO — SALESFORCE FOR HEALTHCARE
+     This file is a WordPress Custom HTML block, so it has no HEAD section of its own.
+     Meta title, description and canonical cannot work from inside a
+     body fragment — paste these into the SEO plugin (Yoast / Rank
+     Math) on the page that hosts this block. The JSON-LD at the
+     bottom of this file is real markup and works as-is.
+
+       Title tag  (57 chars)
+         Salesforce for Healthcare | Twopir Consulting
+
+       Meta description  (155 chars)
+         Salesforce for healthcare from Twopir Consulting: patient
+         intake, referral tracking, scheduling and billing visibility
+         on one Health Cloud architecture.
+
+       Slug       /salesforce-for-healthcare/
+       Canonical  https://twopirconsulting.com/salesforce-for-healthcare/
+                  ^ PLACEHOLDER — confirm the final permalink before
+                    publishing, and keep http/https + trailing slash
+                    consistent with the rest of the site.
+
+       Primary keyword    Salesforce for healthcare
+       Secondary keywords Salesforce Health Cloud implementation,
+                          patient intake automation, healthcare referral
+                          management, medical practice CRM, Epic
+                          Salesforce integration
+
+       Which query this page wins that no existing page wins:
+         "Salesforce for healthcare" / "Salesforce Health Cloud
+         implementation partner" and the patient-intake and referral
+         long tail. No existing page covers the vertical.
+
+       Sitemap    add this URL to sitemap.xml and submit in Google
+                  Search Console + Bing Webmaster Tools.
+     ============================================================ -->
+
+<!-- ============================================================
+     TWOPIR CONSULTING — SALESFORCE FOR HEALTHCARE (Industry Page)
+     WordPress-ready snippet. Paste into a Custom HTML block.
+
+     DESIGN SYSTEM — inherited from the homepage sections
+     (Hero.html, About Us.html, Our Services.html, Industry We
+     Serve.html, FAQ.html, OUR ECOSYSTEM.html):
+
+       Palette   #dff1fa page bg · #eef8fd card · #ffffff surface
+                 #00aff6 accent · #007ec6 accent-dark
+                 rgba(0,175,246,0.28) border · #1a2a35 ink
+                 #566b79 muted · #1e2447/#12183a/#1a2e4a navy
+                 #35d39a green
+       Type      Bricolage Grotesque (display) · Inter (body)
+                 JetBrains Mono (eyebrows / labels)
+       Radius    22px large · 18px card · 14px small · 100px pill
+       Shadow    0 2px 16px rgba(0,130,200,.10), 0 1px 4px rgba(0,130,200,.08)
+                 hover: 0 8px 32px rgba(0,130,200,.18), 0 2px 8px rgba(0,130,200,.12)
+                 dark panels: 0 8px 40px rgba(18,24,58,.20)
+       Pattern   mono eyebrow → Bricolage title → line/diamond/line
+                 rule → Inter 300 description → content grid
+
+     SCOPING
+       Every selector is prefixed with #twopir-healthcare, and every
+       class uses the .thc- prefix. Keyframes use the thc prefix
+       too. Nothing here can leak into other WordPress pages or
+       into the homepage sections. All sizes are px / clamp() —
+       never rem — so the page is immune to whatever root
+       font-size the active theme sets.
+
+     SCROLL PERFORMANCE (2024-08 patch)
+       - `html { scroll-behavior: auto }` guards against a theme
+         applying global smooth-scrolling that fights the many
+         continuous CSS animations below.
+       - `content-visibility: auto` is applied to page sections
+         (skipping the one section that holds a `position: sticky`
+         element, since layout containment can interfere with
+         sticky) so the browser skips layout/paint work for
+         sections currently off-screen. This is the single biggest
+         lever for scroll jank on long, animation-heavy pages.
+     ============================================================ -->
+
+<!-- ============================================================
+     USING THIS FILE AS THE INDUSTRY-PAGE TEMPLATE
+     ============================================================
+     This page is the reference build for every other industry page
+     (Healthcare, Real Estate, Fintech, …). To spin up a new one,
+     five things change and nothing else needs to:
+
+     1 · IDENTIFIERS   find-and-replace two strings, in this order:
+                         #twopir-healthcare   →  #twopir-<industry>
+                         thc-            →  t<xx>-        (3-4 chars)
+                       The keyframe names (thcPulse, thcLive, thcFlow,
+                       thcSpin, thcMarquee) carry the same prefix and
+                       are caught by the second replace. Renaming both
+                       is what keeps two industry pages from colliding
+                       if they ever render on the same URL.
+
+     2 · CONTENT       headings, copy, cards, stats, testimonials, FAQ.
+                       Section structure stays; only the words change.
+
+     3 · HERO DIAGRAM  the SVG is a three-layer model —
+                         systems of record → Twopir layer → outcomes.
+                       Swap the node labels for the industry's own
+                       systems and vocabulary. Keep the 560×548 viewBox
+                       and the layer geometry; only the text changes.
+
+     4 · SCHEMA        the three JSON-LD blocks at the bottom: breadcrumb
+                       names, Service name/description, FAQ pairs. The
+                       FAQ block must stay word-for-word identical to the
+                       visible accordion.
+
+     5 · SEO VALUES    the plugin block directly below this comment.
+
+     ── WHAT MUST NOT CHANGE ─────────────────────────────────────
+     · The type scale and the colour tokens. They come from the
+       homepage and they are what makes the pages read as one site.
+     · The single token rule. Every custom property is declared in ONE
+       `#twopir-<industry> { }` block, and every var() carries a literal
+       fallback. Autoptimize merges duplicate selectors and will silently
+       drop a second token block — that is what broke the type scale on
+       the first live deploy.
+     · px / clamp() sizing only, never rem. The live theme sets
+       `html { font-size: 10px }`, so rem values would rescale.
+     · `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns
+       the wrapper into a scroll container and breaks the sticky callout.
+
+     ── HOW IT HANDLES MORE OR LESS CONTENT ──────────────────────
+     The hero is min-height, flex, vertically centred. A page with a
+     short headline and two stats centres in the first screen and reads
+     as composed; a page with a long lede grows past it and scrolls.
+     Nothing is clipped and no font size needs touching either way.
+     The stats row is a wrapping flex list, so three, four or five
+     entries all lay out cleanly.
+
+     PASTE INTO A CUSTOM HTML BLOCK, never the visual editor — the
+     visual editor injects paragraph and line-break tags inside the
+     style element, which breaks the CSS outright.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Scroll performance fix ─────────────────────────────────
+   Forces native (non-smooth) scrolling so this page never fights
+   a theme-level `scroll-behavior: smooth` while heavy decorative
+   animations are running elsewhere on the page. Scoped globally
+   because scroll-behavior only has effect on the actual scrolling
+   element (html/body), which sits outside #twopir-healthcare. */
+html { scroll-behavior: auto !important; }
+
+/* ── Tokens (scoped) ───────────────────────────────────────── */
+#twopir-healthcare {
+  --thc-bg:          #dff1fa;
+  --thc-bg-alt:      #e8f5fd;
+  --thc-bg-top:      #ecf8fd;
+  --thc-card:        #eef8fd;
+  --thc-surface:     #ffffff;
+
+  --thc-accent:      #00aff6;   /* fills, borders, icons, dots, large display type */
+  --thc-accent-dk:   #007ec6;   /* gradients and hover states */
+  /* Text-safe brand blue. The accent itself measures 2.14 against the page
+     background, 2.23 on the alt, 2.30 on a card and 2.48 on white — all far
+     under the 4.5 minimum — and every role that used it as a text colour on
+     those grounds runs 11–16px. This is the same hue darkened until it clears
+     5.1 everywhere (5.14 / 5.37 / 5.53 / 5.96), so eyebrows and labels still
+     read as brand blue but are actually legible. For TEXT on light grounds
+     only: icons, borders, fills, the large gradient display type and anything
+     sitting on a navy panel all keep --thc-accent. */
+  --thc-accent-ink:  #00699f;
+  --thc-border:      rgba(0,175,246,0.28);
+  --thc-border-soft: rgba(0,175,246,0.22);
+
+  --thc-text:        #1a2a35;
+  /* nudged from #5a7080, which measured 4.45 against the page background —
+     a hair under the 4.5 minimum for body copy. This clears it on every
+     surface (4.79 / 5.01 / 5.16 / 5.56) and the shift is imperceptible
+     side by side. */
+  --thc-muted:       #566b79;
+
+  --thc-navy:        #1e2447;
+  --thc-navy-deep:   #12183a;
+  --thc-navy-soft:   #1a2e4a;
+  --thc-green:       #35d39a;
+  /* the homepage's only warm hue. Used here as the semantic left-border on
+     the "where firms stall" cards; #f0a53c was off-palette. */
+  --thc-star:        #e0961f;
+
+  --thc-ff-display:  'Bricolage Grotesque', sans-serif;
+  --thc-ff-body:     'Inter', sans-serif;
+  --thc-ff-mono:     'JetBrains Mono', monospace;
+
+  --thc-radius-lg:   22px;
+  --thc-radius-card: 18px;
+  --thc-radius-md:   14px;
+
+  --thc-shadow:      0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08);
+  --thc-shadow-hv:   0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12);
+  --thc-shadow-dark: 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10);
+
+  --thc-ease:        0.28s cubic-bezier(.4,0,.2,1);
+  --thc-pad-y:       clamp(44px, min(5.5vw, 7vh), 80px);
+
+  /* Fluid terms for the hero. Declared on the wrapper, not inside the rules
+     that use them, because the publish pipeline mangles a rule whose
+     font-size it is rewriting — it dropped these twice when they lived
+     there. Wrapper custom properties come through intact. */
+  --thc-h1-fluid:    min(3.2vw, 5.45vh);
+  --thc-sub-fluid:   min(1.2vw, 2.35vh);
+  --thc-pad-x:       clamp(16px, 4vw, 48px);
+
+  /* TEMPLATE KNOB — height of the site header sitting above this block in
+     normal flow (measured 87px on the live theme). The only value in this
+     file tied to the surrounding site; it lets the hero be exactly "one
+     screen minus the header". Re-measure if the header ever changes. */
+  --thc-nav:         87px;
+
+  /* ── Type scale ──────────────────────────────────────────────
+     These live in the SAME rule as the colour tokens on purpose.
+     They used to sit in a second, standalone `#twopir-healthcare { }`
+     block further down the sheet, and Autoptimize's CSS minifier
+     merges duplicate selectors — on the live site it merged the
+     three #twopir-healthcare rules and silently dropped this one. The
+     result: 62 surviving `var(--thc-fs-*)` references with zero
+     declarations behind them. An unresolvable var() is invalid at
+     computed-value time, and for font-size that means INHERIT, so
+     the H1 fell back to the wrapper's 16px while every label and
+     button inherited 16px too — a small headline surrounded by
+     oversized body text. One token rule means there is nothing
+     left for the minifier to merge. Every var() below also carries
+     a literal fallback as a second line of defence. */
+  --thc-fs-display:     clamp(34px, 4.5vw, 56px);
+  --thc-fs-h2:          clamp(30px, 3.4vw, 44px);
+  --thc-fs-h3:          clamp(20px, 1.8vw, 24px);
+  --thc-fs-h4:          clamp(17px, 1.4vw, 19px);
+  --thc-fs-lede:        clamp(17px, 1.4vw, 19px);
+  --thc-fs-body:        clamp(15px, 1.1vw, 17px);
+  --thc-fs-sm:          14px;
+  --thc-fs-xs:          13px;
+  --thc-fs-label:       12px;
+  --thc-fs-stat:     clamp(32px, 3.6vw, 48px);
+  --thc-fs-eyebrow:     clamp(13px, 1vw, 14px);
+  --thc-fs-stat-sm:     clamp(22px, 2vw, 26px);
+
+  position: relative;
+  width: 100%;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  /* The wrapper is the inheritance root for anything without an explicit
+     size of its own, so it takes the body step rather than a flat 16px.
+     The literal fallback matters most here: if this one failed to resolve
+     the block would inherit the theme's body size instead. */
+  font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px));
+  line-height: 1.65;
+  color: var(--thc-text, #1a2a35);
+  background: var(--thc-bg, #dff1fa);
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`. CSS says that when one axis is not visible, the
+     other computes from visible to AUTO — so `overflow-x: hidden` silently
+     turned this wrapper into a scroll container around the whole page
+     (measured: overflow resolved to hidden / auto). That makes it the scroll
+     ancestor for `position: sticky`, which is why the sticky "How We Engage"
+     callout in the Why section would stop sticking above 960px, and it also
+     gives a trackpad gesture something to latch onto. `clip` clips exactly
+     the same way but creates no scroll container. The `hidden` line stays
+     first as the fallback for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
+  isolation: isolate;
+  /* FIX: this component previously relied only on JS (thcFullBleed) to cancel
+     horizontal spacing from the theme/builder wrapper. It never touched
+     *vertical* spacing, so any top/bottom padding/margin the theme's content
+     wrapper added around the widget rendered as plain white gaps — first
+     above the hero, then (once that was fixed) below the CTA section.
+     margin-top/margin-bottom are pulled to 0 here too, and the matching
+     ancestor walk in the script (thcKillAncestorSpacing) zeroes out top AND
+     bottom padding/margin on every parent between this element and the page
+     body element,
+     since the real offending wrapper class differs per theme/builder. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  /* Page-scaling ladder defaults. The @media rungs further down override
+     these; the 1 / 1 base belongs here so no second bare rule exists. */
+  --thc-scale-h: 1;
+  --thc-scale-w: 1;
+}
+
+/* ── Local reset (scoped — cannot touch the rest of the site) ─ */
+#twopir-healthcare,
+#twopir-healthcare *,
+#twopir-healthcare *::before,
+#twopir-healthcare *::after { box-sizing: border-box; }
+
+#twopir-healthcare p,
+#twopir-healthcare h1, #twopir-healthcare h2, #twopir-healthcare h3,
+#twopir-healthcare ul, #twopir-healthcare li,
+#twopir-healthcare figure, #twopir-healthcare blockquote { margin: 0; padding: 0; }
+#twopir-healthcare li { list-style: none; }
+#twopir-healthcare a  { text-decoration: none; }
+
+
+#twopir-healthcare img { display: block; max-width: 100%; }
+#twopir-healthcare button { font-family: inherit; }
+
+/* The wrapper's own styling is folded into the single token rule at the
+   top of this sheet: exactly ONE bare #twopir-healthcare rule exists, so the
+   minifier has nothing to merge and nothing to drop. */
+
+/* ── Elementor / builder wrapper reset ──
+   Page builders wrap the HTML widget in padded containers, which
+   would leave white bars between these full-bleed sections. This
+   only matches wrappers that actually contain #twopir-healthcare. */
+section.elementor-section:has(#twopir-healthcare),
+.elementor-column:has(#twopir-healthcare),
+.elementor-widget-wrap:has(#twopir-healthcare),
+.elementor-widget:has(#twopir-healthcare),
+.elementor-container:has(#twopir-healthcare),
+.wp-block-html:has(#twopir-healthcare) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The theme wraps page content in `.page-inner { overflow: hidden }`, and on
+   the live site that box overflows horizontally by about 3px. A clipping box
+   with real overflow is still a scroll container, which makes it a latch
+   target for scroll gestures and the scroll ancestor that stops the sticky
+   callout working. `clip` clips identically but is not a scroll container.
+   Scoped with :has() so only pages carrying this block are affected. */
+.page-inner:has(#twopir-healthcare) { overflow: clip; }
+
+/* FIX: added — the block above only catches Elementor/Gutenberg wrapper
+   classes. Classic-editor / theme "entry-content" wrappers and generic
+   <main>/<article> containers were not covered, and one of those is the
+   most likely source of the top gap. Matching them here too, in addition
+   to the JS ancestor walk, covers both cases without guessing which theme
+   is in use. */
+.entry-content:has(#twopir-healthcare),
+.post-content:has(#twopir-healthcare),
+.page-content:has(#twopir-healthcare),
+main:has(#twopir-healthcare),
+article:has(#twopir-healthcare) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Shared layout primitives ──────────────────────────────── */
+#twopir-healthcare .thc-section {
+  position: relative;
+  width: 100%;
+  padding: var(--thc-pad-y, clamp(44px, min(5.5vw, 7vh), 80px)) var(--thc-pad-x, clamp(16px, 4vw, 48px));
+  background: var(--thc-bg, #dff1fa);
+}
+#twopir-healthcare .thc-section--alt  { background: var(--thc-bg-alt, #e8f5fd); }
+#twopir-healthcare .thc-section--dark {
+  background:
+    radial-gradient(760px 380px at 82% -14%, rgba(0,175,246,0.18) 0%, rgba(0,175,246,0) 64%),
+    linear-gradient(158deg, var(--thc-navy, #1e2447) 0%, var(--thc-navy-deep, #12183a) 58%, var(--thc-navy-soft, #1a2e4a) 100%);
+  color: #fff;
+}
+
+/* Skip layout/paint work for sections while they are off-screen.
+   Excludes the section that contains the `position: sticky`
+   callout (Why Twopir / #thc-why-title), since layout containment
+   on an ancestor can interfere with sticky positioning. This is
+   the main scroll-jank fix: it stops the browser from repeatedly
+   re-rendering the marquee, pulses, spin and flow animations in
+   sections that aren't currently visible. */
+#twopir-healthcare .thc-section:not(:has(.thc-callout)) {
+  content-visibility: auto;
+  /* Two declarations on purpose. The first is the placeholder size used by
+     browsers without `auto` support. The second lets the browser remember
+     each section's real rendered height once it has been on screen, so the
+     scrollbar stops jumping as you scroll back up past a section whose true
+     height is nowhere near the 900px estimate. Browsers that cannot parse
+     `auto` drop the second line and keep the first. */
+  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* iOS Safari mis-handles content-visibility during momentum scrolling:
+   sections re-lay-out mid-gesture and the page appears to stop moving. The
+   perf win only matters on large, pointer-driven screens anyway. */
+@media (hover: none), (pointer: coarse) {
+  #twopir-healthcare .thc-section:not(:has(.thc-callout)) {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}
+
+/* 1400, not 1180. The zoom ladder scales the whole section, container
+   included, so a 1180px wrap renders at 1003px on a 1536-wide screen —
+   66% of the viewport with 259px of dead margin each side. Declaring it
+   wider lets the SCALED result land near 1190px, which is the width the
+   layout was actually drawn for. */
+#twopir-healthcare .thc-wrap { max-width: 1400px; margin: 0 auto; width: 100%; }
+#twopir-healthcare .thc-wrap--narrow { max-width: 900px; }
+
+/* ── Section header pattern (matches Our Services / Industries) */
+#twopir-healthcare .thc-head {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+#twopir-healthcare .thc-eyebrow {
+  display: block;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  margin-bottom: 10px;
+}
+#twopir-healthcare .thc-title {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  color: var(--thc-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-healthcare .thc-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--thc-accent, #00aff6) 0%, var(--thc-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--thc-accent, #00aff6);
+}
+#twopir-healthcare .thc-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 22px;
+}
+#twopir-healthcare .thc-rule-line { width: 60px; height: 1px; background: rgba(0,175,246,0.35); }
+#twopir-healthcare .thc-rule-diamond {
+  width: 8px; height: 8px;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-healthcare .thc-lede {
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 300;
+  line-height: 1.78;
+  color: var(--thc-muted, #566b79);
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+#twopir-healthcare .thc-lede strong { color: var(--thc-text, #1a2a35); font-weight: 600; }
+
+/* dark-section variants of the same header pattern */
+#twopir-healthcare .thc-section--dark .thc-title { color: #fff; }
+#twopir-healthcare .thc-section--dark .thc-lede  { color: rgba(220,238,252,0.78); }
+#twopir-healthcare .thc-section--dark .thc-lede strong { color: #fff; }
+#twopir-healthcare .thc-section--dark .thc-rule-line { background: rgba(0,175,246,0.45); }
+
+/* ── Buttons (identical geometry to the homepage hero) ─────── */
+#twopir-healthcare .thc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: clamp(11px, 1vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  transition: background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform 0.18s ease;
+}
+#twopir-healthcare .thc-btn svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+#twopir-healthcare .thc-btn--primary {
+  color: #fff !important;
+  background: var(--thc-accent, #00aff6);
+  border-color: var(--thc-accent, #00aff6);
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+}
+#twopir-healthcare .thc-btn--primary:hover,
+#twopir-healthcare .thc-btn--primary:focus-visible {
+  background: var(--thc-text, #1a2a35);
+  border-color: var(--thc-text, #1a2a35);
+  box-shadow: 0 8px 24px rgba(26,42,53,0.24);
+  transform: translateY(-2px);
+}
+#twopir-healthcare .thc-btn--ghost {
+  color: var(--thc-accent, #00aff6) !important;
+  background: rgba(255,255,255,0.72);
+  border-color: var(--thc-border, rgba(0,175,246,0.28));
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+}
+#twopir-healthcare .thc-btn--ghost:hover,
+#twopir-healthcare .thc-btn--ghost:focus-visible {
+  background: var(--thc-accent, #00aff6);
+  color: #fff !important;
+  border-color: var(--thc-accent, #00aff6);
+  box-shadow: 0 8px 24px rgba(0,175,246,0.32);
+  transform: translateY(-2px);
+}
+#twopir-healthcare .thc-section--dark .thc-btn--ghost {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#twopir-healthcare .thc-section--dark .thc-btn--ghost:hover {
+  background: var(--thc-accent, #00aff6);
+  border-color: var(--thc-accent, #00aff6);
+}
+#twopir-healthcare .thc-btn:focus-visible { outline: 2px solid var(--thc-accent, #00aff6); outline-offset: 3px; }
+#twopir-healthcare .thc-btn-arrow { transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)); }
+#twopir-healthcare .thc-btn--primary:hover .thc-btn-arrow { transform: translateX(3px); }
+
+/* ════════════════════════════════════════════════════════════
+   1 · HERO
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 44px) var(--thc-pad-x, clamp(16px, 4vw, 48px)) clamp(20px, 2.4vw, 32px);
+  background:
+    radial-gradient(900px 460px at 78% -10%, rgba(0,175,246,0.16) 0%, rgba(0,175,246,0) 62%),
+    linear-gradient(180deg, var(--thc-bg-top, #ecf8fd) 0%, #e5f4fc 52%, var(--thc-bg, #dff1fa) 92%, var(--thc-bg, #dff1fa) 100%);
+  overflow: hidden;
+}
+#twopir-healthcare .thc-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,175,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,175,246,0.07) 1px, transparent 1px);
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 70% 62% at 72% 26%, #000 0%, transparent 76%);
+}
+#twopir-healthcare .thc-hero-inner {
+  position: relative;
+  z-index: 1;
+  /* 1190, not the 1400 the sections use. The hero is the one block OUTSIDE
+     the zoom ladder, so its width is never scaled down — 1400 here would
+     render 1400 while every section below renders 1400 x 0.85 = 1190, and
+     the hero would sit visibly wider than the whole page. This is that
+     scaled figure, so the two line up. */
+  max-width: 1190px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  /* the copy column carries the room. Widening it reflows the headline
+     from four lines to three and the lede from six to five, which is where
+     most of the first-screen budget comes from — layout, not type. */
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  align-items: center;
+  gap: clamp(28px, 3.6vw, 58px);
+}
+#twopir-healthcare .thc-hero-copy { max-width: 640px; }
+
+#twopir-healthcare .thc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  /* the flat 11px label step rather than the eyebrow clamp, plus tighter
+     padding and tracking. The pill reads noticeably smaller without leaving
+     the type scale — which matters, because every industry page reuses it. */
+  font-size: var(--thc-fs-label, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid #b3d9f2;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  margin-bottom: clamp(11px, 1.4vw, 16px);
+  box-shadow: 0 2px 10px rgba(0,130,200,0.08);
+}
+#twopir-healthcare .thc-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--thc-accent, #00aff6);
+  animation: thcPulse 2.6s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes thcPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,175,246,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,175,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,175,246,0); }
+}
+
+#twopir-healthcare .thc-hero-title {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(30px, 3.05vw, 48px);   /* was rem — the theme sets html{font-size:10px} */
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.09;
+  color: var(--thc-text, #1a2a35);
+  text-wrap: balance;
+}
+#twopir-healthcare .thc-hero-title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--thc-accent, #00aff6) 0%, var(--thc-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--thc-accent, #00aff6);
+}
+#twopir-healthcare .thc-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 1.2vw, 14px) 0 clamp(9px, 1.1vw, 13px);
+}
+#twopir-healthcare .thc-hero-rule .thc-rule-line { width: 54px; }
+#twopir-healthcare .thc-hero-rule .thc-rule-line--sm { width: 26px; }
+
+#twopir-healthcare .thc-hero-sub {
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--thc-muted, #566b79);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+#twopir-healthcare .thc-hero-sub strong { color: var(--thc-text, #1a2a35); font-weight: 600; }
+
+#twopir-healthcare .thc-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+#twopir-healthcare .thc-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 14px;
+  margin-top: clamp(14px, 1.6vw, 18px);
+}
+#twopir-healthcare .thc-hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--thc-muted, #566b79);
+}
+#twopir-healthcare .thc-hero-proof b {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--thc-text, #1a2a35);
+}
+#twopir-healthcare .thc-hero-proof li + li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.75;
+  margin-right: 8px;
+}
+
+/* ── Hero: dark architecture canvas ─────────────────────────── */
+#twopir-healthcare .thc-visual { position: relative; display: flex; justify-content: center; }
+#twopir-healthcare .thc-canvas {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, calc(58vh + 34px));
+  background:
+    radial-gradient(620px 260px at 50% -12%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--thc-navy, #1e2447) 0%, var(--thc-navy-deep, #12183a) 58%, var(--thc-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--thc-radius-lg, 22px);
+  padding: clamp(13px, 1.5vw, 17px);
+  box-shadow: var(--thc-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+}
+#twopir-healthcare .thc-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--thc-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-healthcare .thc-canvas-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+#twopir-healthcare .thc-canvas-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#twopir-healthcare .thc-live {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--thc-green, #35d39a);
+  animation: thcLive 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes thcLive {
+  0%   { box-shadow: 0 0 0 0 rgba(53,211,154,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(53,211,154,0); }
+  100% { box-shadow: 0 0 0 0 rgba(53,211,154,0); }
+}
+#twopir-healthcare .thc-tag {
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 5px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* The panel is capped in viewport units so it shrinks on short windows
+   instead of forcing the hero to grow. The px ceiling stops it ballooning
+   on very tall monitors, where 58vh would otherwise outrun the copy. */
+#twopir-healthcare .thc-map {
+  display: block; width: 100%; height: auto;
+  max-height: 58vh;
+  max-height: min(58vh, 540px);
+}
+#twopir-healthcare .thc-map text { font-family: var(--thc-ff-body, 'Inter', sans-serif); }
+#twopir-healthcare .thc-map .m   { font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace); }
+
+#twopir-healthcare .thc-layerbox { fill: rgba(255,255,255,0.028); stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+#twopir-healthcare .thc-node     { fill: rgba(255,255,255,0.06);  stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+#twopir-healthcare .thc-core     { fill: rgba(0,175,246,0.08);    stroke: rgba(0,175,246,0.42);   stroke-width: 1.2; }
+#twopir-healthcare .thc-pillbox  { fill: rgba(255,255,255,0.07);  stroke: rgba(0,175,246,0.34);   stroke-width: 1; }
+#twopir-healthcare .thc-out      { fill: rgba(53,211,154,0.05);   stroke: rgba(53,211,154,0.28);  stroke-width: 1; }
+#twopir-healthcare .thc-chip-r   { fill: rgba(255,255,255,0.05);  stroke: rgba(255,255,255,0.13); stroke-width: 1; }
+
+#twopir-healthcare .thc-t   { fill: rgba(255,255,255,0.95); font-size: 14px;   font-weight: 600; }
+#twopir-healthcare .thc-t2  { fill: rgba(255,255,255,0.95); font-size: 12.5px; font-weight: 600; }
+#twopir-healthcare .thc-s   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 400; }
+#twopir-healthcare .thc-h   { fill: rgba(255,255,255,0.5);  font-size: 12px;  font-weight: 500; letter-spacing: 0.16em; }
+#twopir-healthcare .thc-h--acc { fill: rgba(0,175,246,0.95); }
+#twopir-healthcare .thc-h--out { fill: rgba(53,211,154,0.9); }
+#twopir-healthcare .thc-mark      { fill: var(--thc-accent, #00aff6); }
+#twopir-healthcare .thc-mark--out { fill: var(--thc-green, #35d39a); }
+
+#twopir-healthcare .thc-link { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.2; }
+#twopir-healthcare .thc-flow {
+  fill: none;
+  stroke: var(--thc-accent, #00aff6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 5 14;
+  opacity: 0.9;
+  animation: thcFlow 2.2s linear infinite;
+}
+#twopir-healthcare .thc-flow--out { stroke: var(--thc-green, #35d39a); }
+#twopir-healthcare .thc-flow.d1 { animation-delay: 0s; }
+#twopir-healthcare .thc-flow.d2 { animation-delay: 0.28s; }
+#twopir-healthcare .thc-flow.d3 { animation-delay: 0.56s; }
+@keyframes thcFlow { to { stroke-dashoffset: -152; } }
+
+#twopir-healthcare .thc-hit rect { transition: fill 0.22s ease, stroke 0.22s ease; }
+#twopir-healthcare .thc-hit:hover rect.thc-node { fill: rgba(255,255,255,0.11); stroke: rgba(0,175,246,0.55); }
+#twopir-healthcare .thc-hit:hover rect.thc-out  { fill: rgba(53,211,154,0.11);  stroke: rgba(53,211,154,0.55); }
+
+#twopir-healthcare .thc-badge-ring { fill: none; stroke: var(--thc-accent, #00aff6); stroke-width: 1.6; stroke-linecap: round; opacity: 0.75; }
+#twopir-healthcare .thc-badge-face { fill: #151b3d; stroke: rgba(0,175,246,0.65); stroke-width: 1.4; }
+#twopir-healthcare .thc-badge-txt  { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif); letter-spacing: -0.01em; }
+#twopir-healthcare .thc-spin { transform-origin: 280px 158px; animation: thcSpin 26s linear infinite; }
+@keyframes thcSpin { to { transform: rotate(360deg); } }
+
+/* floating delivery card */
+#twopir-healthcare .thc-float {
+  position: absolute;
+  left: -20px;
+  bottom: -22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-md, 14px);
+  padding: 11px 15px;
+  box-shadow: 0 10px 30px rgba(0,110,175,0.16), 0 2px 8px rgba(0,110,175,0.10);
+}
+#twopir-healthcare .thc-float-ico {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--thc-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,175,246,0.35);
+  flex-shrink: 0;
+}
+#twopir-healthcare .thc-float-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-healthcare .thc-float-k {
+  display: block;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  margin-bottom: 2px;
+}
+#twopir-healthcare .thc-float-v {
+  display: block;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--thc-text, #1a2a35);
+  white-space: nowrap;
+}
+
+/* stacked map for small screens */
+#twopir-healthcare .thc-stack { display: none; }
+#twopir-healthcare .thc-layer {
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--thc-radius-md, 14px);
+  padding: 12px 13px 13px;
+}
+#twopir-healthcare .thc-layer--core { background: rgba(0,175,246,0.10);  border-color: rgba(0,175,246,0.42); }
+#twopir-healthcare .thc-layer--out  { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.30); }
+#twopir-healthcare .thc-layer-h {
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+}
+#twopir-healthcare .thc-layer--core .thc-layer-h { color: rgba(0,175,246,0.95); }
+#twopir-healthcare .thc-layer--out  .thc-layer-h { color: rgba(53,211,154,0.9); }
+#twopir-healthcare .thc-layer-t {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+  margin-bottom: 9px;
+}
+#twopir-healthcare .thc-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#twopir-healthcare .thc-chip {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+#twopir-healthcare .thc-layer--core .thc-chip { background: rgba(0,175,246,0.16);  border-color: rgba(0,175,246,0.42);  color: #fff; }
+#twopir-healthcare .thc-layer--out  .thc-chip { background: rgba(53,211,154,0.14); border-color: rgba(53,211,154,0.34); color: #fff; }
+#twopir-healthcare .thc-connector { height: 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+#twopir-healthcare .thc-connector::before {
+  content: ''; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(0,175,246,0.05), rgba(0,175,246,0.7), rgba(0,175,246,0.05));
+}
+#twopir-healthcare .thc-connector::after {
+  content: ''; position: absolute;
+  width: 6px; height: 6px;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg); border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2 · TRUST STRIP (client logos + credentials)
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-trust { padding: clamp(28px, 3vw, 40px) var(--thc-pad-x, clamp(16px, 4vw, 48px)); background: var(--thc-bg, #dff1fa); }
+#twopir-healthcare .thc-trust-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--thc-card, #eef8fd);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-card, 18px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(18px, 2.2vw, 26px) clamp(16px, 2.4vw, 30px);
+}
+#twopir-healthcare .thc-trust-lead {
+  text-align: center;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 400;
+  color: var(--thc-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-healthcare .thc-trust-lead strong { color: var(--thc-accent-ink, #00699f); font-weight: 700; }
+
+#twopir-healthcare .thc-marquee {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#twopir-healthcare .thc-marquee::before,
+#twopir-healthcare .thc-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; height: 100%; width: 56px;
+  z-index: 2; pointer-events: none;
+}
+#twopir-healthcare .thc-marquee::before { left: 0;  background: linear-gradient(to right, var(--thc-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-healthcare .thc-marquee::after  { right: 0; background: linear-gradient(to left,  var(--thc-card, #eef8fd), rgba(238,248,253,0)); }
+#twopir-healthcare .thc-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 52px;
+  animation: thcScroll 26s linear infinite;
+  will-change: transform;
+}
+#twopir-healthcare .thc-marquee:hover .thc-marquee-track { animation-play-state: paused; }
+#twopir-healthcare .thc-marquee-item { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#twopir-healthcare .thc-marquee-item img {
+  height: 38px; width: auto; max-width: 130px;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-marquee-item img:hover { opacity: 1; transform: scale(1.06); }
+@keyframes thcScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+#twopir-healthcare .thc-badges-label {
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  margin-bottom: 12px;
+}
+#twopir-healthcare .thc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#twopir-healthcare .thc-badge {
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--thc-muted, #566b79);
+  background: var(--thc-bg, #dff1fa);
+  border: 1px solid rgba(0,175,246,0.25);
+  border-radius: 6px;
+  padding: 4px 11px;
+  transition: background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-badge:hover { background: var(--thc-accent, #00aff6); color: #fff; border-color: var(--thc-accent, #00aff6); }
+
+/* ════════════════════════════════════════════════════════════
+   3 · PAIN GRID
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+#twopir-healthcare .thc-pain-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--thc-card, #eef8fd);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-left: 3px solid var(--thc-star, #e0961f);
+  border-radius: var(--thc-radius-card, 18px);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 26px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-pain-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--thc-surface, #ffffff);
+}
+#twopir-healthcare .thc-pain-ico {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(240,165,60,0.12);
+  border: 1px solid rgba(240,165,60,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+}
+#twopir-healthcare .thc-pain-item h3 {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--thc-text, #1a2a35);
+  margin-bottom: 7px;
+}
+#twopir-healthcare .thc-pain-item p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--thc-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4 · PHILOSOPHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-philosophy {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--thc-card, #eef8fd);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-lg, 22px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3.4vw, 48px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#twopir-healthcare .thc-philosophy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,175,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#twopir-healthcare .thc-philosophy > * { position: relative; }
+#twopir-healthcare .thc-philosophy p + p { margin-top: 16px; }
+#twopir-healthcare .thc-philosophy p {
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--thc-muted, #566b79);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+#twopir-healthcare .thc-philosophy p strong { color: var(--thc-text, #1a2a35); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   5 · SERVICES
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#twopir-healthcare .thc-svc-card {
+  background: var(--thc-card, #eef8fd);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.4vw, 28px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--thc-accent, #00aff6), var(--thc-accent-dk, #007ec6));
+  opacity: 0;
+  transition: opacity var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-svc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--thc-surface, #ffffff);
+}
+#twopir-healthcare .thc-svc-card:hover::after { opacity: 1; }
+#twopir-healthcare .thc-svc-ico {
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  border-radius: 12px;
+  background: var(--thc-accent, #00aff6);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.35);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+#twopir-healthcare .thc-svc-ico svg {
+  width: 24px; height: 24px;
+  fill: none; stroke: #fff;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+#twopir-healthcare .thc-svc-card h3 {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--thc-text, #1a2a35);
+  margin-bottom: 9px;
+}
+#twopir-healthcare .thc-svc-card > p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.72;
+  color: var(--thc-muted, #566b79);
+  margin-bottom: 16px;
+}
+#twopir-healthcare .thc-svc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  margin-top: auto;
+}
+/* Positioned ::before, NOT `display: grid` with the diamond as the first grid
+   item. Grid promotes EVERY child to its own cell, anonymous text nodes
+   included, so the moment a list item contains an inline element (<a>,
+   <strong>) the trailing text lands in the 14px bullet column and renders one
+   word per line. Legal.html still carries that defect. */
+#twopir-healthcare .thc-svc-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--thc-muted, #566b79);
+}
+#twopir-healthcare .thc-svc-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 6px; height: 6px;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · PROCESS
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+#twopir-healthcare .thc-step {
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-md, 14px);
+  padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.9vw, 22px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  position: relative;
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-healthcare .thc-step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  margin-bottom: 14px;
+}
+#twopir-healthcare .thc-step-num::after {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+#twopir-healthcare .thc-step h3 {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--thc-text, #1a2a35);
+  margin-bottom: 8px;
+}
+#twopir-healthcare .thc-step p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--thc-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 · INTEGRATIONS
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-int-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+#twopir-healthcare .thc-int-item {
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--thc-radius-md, 14px);
+  padding: 20px 18px;
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-int-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  border-color: rgba(0,175,246,0.5);
+}
+#twopir-healthcare .thc-int-ico {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--thc-bg, #dff1fa);
+  border: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  margin-bottom: 12px;
+}
+#twopir-healthcare .thc-int-name {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--thc-text, #1a2a35);
+  margin-bottom: 5px;
+  line-height: 1.35;
+}
+#twopir-healthcare .thc-int-desc {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--thc-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8 · PROOF (dark section)
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-proof-pair {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+#twopir-healthcare .thc-proof-pair + .thc-proof-pair { margin-top: 22px; }
+
+#twopir-healthcare .thc-quote-card,
+#twopir-healthcare .thc-cs-card {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--thc-radius-card, 18px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(20px, 2.6vw, 30px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#twopir-healthcare .thc-cs-card {
+  background: rgba(0,175,246,0.07);
+  border-color: rgba(0,175,246,0.34);
+}
+#twopir-healthcare .thc-cs-card--green { background: rgba(53,211,154,0.07); border-color: rgba(53,211,154,0.32); }
+
+#twopir-healthcare .thc-quote-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#twopir-healthcare .thc-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--thc-accent, #00aff6), var(--thc-accent-dk, #007ec6));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+#twopir-healthcare .thc-avatar--green { background: linear-gradient(135deg, var(--thc-green, #35d39a), #1a9c73); }
+#twopir-healthcare .thc-stars { color: #f5a623; font-size: 13px; letter-spacing: 3px; }
+
+#twopir-healthcare .thc-quote-text {
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(224,240,252,0.9);
+  border-left: 2px solid var(--thc-accent, #00aff6);
+  padding-left: 20px;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+#twopir-healthcare .thc-quote-text--green { border-left-color: var(--thc-green, #35d39a); }
+
+#twopir-healthcare .thc-quote-name {
+  display: block;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+#twopir-healthcare .thc-quote-role {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.5;
+}
+#twopir-healthcare .thc-mono-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  border: 1px solid rgba(0,175,246,0.38);
+  background: rgba(0,175,246,0.09);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+#twopir-healthcare .thc-mono-tag--green {
+  color: var(--thc-green, #35d39a);
+  border-color: rgba(53,211,154,0.4);
+  background: rgba(53,211,154,0.09);
+}
+#twopir-healthcare .thc-cs-card .thc-mono-tag { margin-top: 0; margin-bottom: 16px; align-self: flex-start; }
+
+#twopir-healthcare .thc-cs-company {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+#twopir-healthcare .thc-cs-title {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(184,214,242,0.8);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+#twopir-healthcare .thc-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+#twopir-healthcare .thc-cs-metric {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px;
+  padding: 13px 10px;
+  text-align: center;
+}
+#twopir-healthcare .thc-cs-val {
+  display: block;
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--thc-accent, #00aff6);
+  margin-bottom: 6px;
+}
+#twopir-healthcare .thc-cs-val--green { color: var(--thc-green, #35d39a); }
+#twopir-healthcare .thc-cs-lbl {
+  display: block;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180,212,240,0.72);
+  line-height: 1.45;
+}
+#twopir-healthcare .thc-cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--thc-ff-body, 'Inter', sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--thc-accent, #00aff6);
+  border-radius: 100px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 14px rgba(0,175,246,0.32);
+  transition: background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), transform 0.18s ease, box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-cs-link:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,175,246,0.4); }
+#twopir-healthcare .thc-cs-link--green { background: #1a9c73; box-shadow: 0 4px 14px rgba(53,211,154,0.28); }
+#twopir-healthcare .thc-cs-link--green:hover { background: var(--thc-green, #35d39a); box-shadow: 0 8px 22px rgba(53,211,154,0.36); }
+#twopir-healthcare .thc-cs-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ════════════════════════════════════════════════════════════
+   9 · WHY
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+}
+#twopir-healthcare .thc-why-list { display: flex; flex-direction: column; gap: 12px; }
+#twopir-healthcare .thc-why-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--thc-card, #eef8fd);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-md, 14px);
+  padding: 18px 20px;
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-why-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+  background: var(--thc-surface, #ffffff);
+}
+#twopir-healthcare .thc-why-num {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(0,175,246,0.10);
+  border: 1px solid rgba(0,175,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--thc-accent, #00aff6);
+}
+#twopir-healthcare .thc-why-item h3 {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--thc-text, #1a2a35);
+  margin-bottom: 5px;
+}
+#twopir-healthcare .thc-why-item p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--thc-muted, #566b79);
+}
+
+#twopir-healthcare .thc-callout {
+  position: sticky;
+  top: 28px;
+  background:
+    radial-gradient(560px 240px at 50% -14%, rgba(0,175,246,0.22) 0%, rgba(0,175,246,0) 68%),
+    linear-gradient(158deg, var(--thc-navy, #1e2447) 0%, var(--thc-navy-deep, #12183a) 58%, var(--thc-navy-soft, #1a2e4a) 100%);
+  border-radius: var(--thc-radius-lg, 22px);
+  padding: clamp(24px, 3vw, 34px);
+  box-shadow: var(--thc-shadow-dark, 0 8px 40px rgba(18,24,58,0.20), 0 2px 10px rgba(18,24,58,0.10));
+  position: relative;
+  overflow: hidden;
+}
+#twopir-healthcare .thc-callout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--thc-radius-lg, 22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+#twopir-healthcare .thc-callout-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--thc-accent, #00aff6);
+  margin-bottom: 16px;
+}
+#twopir-healthcare .thc-callout-text {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+#twopir-healthcare .thc-callout-author {
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(184,214,242,0.78);
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-healthcare .thc-callout-author strong { color: var(--thc-accent, #00aff6); font-weight: 600; }
+#twopir-healthcare .thc-engage {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+}
+#twopir-healthcare .thc-engage li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(232,244,253,0.9);
+}
+#twopir-healthcare .thc-engage li::before {
+  content: '';
+  width: 6px; height: 6px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--thc-accent, #00aff6);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+#twopir-healthcare .thc-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+#twopir-healthcare .thc-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+#twopir-healthcare .thc-fact b {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--thc-accent, #00aff6);
+}
+/* homepage stat hooks — keep inline so injected values don't break layout */
+#twopir-healthcare .twopir-years,
+#twopir-healthcare .twopir-clients,
+#twopir-healthcare .twopir-countries,
+#twopir-healthcare .twopir-salesforce,
+#twopir-healthcare .twopir-hubspot,
+#twopir-healthcare .twopir-ai { display: inline; }
+
+/* ════════════════════════════════════════════════════════════
+   10 · FAQ (accordion — same behaviour as the homepage FAQ)
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-faq-list {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#twopir-healthcare .thc-faq-row {
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  border-radius: var(--thc-radius-md, 14px);
+  overflow: hidden;
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)), box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-faq-row.is-open {
+  border-color: rgba(0,175,246,0.5);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-healthcare .thc-faq-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  text-align: left;
+  /* Matched to the homepage's .twh-faq-btn. The question is a HEADING, so it
+     takes the display face at 700 — not the body face at 600. The h4 size
+     step was already correct; the family and weight were not, which is why
+     the two FAQ sections looked different despite passing the type check. */
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 28px);
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--thc-text, #1a2a35);
+  transition: color 150ms ease;
+}
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-btn { color: var(--thc-accent, #00aff6); }
+#twopir-healthcare .thc-faq-btn:focus-visible { outline: 2px solid var(--thc-accent, #00aff6); outline-offset: -3px; }
+#twopir-healthcare .thc-faq-ico {
+  width: 22px; height: 22px;
+  min-width: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--thc-border, rgba(0,175,246,0.28));
+  background: rgba(0,175,246,0.07);
+  color: var(--thc-accent-ink, #00699f);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              border-color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-faq-ico svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; fill: none;
+}
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-ico {
+  transform: rotate(180deg);
+  background: var(--thc-accent, #00aff6);
+  border-color: var(--thc-accent, #00aff6);
+  color: #fff;
+}
+/* plus becomes a minus — the homepage's open affordance, rather than
+   rotating the plus into an x */
+#twopir-healthcare .thc-faq-ico .thc-faq-v {
+  transform-origin: center;
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              opacity var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-ico .thc-faq-v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+#twopir-healthcare .thc-faq-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(.4,0,.2,1);
+}
+#twopir-healthcare .thc-faq-panel-inner {
+  padding: 0 clamp(18px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
+}
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-panel-inner { border-top: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22)); }
+
+/* Inline citation link to an external authority source. Inherits font
+   size, weight and line-height from its parent, so it never changes
+   type scale or layout — only colour + underline mark it as a link. */
+#twopir-healthcare .thc-src {
+  color: var(--thc-accent-ink, #00699f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-src:hover,
+#twopir-healthcare .thc-src:focus-visible { color: var(--thc-accent, #00aff6); }
+#twopir-healthcare .thc-faq-panel-inner p {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--thc-muted, #566b79);
+  padding-top: 15px;
+  text-wrap: pretty;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11 · CTA (dark close, mirrors the homepage stats strip)
+   ════════════════════════════════════════════════════════════ */
+#twopir-healthcare .thc-cta { text-align: center; }
+#twopir-healthcare .thc-cta-inner { max-width: 1100px; margin: 0 auto; }
+#twopir-healthcare .thc-cta .thc-eyebrow { color: var(--thc-accent, #00aff6); }
+#twopir-healthcare .thc-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+#twopir-healthcare .thc-cta-note {
+  font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,214,242,0.7);
+  margin-top: 22px;
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────
+   Progressive enhancement (2026-08 SEO/CWV patch).
+
+   Previously every .thc-fade started at opacity:0 and only became
+   visible once the reveal script added .thc-in. That meant a crawler
+   which does not execute JavaScript — most AI answer engines and some
+   SEO tools — saw the whole page, H1 included, at opacity:0, and real
+   users waited on script execution before anything painted.
+
+   Now:
+   • Default state is VISIBLE. No JS, no CSS → the page still reads.
+   • The hidden start state applies only under .thc-js, which the
+     inline flag script sets on #twopir-healthcare before first paint, so
+     JS users see exactly the same animation as before.
+   • The hero is above the fold, so it uses a CSS keyframe entrance
+     instead of the observer. Its H1 (the LCP element) starts painting
+     on the first frame rather than after the 120KB document has been
+     parsed and the end-of-body script has run.
+   Timing, easing, distance and stagger are unchanged throughout.    */
+#twopir-healthcare .thc-fade {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Below-the-fold content: hidden only when JS is there to reveal it */
+#twopir-healthcare.thc-js .thc-fade {
+  opacity: 0;
+  transform: translateY(18px);
+}
+#twopir-healthcare .thc-fade.thc-in,
+#twopir-healthcare.thc-js .thc-fade.thc-in { opacity: 1; transform: none; }
+
+/* Above-the-fold hero: CSS-only entrance, never gated on JS */
+#twopir-healthcare .thc-hero .thc-fade,
+#twopir-healthcare.thc-js .thc-hero .thc-fade {
+  opacity: 1;
+  transform: none;
+  /* Longhands, not the animation shorthand: the shorthand resets
+     animation-delay to 0s, and this rule outranks the .thc-d1..d5
+     stagger classes - which silently flattened the hero stagger. */
+  animation-name: thcFadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+@keyframes thcFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Delays drive the transition below the fold and the animation in the
+   hero, so both properties are set on the same stagger classes. */
+#twopir-healthcare .thc-d1 { transition-delay: 0.07s; animation-delay: 0.07s; }
+#twopir-healthcare .thc-d2 { transition-delay: 0.15s; animation-delay: 0.15s; }
+#twopir-healthcare .thc-d3 { transition-delay: 0.23s; animation-delay: 0.23s; }
+#twopir-healthcare .thc-d4 { transition-delay: 0.31s; animation-delay: 0.31s; }
+#twopir-healthcare .thc-d5 { transition-delay: 0.18s; animation-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #twopir-healthcare .thc-fade,
+  #twopir-healthcare.thc-js .thc-fade,
+  #twopir-healthcare .thc-hero .thc-fade,
+  #twopir-healthcare.thc-js .thc-hero .thc-fade { opacity: 1; transform: none; transition: none; animation: none; }
+  #twopir-healthcare .thc-flow { animation: none; stroke-dasharray: none; opacity: 0.5; }
+  #twopir-healthcare .thc-dot,
+  #twopir-healthcare .thc-live,
+  #twopir-healthcare .thc-spin,
+  #twopir-healthcare .thc-marquee-track { animation: none; }
+  #twopir-healthcare .thc-faq-panel { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  #twopir-healthcare .thc-float      { display: none; }
+  #twopir-healthcare .thc-process    { grid-template-columns: repeat(3, 1fr); }
+  #twopir-healthcare .thc-pain-grid  { grid-template-columns: repeat(2, 1fr); }
+  #twopir-healthcare .thc-svc-grid   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-healthcare .thc-int-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 960px) {
+  #twopir-healthcare .thc-why-grid  { grid-template-columns: 1fr; }
+  #twopir-healthcare .thc-callout   { position: static; }
+  #twopir-healthcare .thc-proof-pair{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  #twopir-healthcare .thc-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(26px, 4vw, 36px);
+  }
+  #twopir-healthcare .thc-hero-copy { max-width: 700px; margin: 0 auto; text-align: center; }
+  #twopir-healthcare .thc-hero-sub  { max-width: 620px; margin-left: auto; margin-right: auto; }
+  #twopir-healthcare .thc-hero-rule,
+  #twopir-healthcare .thc-hero-cta,
+  #twopir-healthcare .thc-hero-proof { justify-content: center; }
+  #twopir-healthcare .thc-canvas { max-width: 560px; }
+  #twopir-healthcare .thc-map    { max-height: none; }
+}
+
+@media (max-width: 760px) {
+  #twopir-healthcare .thc-process   { grid-template-columns: repeat(2, 1fr); }
+  #twopir-healthcare .thc-int-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  #twopir-healthcare .thc-map   { display: none; }
+  #twopir-healthcare .thc-stack { display: block; }
+  #twopir-healthcare .thc-canvas { border-radius: var(--thc-radius-md, 14px); }
+  #twopir-healthcare .thc-hero-title { letter-spacing: -0.02em; line-height: 1.13; }
+  #twopir-healthcare .thc-hero-cta,
+  #twopir-healthcare .thc-cta-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  #twopir-healthcare .thc-hero-cta .thc-btn,
+  #twopir-healthcare .thc-cta-actions .thc-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    white-space: normal;
+  }
+  #twopir-healthcare .thc-pain-grid,
+  #twopir-healthcare .thc-svc-grid,
+  #twopir-healthcare .thc-process { grid-template-columns: 1fr; }
+  #twopir-healthcare .thc-cs-metrics { gap: 8px; }
+  #twopir-healthcare .thc-quote-text { padding-left: 16px; }
+  #twopir-healthcare .thc-marquee::before,
+  #twopir-healthcare .thc-marquee::after { width: 34px; }
+  #twopir-healthcare .thc-marquee-track { gap: 34px; }
+  #twopir-healthcare .thc-marquee-item img { height: 30px; max-width: 100px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-healthcare .thc-pill { font-size: 9.5px; letter-spacing: 0.14em; padding: 6px 13px; }
+  #twopir-healthcare .thc-hero-sub { font-size: 14.5px; line-height: 1.7; }
+  #twopir-healthcare .thc-hero-proof { gap: 6px 11px; }
+  #twopir-healthcare .thc-hero-proof li { font-size: 9.5px; letter-spacing: 0.08em; }
+  #twopir-healthcare .thc-hero-proof li + li::before { margin-right: 5px; }
+  #twopir-healthcare .thc-canvas-bar .thc-tag { display: none; }
+  #twopir-healthcare .thc-int-grid  { grid-template-columns: 1fr; }
+  #twopir-healthcare .thc-cs-metrics { grid-template-columns: 1fr; }
+  #twopir-healthcare .thc-pain-item,
+  #twopir-healthcare .thc-why-item { gap: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE SCALE — CONSISTENCY PASS WITH THE HOMEPAGE
+   ════════════════════════════════════════════════════════════
+   Design untouched — every component, colour, layout and section
+   above stays exactly as built. This block only remaps font sizes
+   and line-heights onto the homepage's fluid type scale, loaded
+   last (the same way homepage.html loads its own type pass) so no
+   earlier rule and no theme rule can re-impose a different size.
+
+   The homepage scale, verbatim:
+
+     display  hero headline          clamp(30px, 4vw, 46px)
+     h2       section titles        clamp(26px, 3vw, 38px) / 1.16
+     h3       card / panel titles   clamp(17px, 1.5vw, 19px) / 1.3
+     h4       dense titles, FAQ     clamp(15px, 1.25vw, 16px)
+     lede     section intros        clamp(15px, 1.2vw, 17px) / 1.7
+     body     paragraph copy        clamp(14px, 1.05vw, 15px) / 1.65
+     sm / xs  dense copy, meta      13px / 12px
+     label    mono uppercase        11px  ← the page-wide floor
+     eyebrow  section eyebrows      clamp(11px, 0.9vw, 12px) / 0.2em
+     stat-sm  smaller numbers       clamp(20px, 1.9vw, 24px)
+
+   Two deliberate fixes folded in:
+     · the hero H1 was clamp(1.85rem, 3.05vw, 3rem) — rem against
+       whatever root size the active theme sets. It is now the
+       homepage's px-based display clamp, so it renders identically
+       on any theme.
+     · nothing outside the navy hero panel sits below 11px anymore
+       (9/9.5/10px labels are lifted to the 11px label floor). The
+       10px mono labels INSIDE the hero panel stay at 10px because
+       the homepage hero itself uses 10px for those same roles
+       (canvas label, tag, float card).                          */
+
+
+/* ── display · hero ──────────────────────────────────────────── */
+#twopir-healthcare .thc-hero-title { font-size: var(--thc-fs-display, clamp(34px, 4.5vw, 56px)); line-height: 1.09; }
+/* homepage hero lede runs 1.62, tighter than the 1.7 body ledes */
+#twopir-healthcare .thc-hero-sub   { font-size: var(--thc-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.62; }
+#twopir-healthcare .thc-pill       { font-size: var(--thc-fs-label, 12px); letter-spacing: 0.1em; }
+/* hero stat row — homepage's exact pairing: 11px mono label,
+   13px display number */
+#twopir-healthcare .thc-hero-proof li { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-hero-proof b  { font-size: var(--thc-fs-sm, 14px); }
+
+/* hero navy panel internals — matched to the homepage hero's own
+   values (10px canvas label / tag / float key, 11px float value) */
+#twopir-healthcare .thc-tag     { font-size: 10px; }
+#twopir-healthcare .thc-layer-h { font-size: 10px; }
+/* the float card sits on white, outside the navy panel, so it takes the
+   11px label floor rather than the panel's 10px */
+#twopir-healthcare .thc-float-k { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-float-v { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-chip    { font-size: var(--thc-fs-label, 12px); }
+
+/* ── h2 · section titles ─────────────────────────────────────── */
+#twopir-healthcare .thc-title { font-size: var(--thc-fs-h2, clamp(30px, 3.4vw, 44px)); line-height: 1.16; }
+
+/* ── eyebrows — homepage tracking is 0.2em ───────────────────── */
+#twopir-healthcare .thc-eyebrow { font-size: var(--thc-fs-eyebrow, clamp(13px, 1vw, 14px)); letter-spacing: 0.2em; }
+
+/* ── lede · section intros and long-form copy ────────────────── */
+#twopir-healthcare .thc-lede         { font-size: var(--thc-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+#twopir-healthcare .thc-philosophy p { font-size: var(--thc-fs-lede, clamp(17px, 1.4vw, 19px)); line-height: 1.7; }
+
+/* ── buttons — homepage buttons are 13px ─────────────────────── */
+#twopir-healthcare .thc-btn     { font-size: var(--thc-fs-sm, 14px); }
+#twopir-healthcare .thc-cs-link { font-size: var(--thc-fs-sm, 14px); }
+
+/* ── trust strip ─────────────────────────────────────────────── */
+#twopir-healthcare .thc-trust-lead { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); }
+#twopir-healthcare .thc-badge      { font-size: var(--thc-fs-xs, 13px); }
+
+/* ── card titles · h4 role (dense cards keep their designed
+      family and case — only the size snaps to the scale) ─────── */
+#twopir-healthcare .thc-pain-item h3 { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-healthcare .thc-svc-card h3  { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-healthcare .thc-step h3      { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-healthcare .thc-int-name     { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-healthcare .thc-why-item h3  { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-healthcare .thc-cs-company   { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.3; }
+#twopir-healthcare .thc-avatar       { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); }
+#twopir-healthcare .thc-faq-btn      { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.4; }
+#twopir-healthcare .thc-callout-text { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)); line-height: 1.6; }
+
+/* ── body · primary card copy ────────────────────────────────── */
+#twopir-healthcare .thc-pain-item p       { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-healthcare .thc-svc-card > p      { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-healthcare .thc-why-item p        { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-healthcare .thc-faq-panel-inner p { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.65; }
+#twopir-healthcare .thc-quote-text        { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)); line-height: 1.7; }
+
+/* ── sm · dense lists, meta, secondary copy ──────────────────── */
+#twopir-healthcare .thc-svc-list li    { font-size: var(--thc-fs-sm, 14px); }
+#twopir-healthcare .thc-step p         { font-size: var(--thc-fs-sm, 14px); line-height: 1.6; }
+#twopir-healthcare .thc-int-desc       { font-size: var(--thc-fs-sm, 14px); line-height: 1.6; }
+#twopir-healthcare .thc-engage li      { font-size: var(--thc-fs-sm, 14px); }
+#twopir-healthcare .thc-callout-author { font-size: var(--thc-fs-sm, 14px); line-height: 1.65; }
+#twopir-healthcare .thc-quote-name     { font-size: var(--thc-fs-sm, 14px); }
+#twopir-healthcare .thc-cs-title       { font-size: var(--thc-fs-sm, 14px); line-height: 1.55; }
+#twopir-healthcare .thc-fact b         { font-size: var(--thc-fs-sm, 14px); }
+#twopir-healthcare .thc-stars          { font-size: var(--thc-fs-sm, 14px); }
+
+/* ── xs ──────────────────────────────────────────────────────── */
+#twopir-healthcare .thc-quote-role { font-size: var(--thc-fs-xs, 13px); }
+
+/* ── label · 11px mono floor (was 9–10px) ────────────────────── */
+#twopir-healthcare .thc-step-num  { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-mono-tag  { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-cs-lbl    { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-why-num   { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-callout-k { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-fact      { font-size: var(--thc-fs-label, 12px); }
+#twopir-healthcare .thc-cta-note  { font-size: var(--thc-fs-label, 12px); }
+
+/* ── stat numbers · case-study metrics ───────────────────────── */
+#twopir-healthcare .thc-cs-val { font-size: var(--thc-fs-stat-sm, clamp(22px, 2vw, 26px)); }
+
+/* ── Small screens — same values as the homepage's own
+      small-screen type block. This pass loads after the page's
+      620px/420px blocks, so mobile type is owned here. ────────── */
+@media (max-width: 620px) {
+  #twopir-healthcare .thc-hero-title { font-size: 30px; line-height: 1.18; }
+  #twopir-healthcare .thc-hero-sub   { font-size: 16px; line-height: 1.65; }
+  #twopir-healthcare .thc-title      { font-size: 26px; line-height: 1.2; }
+
+  #twopir-healthcare .thc-lede,
+  #twopir-healthcare .thc-philosophy p { font-size: 16px; line-height: 1.65; }
+
+  #twopir-healthcare .thc-pain-item p,
+  #twopir-healthcare .thc-svc-card > p,
+  #twopir-healthcare .thc-why-item p,
+  #twopir-healthcare .thc-quote-text,
+  #twopir-healthcare .thc-faq-panel-inner p { font-size: 15px; }
+
+  #twopir-healthcare .thc-faq-btn { font-size: 16px; }
+
+  #twopir-healthcare .thc-pain-item h3,
+  #twopir-healthcare .thc-svc-card h3,
+  #twopir-healthcare .thc-step h3,
+  #twopir-healthcare .thc-int-name,
+  #twopir-healthcare .thc-why-item h3,
+  #twopir-healthcare .thc-cs-company { font-size: 16px; }
+
+  #twopir-healthcare .thc-svc-list li,
+  #twopir-healthcare .thc-step p,
+  #twopir-healthcare .thc-int-desc,
+  #twopir-healthcare .thc-engage li,
+  #twopir-healthcare .thc-callout-author { font-size: 14px; }
+
+  #twopir-healthcare .thc-btn,
+  #twopir-healthcare .thc-cs-link { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  #twopir-healthcare .thc-pill { font-size: 11px; letter-spacing: 0.14em; padding: 6px 13px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   OPERATIONAL OUTCOMES  ·  stat grid
+   ════════════════════════════════════════════════════════════
+   Legal has no equivalent section. This is where --thc-fs-stat
+   earns its place: Legal declares that display-sized step and
+   never uses it, which is why the token reads as an orphan on
+   that page. Here the value IS the content, so it takes the
+   display step and the label sits under it at the small step. */
+#twopir-healthcare .thc-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-healthcare .thc-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.2vw, 24px);
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  border-radius: var(--thc-radius-card, 18px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-healthcare .thc-metric-val {
+  display: block;
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--thc-fs-stat, clamp(32px, 3.6vw, 48px));
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: linear-gradient(100deg, var(--thc-accent, #00aff6) 0%, var(--thc-accent-dk, #007ec6) 92%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#twopir-healthcare .thc-metric-lbl {
+  font-size: var(--thc-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--thc-muted, #566b79);
+}
+
+/* ════════════════════════════════════════════════════════════
+   WHO WE WORK WITH
+   ════════════════════════════════════════════════════════════
+   Same card idiom as the services grid at a lighter weight —
+   these qualify the audience, they are not offerings. */
+#twopir-healthcare .thc-who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+#twopir-healthcare .thc-who-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 2.1vw, 24px);
+  background: var(--thc-surface, #ffffff);
+  border: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  border-top: 3px solid var(--thc-accent, #00aff6);
+  border-radius: var(--thc-radius-md, 14px);
+  box-shadow: var(--thc-shadow, 0 2px 16px rgba(0,130,200,0.10), 0 1px 4px rgba(0,130,200,0.08));
+  transition: transform var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1)),
+              box-shadow var(--thc-ease, 0.28s cubic-bezier(.4,0,.2,1));
+}
+#twopir-healthcare .thc-who-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--thc-shadow-hv, 0 8px 32px rgba(0,130,200,0.18), 0 2px 8px rgba(0,130,200,0.12));
+}
+#twopir-healthcare .thc-who-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--thc-radius-md, 14px);
+  background: var(--thc-bg-alt, #e8f5fd);
+  border: 1px solid var(--thc-border-soft, rgba(0,175,246,0.22));
+  font-size: 19px;
+  line-height: 1;
+}
+#twopir-healthcare .thc-who-card h3 {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif);
+  font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--thc-text, #1a2a35);
+}
+#twopir-healthcare .thc-who-card p {
+  font-size: var(--thc-fs-sm, 14px);
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--thc-muted, #566b79);
+}
+
+/* ── Hero metric row: a 2x2 grid, not Legal's inline chip row ──
+   Legal's metrics are three or four words and flow as chips. This page's are
+   full qualified sentences ("60% Reduction in manual administrative tasks
+   across intake and onboarding") because the qualifier is what scopes the
+   claim. Wrapped inside an inline row those break the baseline. */
+#twopir-healthcare .thc-hero-proof {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(14px, 2vw, 26px);
+  align-items: start;
+}
+#twopir-healthcare .thc-hero-proof li { display: block; }
+#twopir-healthcare .thc-hero-proof b  { display: block; margin-bottom: 3px; }
+/* No inline diamond separator: the cells are grid rows now, and the glyph
+   would just prefix three of the four. */
+#twopir-healthcare .thc-hero-proof li + li::before { content: none; }
+
+/* The pair stretches both cards to the taller one, and this page's
+   case-study cards run tall, so the quote card fills its cell deliberately
+   instead of leaving a hole under the attribution. */
+#twopir-healthcare .thc-quote-card { display: flex; flex-direction: column; }
+#twopir-healthcare .thc-quote-card > div:last-child { margin-top: auto; }
+
+@media (max-width: 960px) {
+  #twopir-healthcare .thc-metric-grid,
+  #twopir-healthcare .thc-who-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  #twopir-healthcare .thc-metric-grid,
+  #twopir-healthcare .thc-who-grid { grid-template-columns: 1fr; }
+  #twopir-healthcare .thc-hero-proof { grid-template-columns: 1fr; gap: 8px; }
+  #twopir-healthcare .thc-who-card h3 { font-size: 16px; }
+  #twopir-healthcare .thc-who-card p,
+  #twopir-healthcare .thc-metric-lbl { font-size: 14px; }
+}
+
+</style>
+
+
+<div id="twopir-healthcare">
+<script>document.getElementById('twopir-healthcare').className += ' thc-js';</script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1 · HERO
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-hero" aria-labelledby="thc-hero-title">
+    <div class="thc-hero-grid" aria-hidden="true"></div>
+
+    <div class="thc-hero-inner">
+
+      <div class="thc-hero-copy">
+
+        <span class="thc-pill thc-fade">
+          <span class="thc-dot" aria-hidden="true"></span>
+          Salesforce for Healthcare
+        </span>
+
+        <h1 class="thc-hero-title thc-fade thc-d1" id="thc-hero-title">
+          When Patient Operations Break, <em>Growth Stalls.</em> We Build the Infrastructure That Fixes It.
+        </h1>
+
+        <div class="thc-hero-rule thc-fade thc-d1" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line thc-rule-line--sm"></span>
+        </div>
+
+        <p class="thc-hero-sub thc-fade thc-d2">
+          Most healthcare organizations don't have a patient demand problem — they have a systems
+          problem. Inquiries sit unanswered, intake drags on, referrals get lost, scheduling creates
+          bottlenecks, and leadership is flying blind without reliable operational data. Twopir
+          Consulting designs and builds Salesforce-based infrastructure that closes those gaps and
+          gives your organization a cleaner path to scalable, patient-centered growth.
+        </p>
+
+        <div class="thc-hero-cta thc-fade thc-d3">
+          <a class="thc-btn thc-btn--primary" href="#thc-cta"
+             aria-label="Talk to a healthcare systems expert at Twopir Consulting">
+            Talk to a Healthcare Systems Expert
+            <svg class="thc-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+
+          <a class="thc-btn thc-btn--ghost" href="#thc-proof"
+             aria-label="See what we build for healthcare organizations">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/>
+            </svg>
+            See What We Build
+          </a>
+        </div>
+
+        <ul class="thc-hero-proof thc-fade thc-d4">
+          <li><b>3×</b> Faster response to new patient inquiries with automated routing</li>
+          <li><b>60%</b> Reduction in manual administrative tasks across intake and onboarding</li>
+          <li><b>40%</b> Improvement in referral-to-scheduled-appointment conversion rates</li>
+          <li><b>100%</b> Operating visibility for leadership — one connected view of growth and performance</li>
+        </ul>
+
+      </div>
+
+      <!-- Right: healthcare operating architecture panel -->
+      <div class="thc-visual thc-fade thc-d5">
+        <figure class="thc-canvas" aria-labelledby="thc-canvas-label">
+
+          <div class="thc-canvas-bar">
+            <span class="thc-canvas-label" id="thc-canvas-label">
+              <span class="thc-live" aria-hidden="true"></span>
+              Healthcare Operating Model
+            </span>
+            <span class="thc-tag" aria-hidden="true">Twopir · 2πr</span>
+          </div>
+
+          <svg class="thc-map" viewBox="0 0 560 548" preserveAspectRatio="xMidYMid meet"
+               role="img"
+               aria-label="Twopir healthcare operating model. Systems of record — Salesforce Health Cloud and the Epic or Cerner EHR, plus scheduling platforms, digital intake tools, and billing and RCM systems — feed the Twopir healthcare architecture layer, made up of intake and registration, referral and scheduling, and billing and reporting. That layer produces operational outcomes: faster response, connected care teams, and leadership visibility.">
+
+            <!-- ── Layer 1: systems of record ── -->
+            <text class="m thc-h" x="12" y="14">SYSTEMS OF RECORD</text>
+            <line x1="150" y1="10.5" x2="548" y2="10.5" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+            <rect class="thc-layerbox" x="12" y="22" width="536" height="108" rx="14"/>
+
+            <g class="thc-hit">
+              <rect class="thc-node" x="22" y="32" width="248" height="56" rx="11"/>
+              <circle class="thc-mark" cx="40" cy="60" r="3.5"/>
+              <text class="thc-t" x="54" y="56">Salesforce Health Cloud</text>
+              <text class="thc-s" x="54" y="73">Patients · Referrals · Intake · Reporting</text>
+            </g>
+            <g class="thc-hit">
+              <rect class="thc-node" x="290" y="32" width="248" height="56" rx="11"/>
+              <circle class="thc-mark" cx="308" cy="60" r="3.5"/>
+              <text class="thc-t" x="322" y="56">Epic · Cerner EHR</text>
+              <text class="thc-s" x="322" y="73">Clinical records · HL7 FHIR</text>
+            </g>
+
+            <rect class="thc-chip-r" x="22"  y="96" width="164" height="24" rx="7"/>
+            <text class="thc-s" x="104" y="111" text-anchor="middle">Scheduling Platforms</text>
+            <rect class="thc-chip-r" x="198" y="96" width="164" height="24" rx="7"/>
+            <text class="thc-s" x="280" y="111" text-anchor="middle">Digital Intake</text>
+            <rect class="thc-chip-r" x="374" y="96" width="164" height="24" rx="7"/>
+            <text class="thc-s" x="456" y="111" text-anchor="middle">Billing &amp; RCM</text>
+
+            <!-- ── Flows into the architecture layer ── -->
+            <path class="thc-link" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="thc-link" d="M280,130 L280,137"/>
+            <path class="thc-link" d="M456,130 C456,146 376,142 298,148"/>
+            <path class="thc-flow d1" d="M104,130 C104,146 184,142 262,148"/>
+            <path class="thc-flow d2" d="M280,130 L280,137"/>
+            <path class="thc-flow d3" d="M456,130 C456,146 376,142 298,148"/>
+
+            <!-- ── Layer 2: Twopir healthcare architecture layer ── -->
+            <rect class="thc-core" x="12" y="158" width="536" height="196" rx="16"/>
+
+            <text class="m thc-h thc-h--acc" x="280" y="200" text-anchor="middle">TWOPIR HEALTHCARE ARCHITECTURE LAYER</text>
+            <line x1="52" y1="210" x2="508" y2="210" stroke="rgba(0,175,246,0.28)" stroke-width="1"/>
+
+            <rect class="thc-pillbox" x="22" y="222" width="164" height="84" rx="11"/>
+            <text class="thc-t2" x="104" y="248" text-anchor="middle">Intake &amp; Registration</text>
+            <text class="thc-s"  x="104" y="266" text-anchor="middle">Digital forms · Consent</text>
+            <text class="thc-s"  x="104" y="279" text-anchor="middle">Eligibility checks</text>
+
+            <rect class="thc-pillbox" x="198" y="222" width="164" height="84" rx="11"/>
+            <text class="thc-t2" x="280" y="248" text-anchor="middle">Referral &amp; Scheduling</text>
+            <text class="thc-s"  x="280" y="266" text-anchor="middle">Routing · Reminders</text>
+            <text class="thc-s"  x="280" y="279" text-anchor="middle">Care coordination</text>
+
+            <rect class="thc-pillbox" x="374" y="222" width="164" height="84" rx="11"/>
+            <text class="thc-t2" x="456" y="248" text-anchor="middle">Billing &amp; Reporting</text>
+            <text class="thc-s"  x="456" y="266" text-anchor="middle">Claims · Balances</text>
+            <text class="thc-s"  x="456" y="279" text-anchor="middle">Operating dashboards</text>
+
+            <text class="m thc-h" x="280" y="332" text-anchor="middle" style="font-size:9px">ONE PATIENT RECORD · BUILT FOR MULTI-SITE SCALE</text>
+
+            <!-- 2πr mark — where every healthcare system converges -->
+            <g class="thc-spin" aria-hidden="true">
+              <path class="thc-badge-ring" d="M280,131 A27,27 0 0 1 306,151"/>
+              <path class="thc-badge-ring" d="M280,185 A27,27 0 0 1 254,165"/>
+            </g>
+            <circle class="thc-badge-face" cx="280" cy="158" r="21"/>
+            <text class="thc-badge-txt" x="280" y="163" text-anchor="middle">2πr</text>
+
+            <!-- ── Flow into outcomes ── -->
+            <path class="thc-link" d="M280,354 L280,378"/>
+            <path class="thc-flow thc-flow--out d1" d="M280,354 L280,378"/>
+            <polyline points="273,372 280,379 287,372" fill="none" stroke="rgba(53,211,154,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- ── Layer 3: operational outcomes ── -->
+            <rect class="thc-layerbox" x="12" y="384" width="536" height="150" rx="14"/>
+            <text class="m thc-h thc-h--out" x="28" y="410">OPERATIONAL OUTCOMES</text>
+            <line x1="196" y1="406.5" x2="532" y2="406.5" stroke="rgba(53,211,154,0.22)" stroke-width="1"/>
+
+            <g class="thc-hit">
+              <rect class="thc-out" x="22" y="422" width="164" height="76" rx="11"/>
+              <circle class="thc-mark--out" cx="38" cy="441" r="3.5"/>
+              <text class="thc-t2" x="50" y="445">Faster Response</text>
+              <text class="thc-s"  x="36" y="463">Inquiries answered,</text>
+              <text class="thc-s"  x="36" y="476">not left in an inbox</text>
+            </g>
+            <g class="thc-hit">
+              <rect class="thc-out" x="198" y="422" width="164" height="76" rx="11"/>
+              <circle class="thc-mark--out" cx="214" cy="441" r="3.5"/>
+              <text class="thc-t2" x="226" y="445">Connected Teams</text>
+              <text class="thc-s"  x="212" y="463">Front office, clinical</text>
+              <text class="thc-s"  x="212" y="476">and billing in one view</text>
+            </g>
+            <g class="thc-hit">
+              <rect class="thc-out" x="374" y="422" width="164" height="76" rx="11"/>
+              <circle class="thc-mark--out" cx="390" cy="441" r="3.5"/>
+              <text class="thc-t2" x="402" y="445">Leadership Visibility</text>
+              <text class="thc-s"  x="388" y="463">Live patient flow and</text>
+              <text class="thc-s"  x="388" y="476">referral performance</text>
+            </g>
+
+            <text class="m thc-h" x="280" y="520" text-anchor="middle" style="font-size:9px">INQUIRY · INTAKE · SCHEDULING · CARE · REPORTING</text>
+          </svg>
+
+          <!-- Small screens: same model, stacked and fully legible -->
+          <div class="thc-stack" aria-hidden="true">
+            <div class="thc-layer">
+              <div class="thc-layer-h">Layer 01</div>
+              <div class="thc-layer-t">Systems of Record</div>
+              <div class="thc-chips">
+                <span class="thc-chip">Salesforce Health Cloud</span>
+                <span class="thc-chip">Epic · Cerner EHR</span>
+                <span class="thc-chip">Scheduling Platforms</span>
+                <span class="thc-chip">Digital Intake</span>
+                <span class="thc-chip">Billing &amp; RCM</span>
+              </div>
+            </div>
+
+            <div class="thc-connector"></div>
+
+            <div class="thc-layer thc-layer--core">
+              <div class="thc-layer-h">Layer 02 · 2πr</div>
+              <div class="thc-layer-t">Twopir Healthcare Architecture Layer</div>
+              <div class="thc-chips">
+                <span class="thc-chip">Intake &amp; Registration</span>
+                <span class="thc-chip">Referral &amp; Scheduling</span>
+                <span class="thc-chip">Billing &amp; Reporting</span>
+                <span class="thc-chip">HIPAA Governance</span>
+              </div>
+            </div>
+
+            <div class="thc-connector"></div>
+
+            <div class="thc-layer thc-layer--out">
+              <div class="thc-layer-h">Layer 03</div>
+              <div class="thc-layer-t">Operational Outcomes</div>
+              <div class="thc-chips">
+                <span class="thc-chip">Faster Response</span>
+                <span class="thc-chip">Connected Teams</span>
+                <span class="thc-chip">Leadership Visibility</span>
+              </div>
+            </div>
+          </div>
+
+        </figure>
+
+        <div class="thc-float thc-fade thc-d4" aria-hidden="true">
+          <span class="thc-float-ico">
+            <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M17 17h4M19 15v4"/></svg>
+          </span>
+          <span>
+            <span class="thc-float-k">Delivery Model</span>
+            <span class="thc-float-v">Design → Architect → Build → Operate</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       2 · TRUST STRIP
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-trust" aria-label="Healthcare organizations and platforms we work with">
+    <div class="thc-trust-card thc-fade">
+
+      <p class="thc-trust-lead">
+        Trusted by <strong><span class="twopir-clients">500+</span> Companies</strong> building and scaling
+        revenue operations with Twopir Consulting.
+      </p>
+
+      <div class="thc-marquee">
+        <div class="thc-marquee-track">
+          <div class="thc-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Magnus%20Health.png" alt="Magnus Health" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/HairLineInk%20Healthcare.png" alt="HairLineInk Healthcare" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Ideal%20Health%20Consulting.png" alt="Ideal Health Consulting" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/1517751669256.jpg" alt="Aventria" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/vincihairclinic.png" alt="Vinci" loading="lazy" width="600" height="170" decoding="async"></div>
+
+          <div class="thc-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Magnus%20Health.png" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/HairLineInk%20Healthcare.png" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/Ideal%20Health%20Consulting.png" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/1517751669256.jpg" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+          <div class="thc-marquee-item" aria-hidden="true"><img src="https://45837542.fs1.hubspotusercontent-na2.net/hubfs/45837542/vincihairclinic.png" alt="" loading="lazy" width="600" height="170" decoding="async"></div>
+        </div>
+      </div>
+
+      <p class="thc-eyebrow thc-badges-label">Built for Healthcare Operations</p>
+      <ul class="thc-badges">
+        <li class="thc-badge">Salesforce Health Cloud</li>
+        <li class="thc-badge">Salesforce CRM</li>
+        <li class="thc-badge">MuleSoft</li>
+        <li class="thc-badge">Salesforce Flow</li>
+        <li class="thc-badge">Data Cloud</li>
+        <li class="thc-badge">HIPAA Compliant Architecture</li>
+        <li class="thc-badge">HL7 FHIR Ready</li>
+        <li class="thc-badge">Epic · Cerner Integrations</li>
+      </ul>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       3 · THE OPERATIONAL REALITY
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--alt" aria-labelledby="thc-pain-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">The Operational Reality</span>
+        <h2 class="thc-title" id="thc-pain-title">The Systems Underneath Healthcare Growth Are Often the <em>First Thing to Break</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Healthcare operators deal with growth every day — but the infrastructure underneath intake,
+          scheduling, care coordination, billing, and reporting rarely keeps up. Here is what we hear
+          most often.
+        </p>
+      </header>
+
+      <div class="thc-pain-grid" role="list">
+
+        <article class="thc-pain-item thc-fade" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">⏱️</span>
+          <div>
+            <h3>Slow Response to New Patient Inquiries</h3>
+            <p>Leads come in through multiple channels — web forms, calls, referrals — with no consistent routing logic. Follow-up is manual, delayed, and inconsistent. Prospective patients move on before anyone reaches them.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade thc-d1" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">📋</span>
+          <div>
+            <h3>Manual Intake and Registration Processes</h3>
+            <p>Paper forms, disconnected intake tools, and repeated data entry create friction for patients and administrative overhead for your team. The same information is collected multiple times across multiple systems.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade thc-d2" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">🔗</span>
+          <div>
+            <h3>Referrals That Fall Through the Cracks</h3>
+            <p>Incoming referrals sit in inboxes, spreadsheets, or voicemails. There is no centralized view of referral volume, source, or conversion status. High-value referral relationships erode when partners don't hear back.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">🗓️</span>
+          <div>
+            <h3>Scheduling Bottlenecks and No-Show Gaps</h3>
+            <p>Scheduling is disconnected from intake and care coordination workflows. Reminder and confirmation communications are manual. Appointment utilization suffers, and provider time is wasted on avoidable gaps.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade thc-d1" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">🏥</span>
+          <div>
+            <h3>Front Office, Clinical, and Billing Teams in Silos</h3>
+            <p>Each team works in a separate system. Handoffs between intake, clinical, and billing generate manual reconciliation tasks, communication gaps, and errors that slow down care delivery and revenue collection.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade thc-d2" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">📊</span>
+          <div>
+            <h3>No Clean Data for Leadership Decision-Making</h3>
+            <p>Practice owners and operations leaders want to know what is driving patient volume, which services are growing, and where operational bottlenecks are. Instead, they get fragmented reports stitched together from disconnected systems.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">💳</span>
+          <div>
+            <h3>Billing and Revenue Cycle Visibility Gaps</h3>
+            <p>The gap between service delivery and billing is opaque. Claims status, outstanding balances, and collections performance are hard to track in real time. Finance and operations teams are always catching up, not getting ahead.</p>
+          </div>
+        </article>
+
+        <article class="thc-pain-item thc-fade thc-d1" role="listitem">
+          <span class="thc-pain-ico" aria-hidden="true">📈</span>
+          <div>
+            <h3>Scaling Across Locations and Service Lines Is Operationally Hard</h3>
+            <p>Adding providers, locations, or service lines exposes every gap in the underlying infrastructure. Processes that barely held up in one location become impossible to replicate consistently across multiple sites.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       4 · OUR PHILOSOPHY
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section" aria-labelledby="thc-phil-title">
+    <div class="thc-wrap">
+      <div class="thc-philosophy thc-fade">
+
+        <span class="thc-eyebrow">Our Philosophy</span>
+        <h2 class="thc-title" id="thc-phil-title">A Connected <em>Healthcare Operating System,</em> Built on Salesforce</h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+
+        <p>
+          Every healthcare organization we engage with has the same underlying challenge: the systems
+          that support patient acquisition, intake, scheduling, care delivery, billing, and reporting
+          were never designed to work together. Each one was added to solve a specific problem — and
+          now the gaps between them are the problem.
+        </p>
+        <p>
+          Twopir Consulting doesn't implement Salesforce and walk away. We architect a connected
+          healthcare operating system — one that treats inquiry capture, intake automation, referral
+          management, care coordination, billing visibility, and leadership reporting as a single
+          infrastructure challenge, not a collection of separate technology projects.
+        </p>
+        <p>
+          Salesforce Health Cloud is our primary platform, but the thinking is always operational
+          first. We design the process, then build the system around it. The result is infrastructure
+          that supports your clinical and administrative teams without creating new complexity — and
+          that can scale as your organization grows across providers, locations, and service lines.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       5 · WHAT WE BUILD
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--alt" aria-labelledby="thc-svc-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">What We Build</span>
+        <h2 class="thc-title" id="thc-svc-title">Six Areas Where We Rebuild the Foundation</h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Twopir Consulting designs and delivers Salesforce infrastructure across the full patient
+          operations lifecycle — from the first inquiry to ongoing care delivery, billing, and
+          performance reporting.
+        </p>
+      </header>
+
+      <div class="thc-svc-grid" role="list">
+
+        <article class="thc-svc-card thc-fade" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h3>Patient Lifecycle Management</h3>
+          <p>A unified view of the full patient journey — from initial inquiry through intake, onboarding, care delivery, follow-up, and re-engagement — built on Salesforce Health Cloud.</p>
+          <ul class="thc-svc-list">
+            <li>360-degree patient record across clinical and operational data</li>
+            <li>Inquiry-to-appointment conversion tracking</li>
+            <li>Automated patient communication sequences</li>
+            <li>Re-engagement workflows for lapsed or high-risk patients</li>
+            <li>Care team visibility into patient status and next steps</li>
+          </ul>
+        </article>
+
+        <article class="thc-svc-card thc-fade thc-d1" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </span>
+          <h3>Intake &amp; Onboarding Automation</h3>
+          <p>Replace manual intake processes with connected digital workflows that reduce administrative burden, speed up registration, and deliver a smoother first experience for new patients.</p>
+          <ul class="thc-svc-list">
+            <li>Digital intake form integration and data routing</li>
+            <li>Automated eligibility and insurance verification triggers</li>
+            <li>Consent and document management workflows</li>
+            <li>Patient onboarding sequence automation</li>
+            <li>Handoff automation from intake to scheduling and clinical</li>
+          </ul>
+        </article>
+
+        <article class="thc-svc-card thc-fade thc-d2" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="10" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M10 12.5h4M17 8v8M6 10V8a4 4 0 0 1 4-4h4M6 15v2a4 4 0 0 0 4 4h4"/></svg>
+          </span>
+          <h3>Referral Tracking &amp; Conversion</h3>
+          <p>Give your team a centralized system for capturing, routing, following up on, and converting incoming referrals — with full visibility into source performance and pipeline status.</p>
+          <ul class="thc-svc-list">
+            <li>Referral source tracking and attribution reporting</li>
+            <li>Automated referral acknowledgment and follow-up</li>
+            <li>Referral-to-appointment conversion pipeline visibility</li>
+            <li>Provider and partner portal workflows</li>
+            <li>Referral performance dashboards for leadership</li>
+          </ul>
+        </article>
+
+        <article class="thc-svc-card thc-fade" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <h3>Scheduling &amp; Engagement Workflows</h3>
+          <p>Connect your scheduling system to the broader patient record and communication infrastructure so appointments are confirmed, reminders go out automatically, and no-show rates drop.</p>
+          <ul class="thc-svc-list">
+            <li>Scheduling tool integration with Salesforce patient record</li>
+            <li>Automated appointment reminders and confirmations</li>
+            <li>Waitlist and cancellation management workflows</li>
+            <li>Post-visit follow-up and satisfaction outreach</li>
+            <li>Scheduling demand reporting for operations leadership</li>
+          </ul>
+        </article>
+
+        <article class="thc-svc-card thc-fade thc-d1" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          </span>
+          <h3>Billing &amp; Revenue Cycle Visibility</h3>
+          <p>Bring billing and revenue cycle data into the operational picture so your finance and leadership teams aren't working in the dark — and clinical teams can see claim and payment status tied to patient records.</p>
+          <ul class="thc-svc-list">
+            <li>Billing and RCM system integration with Salesforce</li>
+            <li>Claims status and outstanding balance visibility</li>
+            <li>Payment and collection workflow triggers</li>
+            <li>Revenue reporting tied to patient and provider data</li>
+            <li>Finance-to-operations handoff automation</li>
+          </ul>
+        </article>
+
+        <article class="thc-svc-card thc-fade thc-d2" role="listitem">
+          <span class="thc-svc-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <h3>Leadership Dashboards &amp; Reporting</h3>
+          <p>Give practice owners, COOs, and operations leaders the operational view they've never had — patient volume trends, referral performance, scheduling utilization, intake conversion, and provider-level metrics in one place.</p>
+          <ul class="thc-svc-list">
+            <li>Executive dashboards for growth and patient flow</li>
+            <li>Referral source and campaign attribution reporting</li>
+            <li>Provider and location-level performance visibility</li>
+            <li>Intake funnel and conversion rate tracking</li>
+            <li>Operational KPI monitoring across departments</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       6 · ENGAGEMENT MODEL
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section" aria-labelledby="thc-process-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Our Engagement Model</span>
+        <h2 class="thc-title" id="thc-process-title">The Full Patient Journey, Connected by Design</h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Twopir Consulting designs the infrastructure that connects every stage of the patient
+          lifecycle — so there are no gaps between inquiry, intake, scheduling, care delivery, and
+          ongoing engagement.
+        </p>
+      </header>
+
+      <div class="thc-process" role="list">
+
+        <article class="thc-step thc-fade" role="listitem">
+          <span class="thc-step-num">Step 01</span>
+          <h3>Inquiry &amp; Acquisition</h3>
+          <p>Every new patient inquiry — from web, phone, referral, or partner — is captured, routed, and responded to with automated speed and consistency. No lead sits unattended.</p>
+        </article>
+
+        <article class="thc-step thc-fade thc-d1" role="listitem">
+          <span class="thc-step-num">Step 02</span>
+          <h3>Intake &amp; Registration</h3>
+          <p>Digital intake forms feed directly into the patient record. Insurance eligibility, consent management, and registration workflows run automatically — removing paper and manual re-entry from the process.</p>
+        </article>
+
+        <article class="thc-step thc-fade thc-d2" role="listitem">
+          <span class="thc-step-num">Step 03</span>
+          <h3>Scheduling &amp; Care Coordination</h3>
+          <p>Appointment scheduling connects directly to the patient profile and clinical team visibility. Reminders, confirmations, and care team notifications run automatically without manual intervention.</p>
+        </article>
+
+        <article class="thc-step thc-fade thc-d3" role="listitem">
+          <span class="thc-step-num">Step 04</span>
+          <h3>Service Delivery &amp; Follow-Up</h3>
+          <p>Post-visit follow-up, satisfaction outreach, care plan updates, and next-appointment workflows run on defined triggers — keeping the care relationship active without relying on staff memory.</p>
+        </article>
+
+        <article class="thc-step thc-fade thc-d4" role="listitem">
+          <span class="thc-step-num">Step 05</span>
+          <h3>Reporting &amp; Optimization</h3>
+          <p>Leadership has a live view of patient volume, referral conversion, scheduling utilization, billing status, and team performance — enabling data-driven decisions rather than backward-looking reports.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       7 · CONNECTED SYSTEMS
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--alt" aria-labelledby="thc-int-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Connected Systems</span>
+        <h2 class="thc-title" id="thc-int-title">Salesforce as the Center. <em>Your Existing Systems Stay.</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Twopir Consulting integrates Salesforce with the tools your clinical, administrative, and
+          billing teams already use — so patient data flows across systems without manual re-entry or
+          operational breaks.
+        </p>
+      </header>
+
+      <div class="thc-int-grid" role="list">
+
+        <article class="thc-int-item thc-fade" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">🏥</span>
+          <h3 class="thc-int-name">Epic EHR</h3>
+          <p class="thc-int-desc">Bidirectional patient data sync between Salesforce and Epic clinical records via HL7 FHIR APIs</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d1" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">🏨</span>
+          <h3 class="thc-int-name">Cerner / Oracle Health</h3>
+          <p class="thc-int-desc">Clinical data integration for real-time patient status visibility across operational and clinical systems</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d2" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">📅</span>
+          <h3 class="thc-int-name">Scheduling Platforms</h3>
+          <p class="thc-int-desc">Athenahealth, Kareo, Phreesia, and other scheduling tools connected to the Salesforce patient record</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d3" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">📄</span>
+          <h3 class="thc-int-name">Digital Intake Tools</h3>
+          <p class="thc-int-desc">Phreesia, Relatient, and custom intake forms piped directly into the patient onboarding workflow</p>
+        </article>
+
+        <article class="thc-int-item thc-fade" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">💰</span>
+          <h3 class="thc-int-name">Billing &amp; RCM Systems</h3>
+          <p class="thc-int-desc">AdvancedMD, Kareo, Waystar, and other RCM platforms surfaced alongside patient records in Salesforce</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d1" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">📱</span>
+          <h3 class="thc-int-name">Communication Tools</h3>
+          <p class="thc-int-desc">SMS, email, and patient portal messaging automated and connected to care and intake workflows</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d2" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">📡</span>
+          <h3 class="thc-int-name">Telehealth Platforms</h3>
+          <p class="thc-int-desc">Virtual visit scheduling, follow-up workflows, and telehealth session data connected to patient records</p>
+        </article>
+
+        <article class="thc-int-item thc-fade thc-d3" role="listitem">
+          <span class="thc-int-ico" aria-hidden="true">🔌</span>
+          <h3 class="thc-int-name">MuleSoft &amp; Custom APIs</h3>
+          <p class="thc-int-desc">Custom middleware for complex legacy system integrations, HL7 FHIR pipelines, and healthcare data interoperability.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       8 · CLIENT PROOF
+       ══════════════════════════════════════════════════════════
+       ⚠ PRE-PUBLISH BLOCKER — carried over exactly as found.
+       Both testimonial quotes below describe LEGAL work ("legal
+       operations platform", "case management", "matter
+       management", "case-to-cash", "our entire legal workflow")
+       and both "Read Full Case Study" links point at the legal
+       case studies. They appear to have been pasted from the law
+       firm page and never rewritten, yet they are attributed to a
+       Practice Director and a COO at healthcare organizations.
+       Preserved verbatim because the brief was to change styling,
+       not content — but this needs healthcare testimonials and
+       healthcare case-study links before the page goes live.
+       See docs/healthcare-build-report.md section 4.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--dark" id="thc-proof" aria-labelledby="thc-proof-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Client Proof</span>
+        <h2 class="thc-title" id="thc-proof-title">What Changes When Operations <em>Are Built Right.</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Before Twopir Consulting, new patient inquiries were sitting in a shared inbox for 48 hours.
+          Our intake team was spending half their day on manual data entry. Now we respond within the
+          hour, our registration workflow runs automatically, and our front office team can actually
+          focus on patients — not paperwork.
+        </p>
+      </header>
+
+      <div class="thc-proof-pair thc-fade">
+
+        <article class="thc-quote-card">
+          <div class="thc-quote-top">
+            <span class="thc-avatar" aria-hidden="true">RM</span>
+            <span class="thc-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="thc-quote-text">
+            Twopir Consulting provided Salesforce customisation and integration services to help us
+            build a robust, compliant, and scalable legal operations platform — connecting case
+            management, document processing, and financial systems into one unified workflow. The
+            result was transformative for how we run case-to-cash operations.
+          </blockquote>
+          <div>
+            <span class="thc-quote-name">Rachel M.</span>
+            <span class="thc-quote-role">Practice Director, Multi-Site Specialty Clinic</span>
+            <span class="thc-mono-tag">Health Group Network</span>
+          </div>
+        </article>
+
+        <article class="thc-cs-card">
+          <span class="thc-mono-tag">Case Study</span>
+          <h3 class="thc-cs-company">Regional Group Practice — Multi-Location Scale Infrastructure</h3>
+          <p class="thc-cs-title">Twopir Consulting</p>
+          <div class="thc-cs-metrics">
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val">5</span>
+              <span class="thc-cs-lbl">New locations onboarded on unified Salesforce infrastructure</span>
+            </div>
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val">70%</span>
+              <span class="thc-cs-lbl">Reduction in location-to-location process inconsistency</span>
+            </div>
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val">1 View</span>
+              <span class="thc-cs-lbl">Leadership operating dashboard across all providers and sites</span>
+            </div>
+          </div>
+          <a class="thc-cs-link"
+             href="https://twopirconsulting.com/streamlining-case-to-cash-for-a-personal-injury-law-firm/"
+             target="_blank" rel="noopener noreferrer">
+            Read Full Case Study
+            <svg class="thc-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="thc-proof-pair thc-fade thc-d1">
+
+        <article class="thc-quote-card">
+          <div class="thc-quote-top">
+            <span class="thc-avatar thc-avatar--green" aria-hidden="true">DK</span>
+            <span class="thc-stars" aria-label="Rated 5 out of 5">★★★★★</span>
+          </div>
+          <blockquote class="thc-quote-text thc-quote-text--green">
+            specialized Salesforce customization enabled efficient integration of third-party systems
+            and streamlined administration and billing, leading to seamless financial operations and
+            enhanced productivity. Automated mass billing and matter management minimized errors
+            across our entire legal workflow
+          </blockquote>
+          <div>
+            <span class="thc-quote-name">David K.</span>
+            <span class="thc-quote-role">COO, Regional Group Practice</span>
+            <span class="thc-mono-tag thc-mono-tag--green">Health Group</span>
+          </div>
+        </article>
+
+        <article class="thc-cs-card thc-cs-card--green">
+          <span class="thc-mono-tag thc-mono-tag--green">Case Study</span>
+          <h3 class="thc-cs-company">Multi-Site Specialty Clinic — Patient Operations Transformation</h3>
+          <p class="thc-cs-title">Twopir Consulting</p>
+          <div class="thc-cs-metrics">
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val thc-cs-val--green">3×</span>
+              <span class="thc-cs-lbl">Faster patient inquiry response time</span>
+            </div>
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val thc-cs-val--green">58%</span>
+              <span class="thc-cs-lbl">Drop in admin time spent on intake tasks</span>
+            </div>
+            <div class="thc-cs-metric">
+              <span class="thc-cs-val thc-cs-val--green">42%</span>
+              <span class="thc-cs-lbl">Improvement in referral-to-appointment conversion</span>
+            </div>
+          </div>
+          <a class="thc-cs-link thc-cs-link--green"
+             href="https://twopirconsulting.com/case-study/accounting-seed-and-salesforce-integrations/"
+             target="_blank" rel="noopener noreferrer">
+            Read Integration Story
+            <svg class="thc-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       9 · OPERATIONAL OUTCOMES
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section" aria-labelledby="thc-outcomes-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Operational Outcomes</span>
+        <h2 class="thc-title" id="thc-outcomes-title">What You Can Expect When the <em>Infrastructure Is Right</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          The right Salesforce architecture doesn't just organize your data — it changes how your
+          entire organization performs. Here is what healthcare operators consistently see once the
+          foundation is built correctly.
+        </p>
+      </header>
+
+      <div class="thc-metric-grid" role="list">
+
+        <article class="thc-metric-card thc-fade" role="listitem">
+          <span class="thc-metric-val">3×</span>
+          <p class="thc-metric-lbl">Faster response to new patient inquiries with automated routing and follow-up</p>
+        </article>
+
+        <article class="thc-metric-card thc-fade thc-d1" role="listitem">
+          <span class="thc-metric-val">60%</span>
+          <p class="thc-metric-lbl">Reduction in manual administrative tasks across intake, registration, and onboarding</p>
+        </article>
+
+        <article class="thc-metric-card thc-fade thc-d2" role="listitem">
+          <span class="thc-metric-val">40%</span>
+          <p class="thc-metric-lbl">Improvement in referral-to-appointment conversion with structured referral pipelines</p>
+        </article>
+
+        <article class="thc-metric-card thc-fade" role="listitem">
+          <span class="thc-metric-val">30%</span>
+          <p class="thc-metric-lbl">Drop in no-show rates with automated appointment reminders and confirmations</p>
+        </article>
+
+        <article class="thc-metric-card thc-fade thc-d1" role="listitem">
+          <span class="thc-metric-val">100%</span>
+          <p class="thc-metric-lbl">Leadership visibility into patient flow, referral volume, and operational performance</p>
+        </article>
+
+        <article class="thc-metric-card thc-fade thc-d2" role="listitem">
+          <span class="thc-metric-val">Scale</span>
+          <p class="thc-metric-lbl">Infrastructure that replicates consistently across new providers, locations, and service lines</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · WHO WE WORK WITH
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--alt" aria-labelledby="thc-who-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Who We Work With</span>
+        <h2 class="thc-title" id="thc-who-title">Built for Healthcare Organizations Managing <em>Complex Operations</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+        <p class="thc-lede">
+          Twopir Consulting works with a range of healthcare organizations — from single-specialty
+          practices to multi-site groups and healthcare service businesses — who share the same
+          underlying challenge: operations that aren't keeping pace with growth.
+        </p>
+      </header>
+
+      <div class="thc-who-grid" role="list">
+
+        <article class="thc-who-card thc-fade" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">🏢</span>
+          <h3>Multi-Site Group Practices</h3>
+          <p>Practices expanding across locations who need consistent, scalable processes that replicate reliably without adding administrative complexity at each site.</p>
+        </article>
+
+        <article class="thc-who-card thc-fade thc-d1" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">🩺</span>
+          <h3>Specialty Care Clinics</h3>
+          <p>Specialty providers managing high referral volume, complex intake, and patient relationship management across focused service lines.</p>
+        </article>
+
+        <article class="thc-who-card thc-fade thc-d2" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">🏛️</span>
+          <h3>Healthcare Service Organizations</h3>
+          <p>Organizations delivering healthcare-adjacent services — behavioral health, physical therapy, dental, vision, and more — that need the operational discipline of an enterprise-grade system.</p>
+        </article>
+
+        <article class="thc-who-card thc-fade" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">🔬</span>
+          <h3>Ambulatory Surgery Centers</h3>
+          <p>ASCs managing pre-operative intake, scheduling coordination, post-operative follow-up, and billing workflows across surgical teams and support staff.</p>
+        </article>
+
+        <article class="thc-who-card thc-fade thc-d1" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">💊</span>
+          <h3>Primary Care &amp; Urgent Care Networks</h3>
+          <p>High-volume primary and urgent care networks managing patient acquisition, rapid intake, scheduling demand, and care coordination at scale.</p>
+        </article>
+
+        <article class="thc-who-card thc-fade thc-d2" role="listitem">
+          <span class="thc-who-ico" aria-hidden="true">🧠</span>
+          <h3>Behavioral Health Providers</h3>
+          <p>Behavioral health and mental health organizations managing sensitive intake workflows, care coordination, referral networks, and patient engagement with a compliant, connected infrastructure.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · WHY TWOPIR
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section" aria-labelledby="thc-why-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Why Twopir</span>
+        <h2 class="thc-title" id="thc-why-title">Why Healthcare Organizations Choose <em>Twopir Consulting Over Standard Implementation Partners.</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="thc-why-grid">
+
+        <div class="thc-why-list" role="list">
+
+          <article class="thc-why-item thc-fade" role="listitem">
+            <span class="thc-why-num" aria-hidden="true">01</span>
+            <div>
+              <h3>We Design the Process Before We Build the System</h3>
+              <p>Most Salesforce partners start with the platform. We start with your patient operations — how inquiries come in, how intake works, how referrals move, how teams hand off to each other. The architecture follows from the process design, not the other way around.</p>
+            </div>
+          </article>
+
+          <article class="thc-why-item thc-fade thc-d1" role="listitem">
+            <span class="thc-why-num" aria-hidden="true">02</span>
+            <div>
+              <h3>We Own Outcomes, Not Just Deliverables</h3>
+              <p>An implementation partner delivers a configured platform. We deliver an operational system that your teams actually use, that produces the outcomes you need, and that performs under real patient volume and administrative pressure. The engagement doesn't end at go-live.</p>
+            </div>
+          </article>
+
+          <article class="thc-why-item thc-fade thc-d2" role="listitem">
+            <span class="thc-why-num" aria-hidden="true">03</span>
+            <div>
+              <h3>We Think Across the Full Patient Operations Lifecycle</h3>
+              <p>Patient inquiry, intake, scheduling, care coordination, billing, and leadership reporting are not separate projects. We design them as one connected infrastructure so improvement in one area doesn't create a new bottleneck somewhere else.</p>
+            </div>
+          </article>
+
+          <article class="thc-why-item thc-fade thc-d3" role="listitem">
+            <span class="thc-why-num" aria-hidden="true">04</span>
+            <div>
+              <h3>We Have Direct Healthcare Operations Experience</h3>
+              <p>We have built Salesforce Health Cloud infrastructure for specialty clinics, multi-site group practices, and healthcare service organizations. The workflows, the compliance considerations, and the operational pitfalls are known to us — we don't learn them on your engagement.</p>
+            </div>
+          </article>
+
+          <article class="thc-why-item thc-fade thc-d4" role="listitem">
+            <span class="thc-why-num" aria-hidden="true">05</span>
+            <div>
+              <h3>We Build for Scale, Not Just the Next 12 Months</h3>
+              <p>Our architecture is designed to hold up as your organization grows — more providers, more locations, more service lines. The system you launch should be the foundation for the next stage, not a replacement project when you open your next site.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="thc-callout thc-fade thc-d2">
+          <span class="thc-callout-k">
+            <span class="thc-live" aria-hidden="true"></span>
+            How We Engage
+          </span>
+
+          <p class="thc-callout-text">
+            "The problem is rarely that a healthcare organization lacks software. The problem is that
+            the systems underneath intake, referral management, care coordination, and reporting were
+            never designed to work together under real operational load."
+          </p>
+
+          <p class="thc-callout-author">
+            <strong>Twopir Consulting</strong> — Salesforce, CRM, automation, integrations, and
+            operational infrastructure for healthcare organizations that need systems to perform at
+            scale.
+          </p>
+
+          <ul class="thc-engage">
+            <li>Full architecture, build, and rollout</li>
+            <li>Salesforce Health Cloud rescue and redesign</li>
+            <li>EHR and clinical system integration</li>
+            <li>Ongoing scale support and optimization</li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       12 · FAQ
+       ══════════════════════════════════════════════════════════
+       The original used <details>/<summary>. Rebuilt on the design
+       system's button + panel accordion so the questions carry
+       aria-expanded / aria-controls and the panel animates.
+       Question and answer text is unchanged.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--alt" aria-labelledby="thc-faq-title">
+    <div class="thc-wrap">
+
+      <header class="thc-head thc-fade">
+        <span class="thc-eyebrow">Common Questions</span>
+        <h2 class="thc-title" id="thc-faq-title">Answers Before <em>the First Call</em></h2>
+        <div class="thc-rule" aria-hidden="true">
+          <span class="thc-rule-line"></span>
+          <span class="thc-rule-diamond"></span>
+          <span class="thc-rule-line"></span>
+        </div>
+      </header>
+
+      <div class="thc-faq-list">
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp1" id="thc-fb1">
+            <span>How does Salesforce improve patient acquisition and intake for healthcare organizations?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp1" role="region" aria-labelledby="thc-fb1">
+            <div class="thc-faq-panel-inner">
+              <p>Salesforce centralizes new patient inquiries from every channel, automates routing and follow-up tasks, standardizes the registration and intake process, and gives leadership real visibility into conversion rates across all acquisition sources. It replaces disconnected intake forms, shared inboxes, and manual handoffs with a single connected operating workflow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp2" id="thc-fb2">
+            <span>Can Salesforce Health Cloud support referral management and care coordination for clinics and group practices?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp2" role="region" aria-labelledby="thc-fb2">
+            <div class="thc-faq-panel-inner">
+              <p>Yes. With the right architecture, Salesforce Health Cloud tracks referrals from source to scheduled appointment, coordinates across clinical and administrative teams, automates follow-up communications, and provides leadership with a full pipeline view — so no referral goes unworked and no partner relationship suffers from slow response.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp3" id="thc-fb3">
+            <span>Can Twopir Consulting fix a Salesforce implementation that is already live but underperforming?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp3" role="region" aria-labelledby="thc-fb3">
+            <div class="thc-faq-panel-inner">
+              <p>Yes. Many of our healthcare engagements begin with an existing Salesforce environment that is technically active but not delivering operational results. We audit the workflow design, data architecture, automation logic, integration health, and user adoption — then redesign the system around what the organization actually needs to operate effectively.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp4" id="thc-fb4">
+            <span>Does Twopir Consulting integrate Salesforce with EHR, scheduling, and billing systems?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp4" role="region" aria-labelledby="thc-fb4">
+            <div class="thc-faq-panel-inner">
+              <p>Yes. Twopir Consulting connects Salesforce with EHR platforms including Epic and Cerner via HL7 FHIR APIs and MuleSoft, scheduling tools like Athenahealth and Kareo, digital intake platforms, RCM and billing systems, and communication tools — so patient data flows across your technology stack without manual re-entry or operational breaks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp5" id="thc-fb5">
+            <span>Is Twopir Consulting's implementation approach HIPAA-compliant?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp5" role="region" aria-labelledby="thc-fb5">
+            <div class="thc-faq-panel-inner">
+              <p>Yes. Salesforce Health Cloud is HIPAA-compliant by design. Twopir Consulting architects implementations with appropriate access controls, data governance configuration, field-level security, and audit trail standards — so your patient information is protected throughout the system. We build compliance into the architecture rather than treating it as an afterthought.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thc-faq-row thc-fade">
+          <button class="thc-faq-btn" type="button" aria-expanded="false" aria-controls="thc-fp6" id="thc-fb6">
+            <span>How are you different from a standard Salesforce implementation partner?</span>
+            <span class="thc-faq-ico" aria-hidden="true">
+              <svg viewBox="0 0 14 14"><line class="thc-faq-v" x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+            </span>
+          </button>
+          <div class="thc-faq-panel" id="thc-fp6" role="region" aria-labelledby="thc-fb6">
+            <div class="thc-faq-panel-inner">
+              <p>Standard implementation partners optimize for platform delivery and project completion. Twopir Consulting optimizes for whether the system actually improves your organization's operational performance. That means the engagement starts earlier — with process design and architecture — and extends beyond go-live to ensure the infrastructure holds up under real patient volume and administrative pressure.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       13 · CTA
+       ══════════════════════════════════════════════════════════ -->
+  <section class="thc-section thc-section--dark thc-cta" id="thc-cta" aria-labelledby="thc-cta-title">
+    <div class="thc-cta-inner thc-fade">
+
+      <span class="thc-eyebrow">Next Step</span>
+      <h2 class="thc-title" id="thc-cta-title">If Your Organization Is Growing Faster Than Its Systems, <em>This Is the Right Conversation</em></h2>
+      <div class="thc-rule" aria-hidden="true">
+        <span class="thc-rule-line"></span>
+        <span class="thc-rule-diamond"></span>
+        <span class="thc-rule-line"></span>
+      </div>
+
+      <p class="thc-lede">
+        Twopir Consulting helps healthcare organizations build stronger operating discipline across
+        patient intake, referral management, care coordination, billing visibility, and leadership
+        reporting — with Salesforce as the foundation and architecture that scales with your growth.
+      </p>
+
+      <div class="thc-cta-actions">
+        <a class="thc-btn thc-btn--primary" href="https://meetings-na2.hubspot.com/ccomstock/initial-discovery-call-15-minutes?uuid=3a74faf4-9484-47ff-96bd-760731037191">
+          Book a Strategy Call
+          <svg class="thc-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>
+          </svg>
+        </a>
+        <a class="thc-btn thc-btn--ghost" href="https://twopirconsulting.com/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v12H7l-3 3z"/>
+          </svg>
+          Visit Twopir Consulting
+        </a>
+      </div>
+
+      <p class="thc-cta-note">Speak with a team that understands healthcare operations, Salesforce architecture, and what it takes to build systems that perform under real clinical and administrative pressure.</p>
+
+    </div>
+  </section>
+
+</div><!-- /#twopir-healthcare -->
+
+<!-- ============================================================
+     STRUCTURED DATA — SALESFORCE FOR HEALTHCARE
+     BreadcrumbList + Service + FAQPage.
+
+     • Service.provider points at the homepage Organization node
+       (@id …/#organization, emitted once from Hero.html). Keep the
+       two @ids in sync or the provider reference will dangle.
+     • FAQPage is a no-harm addition only: Google removed FAQ rich
+       results for all sites in May 2026, so this produces no SERP
+       snippet. It is kept because the page already has a real FAQ
+       section and the markup still helps machines parse it.
+     • Every FAQ answer below is copied verbatim from the visible
+       accordion on this page. If the visible copy is edited, edit it
+       here too — mismatched schema and on-page text is an AEO risk.
+     • The FAQ block below was GENERATED from the visible accordion by
+       scripts/generate_schema.py. If you edit a question or an answer
+       in the accordion, re-run that script rather than editing this
+       block by hand.
+     • The URLs assume the /salesforce-for-healthcare/ permalink and the
+       /industries-we-serve/ parent. Confirm both before publishing.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home",
+      "item": "https://twopirconsulting.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Industries We Serve",
+      "item": "https://twopirconsulting.com/industries-we-serve/" },
+    { "@type": "ListItem", "position": 3, "name": "Salesforce for Healthcare",
+      "item": "https://twopirconsulting.com/salesforce-for-healthcare/" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://twopirconsulting.com/salesforce-for-healthcare/#service",
+  "name": "Salesforce for Healthcare",
+  "serviceType": "Salesforce Health Cloud implementation and patient operations infrastructure",
+  "provider": {
+    "@id": "https://twopirconsulting.com/#organization"
+  },
+  "areaServed": [
+    "US",
+    "CA",
+    "GB",
+    "AE",
+    "AU",
+    "NZ"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Healthcare Organizations"
+  },
+  "description": "Twopir Consulting builds the Salesforce-based operating infrastructure behind healthcare growth \u2014 patient lifecycle management, intake and onboarding automation, referral tracking, scheduling workflows, billing visibility and leadership reporting on one Health Cloud architecture.",
+  "url": "https://twopirconsulting.com/salesforce-for-healthcare/",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Healthcare operations services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Patient Lifecycle Management"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Intake & Onboarding Automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Referral Tracking & Conversion"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Scheduling & Engagement Workflows"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Billing & Revenue Cycle Visibility"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Leadership Dashboards & Reporting"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Salesforce improve patient acquisition and intake for healthcare organizations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salesforce centralizes new patient inquiries from every channel, automates routing and follow-up tasks, standardizes the registration and intake process, and gives leadership real visibility into conversion rates across all acquisition sources. It replaces disconnected intake forms, shared inboxes, and manual handoffs with a single connected operating workflow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Salesforce Health Cloud support referral management and care coordination for clinics and group practices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With the right architecture, Salesforce Health Cloud tracks referrals from source to scheduled appointment, coordinates across clinical and administrative teams, automates follow-up communications, and provides leadership with a full pipeline view — so no referral goes unworked and no partner relationship suffers from slow response."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Twopir Consulting fix a Salesforce implementation that is already live but underperforming?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Many of our healthcare engagements begin with an existing Salesforce environment that is technically active but not delivering operational results. We audit the workflow design, data architecture, automation logic, integration health, and user adoption — then redesign the system around what the organization actually needs to operate effectively."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Twopir Consulting integrate Salesforce with EHR, scheduling, and billing systems?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Twopir Consulting connects Salesforce with EHR platforms including Epic and Cerner via HL7 FHIR APIs and MuleSoft, scheduling tools like Athenahealth and Kareo, digital intake platforms, RCM and billing systems, and communication tools — so patient data flows across your technology stack without manual re-entry or operational breaks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Twopir Consulting's implementation approach HIPAA-compliant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Salesforce Health Cloud is HIPAA-compliant by design. Twopir Consulting architects implementations with appropriate access controls, data governance configuration, field-level security, and audit trail standards — so your patient information is protected throughout the system. We build compliance into the architecture rather than treating it as an afterthought."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are you different from a standard Salesforce implementation partner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard implementation partners optimize for platform delivery and project completion. Twopir Consulting optimizes for whether the system actually improves your organization's operational performance. That means the engagement starts earlier — with process design and architecture — and extends beyond go-live to ensure the infrastructure holds up under real patient volume and administrative pressure."
+      }
+    }
+  ]
+}
+</script>
+
+
+<script>
+(function () {
+  var root = document.getElementById('twopir-healthcare');
+  if (!root) return;
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  var items = root.querySelectorAll('.thc-fade');
+  var reveal = function (el) { el.classList.add('thc-in'); };
+
+  if (items.length) {
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(items, reveal);
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); }
+        });
+      });
+    }
+  }
+
+  /* ── FAQ accordion ─────────────────────────────────────── */
+  var faqBtns = root.querySelectorAll('.thc-faq-btn');
+
+  function closeRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'false');
+    row.classList.remove('is-open');
+    if (panel) panel.style.maxHeight = '0px';
+  }
+
+  function openRow(btn) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var row   = btn.parentNode;
+    btn.setAttribute('aria-expanded', 'true');
+    row.classList.add('is-open');
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  Array.prototype.forEach.call(faqBtns, function (btn) {
+    btn.addEventListener('click', function () {
+      var wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      Array.prototype.forEach.call(faqBtns, closeRow);
+      if (!wasOpen) openRow(btn);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeRow(btn);
+        btn.focus();
+      }
+    });
+  });
+
+  // keep an open panel correctly sized when the viewport reflows
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(faqBtns, function (btn) {
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── FIX: kill top AND bottom spacing from theme/builder ancestors ──
+     This is the actual fix for the white gaps seen above the hero and
+     below the closing CTA section. The CSS reset above only zeroes
+     padding/margin on a fixed list of known wrapper class names
+     (Elementor, Gutenberg, entry-content, etc). If the live theme uses a
+     different wrapper class we haven't guessed, that CSS won't catch it
+     and a gap stays — first it showed up at the top, now it's the same
+     issue at the bottom, coming from the wrapper's bottom padding/margin.
+     This walks every real ancestor element from #twopir-healthcare up to
+     (but not including) the page body element, forcing margin/padding on both top
+     AND bottom to 0 on each one — regardless of what class or theme put
+     it there. It mirrors the existing thcFullBleed() approach just below,
+     which does the same "measure and cancel" trick for horizontal spacing. */
+  function thcKillAncestorSpacing() {
+    var el = root.parentElement;
+    while (el && el !== document.body && el.nodeType === 1) {
+      el.style.marginTop = '0px';
+      el.style.paddingTop = '0px';
+      el.style.marginBottom = '0px';
+      el.style.paddingBottom = '0px';
+      el = el.parentElement;
+    }
+  }
+
+  /* ── Scrollbar-safe full-viewport-width breakout ─────────
+     Page builders wrap content in a boxed container, which would
+     leave the section backgrounds floating in the middle of the
+     page. A pure-CSS "100vw / -50vw" breakout clips the left edge
+     whenever a vertical scrollbar exists, because 100vw includes
+     the scrollbar track. So we measure the real visible width
+     with documentElement.clientWidth and apply exact pixels.
+     If JS is unavailable the page simply stays contained — safe,
+     never clipped. ── */
+  function thcFullBleed() {
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+
+    var rect = root.getBoundingClientRect();
+    var visibleWidth = document.documentElement.clientWidth; // excludes scrollbar
+
+    if (!visibleWidth || rect.width === 0) return;
+
+    root.style.width = visibleWidth + 'px';
+    root.style.marginLeft = (-rect.left) + 'px';
+    root.style.marginRight = (rect.left - (visibleWidth - (rect.left + rect.width))) + 'px';
+  }
+
+  var bleedRaf;
+  function applyBleed() {
+    thcKillAncestorSpacing();
+    thcFullBleed();
+  }
+  function scheduleBleed() {
+    if (bleedRaf) cancelAnimationFrame(bleedRaf);
+    bleedRaf = requestAnimationFrame(applyBleed);
+  }
+
+  /* CLS fix (2026-08): the first breakout runs synchronously rather
+     than inside requestAnimationFrame, so the final width and margins
+     are in place for the first layout pass instead of being applied
+     one frame after the page has already painted at the wrong width.
+     Resize/orientation changes still go through the rAF-throttled
+     path, where batching matters and a shift is unavoidable anyway. */
+  applyBleed();
+  window.addEventListener('resize', scheduleBleed);
+  window.addEventListener('orientationchange', scheduleBleed);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleBleed);
+  }
+
+  /* Page builders / admin bars can shift layout after first paint, so
+     one late re-check stays. It runs synchronously inside a single
+     task: when the geometry has not moved, the styles are rewritten to
+     the same values within that task and the browser never paints an
+     intermediate state, so no layout shift is recorded. */
+  setTimeout(applyBleed, 500);
+})();
+</script>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE ALIGNMENT PASS  ·  loaded last
+   Typography + a few sizing/consistency fixes carried over from
+   the homepage build. No colour changes, no content changes.
+   !important is used the same way the homepage uses it: the live
+   WordPress theme restyles h2/h3/button/li globally, and without
+   it the theme wins on the published page.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1 · Font families pinned — the theme's own body font must not
+       leak into headings, copy or mono labels. */
+#twopir-healthcare,
+#twopir-healthcare p,
+#twopir-healthcare li,
+#twopir-healthcare a,
+#twopir-healthcare span,
+#twopir-healthcare button { font-family: var(--thc-ff-body, 'Inter', sans-serif) !important; }
+
+/* Card titles belong to the display face too. Without them listed here the
+   blanket body-font rule above wins by inheritance and every card title on
+   the page renders in Inter — which flattens the hierarchy to two levels
+   where the homepage has three (h1 / section title / card title). */
+#twopir-healthcare h1,
+#twopir-healthcare h2,
+#twopir-healthcare h3,
+#twopir-healthcare .thc-hero-title,
+#twopir-healthcare .thc-title,
+#twopir-healthcare .thc-pain-item h3,
+#twopir-healthcare .thc-svc-card h3,
+#twopir-healthcare .thc-step h3,
+#twopir-healthcare .thc-why-item h3,
+#twopir-healthcare .thc-int-name,
+#twopir-healthcare .thc-cs-company,
+#twopir-healthcare .thc-cs-val,
+#twopir-healthcare .thc-layer-t,
+#twopir-healthcare .thc-avatar,
+#twopir-healthcare .thc-fact b,
+#twopir-healthcare .thc-hero-proof b { font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif) !important; }
+
+#twopir-healthcare .thc-eyebrow,
+#twopir-healthcare .thc-mono-tag,
+#twopir-healthcare .thc-cs-lbl,
+#twopir-healthcare .thc-step-num,
+#twopir-healthcare .thc-why-num,
+#twopir-healthcare .thc-callout-k,
+#twopir-healthcare .thc-fact,
+#twopir-healthcare .thc-cta-note,
+#twopir-healthcare .thc-canvas-label,
+#twopir-healthcare .thc-pill,
+#twopir-healthcare .thc-chip { font-family: var(--thc-ff-mono, 'JetBrains Mono', monospace) !important; }
+
+/* 2 · The type scale from the pass above, re-asserted with the
+       same protection the homepage uses. */
+#twopir-healthcare .thc-hero-title { font-size: var(--thc-fs-display, clamp(34px, 4.5vw, 56px)) !important; line-height: 1.14 !important; }
+#twopir-healthcare .thc-title      { font-size: var(--thc-fs-h2, clamp(30px, 3.4vw, 44px)) !important; line-height: 1.16 !important; font-weight: 700 !important; }
+#twopir-healthcare .thc-title em   { font-weight: 800 !important; font-style: normal !important; }
+#twopir-healthcare .thc-hero-sub,
+#twopir-healthcare .thc-lede,
+#twopir-healthcare .thc-philosophy p { font-size: var(--thc-fs-lede, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.7 !important; }
+
+/* Primary card titles take the h3 step (17–19px), the same rung the
+   homepage gives its service and about cards. The denser grids — process
+   steps, the integration tiles, the case-study company line, FAQ rows —
+   stay on h4, matching the homepage's own dense-card treatment. Before
+   this split, --thc-fs-h3 was defined but never used and every card title
+   sat at 16px, the same size as the FAQ button text. */
+#twopir-healthcare .thc-pain-item h3 { font-size: var(--thc-fs-h3, clamp(20px, 1.8vw, 24px)) !important; line-height: 1.3 !important; }
+
+#twopir-healthcare .thc-step h3,
+#twopir-healthcare .thc-int-name,
+#twopir-healthcare .thc-cs-company,
+#twopir-healthcare .thc-faq-btn,
+#twopir-healthcare .thc-layer-h { font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)) !important; line-height: 1.4 !important; }
+
+#twopir-healthcare .thc-pain-item p,
+#twopir-healthcare .thc-svc-card > p,
+#twopir-healthcare .thc-why-item p,
+#twopir-healthcare .thc-faq-panel-inner p,
+#twopir-healthcare .thc-quote-text { font-size: var(--thc-fs-body, clamp(15px, 1.1vw, 17px)) !important; line-height: 1.65 !important; }
+
+#twopir-healthcare .thc-svc-list li,
+#twopir-healthcare .thc-step p,
+#twopir-healthcare .thc-int-desc,
+#twopir-healthcare .thc-engage li,
+#twopir-healthcare .thc-why-list li,
+#twopir-healthcare .thc-callout-author,
+#twopir-healthcare .thc-quote-name,
+#twopir-healthcare .thc-trust-lead { font-size: var(--thc-fs-sm, 14px) !important; line-height: 1.6 !important; }
+
+#twopir-healthcare .thc-quote-role,
+#twopir-healthcare .thc-badge,
+#twopir-healthcare .thc-tag,
+#twopir-healthcare .thc-src { font-size: var(--thc-fs-xs, 13px) !important; }
+
+/* 11px mono floor — nothing on the page sits below it */
+#twopir-healthcare .thc-eyebrow   { font-size: var(--thc-fs-eyebrow, clamp(13px, 1vw, 14px)) !important; letter-spacing: 0.2em !important; }
+#twopir-healthcare .thc-mono-tag,
+#twopir-healthcare .thc-cs-lbl,
+#twopir-healthcare .thc-step-num,
+#twopir-healthcare .thc-why-num,
+#twopir-healthcare .thc-callout-k,
+#twopir-healthcare .thc-fact,
+#twopir-healthcare .thc-cta-note,
+#twopir-healthcare .thc-canvas-label,
+#twopir-healthcare .thc-layer-t,
+#twopir-healthcare .thc-chip { font-size: var(--thc-fs-label, 12px) !important; letter-spacing: 0.08em; }
+/* the hero badge keeps its own tighter tracking — it is a pill, not a chip */
+#twopir-healthcare .thc-pill { font-size: var(--thc-fs-label, 12px) !important; letter-spacing: 0.1em !important; }
+
+#twopir-healthcare .thc-btn,
+#twopir-healthcare .thc-cs-link { font-size: var(--thc-fs-sm, 14px) !important; }
+#twopir-healthcare .thc-cs-val  { font-size: var(--thc-fs-stat-sm, clamp(22px, 2vw, 26px)) !important; line-height: 1.1; }
+
+/* 3 · Caps card titles — the homepage's own uppercase card-title recipe
+       (display face, h4 step, weight 800, 0.055em tracking). Applied to
+       both the "Why" cards and the service cards, which share the
+       treatment. Set in caps they need the h4 step, not h3: uppercase at
+       19px with this much tracking wraps badly in a three-up grid. */
+#twopir-healthcare .thc-why-item h3,
+#twopir-healthcare .thc-svc-card h3 {
+  text-transform: uppercase !important;
+  font-size: var(--thc-fs-h4, clamp(17px, 1.4vw, 19px)) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.35 !important;
+}
+
+/* 3b · CONTRAST — brand blue as TEXT on light grounds
+        #00aff6 measures 2.14 / 2.23 / 2.30 / 2.48 against the page, alt,
+        card and white surfaces. Every role below is 11–16px, so it needs
+        the 4.5 minimum, and --thc-accent-ink (5.14–5.96) is the same hue
+        darkened to clear it. Loaded here, after every section rule, so
+        there is nothing left to override it. */
+#twopir-healthcare .thc-eyebrow,
+#twopir-healthcare .thc-pill,
+#twopir-healthcare .thc-float-k,
+#twopir-healthcare .thc-step-num,
+#twopir-healthcare .thc-why-num,
+#twopir-healthcare .thc-faq-ico,
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-btn,
+#twopir-healthcare .thc-src:hover,
+#twopir-healthcare .thc-src:focus-visible { color: var(--thc-accent-ink, #00699f) !important; }
+
+/* …but on a navy panel the bright accent is the legible one, so the dark
+   sections, the hero canvas and the sticky callout all keep it. The open
+   FAQ icon also keeps white-on-accent, which already passes. */
+#twopir-healthcare .thc-section--dark .thc-eyebrow,
+#twopir-healthcare .thc-cta .thc-eyebrow,
+#twopir-healthcare .thc-callout .thc-callout-k { color: var(--thc-accent, #00aff6) !important; }
+#twopir-healthcare .thc-faq-row.is-open .thc-faq-ico { color: #fff !important; }
+
+/* 4 · Case-study cards — the theme uppercases and enlarges h3,
+       which blew these headlines up mid-card on the homepage too. */
+#twopir-healthcare .thc-cs-title {
+  text-transform: none !important;
+  font-size: var(--thc-fs-sm, 14px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+#twopir-healthcare .thc-cs-company {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+#twopir-healthcare .thc-cs-lbl { letter-spacing: 0.14em !important; }
+
+/* 5 · Client logo rail — vendor marks must never be cropped.
+       The <img> tags carry width/height attributes and the theme
+       defaults to object-fit: cover, which slices wide logos. */
+#twopir-healthcare .thc-marquee-item img {
+  height: 36px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* 6 · FAQ — kill the stray square the theme injects next to the
+       +/− toggle on hover and click. */
+#twopir-healthcare .thc-faq-btn::before,
+#twopir-healthcare .thc-faq-btn::after,
+#twopir-healthcare .thc-faq-ico::before,
+#twopir-healthcare .thc-faq-ico::after,
+#twopir-healthcare .thc-faq-row > button::before,
+#twopir-healthcare .thc-faq-row > button::after {
+  content: none !important;
+  display: none !important;
+}
+#twopir-healthcare .thc-faq-btn,
+#twopir-healthcare .thc-faq-btn:hover,
+#twopir-healthcare .thc-faq-btn:focus,
+#twopir-healthcare .thc-faq-btn:active,
+#twopir-healthcare .thc-faq-ico {
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+#twopir-healthcare .thc-faq-btn:focus-visible {
+  outline: 2px solid var(--thc-accent, #00aff6) !important;
+  outline-offset: -3px;
+}
+#twopir-healthcare .thc-faq-ico {
+  overflow: hidden;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+#twopir-healthcare .thc-faq-ico svg { font-size: initial; }
+
+/* 7 · Small screens — matches the homepage's mobile type block */
+@media (max-width: 620px) {
+  #twopir-healthcare .thc-hero-title { font-size: 30px !important; line-height: 1.18 !important; }
+  #twopir-healthcare .thc-title      { font-size: 26px !important; line-height: 1.2 !important; }
+  #twopir-healthcare .thc-hero-sub,
+  #twopir-healthcare .thc-lede,
+  #twopir-healthcare .thc-philosophy p { font-size: 16px !important; }
+
+  #twopir-healthcare .thc-pain-item h3,
+  #twopir-healthcare .thc-svc-card h3,
+  #twopir-healthcare .thc-step h3,
+  #twopir-healthcare .thc-int-name,
+  #twopir-healthcare .thc-cs-company,
+  #twopir-healthcare .thc-faq-btn { font-size: 16px !important; }
+  #twopir-healthcare .thc-why-item h3 { font-size: 15px !important; }
+
+  #twopir-healthcare .thc-pain-item p,
+  #twopir-healthcare .thc-svc-card > p,
+  #twopir-healthcare .thc-why-item p,
+  #twopir-healthcare .thc-quote-text,
+  #twopir-healthcare .thc-faq-panel-inner p { font-size: 15px !important; }
+
+  #twopir-healthcare .thc-svc-list li,
+  #twopir-healthcare .thc-step p,
+  #twopir-healthcare .thc-int-desc,
+  #twopir-healthcare .thc-engage li,
+  #twopir-healthcare .thc-callout-author { font-size: 14px !important; }
+
+  #twopir-healthcare .thc-cs-title { font-size: 14px !important; }
+  #twopir-healthcare .thc-marquee-item img { height: 30px !important; max-width: 130px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   6 · TEMPLATE BEHAVIOUR
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 6a · Theme pseudo-element guard ─────────────────────────
+   The live theme sets `blockquote::before { font-family: FontAwesome;
+   content: "10d" }` — a decorative quote glyph. FontAwesome is not
+   loaded on this page, so it renders as an empty tofu box at the head
+   of every testimonial. Neutralised rather than restyled: the design
+   already carries its own quote treatment through the accent rule down
+   the left edge.
+
+   Only blockquote and q are cleared. A blanket `::before` reset would
+   destroy the rule diamonds, the list bullets and the separators, all of
+   which are real parts of this design. If another theme decorates a
+   different tag, add that tag here — do not widen the selector. */
+#twopir-healthcare blockquote::before,
+#twopir-healthcare blockquote::after,
+#twopir-healthcare q::before,
+#twopir-healthcare q::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   FIRST-SCREEN HERO — height-responsive
+   ════════════════════════════════════════════════════════════
+   Ported from the homepage. Replaces the earlier
+   `(min-width: 901px) and (min-height: 720px)` gate: instead of giving
+   up below 720px tall and letting the hero scroll, the hero now SCALES
+   to whatever height it has. Everything below is clamped with px floors
+   and ceilings, so nothing scales without bound, and it is desktop-only
+   so mobile viewport-unit quirks cannot apply. */
+@media (min-width: 901px) {
+  #twopir-healthcare .thc-hero {
+    min-height: calc(100vh  - var(--thc-nav, 87px));
+    min-height: calc(100svh - var(--thc-nav, 87px));
+    padding-top: clamp(20px, 3vh, 48px);
+    padding-bottom: 0;
+  }
+  #twopir-healthcare .thc-hero-inner {
+    gap: clamp(20px, 3.4vw, 58px);
+    align-items: center;
+  }
+  #twopir-healthcare .thc-pill {
+    margin-bottom: clamp(10px, 1.9vh, 18px);
+    padding: clamp(5px, 0.8vh, 7px) 12px;
+  }
+  /* min(vw, vh): the headline yields to whichever dimension binds first */
+  #twopir-healthcare .thc-hero-title {
+    font-size: clamp(32px, var(--thc-h1-fluid, 3.2vw), 46px) !important;
+    line-height: 1.08 !important;
+  }
+  #twopir-healthcare .thc-hero-rule {
+    margin: clamp(12px, 1.9vh, 16px) 0 clamp(10px, 1.6vh, 15px);
+  }
+  #twopir-healthcare .thc-hero-sub {
+    font-size: clamp(15px, var(--thc-sub-fluid, 1.2vw), 17px) !important;
+    line-height: 1.55 !important;
+  }
+  #twopir-healthcare .thc-hero-cta {
+    margin-top: clamp(18px, 2.9vh, 26px);
+    gap: clamp(10px, 1.5vh, 14px);
+  }
+  #twopir-healthcare .thc-btn {
+    padding: clamp(12px, 1.8vh, 15px) clamp(19px, 1.6vw, 24px);
+  }
+  #twopir-healthcare .thc-hero-proof {
+    margin-top: clamp(15px, 2.5vh, 22px);
+    gap: clamp(7px, 1.2vh, 9px) 15px;
+  }
+  #twopir-healthcare .thc-canvas {
+    max-width: min(100%, calc(53vh + 46px));
+    padding: clamp(12px, 1.45vh, 18px);
+  }
+  #twopir-healthcare .thc-canvas-bar {
+    padding-bottom: clamp(9px, 1.25vh, 12px);
+    margin-bottom: clamp(9px, 1.25vh, 12px);
+  }
+  #twopir-healthcare .thc-map { max-height: min(53vh, 486px); }
+}
+
+/* Short windows — a laptop with a bookmarks bar, or a scaled display.
+   The panel gives up more room so the copy column never has to. */
+@media (min-width: 901px) and (max-height: 780px) {
+  #twopir-healthcare .thc-canvas { max-width: min(100%, calc(50vh + 40px)); }
+  #twopir-healthcare .thc-map { max-height: 50vh; }
+  #twopir-healthcare .thc-float { transform: scale(0.92); transform-origin: left bottom; }
+}
+</style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PAGE SCALING — the ladder, ported from the homepage
+   ════════════════════════════════════════════════════════════
+   Sections scale so a short laptop window sees the page at
+   85-100% instead of scrolling more. The floor is 0.85: the
+   bottom three rungs are deliberately equal, because 0.79 and
+   0.82 are what made the site read as squeezed.
+
+   The hero is NOT in the ladder — it does its own min(vw, vh)
+   scaling already, which is the whole reason the ladder exists. */
+/* The 1 / 1 defaults for the ladder below are declared in the single
+   #twopir-healthcare token rule at the top of this sheet, not here — a second
+   bare wrapper rule is exactly what Autoptimize merges and drops. */
+
+@media (min-width: 901px) and (max-height: 1000px) { #twopir-healthcare { --thc-scale-h: 0.97; } }
+@media (min-width: 901px) and (max-height:  940px) { #twopir-healthcare { --thc-scale-h: 0.94; } }
+@media (min-width: 901px) and (max-height:  880px) { #twopir-healthcare { --thc-scale-h: 0.91; } }
+@media (min-width: 901px) and (max-height:  820px) { #twopir-healthcare { --thc-scale-h: 0.88; } }
+@media (min-width: 901px) and (max-height:  760px) { #twopir-healthcare { --thc-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  700px) { #twopir-healthcare { --thc-scale-h: 0.85; } }
+@media (min-width: 901px) and (max-height:  640px) { #twopir-healthcare { --thc-scale-h: 0.85; } }
+
+@media (min-width: 901px) and (max-width: 1600px) { #twopir-healthcare { --thc-scale-w: 0.97; } }
+@media (min-width: 901px) and (max-width: 1440px) { #twopir-healthcare { --thc-scale-w: 0.94; } }
+@media (min-width: 901px) and (max-width: 1320px) { #twopir-healthcare { --thc-scale-w: 0.91; } }
+@media (min-width: 901px) and (max-width: 1180px) { #twopir-healthcare { --thc-scale-w: 0.88; } }
+@media (min-width: 901px) and (max-width: 1024px) { #twopir-healthcare { --thc-scale-w: 0.88; } }
+
+@media (min-width: 901px) {
+  #twopir-healthcare > section.thc-section,
+  #twopir-healthcare > section.thc-trust {
+    zoom: min(var(--thc-scale-h, 1), var(--thc-scale-w, 1));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MINIMUM READABLE TYPE — the small end of the scale
+   ════════════════════════════════════════════════════════════
+   The ladder MULTIPLIES every declared size: at 0.85 a 9px label
+   renders at 7.6px. A 1366x768 laptop has roughly a 650px
+   viewport once browser chrome is off, so a typical machine
+   lands on the bottom rungs, not the 0.88 one its width suggests.
+
+   Every role below was declared between 9 and 12.5px. Collected
+   here so the small end uses ONE size per tier instead of
+   drifting across 9, 9.5, 10, 10.5, 11, 11.5, 12 and 12.5.
+
+     13px -> 11.05px at 0.85   micro labels
+     14px -> 11.90px at 0.85   secondary meta and supporting copy
+
+   The hero sits OUTSIDE the ladder, so declared == rendered and
+   its labels sit one step lower at the same physical size.      */
+
+/* micro labels — uppercase, tracked, secondary to something else */
+#twopir-healthcare .thc-cs-lbl,
+#twopir-healthcare .thc-mono-tag,
+#twopir-healthcare .thc-callout-k,
+#twopir-healthcare .thc-fact,
+#twopir-healthcare .thc-step-num,
+#twopir-healthcare .thc-cta-note,
+#twopir-healthcare .thc-why-num,
+#twopir-healthcare .thc-badge {
+  font-size: 13px !important;
+}
+/* .thc-eyebrow is deliberately NOT pinned here: its token is
+   clamp(13px, 1vw, 14px), whose own floor is already 13px, so it cannot
+   fall under the readable floor. Pinning it held the eyebrow at 13px
+   while the homepage rendered 14px. */
+
+/* secondary meta and supporting copy */
+#twopir-healthcare .thc-svc-list,
+#twopir-healthcare .thc-step,
+#twopir-healthcare .thc-int-desc,
+#twopir-healthcare .thc-quote-role,
+#twopir-healthcare .thc-cs-title,
+#twopir-healthcare .thc-cs-link,
+#twopir-healthcare .thc-callout-author,
+#twopir-healthcare .thc-engage {
+  font-size: 14px !important;
+}
+
+/* hero — never zoomed, so one step lower reads the same size */
+#twopir-healthcare .thc-float-k,
+#twopir-healthcare .thc-tag,
+#twopir-healthcare .thc-layer-h,
+#twopir-healthcare .thc-canvas-label,
+#twopir-healthcare .thc-hero-proof li {
+  font-size: 11.5px !important;
+}
+#twopir-healthcare .thc-chip,
+#twopir-healthcare .thc-float-v,
+#twopir-healthcare .thc-s,
+#twopir-healthcare .thc-h,
+#twopir-healthcare .thc-t2 {
+  font-size: 12px !important;
+}
+
+/* ── Uppercase tracked labels read larger than their size ─────
+   Caps carry more ink per pixel than lowercase, and wide tracking
+   compounds it. These two sat at 0.14em and 0.08em inside narrow
+   boxes: the case-study label ran to FOUR lines under a 24px
+   number and read louder than the number it was labelling.
+
+   The homepage stats strip already shows the right setting — its
+   label is the same 13px but tracked at 0.03em, and reads as the
+   quiet caption it is. Size comes down a step as well.
+
+   These sit below the 11px effective floor on purpose. That floor
+   is for reading matter; a tracked caps label is scanned, not
+   read, and its caps give it a larger apparent size. */
+#twopir-healthcare .thc-cs-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: 0.04em !important;
+}
+#twopir-healthcare .thc-fact {
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── The theme styles bare <button> ───────────────────────────
+   `a.button, button { letter-spacing: 2px }` in the theme lands on
+   the FAQ question, which is this page's only <button> element.
+   Two pixels of tracking on a 17.5px uppercase line is enough to
+   make the whole section read as oversized. Tracking is declared
+   here so the theme cannot decide it. */
+#twopir-healthcare .thc-faq-btn {
+  letter-spacing: 0.01em !important;
+}
+
+/* ── The FAQ question is a heading, not a control ─────────────
+   The blanket body-font pass includes `#twopir-healthcare button`, with
+   !important, so it beat the .thc-faq-btn display-face rule and the
+   questions rendered in Inter while the homepage's render in
+   Bricolage Grotesque. Same failure that rule's own comment warns
+   about for card titles — a <button> that is semantically a heading
+   has to be listed as an exception.
+
+   Case is left to the theme deliberately: the caps are wanted. */
+#twopir-healthcare .thc-faq-btn {
+  font-family: var(--thc-ff-display, 'Bricolage Grotesque', sans-serif) !important;
+}
+</style>
