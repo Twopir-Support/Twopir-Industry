@@ -20,7 +20,7 @@ scripts/
   verify_degradation.js  renders the page with the sheet deliberately broken, both
                          Autoptimize failure modes, and checks nothing collapses
 docs/
-  saas-build-report.md      build, preservation and SEO/AEO report for SaaS.html
+  saas-build-report.md         build, preservation and SEO/AEO report for SaaS.html
   fintech-build-report.md      the same for Fintech.html — a restyle of the live page
                                onto the design system, with the copy preserved
   healthcare-build-report.md   the same for Healthcare.html; section 4 records a
@@ -92,7 +92,7 @@ Start from `Industry Pages/Legal.html` and change five things:
 | | Type scale | One-token rule | Grid-bullet defect | Static checks |
 |---|---|---|---|---|
 | `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 3 failing |
-| `SaaS.html`  | **superseded** — one step small throughout | ✓ | ✓ fixed | pass |
+| `SaaS.html`  | current | ✓ | ✓ fixed | pass |
 | `Fintech.html` | current | ✓ | ✓ fixed | pass |
 | `Healthcare.html` | current | ✓ | ✓ fixed | pass |
 
@@ -103,9 +103,11 @@ Two pieces of known debt, both recorded in the tooling rather than hidden:
   in `LEGACY_SCALE` and reports those rows instead of asserting them. Remove the entry
   when the page is rebased onto the current tokens.
 - **`Legal.html` fails three static checks** (three bare `#twopir-legal` rules,
-  two orphan tokens, and the generic `Salesforce Partner` wording where the canonical
-  fact set wants the full `Salesforce Gold Partner` outside the stat widget). It is the
-  uploaded design source, so it is carried as-is rather than edited here.
+  and two orphan tokens). It is the uploaded design source, so it is carried as-is rather
+  than edited here.
+
+`LEGACY_SCALE` in `verify_browser.js` is now empty — every page asserts against the same
+type-scale table.
 
 ### Known defects in Legal.html, fixed in SaaS.html, Fintech.html and Healthcare.html
 

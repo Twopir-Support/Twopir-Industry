@@ -93,15 +93,14 @@ const WANT = {
 };
 
 /* Pages still on the type scale that the August 2026 homepage/Legal finals
- * superseded. Every role on these runs one step small (38px h2 against 44,
- * 12px eyebrow against 14, 16px card titles against 19), so the shared
- * table above cannot pass on them and asserting it would leave a
- * permanently red check that everyone learns to ignore.
+ * superseded — every role one step small (38px h2 against 44, 12px eyebrow
+ * against 14, 16px card titles against 19). Their rows are reported as
+ * `info` with a banner rather than asserted, so the check does not sit
+ * permanently red on a known gap.
  *
- * These rows are reported as `info` with a banner instead. Delete the entry
- * when the page is rebased onto the current tokens — that is the point of
- * keeping the list here rather than deleting the check. */
-const LEGACY_SCALE = new Set(['SaaS.html']);
+ * Empty: SaaS.html was the last entry and is now on the current tokens.
+ * Add a filename here only alongside a dated note saying who will rebase it. */
+const LEGACY_SCALE = new Set([]);
 
 (async () => {
   const targets = process.argv.slice(2).length
