@@ -14,6 +14,7 @@ Industry Pages/
   Nonprofit.html      Salesforce for Nonprofits
   Manufacturing.html  Salesforce for Manufacturing & Industrial
   ProfessionalServices.html  Salesforce for Professional Services
+  Telecom.html        Salesforce for Telecom & Infrastructure
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -32,6 +33,8 @@ docs/
   manufacturing-build-report.md          the same for Manufacturing.html
   professional-services-build-report.md  the same for ProfessionalServices.html;
                                section 4 records a duplicate live page
+  telecom-build-report.md      the same for Telecom.html; section 6 records law-firm
+                               logo alt text carried over from the source
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -94,27 +97,24 @@ Start from `Industry Pages/Legal.html` and change five things:
 - `overflow-x: clip` on the wrapper, not `hidden` — `hidden` turns the wrapper into a scroll
   container and breaks the sticky callout.
 
-### Current state of the three pages
+### Current state of the pages
 
 | | Type scale | One-token rule | Grid-bullet defect | Static checks |
 |---|---|---|---|---|
-| `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 3 failing |
+| `Legal.html` | current (Aug 2026 final) | ✗ three bare rules | ✗ present | 2 failing |
 | `SaaS.html`  | current | ✓ | ✓ fixed | pass |
 | `Fintech.html` | current | ✓ | ✓ fixed | pass |
 | `Healthcare.html` | current | ✓ | ✓ fixed | pass |
 | `Nonprofit.html` | current | ✓ | ✓ fixed | pass |
 | `Manufacturing.html` | current | ✓ | ✓ fixed | pass |
 | `ProfessionalServices.html` | current | ✓ | ✓ fixed | pass |
+| `Telecom.html` | current | ✓ | ✓ fixed | pass |
 
-Two pieces of known debt, both recorded in the tooling rather than hidden:
+One piece of known debt, recorded in the tooling rather than hidden:
 
-- **`SaaS.html` is on the type scale the finals replaced** — 38px h2 against 44,
-  12px eyebrow against 14, 16px card titles against 19. `verify_browser.js` names it
-  in `LEGACY_SCALE` and reports those rows instead of asserting them. Remove the entry
-  when the page is rebased onto the current tokens.
-- **`Legal.html` fails three static checks** (three bare `#twopir-legal` rules,
-  and two orphan tokens). It is the uploaded design source, so it is carried as-is rather
-  than edited here.
+- **`Legal.html` fails two static checks** (three bare `#twopir-legal` rules, and two
+  orphan tokens — `--tlg-fs-micro` and `--tlg-fs-stat`). It is the uploaded design
+  source, so it is carried as-is rather than edited here.
 
 `LEGACY_SCALE` in `verify_browser.js` is now empty — every page asserts against the same
 type-scale table.
