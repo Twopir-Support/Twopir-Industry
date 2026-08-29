@@ -20,6 +20,9 @@ Industry Pages/
   AIFintech.html      AI for Fintech
   AILawFirms.html     AI for Law Firms
   AIAssetManagement.html  AI for Asset Management
+  AIManufacturing.html  AI for Manufacturing
+  AISaaS.html         AI for SaaS & Technology
+  AIRealEstate.html   AI for Real Estate
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -51,6 +54,13 @@ docs/
   ai-asset-management-build-report.md  the same for AIAssetManagement.html;
                                section 6 records a Related Reading cluster that
                                links nowhere and a three-way page overlap
+  ai-manufacturing-build-report.md  the same for AIManufacturing.html; section 4
+                               records citations to our own unpublished research
+  ai-saas-build-report.md      the same for AISaaS.html; section 3 records a
+                               content change the parity check caught and reverted
+  ai-real-estate-build-report.md  the same for AIRealEstate.html; section 3
+                               records a wrong stat class that would have shown
+                               "12+" where "500+" belongs
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -130,6 +140,9 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `AIFintech.html` | current | ✓ | ✓ fixed | pass |
 | `AILawFirms.html` | current | ✓ | ✓ fixed | pass |
 | `AIAssetManagement.html` | current | ✓ | ✓ fixed | pass |
+| `AIManufacturing.html` | current | ✓ | ✓ fixed | pass |
+| `AISaaS.html` | current | ✓ | ✓ fixed | pass |
+| `AIRealEstate.html` | current | ✓ | ✓ fixed | pass |
 
 One piece of known debt, recorded in the tooling rather than hidden:
 

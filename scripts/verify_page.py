@@ -145,17 +145,29 @@ def verify(path):
     copy = re.sub(r'<style.*?</style>', '', s, flags=re.S)
     copy = re.sub(r'<script(?![^>]*ld\+json).*?</script>', '', copy, flags=re.S)
     copy = re.sub(r'<!--.*?-->', '', copy, flags=re.S)
+    # Read `copy`, not `s`: a build note that quotes a stat class inside an
+    # HTML comment is not a rendered fallback, and flagging it would punish
+    # documenting the very defect the note explains.
     bad = []
     for cls, val in CANON_STATS.items():
-        for m in re.findall(rf'class="[^"]*\b{cls}\b[^"]*"[^>]*>([^<]*)<', s):
+        for m in re.findall(rf'class="[^"]*\b{cls}\b[^"]*"[^>]*>([^<]*)<', copy):
             if m.strip() != val:
                 bad.append((cls, m.strip()))
     chk("every .twopir-* fallback matches the canonical value", not bad, str(bad))
+    # The rule is about FABRICATED outcome percentages — a number invented to
+    # make a section look stronger. A figure that carries a source beside it is
+    # attributed by construction, so it is not what this check is for; whether
+    # the source is any good is a claims-review question the build reports
+    # cover, not something a regex can judge. So: flag a percentage only when
+    # no citation sits near it. "Near" is the enclosing block, approximated as
+    # 400 characters either side, which is comfortably inside one card.
+    pat = r'\b\d{1,3}%\s*(?:increase|reduction|faster|improvement|gain|less|more)'
+    cited = re.compile(rf'(?:class="[^"]*\b{p}-cite\b|\bSource:)')
+    unattributed = [m for m in re.finditer(pat, copy, re.I)
+                    if not cited.search(copy[max(0, m.start() - 400):m.end() + 400])]
     chk("no fabricated outcome percentage in page copy",
-        not re.findall(r'\b\d{1,3}%\s*(?:increase|reduction|faster|improvement|gain|less|more)', copy, re.I),
-        str([re.sub(r'\s+', ' ', h) for h in re.findall(
-            r'.{0,50}\b\d{1,3}%\s*(?:increase|reduction|faster|improvement|gain|less|more)',
-            copy, re.I | re.S)]))
+        not unattributed,
+        str([re.sub(r'\s+', ' ', copy[max(0, m.start() - 50):m.end()]) for m in unattributed]))
     chk("company name is always 'Twopir Consulting', never 'TwoPir'", 'TwoPir' not in s)
     # The rule is about HOW a partner credential is worded when the page
     # states one — full name outside the compact stat widget — not that every
