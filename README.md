@@ -12,6 +12,8 @@ Industry Pages/
   Fintech.html        Salesforce for Fintech
   Healthcare.html     Salesforce for Healthcare
   Nonprofit.html      Salesforce for Nonprofits
+  Manufacturing.html  Salesforce for Manufacturing & Industrial
+  ProfessionalServices.html  Salesforce for Professional Services
 redesign/
   homepage.html       design source — tokens, type scale, component idioms
 scripts/
@@ -27,6 +29,9 @@ docs/
   healthcare-build-report.md   the same for Healthcare.html; section 4 records a
                                blocking content defect carried over from the source
   nonprofit-build-report.md    the same for Nonprofit.html; section 4 records three
+  manufacturing-build-report.md          the same for Manufacturing.html
+  professional-services-build-report.md  the same for ProfessionalServices.html;
+                               section 4 records a duplicate live page
 ```
 
 All four scripts take a page filename, or default to every page in the directory.
@@ -98,6 +103,8 @@ Start from `Industry Pages/Legal.html` and change five things:
 | `Fintech.html` | current | ✓ | ✓ fixed | pass |
 | `Healthcare.html` | current | ✓ | ✓ fixed | pass |
 | `Nonprofit.html` | current | ✓ | ✓ fixed | pass |
+| `Manufacturing.html` | current | ✓ | ✓ fixed | pass |
+| `ProfessionalServices.html` | current | ✓ | ✓ fixed | pass |
 
 Two pieces of known debt, both recorded in the tooling rather than hidden:
 
